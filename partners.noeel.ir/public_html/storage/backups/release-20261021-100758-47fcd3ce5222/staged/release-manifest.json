@@ -1,0 +1,276 @@
+{
+  "service": "partners",
+  "version": "1.1.1",
+  "phase": "batch-1-profile-corrections-notes-finance-reset",
+  "created_at_utc": "2026-10-21T09:00:00Z",
+  "api_version": "v1",
+  "database_migration_required": true,
+  "excluded_runtime": [
+    "config/local.env.php",
+    "storage/",
+    "public/install.php.locked",
+    "font assets"
+  ],
+  "files": {
+    ".htaccess": {
+      "bytes": 712,
+      "sha256": "de83b8c0efb4c22f4981881707e655a2cbdd242255d9af08b94a9df9b0601a48"
+    },
+    "BATCH-1-2026-10-21.md": {
+      "bytes": 5798,
+      "sha256": "6063f09dac6fe376c7d3c4e5a384cd83cc9284c4e3c4b1a638646ce4c518617a"
+    },
+    "HOTFIX.txt": {
+      "bytes": 263,
+      "sha256": "d12e64ca0cc49b2712e51eb8c9f31a922a3dd695e3f9273199c6c5fdcb13b218"
+    },
+    "PHASE-3.md": {
+      "bytes": 451,
+      "sha256": "0d9f4ea3f83a9a93fd101ef4719c3e4b30607bd43a94d6acb49983ce7110aff0"
+    },
+    "PHASE-4.md": {
+      "bytes": 218,
+      "sha256": "31a0988184c50ad1d6b67ce8051bddab392919d1b30ee6a08d4ec9ea8b141004"
+    },
+    "README.md": {
+      "bytes": 1018,
+      "sha256": "daa4e82864b7e08254c55d6fa5563f7bb73914973c73858e9f075585388af156"
+    },
+    "RELEASE-1.0.0.md": {
+      "bytes": 644,
+      "sha256": "b082664105694a12898b429c097d292627636f761f837bbef182dc1e2e6a041b"
+    },
+    "RELEASE-1.1.0.md": {
+      "bytes": 469,
+      "sha256": "ce843e509d01734465f7e2aa2da819122d07c15438a77e81dd57694033dd99a8"
+    },
+    "bootstrap.php": {
+      "bytes": 1575,
+      "sha256": "fb574fbc375b234ce11d1f5ce54d5631e4c9574bec11ed148867049247918b64"
+    },
+    "config/env.php": {
+      "bytes": 770,
+      "sha256": "3e524732303b35534bb74777f42fcdc8b41412b2920f2afd6d9c1644622d7d90"
+    },
+    "config/local.env.example.php": {
+      "bytes": 543,
+      "sha256": "b7b4ba1ab63cb724dd2629f72c4ba97b38e38352a4c6b51d7de1f2ab3fae3e76"
+    },
+    "config/version.php": {
+      "bytes": 123,
+      "sha256": "b1bad1ff6effb7aba52a7af0d7b953f127f5e4bced993350c8b2dd107ee6a2a3"
+    },
+    "database/migrations/202609290001_create_partner_merchant_core.php": {
+      "bytes": 3238,
+      "sha256": "cb43c893be795943718bfd3489d33bd27ae958bd82fb54aaad2a1434eff7b6f1"
+    },
+    "database/migrations/202609290002_create_cooperation_core.php": {
+      "bytes": 2955,
+      "sha256": "b6e4ef1d9a98f256a1918a548e8c119c1472e3dcbe2a8d9ddf81ce5ed33dd905"
+    },
+    "database/migrations/202609290003_create_marketplace_and_audit_core.php": {
+      "bytes": 2804,
+      "sha256": "1a3645722962a72e84d6ed4edb03399585c616de7038bc683daa218fbb789908"
+    },
+    "database/migrations/202609300001_create_contract_engine.php": {
+      "bytes": 9375,
+      "sha256": "891055da6029420d8972a48f60d9051f2ea2978ac7e4309aca662c27900d130e"
+    },
+    "database/migrations/202610210001_create_cooperation_corrections.php": {
+      "bytes": 1053,
+      "sha256": "762cc9fc85e7b2bef49b0acac5ad9ffd302067ef9bdf3d9ad5be0a5c5ab94af4"
+    },
+    "public/.htaccess": {
+      "bytes": 377,
+      "sha256": "5c9a4eacc5bd535c6d066e0d130f82d3f508b2eb13d49f72ee9d1f102da6031a"
+    },
+    "public/assets/OFL.txt": {
+      "bytes": 4391,
+      "sha256": "17e355067c8284f47743a1ee3b1ef7ff684ff0601eda357f9353b10b3016ab31"
+    },
+    "public/assets/babanoell-ui.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/babanoell-ui.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/assets/brand-logo.png": {
+      "bytes": 27303,
+      "sha256": "9930573d696809165d4cf66ce96b0ce750579397b6abe82d3ea81b00fcbfb69b"
+    },
+    "public/assets/panel.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/panel.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/assets/platform.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/platform.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/index.php": {
+      "bytes": 25997,
+      "sha256": "a94412de7bc3c5665671ef111684464b0669f88c8e9f9b3ebeb7fb9f85c83c7c"
+    },
+    "public/ui-asset.php": {
+      "bytes": 1365,
+      "sha256": "78dd1ef5d7dabfbcc935777fc4ddf9cbee9d2bb096b45ffcb3f8a440bc02bf50"
+    },
+    "public/update.php": {
+      "bytes": 12422,
+      "sha256": "ce7c9e8bbb838ebe16cb39fb37ea2980a0fc68e5313f15e482d54f620955fd4f"
+    },
+    "router.php": {
+      "bytes": 311,
+      "sha256": "82aa2fa351580b3e0b66aea9e536483e2969578dda24b333329f6e99029c9004"
+    },
+    "src/App/Config.php": {
+      "bytes": 3191,
+      "sha256": "57bd3395ef009732bb764504fcbf2f6d11264e7ba15086645b5d4338778653f2"
+    },
+    "src/Contract/ContractRepository.php": {
+      "bytes": 13481,
+      "sha256": "7c00832f1e96334c425a5ecb8e3c3b6340e7522cea6d9da6f89aff12d3f62b7f"
+    },
+    "src/Contract/ContractService.php": {
+      "bytes": 7446,
+      "sha256": "5a62b37b50d371282e5410d0574949a17ae59a4443c1b3ea9df30259980623d6"
+    },
+    "src/Database/Connection.php": {
+      "bytes": 601,
+      "sha256": "e46054776d4391d33c8bbdd6e131d90d8bc73914b1f5ca0d8e2cdea9cc2997cb"
+    },
+    "src/Database/DatabaseIsolationGuard.php": {
+      "bytes": 1181,
+      "sha256": "07855827051ed6abe587ffa60428ef478278b6f3532fb67b62168fd45702f20e"
+    },
+    "src/Database/Migration.php": {
+      "bytes": 198,
+      "sha256": "18ee8aa81cb1e211f68ebcf7b59690d66e5109f1b0e874f55193d7610d3c0319"
+    },
+    "src/Database/MigrationRunner.php": {
+      "bytes": 2401,
+      "sha256": "0e4bf27703be9cf46015a8ef747b15d5440bff62422e6c9919d06ac8e49f5669"
+    },
+    "src/Domain/PartnerRules.php": {
+      "bytes": 2115,
+      "sha256": "c2f6ad02393c1acbb4848c00b4eb72d69d78dba9e536e4aad16d46ff0fca053f"
+    },
+    "src/Http/DocumentsClient.php": {
+      "bytes": 1347,
+      "sha256": "98fedbdeac3c259e2cb6a5d22c9afe9e78cd9b0acad94dbfb044552593e93816"
+    },
+    "src/Http/HttpResponse.php": {
+      "bytes": 512,
+      "sha256": "3ea82db999d51cf32457bac816e38d59b9e1cfeb2f2795e7a8e0d819520d01a6"
+    },
+    "src/Http/HttpTransportInterface.php": {
+      "bytes": 273,
+      "sha256": "a2e4f0d9bcfe4f5aa6f334d68a947565021860537ac247ab25030eda6336b11e"
+    },
+    "src/Http/IdempotencyKey.php": {
+      "bytes": 447,
+      "sha256": "5e0903676a66251df1bd37da5f109dbace2713cc769de51c28762685c2d4a2f8"
+    },
+    "src/Http/IdentityClient.php": {
+      "bytes": 2861,
+      "sha256": "c212b407de786c94b70a7bcddbb1e7fec53f3aaa5d5d616c827ca5fd9fd43f96"
+    },
+    "src/Http/JsonResponse.php": {
+      "bytes": 1133,
+      "sha256": "0eeba3290d8731a588a7458edd5e5b19bdf433ba9e1cb3f5ddae0151c3c7c031"
+    },
+    "src/Http/LoansClient.php": {
+      "bytes": 2508,
+      "sha256": "34f474fc98bd9e803a8d1de12b9a41c4eb844f36f0f6f2b00022177465bc6564"
+    },
+    "src/Http/NativeHttpTransport.php": {
+      "bytes": 2280,
+      "sha256": "745d3c4aeaabf0fca806338531982fe1e0b660ce6299c16491d7b17539e54ed2"
+    },
+    "src/Http/Pagination.php": {
+      "bytes": 552,
+      "sha256": "47536c1c9714d70e79969c5fb1e78e251244adb7f61314ade3820a431bd94608"
+    },
+    "src/Http/Request.php": {
+      "bytes": 2262,
+      "sha256": "db0b9b0f08cb8b0bd99ff83d4b6816be6679bd5ee165654b7e772303bd7aec99"
+    },
+    "src/Platform/ProxyContext.php": {
+      "bytes": 3095,
+      "sha256": "927157eafb398e8e3eebe5aa8ca2354247ca7ad39d8ff4242212de1a2845601f"
+    },
+    "src/Platform/ReleaseTransaction.php": {
+      "bytes": 10999,
+      "sha256": "a6ae83afbc72c9f28f1edb24126d8ce570e1ec14e29e95796bc7a921be11c5d6"
+    },
+    "src/Platform/RequestContext.php": {
+      "bytes": 2195,
+      "sha256": "4362c54470fb7f59e42cdc973c2d576f1ac4d14fb4d7a7d4919b6762d2273ff5"
+    },
+    "src/Platform/ServiceAuth.php": {
+      "bytes": 4101,
+      "sha256": "69eb7d581cc229a09b7d1bb54381a50c09d14ecacca173477ae3b631439ba023"
+    },
+    "src/Platform/ServiceBoundary.php": {
+      "bytes": 869,
+      "sha256": "c0ddf71ab1e3491d1a0f58a96b49d5220c98663cb722ac32cf7f63a463105239"
+    },
+    "src/Platform/Ui.php": {
+      "bytes": 4232,
+      "sha256": "eb08f5bf0c34d582be61c29493904f43c7eb5d21834fab61f1d23d7cfd4fe531"
+    },
+    "src/Repository/PdoPartnerRepository.php": {
+      "bytes": 28990,
+      "sha256": "76ea6c6982724e9a8c1fdbfd1f9b227280cb3428e1f9a7daf2ce3b0b47efa2c9"
+    },
+    "src/Security/Authenticator.php": {
+      "bytes": 1905,
+      "sha256": "a11f6ffb197b12748868b289fed406c7ae267eb86b1ee9615b2cc7dbd90b90ef"
+    },
+    "src/Security/Principal.php": {
+      "bytes": 1733,
+      "sha256": "b31b280943ab9d842286683f3de53a11dcb062d88697d25f5c5deed6d60fc69a"
+    },
+    "src/Service/PartnerService.php": {
+      "bytes": 10919,
+      "sha256": "5419ce8bac7caa2333bb724d18959bc6cd5b484475bccb382a7b9573054fd465"
+    },
+    "src/Support/Json.php": {
+      "bytes": 602,
+      "sha256": "9a422a0280cbe1970476e407a048654e6c7612bf2ab1b5f82365522e4ea2411f"
+    },
+    "src/Support/PersianDate.php": {
+      "bytes": 3584,
+      "sha256": "934e639486a59be0d3c4fe877a4c54008bb52620f48d8b40963c47adb3a1d137"
+    },
+    "src/Support/PersianDateTime.php": {
+      "bytes": 4756,
+      "sha256": "27c56f748a06b4776f701cb02d549473fab4ea78354837460284231d6e02f75f"
+    },
+    "src/Support/RandomId.php": {
+      "bytes": 249,
+      "sha256": "873a661e3cd2a10362d6030c9f4eb8452348820d31f08b9a90fdd24341d0ccd3"
+    },
+    "src/Update/UpdateTool.php": {
+      "bytes": 6273,
+      "sha256": "d427a424403deeafa9808ae454c6bb025e418ffa6af0dc3c43731cb5b8a283aa"
+    },
+    "src/View/Renderer.php": {
+      "bytes": 1951,
+      "sha256": "3844c909596aecf3f0861c68123dedb5af8ffe4ffc3c4aca6749c9c59395a485"
+    },
+    "tests/run.php": {
+      "bytes": 11205,
+      "sha256": "04cf33bf35bb0a858066a30352d56e22682896334f20d1acd9879b1c092e87ef"
+    }
+  }
+}

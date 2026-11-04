@@ -1,0 +1,65 @@
+{
+    "files": [
+        {
+            "target": "src/App/Config.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/PlanRules.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/RequiredDocumentCatalog.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/CoreCatalog.php",
+            "existed": true
+        },
+        {
+            "target": "src/Repository/PdoLoanRepository.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/PlanService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/RequestService.php",
+            "existed": true
+        },
+        {
+            "target": "public/assets/babanoell-ui.css",
+            "existed": true
+        },
+        {
+            "target": "public/ui-asset.php",
+            "existed": true
+        },
+        {
+            "target": "public/index.php",
+            "existed": true
+        },
+        {
+            "target": "public/update.php",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.0.1.md",
+            "existed": false
+        },
+        {
+            "target": "database/migrations/202609290001_complete_plan_engine.php",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.0.0.md",
+            "existed": true
+        },
+        {
+            "target": "config/version.php",
+            "existed": true
+        }
+    ],
+    "installed_lock": "{\n    \"service\": \"loans\",\n    \"version\": \"2.0.0\",\n    \"environment\": \"staging\",\n    \"installed_at\": \"2026-08-26T20:37:31+00:00\",\n    \"ui\": \"1.6.0\",\n    \"updated_at\": \"2026-09-29T07:56:18+00:00\"\n}\n"
+}

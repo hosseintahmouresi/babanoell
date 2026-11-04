@@ -1,0 +1,19 @@
+Options -Indexes
+RewriteEngine On
+RewriteRule ^(config|storage|src|tests)(/|$) - [F,L,NC]
+
+# Stable PHP asset gateway; works when Document Root is the service root.
+RewriteRule ^ui-asset\.php$ public/ui-asset.php [L,QSA]
+
+# Serve public files when the domain document root points at the service root.
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+RewriteRule ^(.+)$ public/$1 [L]
+
+# Everything else enters the public front controller.
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^ public/index.php [L,QSA]
+
+<FilesMatch "(^\.|local\.env|\.log$|\.lock$|\.zip$)">
+  Require all denied
+</FilesMatch>

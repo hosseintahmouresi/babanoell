@@ -1,0 +1,67 @@
+<?php
+declare(strict_types=1);
+namespace Babanoell\Documents\Service;
+use Babanoell\Documents\Domain\ApiException;
+use Babanoell\Documents\Domain\DocumentCatalog;
+use Babanoell\Documents\Domain\DocumentReview;
+use Babanoell\Documents\Domain\UploadValidator;
+use Babanoell\Documents\Repository\PdoDocumentRepository;
+use Babanoell\Documents\Security\Principal;
+use Babanoell\Documents\Storage\PrivateStorage;
+use RuntimeException;
+use Throwable;
+
+final class DocumentService
+{
+ public function __construct(private readonly PdoDocumentRepository$repo,private readonly PrivateStorage$storage,private readonly UploadValidator$validator,private readonly EntityAccessService$access){}
+ public function upload(Principal$p,string$bearer,string$entityType,string$entityId,array$file,array$input,?string$ip,?string$ua):array
+ {
+  if(!$p->can('documents.upload'))throw new ApiException(403,'permission_denied','مجوز بارگذاری مدارک برای این حساب فعال نیست.');$this->access->assert($entityType,$entityId,$bearer,$p);
+  $type=strtolower(trim((string)($input['document_type']??'')));
+  $catalog=DocumentCatalog::get($type);
+  $requestedVisibility=strtolower(trim((string)($input['visibility']??$catalog['visibility'])));
+  if(!in_array($requestedVisibility,['normal','confidential'],true))throw new ApiException(422,'validation_failed','سطح محرمانگی مدرک معتبر نیست.');
+  // Catalog confidentiality is a security floor: a confidential document can never be downgraded by form/API input.
+  $visibility=$catalog['visibility']==='confidential'?'confidential':$requestedVisibility;
+
+  $owner=trim((string)($input['owner_user_id']??''));
+  if($owner==='')$owner=$p->userId;
+  if(!preg_match('/^[a-f0-9]{26}$/',$owner))throw new ApiException(422,'validation_failed','شناسه مالک مدرک معتبر نیست.');
+  if($owner!==$p->userId&&!$p->isSuperAdmin()&&!$p->can('documents.manage'))throw new ApiException(403,'owner_override_denied','تعیین مالک متفاوت برای این حساب مجاز نیست.');
+
+  $relation=strtolower(trim((string)($input['relation_code']??'attachment')));
+  if($relation==='')$relation='attachment';
+  if(!preg_match('/^[a-z0-9][a-z0-9_.-]{1,63}$/',$relation))throw new ApiException(422,'validation_failed','نوع ارتباط مدرک با رکورد معتبر نیست.');
+
+  $validated=$this->validator->validate($file,true);$key=$this->storage->store($validated);
+  try{return$this->repo->create($p->userId,$type,$catalog['category'],$catalog['label'],$visibility,$owner,$entityType,$entityId,$relation,$validated,$key,$ip,$ua);}catch(Throwable$e){$this->storage->remove($key);throw$e;}
+ }
+ public function replace(Principal$p,string$bearer,string$id,array$file,?string$ip,?string$ua):array
+ {
+  if(!$p->can('documents.replace'))throw new ApiException(403,'permission_denied','مجوز جایگزینی فایل برای این حساب فعال نیست.');$doc=$this->requireAccessible($p,$bearer,$id);if(($doc['status']??'')!=='active')throw new ApiException(409,'document_archived','مدرک بایگانی‌شده قابل جایگزینی نیست.');
+  $validated=$this->validator->validate($file,true);$key=$this->storage->store($validated);try{return$this->repo->replace($id,$p->userId,$validated,$key,$ip,$ua);}catch(Throwable$e){$this->storage->remove($key);throw$e;}
+ }
+ public function review(Principal$p,string$bearer,string$id,string$status,string$reason,?string$ip,?string$ua):array
+ {
+  if(!$p->can('documents.review'))throw new ApiException(403,'permission_denied','مجوز بررسی مدارک برای این حساب فعال نیست.');$this->requireAccessible($p,$bearer,$id);[$status,$reason]=DocumentReview::validate($status,$reason);return$this->repo->review($id,$p->userId,$status,$reason,$ip,$ua);
+ }
+ public function archive(Principal$p,string$bearer,string$id,string$reason,?string$ip,?string$ua):array
+ {
+  if(!$p->can('documents.archive'))throw new ApiException(403,'permission_denied','مجوز بایگانی مدارک برای این حساب فعال نیست.');$this->requireAccessible($p,$bearer,$id);$reason=trim($reason);if($reason==='')throw new ApiException(422,'validation_failed','برای بایگانی مدرک ثبت دلیل الزامی است.');return$this->repo->archive($id,$p->userId,$reason,$ip,$ua);
+ }
+ public function requireAccessible(Principal$p,string$bearer,string$id):array
+ {
+  $doc=$this->repo->get($id);if($doc===null)throw new ApiException(404,'document_not_found','مدرک پیدا نشد.');if(($doc['status']??'active')==='archived'&&!$p->isSuperAdmin()&&!$p->can('documents.manage'))throw new ApiException(403,'document_archived','مدرک بایگانی‌شده فقط برای مدیر مجاز قابل دسترسی است.');$links=is_array($doc['links']??null)?$doc['links']:[];if($links===[])throw new ApiException(409,'document_unlinked','مدرک به رکورد عملیاتی متصل نیست.');foreach($links as$link){if(!is_array($link))continue;try{$this->access->assert((string)$link['entity_type'],(string)$link['entity_id'],$bearer,$p);return$doc;}catch(ApiException$e){if($e->status>=500)throw$e;}}
+  throw new ApiException(403,'document_access_denied','دسترسی به این مدرک مجاز نیست.');
+ }
+ public function fileForRead(Principal$p,string$bearer,string$id,?string$versionId=null):array
+ {
+  if(!$p->can('documents.download'))throw new ApiException(403,'permission_denied','مجوز دریافت مدارک برای این حساب فعال نیست.');$doc=$this->requireAccessible($p,$bearer,$id);$version=$versionId!==null&&$versionId!==''?$this->repo->versionById($id,$versionId):$this->repo->currentVersion($id);if($version===null)throw new ApiException(404,'document_version_not_found','نسخه فایل پیدا نشد.');
+  if(($doc['visibility']??'normal')==='confidential'&&!$p->isSuperAdmin()&&!$p->can('documents.review')&&(string)($doc['owner_user_id']??'')!==$p->userId&&(string)($doc['created_by_user_id']??'')!==$p->userId)throw new ApiException(403,'confidential_document_denied','دسترسی به این مدرک محرمانه مجاز نیست.');
+  $path=$this->storage->path((string)$version['storage_key']);$hash=hash_file('sha256',$path);if(!is_string($hash)||!hash_equals((string)$version['checksum_sha256'],$hash))throw new ApiException(503,'document_integrity_failed','صحت فایل ذخیره‌شده تأیید نشد.');return['document'=>$doc,'version'=>$version,'path'=>$path];
+ }
+ public function completion(Principal$p,string$bearer,string$requestId):array
+ {
+  $this->access->assert('loan_request',$requestId,$bearer,$p);$req=$this->access->requirements($requestId,$bearer);$types=is_array($req['required_documents']??null)?$req['required_documents']:[];$types=array_values(array_filter(array_map(static function($v){if(is_string($v))return$v;if(is_array($v)&&is_string($v['code']??null))return$v['code'];return'';},$types)));$result=$this->repo->completion('loan_request',$requestId,$types);$result['requirements']=$req;return$result;
+ }
+}

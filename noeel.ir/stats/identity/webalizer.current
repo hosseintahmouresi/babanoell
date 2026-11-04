@@ -1,0 +1,185 @@
+# Webalizer V2.23-08 Incremental Data - 11/03/2026 18:01:38
+2026 11 3 18 1 38
+271 258 4 14 1 10 832443 258 15 0
+3 4 87 1 3
+159 149 462718 2 157 6
+0 0 0 0 0 0
+112 109 369725 3 101 9
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+37 36 68236 37
+25 18 48040 23
+48 48 120876 48
+100 99 456066 91
+48 46 109562 46
+9 7 19777 9
+4 4 9886 4
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0
+0
+0
+258
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+8
+0
+4
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+# -urls- 
+/api/v1/roles
+0 6 0 94434 0 1
+/health
+0 8 0 1864 5 1
+/api/v1/admin/users
+0 6 0 18378 0 0
+/api/v1/auth/login
+0 29 0 12953 8 0
+/ui-asset.php
+0 4 0 158084 0 0
+/api/v1/auth/me
+0 164 0 516216 0 4
+/api/v1/meta/platform-contract
+0 6 0 7062 2 2
+/api/v1/admin/branches
+0 1 0 148 0 0
+/healthz
+0 2 0 504 0 1
+/api/v1/auth/logout
+0 19 0 3658 0 1
+/api/v1/admin/user-access
+0 1 0 405 0 0
+/api/v1/admin/organizations
+0 1 0 148 0 0
+/api/v1/auth/refresh
+0 5 0 2225 0 0
+/update.php
+0 6 0 14511 0 0
+# End Of Table - urls
+# -sites- (monthly)
+5.218.226.60
+0 9 5 3053 3 1793552205
+/health
+5.209.167.221
+0 13 12 174172 1 1793722142
+/health
+185.223.160.59
+0 242 234 650755 8 1793728898
+/api/v1/auth/me
+31.7.120.4
+0 7 7 4463 3 1793716942
+/api/v1/meta/platform-contract
+# End Of Table - sites (monthly)
+# -sites- (daily)
+5.209.167.221
+0 13 12 174172 1 1793722142
+/health
+185.223.160.59
+0 92 90 191090 5 1793728898
+/api/v1/auth/me
+31.7.120.4
+0 7 7 4463 3 1793716942
+/api/v1/meta/platform-contract
+# End Of Table - sites (daily)
+# -referrers- 
+- (Direct Request)
+0 271
+# End Of Table - referrers
+# -agents- 
+BabanoellPanel/2.5.0
+0 54
+Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:159.0) Gecko/20100101 Firefox/159.0
+0 4
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
+0 32
+BabanoellPanel/2.6.0
+0 15
+BabanoellPanel/2.11.0
+0 11
+BabanoellPartners/1.1.0
+0 2
+BabanoellDocuments/1.20.3
+0 2
+BabanoellLoans/2.5.0
+0 2
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.144.0 Chrome/150.0.7871.250 Electron/
+0 130
+BabanoellDocuments/1.13.0
+0 1
+# End Of Table - agents
+# -search strings- 
+# End Of Table - search strings
+# -usernames- 
+# End Of Table - usernames

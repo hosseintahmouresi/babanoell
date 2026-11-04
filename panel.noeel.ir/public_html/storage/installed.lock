@@ -1,0 +1,7 @@
+{
+    "service": "panel",
+    "version": "2.24.0",
+    "ui": "2.15.0",
+    "environment": "staging",
+    "updated_at": "2026-11-03T11:11:32+00:00"
+}

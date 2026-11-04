@@ -1,0 +1,277 @@
+{
+  "created_at_utc": "2026-09-29T12:29:30+00:00",
+  "database": "dedicated_empty_database_required",
+  "database_migrations": [
+    "202609290001",
+    "202609290002",
+    "202609290003"
+  ],
+  "dependencies": [
+    "https://identity.noeel.ir",
+    "https://loans.noeel.ir",
+    "https://documents.noeel.ir"
+  ],
+  "excluded_runtime": [
+    "config/local.env.php",
+    "storage runtime except denial/index placeholders",
+    "uploads/**",
+    "logs/**",
+    "backups/**",
+    "*.sql",
+    "*.dump",
+    "*.zip",
+    "*.gz"
+  ],
+  "files": {
+    ".htaccess": {
+      "bytes": 712,
+      "sha256": "de83b8c0efb4c22f4981881707e655a2cbdd242255d9af08b94a9df9b0601a48"
+    },
+    "PHASE-3.md": {
+      "bytes": 451,
+      "sha256": "0d9f4ea3f83a9a93fd101ef4719c3e4b30607bd43a94d6acb49983ce7110aff0"
+    },
+    "README.md": {
+      "bytes": 1018,
+      "sha256": "daa4e82864b7e08254c55d6fa5563f7bb73914973c73858e9f075585388af156"
+    },
+    "RELEASE-1.0.0.md": {
+      "bytes": 644,
+      "sha256": "b082664105694a12898b429c097d292627636f761f837bbef182dc1e2e6a041b"
+    },
+    "bootstrap.php": {
+      "bytes": 1313,
+      "sha256": "88c7d474f05c091fb59503d424de382546f1f29ebf640a2b6a71a0f0beaa537a"
+    },
+    "config/env.php": {
+      "bytes": 770,
+      "sha256": "3e524732303b35534bb74777f42fcdc8b41412b2920f2afd6d9c1644622d7d90"
+    },
+    "config/local.env.example.php": {
+      "bytes": 543,
+      "sha256": "b7b4ba1ab63cb724dd2629f72c4ba97b38e38352a4c6b51d7de1f2ab3fae3e76"
+    },
+    "config/version.php": {
+      "bytes": 124,
+      "sha256": "71040c1a42a13ca411a5a557182339907214c42cdb7a3b62e4edabfe98a7fc12"
+    },
+    "database/migrations/202609290001_create_partner_merchant_core.php": {
+      "bytes": 3238,
+      "sha256": "cb43c893be795943718bfd3489d33bd27ae958bd82fb54aaad2a1434eff7b6f1"
+    },
+    "database/migrations/202609290002_create_cooperation_core.php": {
+      "bytes": 2955,
+      "sha256": "b6e4ef1d9a98f256a1918a548e8c119c1472e3dcbe2a8d9ddf81ce5ed33dd905"
+    },
+    "database/migrations/202609290003_create_marketplace_and_audit_core.php": {
+      "bytes": 2804,
+      "sha256": "1a3645722962a72e84d6ed4edb03399585c616de7038bc683daa218fbb789908"
+    },
+    "public/.htaccess": {
+      "bytes": 377,
+      "sha256": "5c9a4eacc5bd535c6d066e0d130f82d3f508b2eb13d49f72ee9d1f102da6031a"
+    },
+    "public/assets/OFL.txt": {
+      "bytes": 4391,
+      "sha256": "17e355067c8284f47743a1ee3b1ef7ff684ff0601eda357f9353b10b3016ab31"
+    },
+    "public/assets/babanoell-ui.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/babanoell-ui.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/assets/brand-logo.png": {
+      "bytes": 27303,
+      "sha256": "9930573d696809165d4cf66ce96b0ce750579397b6abe82d3ea81b00fcbfb69b"
+    },
+    "public/assets/panel.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/panel.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/assets/platform.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/platform.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/assets/vazirmatn-font.json": {
+      "bytes": 150608,
+      "sha256": "06c991556fecf62fb27d00c25077f4b75e4e5f170c6b0ee90bd0a2c2a1c6d237"
+    },
+    "public/index.php": {
+      "bytes": 14045,
+      "sha256": "9f402b7a3df9790eb977307cf2842f7675ab9e98fc90e105d7eedad7a070a698"
+    },
+    "public/install.php": {
+      "bytes": 13823,
+      "sha256": "97a96a9d8e7091a454bc6a820d986b0e85c704c7e3178ff2908ffdb94f9da2f9"
+    },
+    "public/ui-asset.php": {
+      "bytes": 1365,
+      "sha256": "78dd1ef5d7dabfbcc935777fc4ddf9cbee9d2bb096b45ffcb3f8a440bc02bf50"
+    },
+    "public/update.php": {
+      "bytes": 12422,
+      "sha256": "efa82b77bb15d014d28243c21f35c8d2ad7d8f7ccf5452064e9312677de1708e"
+    },
+    "router.php": {
+      "bytes": 311,
+      "sha256": "82aa2fa351580b3e0b66aea9e536483e2969578dda24b333329f6e99029c9004"
+    },
+    "src/App/Config.php": {
+      "bytes": 3191,
+      "sha256": "57bd3395ef009732bb764504fcbf2f6d11264e7ba15086645b5d4338778653f2"
+    },
+    "src/Database/Connection.php": {
+      "bytes": 601,
+      "sha256": "e46054776d4391d33c8bbdd6e131d90d8bc73914b1f5ca0d8e2cdea9cc2997cb"
+    },
+    "src/Database/DatabaseIsolationGuard.php": {
+      "bytes": 1181,
+      "sha256": "07855827051ed6abe587ffa60428ef478278b6f3532fb67b62168fd45702f20e"
+    },
+    "src/Database/Migration.php": {
+      "bytes": 198,
+      "sha256": "18ee8aa81cb1e211f68ebcf7b59690d66e5109f1b0e874f55193d7610d3c0319"
+    },
+    "src/Database/MigrationRunner.php": {
+      "bytes": 2401,
+      "sha256": "0e4bf27703be9cf46015a8ef747b15d5440bff62422e6c9919d06ac8e49f5669"
+    },
+    "src/Domain/PartnerRules.php": {
+      "bytes": 2115,
+      "sha256": "c2f6ad02393c1acbb4848c00b4eb72d69d78dba9e536e4aad16d46ff0fca053f"
+    },
+    "src/Http/DocumentsClient.php": {
+      "bytes": 839,
+      "sha256": "49ee11f5731cbfb4caf40561941790cac06a3b771e054e5188513eced76c8b33"
+    },
+    "src/Http/HttpResponse.php": {
+      "bytes": 512,
+      "sha256": "3ea82db999d51cf32457bac816e38d59b9e1cfeb2f2795e7a8e0d819520d01a6"
+    },
+    "src/Http/HttpTransportInterface.php": {
+      "bytes": 273,
+      "sha256": "a2e4f0d9bcfe4f5aa6f334d68a947565021860537ac247ab25030eda6336b11e"
+    },
+    "src/Http/IdempotencyKey.php": {
+      "bytes": 447,
+      "sha256": "5e0903676a66251df1bd37da5f109dbace2713cc769de51c28762685c2d4a2f8"
+    },
+    "src/Http/IdentityClient.php": {
+      "bytes": 1278,
+      "sha256": "2cf21648b18b193d8e20f7bde7d4df03bdfb78372002ce033fe89751284f694b"
+    },
+    "src/Http/JsonResponse.php": {
+      "bytes": 1133,
+      "sha256": "0eeba3290d8731a588a7458edd5e5b19bdf433ba9e1cb3f5ddae0151c3c7c031"
+    },
+    "src/Http/LoansClient.php": {
+      "bytes": 2325,
+      "sha256": "2ad190cb8510b4f31c62fae18930e88e6c78cf1091cf82909857c6f41e2524f1"
+    },
+    "src/Http/NativeHttpTransport.php": {
+      "bytes": 2280,
+      "sha256": "745d3c4aeaabf0fca806338531982fe1e0b660ce6299c16491d7b17539e54ed2"
+    },
+    "src/Http/Pagination.php": {
+      "bytes": 552,
+      "sha256": "47536c1c9714d70e79969c5fb1e78e251244adb7f61314ade3820a431bd94608"
+    },
+    "src/Http/Request.php": {
+      "bytes": 2262,
+      "sha256": "db0b9b0f08cb8b0bd99ff83d4b6816be6679bd5ee165654b7e772303bd7aec99"
+    },
+    "src/Platform/ProxyContext.php": {
+      "bytes": 3095,
+      "sha256": "927157eafb398e8e3eebe5aa8ca2354247ca7ad39d8ff4242212de1a2845601f"
+    },
+    "src/Platform/ReleaseTransaction.php": {
+      "bytes": 10999,
+      "sha256": "a6ae83afbc72c9f28f1edb24126d8ce570e1ec14e29e95796bc7a921be11c5d6"
+    },
+    "src/Platform/RequestContext.php": {
+      "bytes": 2195,
+      "sha256": "4362c54470fb7f59e42cdc973c2d576f1ac4d14fb4d7a7d4919b6762d2273ff5"
+    },
+    "src/Platform/ServiceAuth.php": {
+      "bytes": 4101,
+      "sha256": "69eb7d581cc229a09b7d1bb54381a50c09d14ecacca173477ae3b631439ba023"
+    },
+    "src/Platform/ServiceBoundary.php": {
+      "bytes": 869,
+      "sha256": "c0ddf71ab1e3491d1a0f58a96b49d5220c98663cb722ac32cf7f63a463105239"
+    },
+    "src/Platform/Ui.php": {
+      "bytes": 4232,
+      "sha256": "eb08f5bf0c34d582be61c29493904f43c7eb5d21834fab61f1d23d7cfd4fe531"
+    },
+    "src/Repository/PdoPartnerRepository.php": {
+      "bytes": 24627,
+      "sha256": "fe8d6279acb058d70d606eb95573e2384231cdb2639341c1801affe29bbd9a66"
+    },
+    "src/Security/Authenticator.php": {
+      "bytes": 1905,
+      "sha256": "a11f6ffb197b12748868b289fed406c7ae267eb86b1ee9615b2cc7dbd90b90ef"
+    },
+    "src/Security/Principal.php": {
+      "bytes": 1733,
+      "sha256": "b31b280943ab9d842286683f3de53a11dcb062d88697d25f5c5deed6d60fc69a"
+    },
+    "src/Service/PartnerService.php": {
+      "bytes": 10919,
+      "sha256": "5419ce8bac7caa2333bb724d18959bc6cd5b484475bccb382a7b9573054fd465"
+    },
+    "src/Support/Json.php": {
+      "bytes": 602,
+      "sha256": "9a422a0280cbe1970476e407a048654e6c7612bf2ab1b5f82365522e4ea2411f"
+    },
+    "src/Support/PersianDate.php": {
+      "bytes": 3584,
+      "sha256": "934e639486a59be0d3c4fe877a4c54008bb52620f48d8b40963c47adb3a1d137"
+    },
+    "src/Support/PersianDateTime.php": {
+      "bytes": 4756,
+      "sha256": "27c56f748a06b4776f701cb02d549473fab4ea78354837460284231d6e02f75f"
+    },
+    "src/Support/RandomId.php": {
+      "bytes": 249,
+      "sha256": "873a661e3cd2a10362d6030c9f4eb8452348820d31f08b9a90fdd24341d0ccd3"
+    },
+    "src/Update/UpdateTool.php": {
+      "bytes": 6255,
+      "sha256": "a4ff816d10781cec49e29e67b645d1ceb1ac50b34bea0c8461b1779304817363"
+    },
+    "src/View/Renderer.php": {
+      "bytes": 1951,
+      "sha256": "cd755d4f410372327cfd046468f2c143817079b028424cfa2543fe2365dcef7a"
+    },
+    "storage/.htaccess": {
+      "bytes": 19,
+      "sha256": "fa28d421a28ed9b6f4b997d5119c2b8adbacff6e2dd119a179b71230f9664934"
+    },
+    "storage/index.html": {
+      "bytes": 92,
+      "sha256": "c25367a8a61dae591bc052704ddca120004c59ffe271e0c4373c90a0c1177595"
+    },
+    "tests/run.php": {
+      "bytes": 8110,
+      "sha256": "331b1e69128c977638b637ab28431dd33fd3a072866491ca23485c4c92fe161d"
+    }
+  },
+  "install_mode": "extract_into_partners.noeel.ir/public_html_then_open_/install.php",
+  "release": "phase3-initial-bootstrap",
+  "service": "partners",
+  "service_auth_default": "optional",
+  "source_file_count": 61,
+  "version": "1.0.0"
+}

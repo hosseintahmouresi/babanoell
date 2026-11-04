@@ -1,0 +1,533 @@
+<?php
+declare(strict_types=1);
+
+/**
+ * Identity (auth) service — web installer.
+ *
+ * Docker-free deployment entry: upload the service, open /install.php,
+ * follow the wizard. After a successful install the file locks itself
+ * (renames to install.php.locked when the filesystem allows it).
+ *
+ * Safety rules:
+ *  - Refuses to run when the service is already installed.
+ *  - Login feature flags stay OFF after install (safe by default).
+ *  - Generates a strong random token pepper and never displays it again.
+ *  - All state changes (migrations, seed, config write) happen only after
+ *    full validation, on POST, behind a CSRF token.
+ */
+
+date_default_timezone_set('Asia/Tehran');
+
+$serviceRoot = dirname(__DIR__);
+$installedLock = $serviceRoot . '/storage/installed.lock';
+$localEnvFile = $serviceRoot . '/config/local.env.php';
+
+session_start();
+
+/** Already installed? Refuse before any output. */
+if (is_file($installedLock) && is_file($localEnvFile)) {
+    render_installed_page();
+    exit(0);
+}
+
+$errors = [];
+$values = [
+    'db_host' => 'localhost',
+    'db_port' => '3306',
+    'db_name' => '',
+    'db_user' => '',
+    'db_password' => '',
+    'admin_mobile' => '',
+    'admin_email' => '',
+    'admin_display_name' => '',
+];
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $errors = handle_install($serviceRoot, $values, $localEnvFile, $installedLock);
+}
+
+render_page($errors, $values, requirements());
+
+function requirements(): array
+{
+    $checks = [
+        ['label' => 'PHP نسخه ۸.۱ یا بالاتر (پیشنهاد: ۸.۳)', 'ok' => PHP_VERSION_ID >= 80100, 'detail' => PHP_VERSION],
+        ['label' => 'افزونه PDO MySQL (pdo_mysql)', 'ok' => extension_loaded('pdo_mysql'), 'detail' => extension_loaded('pdo_mysql') ? 'فعال' : 'غیرفعال'],
+        ['label' => 'افزونه OpenSSL', 'ok' => extension_loaded('openssl'), 'detail' => extension_loaded('openssl') ? 'فعال' : 'غیرفعال'],
+        ['label' => 'افزونه JSON', 'ok' => extension_loaded('json'), 'detail' => extension_loaded('json') ? 'فعال' : 'غیرفعال'],
+        ['label' => 'افزونه mbstring', 'ok' => extension_loaded('mbstring'), 'detail' => extension_loaded('mbstring') ? 'فعال' : 'غیرفعال (برای فارسی توصیه می‌شود)'],
+        ['label' => 'دسترسی نوشتن در پوشه config', 'ok' => is_writable(dirname(__DIR__) . '/config'), 'detail' => dirname(__DIR__) . '/config'],
+        ['label' => 'الگوریتم رمزنگاری Argon2id', 'ok' => defined('PASSWORD_ARGON2ID'), 'detail' => defined('PASSWORD_ARGON2ID') ? 'فعال' : 'استفاده می‌شود: Bcrypt'],
+    ];
+
+    return $checks;
+}
+
+function handle_install(string $serviceRoot, array &$values, string $localEnvFile, string $installedLock): array
+{
+    $errors = [];
+
+    $sessionToken = $_SESSION['install_csrf'] ?? '';
+
+    if ($sessionToken === '' || !hash_equals($sessionToken, (string) ($_POST['csrf'] ?? ''))) {
+        return ['نشست شما منقضی شده است. صفحه را دوباره بارگذاری کنید.'];
+    }
+
+    foreach (array_keys($values) as $key) {
+        $posted = trim((string) ($_POST[$key] ?? ''));
+
+        if ($key === 'db_password') {
+            $values[$key] = (string) ($_POST[$key] ?? '');
+            continue;
+        }
+        $values[$key] = $posted;
+    }
+
+    if ($values['db_host'] === '') {
+        $errors[] = 'میزبان پایگاه داده الزامی است.';
+    }
+    if (!preg_match('/^\d{1,5}$/', $values['db_port']) || (int) $values['db_port'] < 1 || (int) $values['db_port'] > 65535) {
+        $errors[] = 'پورت پایگاه داده نامعتبر است.';
+    }
+    if (!preg_match('/^[A-Za-z0-9_]+$/', $values['db_name']) || strlen($values['db_name']) > 64) {
+        $errors[] = 'نام پایگاه داده فقط می‌تواند شامل حروف انگلیسی، عدد و زیرخط باشد.';
+    }
+    if ($values['db_user'] === '') {
+        $errors[] = 'نام کاربری پایگاه داده الزامی است.';
+    }
+    if (!preg_match('/^09\d{9}$/', $values['admin_mobile'])) {
+        $errors[] = 'شماره موبایل مدیر باید با ۰۹ شروع شده و ۱۱ رقم باشد (مثال: 09121234567).';
+    }
+    if ($values['admin_email'] !== '' && filter_var($values['admin_email'], FILTER_VALIDATE_EMAIL) === false) {
+        $errors[] = 'ایمیل مدیر معتبر نیست.';
+    }
+    if (mb_strlen($values['admin_display_name']) < 3) {
+        $errors[] = 'نام نمایشی مدیر حداقل ۳ نویسه است.';
+    }
+
+    $adminPassword = (string) ($_POST['admin_password'] ?? '');
+    $adminPasswordConfirm = (string) ($_POST['admin_password_confirm'] ?? '');
+
+    if (strlen($adminPassword) < 10) {
+        $errors[] = 'رمز عبور مدیر حداقل ۱۰ نویسه است.';
+    }
+    if ($adminPassword !== $adminPasswordConfirm) {
+        $errors[] = 'تکرار رمز عبور مدیر مطابقت ندارد.';
+    }
+
+    if ($errors !== []) {
+        return $errors;
+    }
+
+    /* ---- Database connection ---- */
+    $port = (int) $values['db_port'];
+
+    try {
+        $pdo = new PDO(
+            sprintf('mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4', $values['db_host'], $port, $values['db_name']),
+            $values['db_user'],
+            $values['db_password'],
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
+        );
+    } catch (PDOException $exception) {
+        if (in_array((string) $exception->getCode(), ['1049', '42000'], true) || str_contains($exception->getMessage(), 'Unknown database')) {
+            try {
+                $pdo = new PDO(
+                    sprintf('mysql:host=%s;port=%d;charset=utf8mb4', $values['db_host'], $port),
+                    $values['db_user'],
+                    $values['db_password'],
+                    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+                );
+                $pdo->exec(
+                    sprintf(
+                        'CREATE DATABASE IF NOT EXISTS `%s` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+                        str_replace('`', '', $values['db_name'])
+                    )
+                );
+                $pdo->exec(sprintf('USE `%s`', str_replace('`', '', $values['db_name'])));
+            } catch (PDOException $createException) {
+                return [
+                    'اتصال به پایگاه داده ممکن نشد: ' . $createException->getMessage(),
+                    'راهنما: در cPanel ابتدا از بخش MySQL Databases یک پایگاه داده و کاربر بسازید و کاربر را به پایگاه داده متصل کنید، سپس دوباره تلاش کنید.',
+                ];
+            }
+        } else {
+            return ['اتصال به پایگاه داده ممکن نشد: ' . $exception->getMessage()];
+        }
+    }
+
+    /* ---- Migrations ---- */
+    require_once $serviceRoot . '/src/Database/Connection.php';
+    require_once $serviceRoot . '/src/Database/Migration.php';
+    require_once $serviceRoot . '/src/Database/MigrationRunner.php';
+
+    try {
+        $runner = new Babanoell\Auth\Database\MigrationRunner($pdo, $serviceRoot . '/database/migrations');
+        $applied = $runner->up();
+    } catch (Throwable $throwable) {
+        return ['اجرای مایگریشن‌ها ناموفق بود: ' . $throwable->getMessage()];
+    }
+
+    /* ---- Seed admin user + system role ---- */
+    require_once $serviceRoot . '/src/Security/PasswordHasherInterface.php';
+    require_once $serviceRoot . '/src/Security/PhpPasswordHasher.php';
+    require_once $serviceRoot . '/src/Support/IdGeneratorInterface.php';
+    require_once $serviceRoot . '/src/Support/RandomIdGenerator.php';
+
+    try {
+        $hasher = new Babanoell\Auth\Security\PhpPasswordHasher(
+            defined('PASSWORD_ARGON2ID') ? PASSWORD_ARGON2ID : PASSWORD_BCRYPT
+        );
+        $generator = new Babanoell\Auth\Support\RandomIdGenerator();
+        $passwordHash = $hasher->hash($adminPassword);
+
+        $pdo->beginTransaction();
+
+        // Retry-safe installer: a previous run may have completed migrations and
+        // seeded the admin before failing the runtime self-check. Reuse that row
+        // instead of creating duplicates, and refresh the submitted password.
+        if ($values['admin_email'] !== '') {
+            $existingUserQuery = $pdo->prepare(
+                'SELECT id, mobile, email
+                 FROM users
+                 WHERE mobile = :mobile OR email = :email
+                 LIMIT 2'
+            );
+            $existingUserQuery->execute([
+                ':mobile' => $values['admin_mobile'],
+                ':email' => $values['admin_email'],
+            ]);
+        } else {
+            $existingUserQuery = $pdo->prepare(
+                'SELECT id, mobile, email
+                 FROM users
+                 WHERE mobile = :mobile
+                 LIMIT 2'
+            );
+            $existingUserQuery->execute([':mobile' => $values['admin_mobile']]);
+        }
+        $existingUsers = $existingUserQuery->fetchAll();
+
+        if (count($existingUsers) > 1) {
+            throw new RuntimeException('conflicting admin identities already exist; use one existing mobile/email pair');
+        }
+
+        if ($existingUsers !== []) {
+            $userId = (string) $existingUsers[0]['id'];
+            $updateUser = $pdo->prepare(
+                'UPDATE users
+                 SET mobile = :mobile, email = :email, display_name = :display_name, status = :status,
+                     password_hash = :password_hash, password_changed_at = NOW(6), disabled_at = NULL, locked_until = NULL
+                 WHERE id = :id'
+            );
+            $updateUser->execute([
+                ':id' => $userId,
+                ':mobile' => $values['admin_mobile'],
+                ':email' => $values['admin_email'] !== '' ? $values['admin_email'] : null,
+                ':display_name' => $values['admin_display_name'],
+                ':status' => 'active',
+                ':password_hash' => $passwordHash,
+            ]);
+        } else {
+            $userId = $generator->generate();
+            $userStatement = $pdo->prepare(
+                'INSERT INTO users (id, mobile, email, display_name, status, password_hash, password_changed_at)
+                 VALUES (:id, :mobile, :email, :display_name, :status, :password_hash, NOW(6))'
+            );
+            $userStatement->execute([
+                ':id' => $userId,
+                ':mobile' => $values['admin_mobile'],
+                ':email' => $values['admin_email'] !== '' ? $values['admin_email'] : null,
+                ':display_name' => $values['admin_display_name'],
+                ':status' => 'active',
+                ':password_hash' => $passwordHash,
+            ]);
+        }
+
+        $roleQuery = $pdo->prepare('SELECT id FROM roles WHERE name = :name LIMIT 1');
+        $roleQuery->execute([':name' => 'super_admin']);
+        $existingRoleId = $roleQuery->fetchColumn();
+
+        if (is_string($existingRoleId) && $existingRoleId !== '') {
+            $roleId = $existingRoleId;
+        } else {
+            $roleId = $generator->generate();
+            $roleStatement = $pdo->prepare(
+                'INSERT INTO roles (id, name, label, description, is_system)
+                 VALUES (:id, :name, :label, :description, 1)'
+            );
+            $roleStatement->execute([
+                ':id' => $roleId,
+                ':name' => 'super_admin',
+                ':label' => 'مدیر ارشد سامانه',
+                ':description' => 'نقش سیستمی نصب‌کننده؛ دسترسی کامل.',
+            ]);
+        }
+
+        $assignmentQuery = $pdo->prepare(
+            'SELECT COUNT(*) FROM user_roles WHERE user_id = :user_id AND role_id = :role_id'
+        );
+        $assignmentQuery->execute([':user_id' => $userId, ':role_id' => $roleId]);
+
+        if ((int) $assignmentQuery->fetchColumn() === 0) {
+            $assignStatement = $pdo->prepare('INSERT INTO user_roles (user_id, role_id) VALUES (:user_id, :role_id)');
+            $assignStatement->execute([':user_id' => $userId, ':role_id' => $roleId]);
+        }
+
+        $pdo->commit();
+    } catch (Throwable $throwable) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+
+        return ['ایجاد کاربر مدیر ناموفق بود: ' . $throwable->getMessage()];
+    }
+
+    /* ---- Write local config + lock ---- */
+    $pepper = bin2hex(random_bytes(32));
+    $configValues = [
+        'APP_ENV' => 'production',
+        'SERVICE_NAME' => 'identity',
+        'AUTH_DB_HOST' => $values['db_host'],
+        'AUTH_DB_PORT' => (string) $port,
+        'AUTH_DB_NAME' => $values['db_name'],
+        'AUTH_DB_USER' => $values['db_user'],
+        'AUTH_DB_PASSWORD' => $values['db_password'],
+        'AUTH_DB_CHARSET' => 'utf8mb4',
+        'AUTH_ENVIRONMENT' => 'production',
+        'AUTH_ALLOW_HTTP_LOGIN_IN_LOCAL' => 'false',
+        'AUTH_LOGIN_ENABLED' => 'false',
+        'AUTH_SESSION_ISSUING_ENABLED' => 'false',
+        'AUTH_REFRESH_ENABLED' => 'false',
+        'AUTH_REQUIRE_TOKEN_PEPPER' => 'true',
+        'AUTH_TOKEN_PEPPER' => $pepper,
+        'AUTH_SESSION_TTL_SECONDS' => '900',
+        'AUTH_REFRESH_TTL_SECONDS' => '1209600',
+        'AUTH_LOGIN_RATE_LIMIT_WINDOW_SECONDS' => '900',
+        'AUTH_LOGIN_RATE_LIMIT_MAX_ATTEMPTS' => '5',
+    ];
+
+    $configContent = "<?php\ndeclare(strict_types=1);\n\n// Generated by the identity installer on " . date('Y-m-d H:i:s') . ".\n// KEEP THIS FILE PRIVATE. Never commit it.\nreturn " . export_config($configValues) . ";\n";
+
+    if (file_put_contents($localEnvFile, $configContent, LOCK_EX) === false) {
+        return ['نوشتن فایل پیکربندی ناموفق بود. دسترسی نوشتن پوشه config را بررسی کنید.'];
+    }
+
+    /* ---- Runtime self-check (same path used by update.php / application) ---- */
+    try {
+        require_once $serviceRoot . '/config/env.php';
+        babanoell_auth_load_env();
+
+        $runtimeDbConfig = require $serviceRoot . '/config/database.php';
+        $runtimePdo = Babanoell\Auth\Database\Connection::fromConfig($runtimeDbConfig);
+        $runtimePdo->query('SELECT 1')->fetchColumn();
+
+        $selectedDatabase = (string) $runtimePdo->query('SELECT DATABASE()')->fetchColumn();
+
+        if ($selectedDatabase !== $values['db_name']) {
+            throw new RuntimeException(
+                'runtime database mismatch: expected ' . $values['db_name'] . ', got ' . ($selectedDatabase !== '' ? $selectedDatabase : '(none)')
+            );
+        }
+
+        // Verify the persisted row by its required unique mobile rather than by
+        // an in-memory generated id. Older builds generated 32-char hex ids for
+        // CHAR(26) columns; permissive MySQL truncated them on INSERT, which made
+        // an immediate id-based self-check fail even though the row was valid.
+        $runtimeUser = $runtimePdo->prepare(
+            'SELECT u.id, u.password_hash
+             FROM users u
+             JOIN user_roles ur ON ur.user_id = u.id
+             JOIN roles r ON r.id = ur.role_id
+             WHERE u.mobile = :mobile AND u.status = :status AND r.name = :role_name
+             LIMIT 1'
+        );
+        $runtimeUser->execute([
+            'mobile' => $values['admin_mobile'],
+            'status' => 'active',
+            'role_name' => 'super_admin',
+        ]);
+        $runtimeAdmin = $runtimeUser->fetch();
+
+        if (!is_array($runtimeAdmin)) {
+            throw new RuntimeException('runtime admin row was not found in the selected database');
+        }
+
+        $persistedUserId = (string) ($runtimeAdmin['id'] ?? '');
+        if ($persistedUserId === '' || strlen($persistedUserId) !== 26) {
+            throw new RuntimeException('runtime admin id has an invalid persisted length');
+        }
+
+        if (!$hasher->verify($adminPassword, (string) ($runtimeAdmin['password_hash'] ?? ''))) {
+            throw new RuntimeException('runtime admin password verification failed');
+        }
+    } catch (Throwable $throwable) {
+        @mkdir($serviceRoot . '/storage', 0755, true);
+        @file_put_contents(
+            $serviceRoot . '/storage/install-error.log',
+            '[' . date('c') . '] ' . $throwable->getMessage() . PHP_EOL,
+            FILE_APPEND | LOCK_EX
+        );
+
+        return [
+            'نصب دیتابیس انجام شد، اما مسیر واقعی اجرای سرویس نتوانست اتصال/ورود مدیر را تأیید کند: ' . $throwable->getMessage(),
+            'قفل نصب ساخته نشد. اطلاعات ثبت‌شده حفظ شده‌اند؛ بعد از اصلاح فایل‌ها می‌توانید همین نصب را بدون پاک‌کردن دیتابیس دوباره اجرا کنید.',
+        ];
+    }
+
+    @mkdir($serviceRoot . '/storage', 0755, true);
+    file_put_contents($serviceRoot . '/storage/.htaccess', "Require all denied\n");
+    file_put_contents($serviceRoot . '/storage/index.html', '');
+
+    if (file_put_contents($installedLock, 'installed_at=' . date('c') . "\n", LOCK_EX) === false) {
+        return ['قفل نصب ساخته نشد؛ دسترسی نوشتن پوشه storage را بررسی کنید.'];
+    }
+
+    /* ---- Self-lock (best effort) ---- */
+    $selfLock = __FILE__ . '.locked';
+    $selfLocked = @rename(__FILE__, $selfLock);
+
+    render_success_page(count($applied), $selfLocked);
+    exit(0);
+}
+
+function export_config(array $values): string
+{
+    $lines = ["["];
+
+    foreach ($values as $key => $value) {
+        $lines[] = '    ' . var_export((string) $key, true) . ' => ' . var_export((string) $value, true) . ',';
+    }
+    $lines[] = ']';
+
+    return implode("\n", $lines);
+}
+
+function csrf_token(): string
+{
+    if (empty($_SESSION['install_csrf'])) {
+        $_SESSION['install_csrf'] = bin2hex(random_bytes(32));
+    }
+
+    return $_SESSION['install_csrf'];
+}
+
+function render_head(string $title): string
+{
+    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8">'
+        . '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        . '<meta name="robots" content="noindex, nofollow">'
+        . '<title>' . $title . '</title><style>'
+        . 'body{font-family:Tahoma,Vazirmatn,sans-serif;background:#f4f6f9;color:#1f2937;margin:0;padding:32px 16px;}'
+        . '.card{max-width:720px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,.08);padding:28px 32px;}'
+        . 'h1{font-size:20px;margin:0 0 4px;}h2{font-size:16px;margin:24px 0 8px;color:#0f766e;}'
+        . '.sub{color:#6b7280;font-size:13px;margin-bottom:20px;}'
+        . 'table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;}'
+        . 'td,th{padding:8px 10px;border-bottom:1px solid #eef2f7;text-align:right;}'
+        . '.ok{color:#047857;font-weight:bold;}.bad{color:#b91c1c;font-weight:bold;}'
+        . '.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}'
+        . 'label{display:block;font-size:12px;margin-bottom:4px;color:#374151;}'
+        . 'input,select{width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;background:#fff;}'
+        . '.error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px;}'
+        . '.hint{background:#f0fdfa;border:1px solid #99f6e4;color:#115e59;border-radius:8px;padding:10px 14px;font-size:12.5px;margin-top:14px;line-height:1.9;}'
+        . 'button{margin-top:22px;background:#0f766e;color:#fff;border:0;border-radius:8px;padding:12px 26px;font-size:14px;font-weight:bold;cursor:pointer;}'
+        . 'button:hover{background:#115e59;}.step{display:inline-block;background:#0f766e;color:#fff;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:12px;margin-left:6px;}'
+        . '@media(max-width:600px){.grid{grid-template-columns:1fr;}}'
+        . '</style></head><body><div class="card">';
+}
+
+function render_page(array $errors, array $values, array $checks): void
+{
+    echo render_head('نصب سرویس احراز هویت — پلتفرم بابانوئل');
+    echo '<h1>نصب سرویس احراز هویت (Identity)</h1><div class="sub">پلتفرم بابانوئل — نصب بدون داکر، بدون خط فرمان</div>';
+
+    if ($errors !== []) {
+        echo '<div class="error"><strong>خطا:</strong><ul style="margin:6px 0 0 18px;padding:0;">';
+        foreach ($errors as $error) {
+            echo '<li>' . htmlspecialchars($error, ENT_QUOTES, 'UTF-8') . '</li>';
+        }
+        echo '</ul></div>';
+    }
+
+    $allOk = true;
+    echo '<h2><span class="step">۱</span>پیش‌نیازها</h2><table><tr><th>مورد</th><th>وضعیت</th></tr>';
+    foreach ($checks as $check) {
+        $allOk = $allOk && $check['ok'];
+        echo '<tr><td>' . htmlspecialchars($check['label'], ENT_QUOTES, 'UTF-8') . '</td><td class="' . ($check['ok'] ? 'ok' : 'bad') . '">' . ($check['ok'] ? '✔ ' : '✘ ') . htmlspecialchars((string) $check['detail'], ENT_QUOTES, 'UTF-8') . '</td></tr>';
+    }
+    echo '</table>';
+
+    echo '<form method="post" autocomplete="off">';
+    echo '<input type="hidden" name="csrf" value="' . htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8') . '">';
+
+    echo '<h2><span class="step">۲</span>پایگاه داده</h2><div class="grid">'
+        . field('db_host', 'میزبان (Host)', $values['db_host'], 'localhost')
+        . field('db_port', 'پورت', $values['db_port'], '3306')
+        . field('db_name', 'نام پایگاه داده', $values['db_name'], 'example_babanoell_auth')
+        . field('db_user', 'نام کاربری', $values['db_user'], 'example_auth')
+        . field('db_password', 'رمز عبور', '', '', 'password')
+        . '</div>';
+
+    echo '<h2><span class="step">۳</span>مدیر سامانه</h2><div class="grid">'
+        . field('admin_mobile', 'موبایل مدیر (شناسه ورود)', $values['admin_mobile'], '09121234567')
+        . field('admin_email', 'ایمیل (اختیاری)', $values['admin_email'], 'admin@example.com')
+        . field('admin_display_name', 'نام نمایشی', $values['admin_display_name'], 'مدیر سامانه')
+        . field('admin_password', 'رمز عبور مدیر', '', '', 'password')
+        . field('admin_password_confirm', 'تکرار رمز عبور', '', '', 'password')
+        . '</div>';
+
+    echo '<button type="submit"' . ($allOk ? '' : ' disabled') . '>نصب و پیکربندی</button>';
+    if (!$allOk) {
+        echo '<p class="sub" style="margin-top:10px;">تا رفع موارد قرمز، دکمه نصب غیرفعال است.</p>';
+    }
+
+    echo '<div class="hint">پس از نصب، قابلیت ورود به‌صورت پیش‌فرض <strong>غیرفعال</strong> می‌ماند (امنیت اول).
+برای فعال‌سازی بعداً فایل <code>config/local.env.php</code> را ویرایش کنید:
+<code>AUTH_LOGIN_ENABLED=true</code>، <code>AUTH_SESSION_ISSUING_ENABLED=true</code>، <code>AUTH_REFRESH_ENABLED=true</code>.</div>';
+
+    echo '</form></div></body></html>';
+}
+
+function field(string $name, string $label, string $value, string $placeholder, string $type = 'text'): string
+{
+    return '<div><label for="' . $name . '">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>'
+        . '<input id="' . $name . '" type="' . $type . '" name="' . $name . '" value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '" placeholder="' . htmlspecialchars($placeholder, ENT_QUOTES, 'UTF-8') . '"></div>';
+}
+
+function render_success_page(int $migrationCount, bool $selfLocked): void
+{
+    echo render_head('نصب با موفقیت انجام شد');
+    echo '<h1>✔ نصب با موفقیت انجام شد</h1><div class="sub">سرویس احراز هویت پلتفرم بابانوئل آماده است</div>';
+    echo '<table>'
+        . '<tr><td>مایگریشن‌های اعمال‌شده</td><td class="ok">' . $migrationCount . ' مورد</td></tr>'
+        . '<tr><td>کاربر مدیر</td><td>ایجاد شد (وضعیت: فعال)</td></tr>'
+        . '<tr><td>نقش سیستمی</td><td>super_admin</td></tr>'
+        . '<tr><td>پیکربندی</td><td>config/local.env.php (محرمانه — به آن دست نزنید مگر فعال‌سازی ورود)</td></tr>'
+        . '<tr><td>قابلیت ورود</td><td class="bad">غیرفعال (امنیت اول — راهنمای فعال‌سازی پایین)</td></tr>'
+        . '</table>';
+
+    if (!$selfLocked) {
+        echo '<div class="error"><strong>اقدام امنیتی ضروری:</strong> فایل <code>public/install.php</code> قادر به قفل‌کردن خود نبود.
+همین حالا آن را از هاست حذف کنید یا دسترسی آن را صفر کنید.</div>';
+    } else {
+        echo '<div class="hint">نصب‌کننده به‌صورت خودکار قفل شد (install.php → install.php.locked).</div>';
+    }
+
+    echo '<div class="hint"><strong>گام‌های بعدی:</strong><br>'
+        . '۱. بررسی سلامت سرویس: آدرس <code>https://YOUR-DOMAIN/health</code> را باز کنید — باید JSON برگرداند.<br>'
+        . '۲. فعال‌سازی ورود (وقتی آماده بودید): در <code>config/local.env.php</code> سه کلید
+        <code>AUTH_LOGIN_ENABLED</code>، <code>AUTH_SESSION_ISSUING_ENABLED</code> و <code>AUTH_REFRESH_ENABLED</code> را <code>true</code> کنید.<br>'
+        . '۳. تست ورود: <code>POST /api/v1/auth/login</code> با موبایل و رمز مدیر.<br>'
+        . '۴. فایل‌های <code>config/</code> و <code>storage/</code> هرگز نباید عمومی باشند — فایل htaccess. ریشه سرویس این را اعمال می‌کند.</div>';
+    echo '</div></body></html>';
+}
+
+function render_installed_page(): void
+{
+    echo render_head('نصب قبلاً انجام شده');
+    echo '<h1>این سرویس قبلاً نصب شده است</h1>'
+        . '<div class="sub">برای امنیت، نصب‌کننده قفل شده و اجرا نمی‌شود.</div>'
+        . '<div class="hint">اگر مطمئن نیستید نصب معتبر است، وضعیت سلامت را از <code>/health</code> بررسی کنید.
+برای نصب مجدد (محیط توسعه)، فایل‌های <code>storage/installed.lock</code> و <code>config/local.env.php</code> را حذف و سپس install.php را بازیابی کنید.</div>';
+    echo '</div></body></html>';
+}

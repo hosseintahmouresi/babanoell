@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+$root=dirname(__DIR__);
+require_once $root.'/src/Support/PersianDate.php';
+require_once $root.'/src/Domain/FinanceRules.php';
+require_once $root.'/src/Service/BankCycleService.php';
+use Babanoell\Finance\Service\BankCycleService;
+$checks=0;$test=static function(string $name,callable $f)use(&$checks):void{try{$f();$checks++;echo "PASS $name\n";}catch(Throwable $e){fwrite(STDERR,"FAIL $name: ".$e->getMessage()."\n");exit(1);}};
+$expect=static function(bool $condition):void{if(!$condition)throw new RuntimeException('assertion failed');};
+$mustThrow=static function(callable $fn):void{try{$fn();}catch(InvalidArgumentException){return;}throw new RuntimeException('input accepted unexpectedly');};
+$test('Gregorian strict date',static function()use($expect){$expect(BankCycleService::parseDate('2026-10-23')==='2026-10-23');});
+$test('Jalali date conversion',static function()use($expect){$expect(BankCycleService::parseDate('۱۴۰۵/۰۷/۰۱')==='2026-09-23');});
+$test('reject invalid dates',static function()use($mustThrow){$mustThrow(fn()=>BankCycleService::parseDate('1405/13/20'));$mustThrow(fn()=>BankCycleService::parseDate('2026-02-30'));});
+$test('accept maximum 100 unique ULIDs',static function()use($expect){$list=[];for($i=0;$i<100;$i++)$list[]=str_pad(dechex($i),26,'0',STR_PAD_LEFT);$expect(count(BankCycleService::normalizeRequestIds($list))===100);});
+$test('reject empty duplicate and oversized batches',static function()use($mustThrow){$mustThrow(fn()=>BankCycleService::normalizeRequestIds([]));$ids=array_fill(0,101,str_repeat('a',26));$mustThrow(fn()=>BankCycleService::normalizeRequestIds($ids));$mustThrow(fn()=>BankCycleService::normalizeRequestIds([str_repeat('a',26),str_repeat('a',26)]));});
+$test('exact fixed-point loan amounts',static function()use($expect){$expect(BankCycleService::amountCents('12000000.50')===1200000050);$expect(BankCycleService::amountCents('1')===100);});
+$test('reject negative, exponent, overflow and floating precision',static function()use($mustThrow){foreach(['-1','0','1e6','1.999','100000000000000.00']as$v)$mustThrow(fn()=>BankCycleService::amountCents($v));});
+$finance=file_get_contents($root.'/src/Repository/BankCycleRepository.php');$loan=file_get_contents(dirname($root).'/loans/src/Repository/PdoLoanRepository.php');
+$test('cycle membership unique and separate from merchants',static function()use($expect,$root){$s=file_get_contents($root.'/database/migrations/202610230006_bank_settlement_cycles.php');$expect(str_contains($s,'UNIQUE KEY uq_bank_cycle_request(request_id)'));$expect(!str_contains($s,'CREATE TABLE IF NOT EXISTS settlement_cycle_items ('));});
+$test('transaction rolls back on partial failure',static function()use($expect,$finance){$expect(str_contains($finance,'beginTransaction()')&&str_contains($finance,'rollBack()'));$expect(str_contains($finance,'FOR UPDATE'));});
+$test('Finance and Loans protect immutable bank cycles',static function()use($expect,$finance,$loan){$expect(str_contains($finance,"bank_settlement_cycle_items"));$expect(str_contains($loan,"bank_settlement_cycle_id"));});
+$test('projection requires signed Finance service',static function()use($expect){$s=file_get_contents(dirname(__DIR__,2).'/loans/public/index.php');$expect(str_contains($s,"callerService()!=='finance'"));$expect(str_contains($s,'/bank-cycle-project'));});
+$test('no merchant settlement update during bank cycle creation',static function()use($expect,$finance){$a=substr($finance,strpos($finance,'public function create('));$b=substr($a,0,strpos($a,'public function recordProjectionAttempt'));$expect(!str_contains($b,'merchant_settlements'));});
+echo "Bank cycle checks: $checks passed\n";

@@ -1,0 +1,26 @@
+# Front controller for the identity (auth) service public directory.
+
+RewriteEngine On
+
+# Preserve Bearer credentials on Apache/FastCGI/cPanel.
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Existing files (assets) are served directly.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Everything else goes through the application.
+RewriteRule ^ index.php [L]
+
+# Never serve the locked installer archive, if present.
+<FilesMatch "^install\.php\.locked$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "no-referrer"
+</IfModule>

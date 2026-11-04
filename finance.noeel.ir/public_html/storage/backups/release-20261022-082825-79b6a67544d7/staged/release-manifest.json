@@ -1,0 +1,276 @@
+{
+  "service": "finance",
+  "version": "1.1.0",
+  "phase": "batch-4-integrations-bridge",
+  "created_at_utc": "2026-10-21T20:00:00Z",
+  "api_version": "v1",
+  "database_migration_required": true,
+  "excluded_runtime": [
+    "config/local.env.php",
+    "storage/",
+    "public/install.php",
+    "public/install.php.locked"
+  ],
+  "files": {
+    ".htaccess": {
+      "bytes": 712,
+      "sha256": "de83b8c0efb4c22f4981881707e655a2cbdd242255d9af08b94a9df9b0601a48"
+    },
+    "BATCH-1-2026-10-21.md": {
+      "bytes": 5798,
+      "sha256": "6063f09dac6fe376c7d3c4e5a384cd83cc9284c4e3c4b1a638646ce4c518617a"
+    },
+    "PHASE-7.md": {
+      "bytes": 436,
+      "sha256": "a0c6e5239b29313542bb2dc18bebd570014eb778a1b90a39b9d8ac376b849fa6"
+    },
+    "README.md": {
+      "bytes": 275,
+      "sha256": "eadd6eae2ed330c6f2c86bd9b606d5ffa37c712f4d6f53a02e0478a1fa95045c"
+    },
+    "RELEASE-1.0.0.md": {
+      "bytes": 78,
+      "sha256": "e26dd5e11280b55e4417590a1b586ed1153656718bce7446c2dc2989dd1f1087"
+    },
+    "RELEASE-1.1.0.md": {
+      "bytes": 437,
+      "sha256": "ec3ee0e1d6cc70bc140a6439caeafebe1aa47a0c24e1ebe53a10f02f255f909e"
+    },
+    "bootstrap.php": {
+      "bytes": 1472,
+      "sha256": "bba767610fc8611d1d6a4a62ed538310fba9c4a05f64cd4688ca3783f1d7f52d"
+    },
+    "config/env.php": {
+      "bytes": 488,
+      "sha256": "f985cc163df0a67d5c80a02c2aec30c70d243770651ca6cc4190958e7d78c3ac"
+    },
+    "config/local.env.example.php": {
+      "bytes": 670,
+      "sha256": "49c7335f9bb82a15020594e921aa46492f0827b5f622f203651a8cb0561858ff"
+    },
+    "config/version.php": {
+      "bytes": 122,
+      "sha256": "c61860f458adae79a403b226afd24f58c6dac06ad9e86175ea9643e5fc583aa9"
+    },
+    "database/migrations/202610010001_create_finance_core.php": {
+      "bytes": 4018,
+      "sha256": "8d4cc815951821ab65b14770c44d806ed27bc41db7b96e8c440f52ce7dde5525"
+    },
+    "database/migrations/202610010002_create_cycles_receipts.php": {
+      "bytes": 2545,
+      "sha256": "4707df8eda6c6aec766b8c2071a0e781923cad51e3b504960da7539bc0b08a4b"
+    },
+    "database/migrations/202610010003_create_reconciliation_audit.php": {
+      "bytes": 2226,
+      "sha256": "19a7f62c90d34fdbdeba161406dbfa7b3dc6f571465721c03be8920e39190bca"
+    },
+    "database/migrations/202610210004_greenpay_otp_intents.php": {
+      "bytes": 950,
+      "sha256": "ca84a539e13fe4f1735c71b517a1dcfa63c173d6bfc195fa0f8d7179f7f11c7b"
+    },
+    "public/.htaccess": {
+      "bytes": 377,
+      "sha256": "5c9a4eacc5bd535c6d066e0d130f82d3f508b2eb13d49f72ee9d1f102da6031a"
+    },
+    "public/assets/OFL.txt": {
+      "bytes": 4391,
+      "sha256": "17e355067c8284f47743a1ee3b1ef7ff684ff0601eda357f9353b10b3016ab31"
+    },
+    "public/assets/babanoell-ui.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/babanoell-ui.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/assets/brand-logo.png": {
+      "bytes": 27303,
+      "sha256": "9930573d696809165d4cf66ce96b0ce750579397b6abe82d3ea81b00fcbfb69b"
+    },
+    "public/assets/panel.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/panel.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/assets/platform.css": {
+      "bytes": 76240,
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545"
+    },
+    "public/assets/platform.js": {
+      "bytes": 16976,
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc"
+    },
+    "public/index.php": {
+      "bytes": 12585,
+      "sha256": "ac327251f25bc9851a1de9026ec5c91ccaa0e7fb2dca4619c4606d671fb8f606"
+    },
+    "public/ui-asset.php": {
+      "bytes": 1365,
+      "sha256": "78dd1ef5d7dabfbcc935777fc4ddf9cbee9d2bb096b45ffcb3f8a440bc02bf50"
+    },
+    "public/update.php": {
+      "bytes": 12398,
+      "sha256": "a20658abbf398064a0693102aa00ce269680dacc41a4a7b19aaf03b437d442f5"
+    },
+    "router.php": {
+      "bytes": 311,
+      "sha256": "82aa2fa351580b3e0b66aea9e536483e2969578dda24b333329f6e99029c9004"
+    },
+    "src/App/Config.php": {
+      "bytes": 3881,
+      "sha256": "40cdb4a61a4082aae746ce79b476ac82798f726a3228d414a7dda3a60306f72f"
+    },
+    "src/Database/Connection.php": {
+      "bytes": 599,
+      "sha256": "278c8d2de2413b1142b493aa4252d26116e380a9718bc4f334cbf245c0e581d9"
+    },
+    "src/Database/DatabaseIsolationGuard.php": {
+      "bytes": 1213,
+      "sha256": "00c3a75737a99f78b139f531aa38cfd807ffaef5132175b12429b3beb818a694"
+    },
+    "src/Database/Migration.php": {
+      "bytes": 197,
+      "sha256": "8df07afbee373cb35a256bc7481559a2480819a1bd13f713e6cadbed819d194c"
+    },
+    "src/Database/MigrationRunner.php": {
+      "bytes": 2398,
+      "sha256": "67bf0424e0836024077b3200d25fd17c347aabe2709660f664588f5c9981cb1c"
+    },
+    "src/Domain/FinanceRules.php": {
+      "bytes": 1832,
+      "sha256": "e5f05c80a6145bdb41db519be0fe6cfc8c86c2c6459927ac303afa5c94fb068d"
+    },
+    "src/Http/DocumentsClient.php": {
+      "bytes": 958,
+      "sha256": "dda211bf453750471b169457a57a6db63853e2331930d3ce1b7a5db235169d09"
+    },
+    "src/Http/HttpResponse.php": {
+      "bytes": 511,
+      "sha256": "9aa64cc1946199314220a1292397c22f9ded7aa4c64862d73d8138c642dc1b3b"
+    },
+    "src/Http/HttpTransportInterface.php": {
+      "bytes": 272,
+      "sha256": "87a79c8facc89af8b5bae66d4a35b1c48266deacf4a54a118a9d2af5d0e87914"
+    },
+    "src/Http/IdempotencyKey.php": {
+      "bytes": 446,
+      "sha256": "28c7ed5650473299e78c3a780848535026072f9d0145b67c2a80c2fd46893139"
+    },
+    "src/Http/IdentityClient.php": {
+      "bytes": 2857,
+      "sha256": "9ab26a461b79ddd8159be30998a61e3e6e0a0612d52251285cf2a1de766428b6"
+    },
+    "src/Http/IntegrationsClient.php": {
+      "bytes": 3022,
+      "sha256": "a59a963ca94a54ea09594cac4d13fe6d7f6d2ebb10500d84e9581de4e4ba2f58"
+    },
+    "src/Http/JsonResponse.php": {
+      "bytes": 1130,
+      "sha256": "7f5dac9c66ec9a46f56ca3e76a38ec3b669a52915bf8b2e7a231ab7c5698eeab"
+    },
+    "src/Http/LoansClient.php": {
+      "bytes": 1906,
+      "sha256": "ce63f750b34d7035a235292b9f35af8131ffe774d98052b2c71bd77ded0987ce"
+    },
+    "src/Http/NativeHttpTransport.php": {
+      "bytes": 2279,
+      "sha256": "259d6ed8da84a92eb2e6c052c97a8c9c4bbdcac3e25c6638bcbe151104aef6f2"
+    },
+    "src/Http/Pagination.php": {
+      "bytes": 551,
+      "sha256": "5459f120a50ba436f026ecf9814aae469c91f860e432209903235bb0969b6c64"
+    },
+    "src/Http/PartnersClient.php": {
+      "bytes": 956,
+      "sha256": "41ffa069a7afb1b7bcf69395f07482ae15aa4bf9e94409aa1c5a13109ee0f66b"
+    },
+    "src/Http/Request.php": {
+      "bytes": 2261,
+      "sha256": "e414d065c33f5c11f9aee9a8f79269fbec8da20ade55bf82420774b4e5d34e26"
+    },
+    "src/Platform/PayloadAuth.php": {
+      "bytes": 555,
+      "sha256": "9f99de2b320ff4c31cacda7bdfa87309b68d031f4721429ac416a7f2ab21a9ac"
+    },
+    "src/Platform/ProxyContext.php": {
+      "bytes": 3094,
+      "sha256": "60c4706389681923d411c8d453f6635a882901f8901a6a03c1f9560e76d4df37"
+    },
+    "src/Platform/ReleaseTransaction.php": {
+      "bytes": 10997,
+      "sha256": "7eb727551ea0905226229802535beb4f95d3f1620d13c9dbecbede1d4615a511"
+    },
+    "src/Platform/RequestContext.php": {
+      "bytes": 2194,
+      "sha256": "8bf60cf3c290af256fca928166e00300c2abe3ba5f61dc7169191f3e17939143"
+    },
+    "src/Platform/ServiceAuth.php": {
+      "bytes": 4100,
+      "sha256": "8defc25a0898477a8fbc264f2625b9e585cf02ceb163b920c080989427f2fc27"
+    },
+    "src/Platform/ServiceBoundary.php": {
+      "bytes": 878,
+      "sha256": "a1ff11635fe8defba59c73c664e6843897db5b832e955555af9ea65928ea0b81"
+    },
+    "src/Platform/Ui.php": {
+      "bytes": 4231,
+      "sha256": "47980c22ec98f0840a10fe87f91d4598dd2a6e44fef0570b0ab3eb6617167749"
+    },
+    "src/Repository/PdoFinanceRepository.php": {
+      "bytes": 25001,
+      "sha256": "f8af0767a325c72b936261be8e6460f8c7faa38b907f363a585e36c3d8859fc4"
+    },
+    "src/Security/Authenticator.php": {
+      "bytes": 1902,
+      "sha256": "930ac79be8eb95888eec7e7540dab506f8169c4c05dd2d69afc6586835edd620"
+    },
+    "src/Security/Principal.php": {
+      "bytes": 1732,
+      "sha256": "d82624c12f0e515414e963f86d6736b3ecc63015730b0b001316cec768c52986"
+    },
+    "src/Service/FinanceService.php": {
+      "bytes": 9288,
+      "sha256": "85a1d8a5b651fa0bc7592898b78d32089105d393b90d13f78aab64bffd425d21"
+    },
+    "src/Service/GreenpayBridgeService.php": {
+      "bytes": 3311,
+      "sha256": "11e790f58a7f364128c0043809506967b704630618ebd43b05854d37524ae26e"
+    },
+    "src/Support/Json.php": {
+      "bytes": 601,
+      "sha256": "f42e24610471d0d5442706dfd60d5729b2bf943b3d5d24d40c9afd7c25732a04"
+    },
+    "src/Support/PersianDate.php": {
+      "bytes": 3583,
+      "sha256": "04582a5613b49d3d505d51dcded8de81ef5baa28a8d8fdb8c44180e6a1484fe7"
+    },
+    "src/Support/PersianDateTime.php": {
+      "bytes": 4755,
+      "sha256": "2afe445c12ddf978b85de654828acd89f6e258598929f38e4d7baf384be48ee9"
+    },
+    "src/Support/RandomId.php": {
+      "bytes": 248,
+      "sha256": "63dfd441ea8db25923c03576dce07b851a23bc03d5f873651a655a833ed0689c"
+    },
+    "src/Update/UpdateTool.php": {
+      "bytes": 6269,
+      "sha256": "b833facc7931c1c4c1a1cf914d41ce45d5ff39bfe8e766ad544dc0f672659a1f"
+    },
+    "src/View/Renderer.php": {
+      "bytes": 1907,
+      "sha256": "00bb7f51cd81449a7d2630ccee04727c698ac220bfe9c48dd8b435b98dd0180f"
+    },
+    "tests/integrations-bridge-policy.php": {
+      "bytes": 1399,
+      "sha256": "85a0877252de27802a6b15d7bac5b82fced4b9b466586644cc9364d24e9cdefc"
+    },
+    "tests/run.php": {
+      "bytes": 8003,
+      "sha256": "3c518cd72472a12a328097ee65b227c50f030005c3a648215e8fe7809bc5c6ae"
+    }
+  }
+}

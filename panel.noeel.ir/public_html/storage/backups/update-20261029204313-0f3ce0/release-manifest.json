@@ -1,0 +1,294 @@
+{
+    "service": "panel",
+    "version": "2.23.0",
+    "phase": "merchant-to-grant-readiness",
+    "api_version": "v1",
+    "database_migration_required": false,
+    "created_at_utc": "2026-10-29T19:36:52+00:00",
+    "excluded_runtime": [
+        "config/local.env.php",
+        "storage/",
+        "vendor/",
+        "public/install.php",
+        "public/install.php.locked"
+    ],
+    "migration_policy": "Run pending included migrations; this release introduces no new migration.",
+    "files": {
+        ".htaccess": {
+            "sha256": "d0c829bd1baaf9097e39c75f1c43f3ed6c4e734a227c405afe47f0e6d4c9f8a5",
+            "bytes": 636
+        },
+        "README.md": {
+            "sha256": "f49f2a366d46a3db5e4e9a57eac9c44259a79e680c7d89107cae10d6add0b33e",
+            "bytes": 3640
+        },
+        "RELEASE-2.23.0.md": {
+            "sha256": "de98789e8f13120b78b42927f32e3bd1ecabc6ee0ebd76345870f8ef2e523611",
+            "bytes": 1118
+        },
+        "bootstrap.php": {
+            "sha256": "5442dbed9972e977fa9dd8647161af9bc822d4658813f812707de4938733b904",
+            "bytes": 2451
+        },
+        "config/env.php": {
+            "sha256": "8bb1d55dcedc1c1d2b2d9d3e3181714e098873c4e1f1585866cc3a80b981657f",
+            "bytes": 1790
+        },
+        "config/local.env.example.php": {
+            "sha256": "3255e8bd624d57666d65d97733bec0c678124456a300eeadf1d44022dd6505d5",
+            "bytes": 898
+        },
+        "config/version.php": {
+            "sha256": "bcda6f32b6dcb091b4a1a706b0b3e0d1ee2b0d44a59874b82262b693e5d79e28",
+            "bytes": 134
+        },
+        "public/.htaccess": {
+            "sha256": "2576f98c04f0ad5dd6258889708d1371349d998ff1dd3349ae968a7a47393f75",
+            "bytes": 430
+        },
+        "public/assets/OFL.txt": {
+            "sha256": "17e355067c8284f47743a1ee3b1ef7ff684ff0601eda357f9353b10b3016ab31",
+            "bytes": 4391
+        },
+        "public/assets/babanoell-ui.css": {
+            "sha256": "8f2545b14abe11175f4ca6e58c9938021c8c65eca12f216d869ce1d0d2c72c4a",
+            "bytes": 81937
+        },
+        "public/assets/babanoell-ui.js": {
+            "sha256": "8cd07681123cb18fb50d9db43be9be37d5a28bee6aa0a2272b4afc357bb63628",
+            "bytes": 14815
+        },
+        "public/assets/brand-logo.png": {
+            "sha256": "9930573d696809165d4cf66ce96b0ce750579397b6abe82d3ea81b00fcbfb69b",
+            "bytes": 27303
+        },
+        "public/assets/panel.css": {
+            "sha256": "32ee5d2743600cfe4c87d3e897d9261188aef322b3042bf8ccb3b68e9b05fd45",
+            "bytes": 84979
+        },
+        "public/assets/panel.js": {
+            "sha256": "0b0a19efe409093bd5b3af6f05fd3fcf592ab020b3110b6d93aa722a9c763d67",
+            "bytes": 15507
+        },
+        "public/assets/platform.css": {
+            "sha256": "3ba08f068de045cebcfa2486434801c6ab5705f58d6e6eb8ebd9d25534414ee9",
+            "bytes": 84980
+        },
+        "public/assets/platform.js": {
+            "sha256": "fc91ed493a812d5329e94c9b2c0b158a6f04c62749ffc79cbda924393c70d818",
+            "bytes": 20486
+        },
+        "public/assets/vazirmatn-font.json": {
+            "sha256": "06c991556fecf62fb27d00c25077f4b75e4e5f170c6b0ee90bd0a2c2a1c6d237",
+            "bytes": 150608
+        },
+        "public/index.php": {
+            "sha256": "601be5fb8ea9aecc605dc44c3fc4f7b8c0813fb7496fbee401306e42041ba4ce",
+            "bytes": 26713
+        },
+        "public/ui-asset.php": {
+            "sha256": "78dd1ef5d7dabfbcc935777fc4ddf9cbee9d2bb096b45ffcb3f8a440bc02bf50",
+            "bytes": 1365
+        },
+        "public/update.php": {
+            "sha256": "93c028a26c541752d34960e5a284d2918d4c8e604a32e9590be6b68bcde4bc96",
+            "bytes": 8962
+        },
+        "router.php": {
+            "sha256": "fa65b76dbc3133f41bea7ec71d7ce91af061b96a9670b7376bf90558d1123391",
+            "bytes": 953
+        },
+        "src/Acceptor/AcceptorModule.php": {
+            "sha256": "efb66e1ec6ce37317c7bba9ffe110e26e2d29a88bdbb5280f8a1b16f259554e4",
+            "bytes": 87389
+        },
+        "src/App/Config.php": {
+            "sha256": "c959f940dde5f59bbcf033f49562a11f15ad51c164caef5c035af7bada824c40",
+            "bytes": 3876
+        },
+        "src/Applicant/ApplicantModule.php": {
+            "sha256": "9ef76e56f151ab04cd1b15641c92b3971a3e83b7130edf56224d289b6ca9f5ba",
+            "bytes": 86879
+        },
+        "src/Auth/PanelSession.php": {
+            "sha256": "cbc7156726ba28d2b65cd948a107660220c9d9a1205e9f2cbf2b293ee7fa107a",
+            "bytes": 9737
+        },
+        "src/Bank/BankModule.php": {
+            "sha256": "e8af451d0c54aa4893ad15e1315c8c0910da2b25e43e2a72a317629eb96a2248",
+            "bytes": 32311
+        },
+        "src/Bank/SpreadsheetSafeCell.php": {
+            "sha256": "ba6657d718b6d4087d1ec74281298140d1cd00e6867563820fe2309c0a33b3fe",
+            "bytes": 489
+        },
+        "src/Contracts/ContractsModule.php": {
+            "sha256": "054b07e3d0e878562e198efb4b5ea8aac93cc83001e8d35eb38a183a631baa3b",
+            "bytes": 16965
+        },
+        "src/Documents/DocumentsModule.php": {
+            "sha256": "524d28f13ef16836d38407438fa7e5246aecbf9f319eb5d7539907300debb15b",
+            "bytes": 37227
+        },
+        "src/Finance/BankCyclesModule.php": {
+            "sha256": "51b1d8030a49d6e736e543ec9c562e6babf15b02660521053654f24daff5dbe4",
+            "bytes": 12250
+        },
+        "src/Finance/FinanceModule.php": {
+            "sha256": "0603031b142e3b1eada78ddef75345479da83af01e5efba5ce10dbeef55c3105",
+            "bytes": 44332
+        },
+        "src/Http/DocumentsClient.php": {
+            "sha256": "c3e3de958d42fd7a204527852d69f26886bc02a04dd87bd141878c2f06cb4a9c",
+            "bytes": 3549
+        },
+        "src/Http/FinanceClient.php": {
+            "sha256": "a2fa9b5cff85bf900d4702016592ca717b197fff372d670e900854472fd014c8",
+            "bytes": 1629
+        },
+        "src/Http/HttpResponse.php": {
+            "sha256": "b737d8cd0f145e48b15d13c99fc03b0dc6feb2df72c85cd5f73e7998d007bcfd",
+            "bytes": 599
+        },
+        "src/Http/HttpTransportInterface.php": {
+            "sha256": "a0d6e4c462d70d1e07cdca7770b0d2b8084f56bae0baaefe75d963acfdaa3568",
+            "bytes": 289
+        },
+        "src/Http/IdentityClient.php": {
+            "sha256": "3f7d2fa9ffe82aaf3287c14dd28ebf7a13eca8d842c7a2f045ed1df57871108d",
+            "bytes": 2694
+        },
+        "src/Http/IdentityGatewayInterface.php": {
+            "sha256": "f3c4cdf6b13fe10391b9265a02a32599cd219b46208997041fb0b8ed6e4488fb",
+            "bytes": 603
+        },
+        "src/Http/IntegrationsClient.php": {
+            "sha256": "0c8a8fa6e18d8d906bc6c9be9d949c998db52fae316b3e5a0397a9e4cdb01f61",
+            "bytes": 546
+        },
+        "src/Http/LoansClient.php": {
+            "sha256": "4cf9b22b705838aae05aa29147b78fe242a5189f5dbdf9e8a9396f277dfcbf5d",
+            "bytes": 1920
+        },
+        "src/Http/NativeHttpTransport.php": {
+            "sha256": "fb291812f4735986d97b9b7c29c6e4e408cd8349ae69e0d314958639530b56e4",
+            "bytes": 3203
+        },
+        "src/Http/PartnersClient.php": {
+            "sha256": "dc0fb318c5c74035de968ae6f0275a75857dfdebc544b1bce17443942277a157",
+            "bytes": 1881
+        },
+        "src/Loans/CaseJourney.php": {
+            "sha256": "141e9f9d5612fb6529cd3b92f071fb3d9ce5730297df2887246c11494c1ae488",
+            "bytes": 4693
+        },
+        "src/Loans/DashboardSummary.php": {
+            "sha256": "6f529f75deebe94092bf5e5e17e096185e81011199614f16854a52ca8e8061ae",
+            "bytes": 5609
+        },
+        "src/Loans/LoansModule.php": {
+            "sha256": "daf2b4c0a6df64d1e6fca9909ce3b774a5c57627641cd453d18fda52323323d0",
+            "bytes": 163564
+        },
+        "src/Partners/PartnersModule.php": {
+            "sha256": "65428928e1d8c4a74f63eec4abb7549b3a95b935d6387dd7b63e10294662010f",
+            "bytes": 40400
+        },
+        "src/Platform/CoreCompatibility.php": {
+            "sha256": "8ecb7e8e852b88d79007697f45da54511b767b4c1a8a534db7bc211f6754fb5c",
+            "bytes": 373
+        },
+        "src/Platform/ProxyContext.php": {
+            "sha256": "bd39fe5bd52114045610751955b981cfab270d8b660bd21fb152ff48180b0657",
+            "bytes": 3086
+        },
+        "src/Platform/ReleaseTransaction.php": {
+            "sha256": "06465632a13f134445dd05811f424f6f5d72a7aaf1bbe958b02dd7585a2b2831",
+            "bytes": 10993
+        },
+        "src/Platform/RequestContext.php": {
+            "sha256": "1654e2a3e1cd778099503ebff085edb2a91b7550168b89767bb0d5e2abfeefac",
+            "bytes": 2183
+        },
+        "src/Platform/ServiceAuth.php": {
+            "sha256": "2dcbf5eeedaf1469ec724b2571e5d9777b1824a528d53a90368a644558d6e763",
+            "bytes": 4095
+        },
+        "src/Platform/ServiceBoundary.php": {
+            "sha256": "01d1da5ca74784fe46b708aadb266e50ed092cd49e89d5924db1f072567c67eb",
+            "bytes": 907
+        },
+        "src/Platform/Ui.php": {
+            "sha256": "a6c79d7fef26205764f92947f88534204b15eb69eeef68f12fc65173510d56d8",
+            "bytes": 4227
+        },
+        "src/Reports/HistoricalReportsModule.php": {
+            "sha256": "4b5a3ed1b60c8c92592066542353be9299c7ae5234f948c732f414ca93352f7d",
+            "bytes": 11458
+        },
+        "src/Reports/ReportsModule.php": {
+            "sha256": "67a00e572afa0ef62add19a2e347b01ce2cb1c5258e68482847eb517edad3640",
+            "bytes": 25289
+        },
+        "src/Security/Csrf.php": {
+            "sha256": "7b483fabc6b56a1e2157466a6908ae5ef6b3b2ffb5df04a6a5f2d55fa4b57a77",
+            "bytes": 595
+        },
+        "src/Security/TokenVault.php": {
+            "sha256": "9fafa84d6f1492c79b358408ab34556ee1c4d99f0eadb263057be9c7ffdc1a93",
+            "bytes": 1929
+        },
+        "src/Sso/Broker.php": {
+            "sha256": "583e01da7b73bb749fde4d4a7ea1048c8ef03e0bc00e56e5b6fafaaf53119525",
+            "bytes": 5409
+        },
+        "src/Sso/GrantStore.php": {
+            "sha256": "816f0957bfdb5cc3949c65079ddd367f49fa85ce51340c7c50153e0a3cc0217b",
+            "bytes": 10687
+        },
+        "src/Sso/UserBroker.php": {
+            "sha256": "26a4cb4a437d6328001b30f2ca7a984ed0ad9bebb193f8e6855db1808aebfa23",
+            "bytes": 6096
+        },
+        "src/Sso/UserRolePolicy.php": {
+            "sha256": "432008886b2fd52a027e159a043a624142c8622244caf50501540090a49cf4b6",
+            "bytes": 2047
+        },
+        "src/Support/FormOperation.php": {
+            "sha256": "c5ca0bdb32f0ae1ac052b101933bbc88f31df5c9c6dee5cf1ff37b6c6af8ca6c",
+            "bytes": 1884
+        },
+        "src/Support/IniSize.php": {
+            "sha256": "845f6230132c71f7f27405db54ccc7f08854fdbb287563ec34224c277c78b91e",
+            "bytes": 1502
+        },
+        "src/Support/PersianDateTime.php": {
+            "sha256": "87e5bf979541b0ceec9d43ce501702f5951945b7e1c95f54a3175ba79e319496",
+            "bytes": 4753
+        },
+        "src/System/HealthAudit.php": {
+            "sha256": "d27868cdbb224565d5b6d76f99a33bd22e135f1bb9fabfb08a403b857d6c98e7",
+            "bytes": 3810
+        },
+        "src/System/OperationalPreferences.php": {
+            "sha256": "00c67f58d51499677e376c2a9955a4cf95255950066f134570dc57df5ce53357",
+            "bytes": 4907
+        },
+        "src/Update/PackageIntegrity.php": {
+            "sha256": "dfde896254443b9f638873ce37d30a96894aa248f3d45557f004d2f694a6f5dd",
+            "bytes": 6914
+        },
+        "src/Update/UpdateTool.php": {
+            "sha256": "4f2d807db4da761c3225f9ed22d2842fc988ebaf16284a2aa5eae08051710e10",
+            "bytes": 6364
+        },
+        "src/Users/UsersModule.php": {
+            "sha256": "db170fa21d0c8ecdbd1a8deecf39d85d41015078d6930a2ffd6763d1f03b3270",
+            "bytes": 22537
+        },
+        "src/View/Renderer.php": {
+            "sha256": "56cd058a18a8cd82e2bd4f505bb27244f85d9bbaa6af165f77e47e1f130dd490",
+            "bytes": 13016
+        }
+    }
+}

@@ -1,0 +1,589 @@
+{
+    "files": [
+        {
+            "target": ".htaccess",
+            "existed": true
+        },
+        {
+            "target": "BATCH-1-2026-10-21.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-2-QA.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-2.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-3.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-4.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-5.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-6.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-7.md",
+            "existed": true
+        },
+        {
+            "target": "README.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.0.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.0.1.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.0.2.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.1.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.1.1.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.5.2.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.6.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.7.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.8.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.9.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.0.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.0.1.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.0.2.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.1.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.2.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.3.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.3.1.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.4.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.5.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.6.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.7.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.8.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-2.9.0.md",
+            "existed": false
+        },
+        {
+            "target": "bin/workflow-sla.php",
+            "existed": true
+        },
+        {
+            "target": "bootstrap.php",
+            "existed": true
+        },
+        {
+            "target": "config/env.php",
+            "existed": true
+        },
+        {
+            "target": "config/local.env.example.php",
+            "existed": true
+        },
+        {
+            "target": "config/version.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260001_create_installment_plans_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260002_create_installment_plan_versions_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260003_create_calculation_runs_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260004_create_loan_requests_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260005_create_loan_request_status_history_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260006_create_loan_request_events_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260007_create_installment_schedule_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608260008_create_guarantors_table.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202608270001_add_request_access_indexes.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609220001_enforce_installment_plan_statuses.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260001_extend_core_entities.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260002_create_merchant_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260003_create_workflow_communication_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260004_create_review_grant_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260005_create_finance_settlement_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260006_create_cooperation_notification_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260007_add_access_scope_fields.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609260008_complete_case_workflow.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609290001_complete_plan_engine.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609290002_core_completion.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609290003_backfill_legacy_acceptor_merchants.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609300001_workflow_task_sla_engine.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609300002_bank_credit_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202610210001_create_profile_corrections.php",
+            "existed": true
+        },
+        {
+            "target": "public/.htaccess",
+            "existed": true
+        },
+        {
+            "target": "public/assets/OFL.txt",
+            "existed": true
+        },
+        {
+            "target": "public/assets/babanoell-ui.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/babanoell-ui.js",
+            "existed": true
+        },
+        {
+            "target": "public/assets/brand-logo.png",
+            "existed": true
+        },
+        {
+            "target": "public/assets/panel.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/panel.js",
+            "existed": true
+        },
+        {
+            "target": "public/assets/platform.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/platform.js",
+            "existed": true
+        },
+        {
+            "target": "public/index.php",
+            "existed": true
+        },
+        {
+            "target": "public/ui-asset.php",
+            "existed": true
+        },
+        {
+            "target": "public/update.php",
+            "existed": true
+        },
+        {
+            "target": "router.php",
+            "existed": true
+        },
+        {
+            "target": "src/App/Config.php",
+            "existed": true
+        },
+        {
+            "target": "src/Calculation/CalculatorRegistry.php",
+            "existed": true
+        },
+        {
+            "target": "src/Calculation/LeasingLoanCalculator.php",
+            "existed": true
+        },
+        {
+            "target": "src/Calculation/LegacyMath.php",
+            "existed": true
+        },
+        {
+            "target": "src/Calculation/MarketLoanCalculator.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/Connection.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/DatabaseIsolationGuard.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/Migration.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/MigrationRunner.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/BankCreditCatalog.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/CoreCatalog.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/CoreSchema.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/CreditValidationPolicy.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/InputValidator.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/LegacyStatusMap.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/PlanRules.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/PlanSettingsValidator.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/RequestOrigin.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/RequiredDocumentCatalog.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/ScheduleGenerator.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/StatusMachine.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/WorkflowCatalog.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/DocumentsClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/FinanceClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/HttpResponse.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/HttpTransportInterface.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/IdempotencyKey.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/IdentityClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/IntegrationsClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/JsonResponse.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/NativeHttpTransport.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/Pagination.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/PartnersClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/Request.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/PayloadAuth.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ProxyContext.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ReleaseTransaction.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/RequestContext.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ServiceAuth.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ServiceBoundary.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/Ui.php",
+            "existed": true
+        },
+        {
+            "target": "src/Repository/PdoLoanRepository.php",
+            "existed": true
+        },
+        {
+            "target": "src/Security/AccessDeniedException.php",
+            "existed": true
+        },
+        {
+            "target": "src/Security/Authenticator.php",
+            "existed": true
+        },
+        {
+            "target": "src/Security/Principal.php",
+            "existed": true
+        },
+        {
+            "target": "src/Security/RequestAccessPolicy.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/BankCreditService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/CalculationService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/CaseWorkflowService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/CreditValidationService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/PlanService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/ProviderVerificationService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/RequestService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/WorkflowService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/Json.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/PersianDate.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/PersianDateTime.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/RandomId.php",
+            "existed": true
+        },
+        {
+            "target": "src/Update/UpdateTool.php",
+            "existed": true
+        },
+        {
+            "target": "src/View/Renderer.php",
+            "existed": true
+        },
+        {
+            "target": "src/Workflow/TaskCatalog.php",
+            "existed": true
+        },
+        {
+            "target": "src/Workflow/TaskRepository.php",
+            "existed": true
+        },
+        {
+            "target": "src/Workflow/TaskService.php",
+            "existed": true
+        },
+        {
+            "target": "tests/access-control-contract.php",
+            "existed": true
+        },
+        {
+            "target": "tests/batch5-bank-workflow.php",
+            "existed": false
+        },
+        {
+            "target": "tests/fixtures/golden-calculations.json",
+            "existed": true
+        },
+        {
+            "target": "tests/integrations-bridge-policy.php",
+            "existed": true
+        },
+        {
+            "target": "tests/run.php",
+            "existed": true
+        },
+        {
+            "target": "tests/validate-migrations.php",
+            "existed": true
+        },
+        {
+            "target": "tests/validate-service-isolation.php",
+            "existed": true
+        },
+        {
+            "target": "release-manifest.json",
+            "existed": true
+        }
+    ],
+    "installed_lock": "{\n    \"service\": \"loans\",\n    \"version\": \"2.8.0\",\n    \"environment\": \"staging\",\n    \"installed_at\": \"2026-08-26T20:37:31+00:00\",\n    \"ui\": \"2.6.0\",\n    \"updated_at\": \"2026-10-22T08:28:28+00:00\"\n}\n"
+}

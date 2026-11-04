@@ -1,0 +1,637 @@
+{
+  "service": "loans",
+  "version": "2.13.0",
+  "phase": "phase11c-internal-note-attachments",
+  "created_at_utc": "2026-10-23T16:20:37+00:00",
+  "api_version": "v1",
+  "database_migration_required": true,
+  "excluded_runtime": [
+    "config/local.env.php",
+    "storage/",
+    "vendor/",
+    "public/install.php",
+    "public/install.php.locked"
+  ],
+  "files": {
+    ".htaccess": {
+      "sha256": "de83b8c0efb4c22f4981881707e655a2cbdd242255d9af08b94a9df9b0601a48",
+      "bytes": 712
+    },
+    "BATCH-1-2026-10-21.md": {
+      "sha256": "6063f09dac6fe376c7d3c4e5a384cd83cc9284c4e3c4b1a638646ce4c518617a",
+      "bytes": 5798
+    },
+    "PHASE-2-QA.md": {
+      "sha256": "a156710393d84cb5506e27f2f5d93a67fbea9ca5243ec01a3d3a14f565d1064d",
+      "bytes": 1898
+    },
+    "PHASE-2.md": {
+      "sha256": "6b36b2ef7a951e68c761d7522737f1256760a6a3e4ae7d2fe196dfe837ee0610",
+      "bytes": 402
+    },
+    "PHASE-3.md": {
+      "sha256": "141621f967987538c29b7e99983d7a5b21e019470f86d60a085755b335917772",
+      "bytes": 292
+    },
+    "PHASE-4.md": {
+      "sha256": "67422b59e7f4b1b7d8450c6c3ce6962838845b8a78c81d1051f60e960e2b255a",
+      "bytes": 146
+    },
+    "PHASE-5.md": {
+      "sha256": "02938bb4da800df09fc1913628ec4f5b1c75843c8481a1e0adca1a867fa24f9d",
+      "bytes": 480
+    },
+    "PHASE-6.md": {
+      "sha256": "4ac75e2fcd64c2ee945b7782fe3482d0d7be12a66006e1bbf0087c438758f301",
+      "bytes": 429
+    },
+    "PHASE-7.md": {
+      "sha256": "e0f567bafce29c2c93e339e51f576275052e775c14844e6c364ae112ea4a3355",
+      "bytes": 452
+    },
+    "README.md": {
+      "sha256": "436e4aa965d97b4649784e03f7c35706d6598eb13a3122b8e6d01a35d50a1590",
+      "bytes": 692
+    },
+    "RELEASE-1.0.0.md": {
+      "sha256": "7566664f67f316de0adc79f77783631ddd01e2ebe40514898af46c069b072d44",
+      "bytes": 327
+    },
+    "RELEASE-1.0.1.md": {
+      "sha256": "a5af05882ee2656d796463d772dcbbfb0be4446130c8b5bde5e9f10760503f72",
+      "bytes": 1532
+    },
+    "RELEASE-1.0.2.md": {
+      "sha256": "c53af85d1605ee8697240406d7b31e34d0305fa35a69f2d8ba21dc2cb9feb6c7",
+      "bytes": 1719
+    },
+    "RELEASE-1.1.0.md": {
+      "sha256": "0b7867493ad3bb680a663b27d7133616b2a303dac1faadb7dcbc621dbe610043",
+      "bytes": 488
+    },
+    "RELEASE-1.1.1.md": {
+      "sha256": "6fe5d39dbf43cd10f8e94cadd1ab9c256ee2521bd3f882449cf7282de9879b4b",
+      "bytes": 525
+    },
+    "RELEASE-1.5.2.md": {
+      "sha256": "81a778ab029eea88583513ac829b0e958574539d12d818bcbf8b8f353fa5495c",
+      "bytes": 627
+    },
+    "RELEASE-1.6.0.md": {
+      "sha256": "eee7533fdd6a87106dbdd43028a6087d0f6b1be8a8834b367be2d8548feb51bb",
+      "bytes": 258
+    },
+    "RELEASE-1.7.0.md": {
+      "sha256": "49471df0b6676646b483b20d0f514797a1d04a22aa6d29d789b1da7e31d9bae7",
+      "bytes": 626
+    },
+    "RELEASE-1.8.0.md": {
+      "sha256": "40c2db9f7025fb7ffd303dcf7b8e709367143ef628e09af2341901361f59cad4",
+      "bytes": 173
+    },
+    "RELEASE-1.9.0.md": {
+      "sha256": "ffc15ab69b4f72af7b7eec6503794cad7836ca683482c097d9a3913d1950599c",
+      "bytes": 330
+    },
+    "RELEASE-2.0.0.md": {
+      "sha256": "d40abb9a4b8e0438fdc516633438912b7ea3401f4f33de551cc2f23098ed3b3d",
+      "bytes": 914
+    },
+    "RELEASE-2.0.1.md": {
+      "sha256": "8299b138b65d9b40e2fb5b04a498a46e9818c5965684f10717a49daf975498dd",
+      "bytes": 250
+    },
+    "RELEASE-2.0.2.md": {
+      "sha256": "3afc5db18dc3368cb670030432524dc4f5159e9990d03de6f2a9600eff04d2ae",
+      "bytes": 359
+    },
+    "RELEASE-2.1.0.md": {
+      "sha256": "2455c947a7641fa8854992fc21e2dee32ec0b2c0898bbcbf427c0bb135b8f428",
+      "bytes": 854
+    },
+    "RELEASE-2.10.0.md": {
+      "sha256": "92fcc7da86076d773287980d8b1b1f7c32a89fb0396f19839ca52fef557764ad",
+      "bytes": 278
+    },
+    "RELEASE-2.11.0.md": {
+      "sha256": "2efc93070f568d1cfb6aacb5173019622ddc3184278c4b34bbf5691b7ac7f158",
+      "bytes": 623
+    },
+    "RELEASE-2.12.0.md": {
+      "sha256": "ce8adc32f40e0ca60675e9bfe3e18102bfabc5a8ec9a01dd6fabe9c580a785e9",
+      "bytes": 156
+    },
+    "RELEASE-2.2.0.md": {
+      "sha256": "0745c24f0ff10d6403d34c1be12bd60648cca6252d723be0a33a46123796a4bc",
+      "bytes": 834
+    },
+    "RELEASE-2.3.0.md": {
+      "sha256": "c0e7ec6bb02571721d2c6ce8035a87a47389e5cf83a36ea7542bbb55f33c79e2",
+      "bytes": 540
+    },
+    "RELEASE-2.3.1.md": {
+      "sha256": "514ce19ddd66bcd39da3bc2b1ef76aab6e5729a6ed2e18ddbda6be1ea9bd6179",
+      "bytes": 467
+    },
+    "RELEASE-2.4.0.md": {
+      "sha256": "e566f9631d5bcfb49bd1c54079630719a1b4f316176051c2c28e7d33cc2642a5",
+      "bytes": 304
+    },
+    "RELEASE-2.5.0.md": {
+      "sha256": "549b5d5edb8545b82afe26c11c0dead8e14526fb9b49238b7914b776f0b014c5",
+      "bytes": 192
+    },
+    "RELEASE-2.6.0.md": {
+      "sha256": "326c367c7a5c2ab00fc5e82f7c27743125d1cb8379c9e22a4cfa38a5b8fbfae1",
+      "bytes": 862
+    },
+    "RELEASE-2.7.0.md": {
+      "sha256": "adefefeacad1e13aaff78bb91b560617d3786da79a55e5d4ac46f43231852470",
+      "bytes": 204
+    },
+    "RELEASE-2.8.0.md": {
+      "sha256": "3a95e676dd2b67306b80e1b817393086465709062eaf3aee4bcb9a072836b2cd",
+      "bytes": 666
+    },
+    "RELEASE-2.9.0.md": {
+      "sha256": "94679f968c4fca367158cc6ae29184c6f88712f8af232a1ab32cc2da931af73d",
+      "bytes": 809
+    },
+    "bin/workflow-sla.php": {
+      "sha256": "36b8fe4e62741a8abd5ce8a1f4d6dd364fc20a745a6961ada0eb37ca1e2f5114",
+      "bytes": 633
+    },
+    "bootstrap.php": {
+      "sha256": "423f35d7ef2c16cfe308bc393388bf48029431fc29a0e26f65d04e73efae4f93",
+      "bytes": 1485
+    },
+    "config/env.php": {
+      "sha256": "4ebda16cf838016937e10fa746d4f0b8ccda6c6b22b84875abb459d3c74eccb7",
+      "bytes": 840
+    },
+    "config/local.env.example.php": {
+      "sha256": "1283b1eb2906f0e8652fa558c7f7ca92284cde10ff03abd0ae26c18258dfa05c",
+      "bytes": 888
+    },
+    "config/version.php": {
+      "sha256": "a40f27a423ed1f1f3345f13261fb9c7f9b935a58ec021190475068df02ae72d8",
+      "bytes": 140
+    },
+    "database/migrations/202608260001_create_installment_plans_table.php": {
+      "sha256": "6da0e16db7ec935a630f6e50cd2f1a05aa5521293a03a83ce6ad589f87f2120f",
+      "bytes": 1084
+    },
+    "database/migrations/202608260002_create_installment_plan_versions_table.php": {
+      "sha256": "1789fdca58b3ef3411ecabfe51b920d70d828f781cb5baa5258f47155c3ced21",
+      "bytes": 1173
+    },
+    "database/migrations/202608260003_create_calculation_runs_table.php": {
+      "sha256": "41cb471a0fe30da3917853529783d3f235f76c844d79e9e41bf8fc688326f85a",
+      "bytes": 1403
+    },
+    "database/migrations/202608260004_create_loan_requests_table.php": {
+      "sha256": "61d1360aa42abd780a46eeede593eff57054abc8d66d70be326d2fe54f5fb98a",
+      "bytes": 3386
+    },
+    "database/migrations/202608260005_create_loan_request_status_history_table.php": {
+      "sha256": "e75560b8799035615eaf075be2ce172f418d77b13dfb3e393cfbc3aa0c73b2d2",
+      "bytes": 1047
+    },
+    "database/migrations/202608260006_create_loan_request_events_table.php": {
+      "sha256": "116298b470a6ccc6a063cbf60c64128f2e05cc90aaf17b9d67dcc32cfb6f2208",
+      "bytes": 1030
+    },
+    "database/migrations/202608260007_create_installment_schedule_table.php": {
+      "sha256": "f54bec46c82bb2d8763b36707bcf59c1d135bb790c52c399d18d3864db50ee13",
+      "bytes": 1179
+    },
+    "database/migrations/202608260008_create_guarantors_table.php": {
+      "sha256": "dcd6911cdbc561a9135ba799392ae6ce69fd75a7517e88e584774282cc3d616a",
+      "bytes": 943
+    },
+    "database/migrations/202608270001_add_request_access_indexes.php": {
+      "sha256": "a4752cfd9de96017e55a5a6f2f27ac0129afd570a408d9d7b15f8db5b706364f",
+      "bytes": 965
+    },
+    "database/migrations/202609220001_enforce_installment_plan_statuses.php": {
+      "sha256": "971bbd45b707771d449d7e8e76e431ff123b618adf589c8acba54c86d87befaf",
+      "bytes": 1053
+    },
+    "database/migrations/202609260001_extend_core_entities.php": {
+      "sha256": "936dd44b37cd9f0a360883f7754dfd52544c689e23ae7a053ff915e234dbfd9e",
+      "bytes": 5258
+    },
+    "database/migrations/202609260002_create_merchant_core.php": {
+      "sha256": "71c81ca155617ea6c6dddf78a7cbdc7c62a8fc295a383989c8cbc8ef68a4286c",
+      "bytes": 2905
+    },
+    "database/migrations/202609260003_create_workflow_communication_core.php": {
+      "sha256": "c995e99e75916effaf1daaa17e4e5cb9fa97865ca2d4b7b02674e15c4bbf1e27",
+      "bytes": 3211
+    },
+    "database/migrations/202609260004_create_review_grant_core.php": {
+      "sha256": "0136c9e85018d2206b31b3727a776d2e682720e8b7b3a1b92efe0900ddeb6ec4",
+      "bytes": 2832
+    },
+    "database/migrations/202609260005_create_finance_settlement_core.php": {
+      "sha256": "8aea9ab0172c1a7285481a3a22955ea4937f20a1bcdb6affe8ec4092febfb998",
+      "bytes": 3891
+    },
+    "database/migrations/202609260006_create_cooperation_notification_core.php": {
+      "sha256": "ad8a7ca38a92f9e4ae28bd63405a5bf986996e3a837c47d2905c48d301726305",
+      "bytes": 3813
+    },
+    "database/migrations/202609260007_add_access_scope_fields.php": {
+      "sha256": "be6ddd780bc1b87d298e77970eb17a9e30e71675c05d3a2ff445750f1b0feadf",
+      "bytes": 1279
+    },
+    "database/migrations/202609260008_complete_case_workflow.php": {
+      "sha256": "99555b03c3125dbf14240860b753de774922fb687c0b3b0464c9cfd7b5603fc6",
+      "bytes": 5420
+    },
+    "database/migrations/202609290001_complete_plan_engine.php": {
+      "sha256": "a315d9754a5adc30ac4bb20cfab0dba05fa8c9079f9d8b7dbcdf82919b7bdefd",
+      "bytes": 3285
+    },
+    "database/migrations/202609290002_core_completion.php": {
+      "sha256": "c3b781d5315e3ea4af9c82d5853058752167a2a9054fe0af01c174c017037497",
+      "bytes": 4517
+    },
+    "database/migrations/202609290003_backfill_legacy_acceptor_merchants.php": {
+      "sha256": "601817693ef6560ca3ca92dde14a93689c9f9455c48b4d898920e501f4be6b26",
+      "bytes": 4180
+    },
+    "database/migrations/202609300001_workflow_task_sla_engine.php": {
+      "sha256": "50d435f13282cfcb5caf9e974f90124a42eb8bcd46328be86fa989a78d46e598",
+      "bytes": 10244
+    },
+    "database/migrations/202609300002_bank_credit_core.php": {
+      "sha256": "f5d94af26beb804b5ae88f3f74bb767cf45b039fd0e0f6f9021b3c2c1ee67946",
+      "bytes": 5339
+    },
+    "database/migrations/202610210001_create_profile_corrections.php": {
+      "sha256": "bd71aaa9fddf299cc48e871289b665ff33cb170bf9133f5288833387160464bc",
+      "bytes": 1000
+    },
+    "database/migrations/202610230002_bank_cycle_projection.php": {
+      "sha256": "a3359d7923c71830a2b4bdf8cd2f74786340dad9fdb1b50e1805ec2872330db5",
+      "bytes": 571
+    },
+    "database/migrations/202610230003_internal_note_attachments.php": {
+      "sha256": "af831677f2b85e4e887ea0ddd49660ec94861162c148df248974d3ec7db481b0",
+      "bytes": 1886
+    },
+    "public/.htaccess": {
+      "sha256": "5c9a4eacc5bd535c6d066e0d130f82d3f508b2eb13d49f72ee9d1f102da6031a",
+      "bytes": 377
+    },
+    "public/assets/OFL.txt": {
+      "sha256": "17e355067c8284f47743a1ee3b1ef7ff684ff0601eda357f9353b10b3016ab31",
+      "bytes": 4391
+    },
+    "public/assets/babanoell-ui.css": {
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545",
+      "bytes": 76240
+    },
+    "public/assets/babanoell-ui.js": {
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc",
+      "bytes": 16976
+    },
+    "public/assets/brand-logo.png": {
+      "sha256": "9930573d696809165d4cf66ce96b0ce750579397b6abe82d3ea81b00fcbfb69b",
+      "bytes": 27303
+    },
+    "public/assets/panel.css": {
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545",
+      "bytes": 76240
+    },
+    "public/assets/panel.js": {
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc",
+      "bytes": 16976
+    },
+    "public/assets/platform.css": {
+      "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545",
+      "bytes": 76240
+    },
+    "public/assets/platform.js": {
+      "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc",
+      "bytes": 16976
+    },
+    "public/index.php": {
+      "sha256": "b4554f265c716e5fd1ad85bd0bfc7ae025086121a2683bcf88a4fc4f59fde9d2",
+      "bytes": 56404
+    },
+    "public/ui-asset.php": {
+      "sha256": "78dd1ef5d7dabfbcc935777fc4ddf9cbee9d2bb096b45ffcb3f8a440bc02bf50",
+      "bytes": 1365
+    },
+    "public/update.php": {
+      "sha256": "ddf8850d6cf6b7c8039e63214648aecbe325b00434cfb3e2f110787507d2ee5a",
+      "bytes": 12383
+    },
+    "router.php": {
+      "sha256": "82aa2fa351580b3e0b66aea9e536483e2969578dda24b333329f6e99029c9004",
+      "bytes": 311
+    },
+    "src/App/Config.php": {
+      "sha256": "ed00b652f28c7ee8e1aa0a891c93b3a2931393256cee7bfc22b2a9e354008a10",
+      "bytes": 4629
+    },
+    "src/Calculation/CalculatorRegistry.php": {
+      "sha256": "48832e5cc03fa1252ad68f33e624a0953857ea4d1869c7bfa14fb4667895507c",
+      "bytes": 807
+    },
+    "src/Calculation/LeasingLoanCalculator.php": {
+      "sha256": "b013d5650493bb5814423f5a8632f4375f393f4d23ee9e23f3f76ad3766ce6a1",
+      "bytes": 3011
+    },
+    "src/Calculation/LegacyMath.php": {
+      "sha256": "eacbe79fb1d6725abc5aaa39a431d4a4ef75bceb23db26411117e2d1a2ec74b9",
+      "bytes": 505
+    },
+    "src/Calculation/MarketLoanCalculator.php": {
+      "sha256": "02a3b429ac976136d418d3821aedd1eed4fb15dfc30f925e55923bc8866f4592",
+      "bytes": 1725
+    },
+    "src/Database/Connection.php": {
+      "sha256": "c29b4e9615572dafae9ac616927d759c8f6150fb8cc272b42c0e4683f4ae8119",
+      "bytes": 595
+    },
+    "src/Database/DatabaseIsolationGuard.php": {
+      "sha256": "f0a12feaed02cfad4f1780d3e5a0240c2522cf05023a4f54fdd0217378d5efc8",
+      "bytes": 1936
+    },
+    "src/Database/Migration.php": {
+      "sha256": "1c8b8891c7e4a893ed74ef7fe79c9d504afbe3f4e8365ed8ce14472e0e7147bb",
+      "bytes": 195
+    },
+    "src/Database/MigrationRunner.php": {
+      "sha256": "578e8671d7221f35097bec5d7a104a8910336d5b24a0c5a643730e35c6e1e2e7",
+      "bytes": 4772
+    },
+    "src/Domain/BankCreditCatalog.php": {
+      "sha256": "51035b4dfaddcde907544a523757f7f19cf4170774addb94335353d59ffb661b",
+      "bytes": 1284
+    },
+    "src/Domain/CoreCatalog.php": {
+      "sha256": "323fe4dea58ef3f7c569ccc995bd9a44e30056152c78abd88d8474b4fe2ad0f5",
+      "bytes": 2190
+    },
+    "src/Domain/CoreSchema.php": {
+      "sha256": "5e9f653b921e8ae84d6d030bec6fdd47725b6b3b55ee995b4a45c04ce2ea91e1",
+      "bytes": 1458
+    },
+    "src/Domain/CreditValidationPolicy.php": {
+      "sha256": "9cfacb5b868b3dbf87794ef1aca101d9b2f247729a8467f1dc6e8989dbc7e90e",
+      "bytes": 4244
+    },
+    "src/Domain/InputValidator.php": {
+      "sha256": "8876b1b3ab145b9667114deb29ae236fbf5c6fae2ce65c2d86f157d1a3f64ce6",
+      "bytes": 16217
+    },
+    "src/Domain/LegacyStatusMap.php": {
+      "sha256": "6f683b615e74ab6a202cd99fe264e597edc6c6d63167cd9ac3eb9cc52fee3635",
+      "bytes": 2508
+    },
+    "src/Domain/NoteAttachmentPolicy.php": {
+      "sha256": "a7e295bcf1fe27b37ad4dc536bfbdfdc29db7749413a33ff0d2297909eca337c",
+      "bytes": 1559
+    },
+    "src/Domain/PlanRules.php": {
+      "sha256": "92631a19862ac4c000e0e18255902832cf9aa3f64d52853c0deeca7d3b16501d",
+      "bytes": 9549
+    },
+    "src/Domain/PlanSettingsValidator.php": {
+      "sha256": "45ca229b2498dc71122f45b365a01ca8d62575a15403d3417c6321c331eacabf",
+      "bytes": 5776
+    },
+    "src/Domain/RequestOrigin.php": {
+      "sha256": "a9db47aff1e97cebf4d963ee68c9696b8e254ee0a66af9881e3c3f004e908518",
+      "bytes": 883
+    },
+    "src/Domain/RequiredDocumentCatalog.php": {
+      "sha256": "8ed18807410e9058d944bf189502df54d5189d9e02592cc8aeca715c84373b89",
+      "bytes": 3326
+    },
+    "src/Domain/ScheduleGenerator.php": {
+      "sha256": "74907d6148b63445df6fb22fc5f4d8105497fbb4e7a22510222bc30ee9b2f65e",
+      "bytes": 1441
+    },
+    "src/Domain/StatusMachine.php": {
+      "sha256": "274a76e4fdf02567c91e72596c6296861d380dbba3b83376825b2db9e25e8c9f",
+      "bytes": 2664
+    },
+    "src/Domain/WorkflowCatalog.php": {
+      "sha256": "3d377158d8be77d4dc3ad3264716da002814cc4141115cb99368379119ff21d0",
+      "bytes": 2011
+    },
+    "src/Http/DocumentsClient.php": {
+      "sha256": "32bd4759b80c6c68dcf8ce87a2dc415b82848b8d5048bae2f4ec5b58de6bd6c7",
+      "bytes": 1452
+    },
+    "src/Http/FinanceClient.php": {
+      "sha256": "20747cd57fae52a4178d78cbeac8248fee81288f5ab98fe9974e899ed3a37ee3",
+      "bytes": 1890
+    },
+    "src/Http/HttpResponse.php": {
+      "sha256": "618b869a293ad4cd3dd415ff0c9f8bb175447e881100a2a928fe578348fe7d6b",
+      "bytes": 509
+    },
+    "src/Http/HttpTransportInterface.php": {
+      "sha256": "933dc84289dd7b05c4ac2d1c8f6520eb64f0109faaebeca068e10cc8d288889f",
+      "bytes": 270
+    },
+    "src/Http/IdempotencyKey.php": {
+      "sha256": "d3a93998e804c1e6a8fcf8a7d8c53e480ec3c4e153ab8276b0a1307871be29a1",
+      "bytes": 444
+    },
+    "src/Http/IdentityClient.php": {
+      "sha256": "1f3df64e33253676c8487fddc66bb1b7023fa556d38b52aa85a912025e6a0eed",
+      "bytes": 1981
+    },
+    "src/Http/IntegrationsClient.php": {
+      "sha256": "7c0e5dd2c94588cb94c2c6eb75d5daa7ece4f97a2574c973cc4659e00f2a15e4",
+      "bytes": 3006
+    },
+    "src/Http/JsonResponse.php": {
+      "sha256": "d0c4643e7816372dc188c78afcae0f0296aed0674dda64b9fc5179f982139a8a",
+      "bytes": 1124
+    },
+    "src/Http/NativeHttpTransport.php": {
+      "sha256": "6f39eb67e40e1e132289e10e3a13dcafd8aa09fa869fb4a5748a8f59efae5509",
+      "bytes": 2277
+    },
+    "src/Http/Pagination.php": {
+      "sha256": "64f6c04672d11d2b5ed5e2823fc6a38d0757eff35d2336065da7d23cd626753c",
+      "bytes": 549
+    },
+    "src/Http/PartnersClient.php": {
+      "sha256": "ebed4dd492cfc2e8d5b5325b3271cbebe89db23f673a2fcbc4305719e54f9bac",
+      "bytes": 935
+    },
+    "src/Http/Request.php": {
+      "sha256": "a89879935dadb87a7203e40616e7c3b69ad9a3fa71a774d92b6d5b22b3a032e2",
+      "bytes": 2259
+    },
+    "src/Platform/PayloadAuth.php": {
+      "sha256": "9e19a4d3d12e4fe435b4de3fe769cef5b54bb1a528bb4694f380e295d222f20e",
+      "bytes": 553
+    },
+    "src/Platform/ProxyContext.php": {
+      "sha256": "6493c4db00b6018fbcd1f393c8b2f09d6757d31dae07e440c067f8ad19b90eba",
+      "bytes": 3086
+    },
+    "src/Platform/ReleaseTransaction.php": {
+      "sha256": "ec8c084fda12adf7703fc6e67566d0303ff14ec903f950195013c2af9e125b78",
+      "bytes": 10993
+    },
+    "src/Platform/RequestContext.php": {
+      "sha256": "5dc3cd9efa6b291b16333f1dacade9399d5355d355d4dc609e5e904ccb5c86ac",
+      "bytes": 2183
+    },
+    "src/Platform/ServiceAuth.php": {
+      "sha256": "09016f4ba5ec0a5cf9b701f8665d20eea367e011dfbc23ba35f75fb2f6152828",
+      "bytes": 4095
+    },
+    "src/Platform/ServiceBoundary.php": {
+      "sha256": "25d266346210daee3dba2bb80e7341aae82e1db45c703d5cdb5c68264e1bbbfa",
+      "bytes": 1804
+    },
+    "src/Platform/Ui.php": {
+      "sha256": "45b693669bd19508663d43a976a7a446df8934ef58436f8242fbbdf469a6257a",
+      "bytes": 4229
+    },
+    "src/Reports/DailyReport.php": {
+      "sha256": "f05395e5f072767e446642b8a8e7f521af1124e874b51d7ede69b27a69221fca",
+      "bytes": 2267
+    },
+    "src/Repository/PdoLoanRepository.php": {
+      "sha256": "4ad433a0fb24d4276e79660ac2eeb7253a415a9c2e932f4842b02ece069a33df",
+      "bytes": 103636
+    },
+    "src/Security/AccessDeniedException.php": {
+      "sha256": "9ab8e17f07415b7a36c31e6aa7883b53696a211e9374fb7bfbff7e6234aaedc0",
+      "bytes": 130
+    },
+    "src/Security/Authenticator.php": {
+      "sha256": "708f3c83614800da1154ae4bf7a1f85f42d9469626be371fa55be2cc1717f34d",
+      "bytes": 1896
+    },
+    "src/Security/Principal.php": {
+      "sha256": "95c67b0fb73c4def9a8a8a8fdee6b7a9ef5c22a7d834ad9c3ae1b0ddfa5b5c31",
+      "bytes": 1730
+    },
+    "src/Security/RequestAccessPolicy.php": {
+      "sha256": "39eb35b41bcc2aaa7bf0dc95bd46160fa40f78dfe5ff519a6ad9ed4fc4002222",
+      "bytes": 1907
+    },
+    "src/Service/BankCreditService.php": {
+      "sha256": "1a321336775a718b858a26f1cef04d84f41efcfed33feeeee9d4fa5fa526a9cd",
+      "bytes": 5652
+    },
+    "src/Service/CalculationService.php": {
+      "sha256": "ce6e143235b261c6d78cbc959f2e37a6ca3ada854d57d5f435d1e2a9e15f2d24",
+      "bytes": 2710
+    },
+    "src/Service/CaseWorkflowService.php": {
+      "sha256": "b489babf170a17d8b711013cc7bf08bcbce42e339f1d2832119301f42cc3aac2",
+      "bytes": 9773
+    },
+    "src/Service/CreditValidationService.php": {
+      "sha256": "fca063d997c06afe6dcf7702b4e0eadba46f78c20011ba4a3f1508392dfada3b",
+      "bytes": 3102
+    },
+    "src/Service/PlanService.php": {
+      "sha256": "c0ef16fbc53bd3138b3732cef2a7355e333f3539860934feb47233d8dc6d6de6",
+      "bytes": 5400
+    },
+    "src/Service/ProviderVerificationService.php": {
+      "sha256": "8a611319ae496cc9a242a96bb13eefa6dbc537c791026cdd6cb1ad259f840277",
+      "bytes": 5910
+    },
+    "src/Service/RequestService.php": {
+      "sha256": "ef04e5ee13545025ea5790d74d9538960b73867545d0788aca48bc7ba5040951",
+      "bytes": 5140
+    },
+    "src/Service/WorkflowService.php": {
+      "sha256": "3b1a64e257525bb4d27d1d7d4998bb089df51fccfc187e9a4b6a163d47c5b3ec",
+      "bytes": 3859
+    },
+    "src/Support/Json.php": {
+      "sha256": "b11349abe4530fb17bbb4ba7d6503d61443fa53d37586811d0406c28b29c4c37",
+      "bytes": 599
+    },
+    "src/Support/PersianDate.php": {
+      "sha256": "dd393e20c684e7b24509c2a8ee06cc0b7d42557cf722347455a0a9f5a9d8a01a",
+      "bytes": 3581
+    },
+    "src/Support/PersianDateTime.php": {
+      "sha256": "3afab4f9fe37ce7df0cc60c5192ba63457ed40338a5178628f4c3b4ac4e980ea",
+      "bytes": 4753
+    },
+    "src/Support/RandomId.php": {
+      "sha256": "16f46c7e826cfa27a70d1d5062597d296fcb8aba1421feeff4e4e583f19f7f48",
+      "bytes": 246
+    },
+    "src/Update/PackageIntegrity.php": {
+      "sha256": "1c1f0064998594f886e4a3836e85aa3adb4e58d7b0b472b4fc7dc20745c41525",
+      "bytes": 6914
+    },
+    "src/Update/UpdateTool.php": {
+      "sha256": "8b1a24f6b2835b0e686ad2be00c760fe0b99ea6cf1bcfb157a3a0bffa7845640",
+      "bytes": 6371
+    },
+    "src/View/Renderer.php": {
+      "sha256": "f608d93dc89ff474e73a2cca57ab806d90a56ee07eec73cc9491e4af348d4ed9",
+      "bytes": 2844
+    },
+    "src/Workflow/TaskCatalog.php": {
+      "sha256": "d17c77fd2c982dd59fb6847f92486e82b08c29a70cbf50ef04759c8109b58b3c",
+      "bytes": 3850
+    },
+    "src/Workflow/TaskRepository.php": {
+      "sha256": "5e3b7d97aa3f29f66e0aa7a67f0f6072460da98163588531b9d127e6ebf406ef",
+      "bytes": 22372
+    },
+    "src/Workflow/TaskService.php": {
+      "sha256": "244d67b334d786142d250abc452155877364db6ba9f3d37368f94a03ecee4eb7",
+      "bytes": 6853
+    },
+    "tests/access-control-contract.php": {
+      "sha256": "1edb5454886ceba4eab84d85df92039ec1f6894d2170b0caddfc25166b28f872",
+      "bytes": 646
+    },
+    "tests/batch5-bank-workflow.php": {
+      "sha256": "d773d6fd74355b599bf00e281134ab70d131f0593ab2461cd3a6d17dd3ccc691",
+      "bytes": 2246
+    },
+    "tests/fixtures/golden-calculations.json": {
+      "sha256": "8a642753cf2647154639f014ee08148477da324911880a13e7d5feb397b3c888",
+      "bytes": 6013
+    },
+    "tests/integrations-bridge-policy.php": {
+      "sha256": "88c4f18ad1ddd10fe74b22a1c280aa40a807f1f5f16a071e6ff7dc9625976e52",
+      "bytes": 1197
+    },
+    "tests/phase10c-history.php": {
+      "sha256": "50d91ffdd40209a7cdbf4f53fc8e28e564d04ea45c2c5b1628fa1eba96f5d255",
+      "bytes": 2161
+    },
+    "tests/phase11c-note-attachments.php": {
+      "sha256": "26c536013868a00e764785223e322c53d888b6c120b438419a8ddc001a8b39bc",
+      "bytes": 1891
+    },
+    "tests/run.php": {
+      "sha256": "4fbab65da89e72dbb9289976dafe12f9007fd8af491d82689da584d96f9f8f9d",
+      "bytes": 38497
+    },
+    "tests/validate-migrations.php": {
+      "sha256": "5f90e7699a6a34021a9a7da4f1b8a739ef58c01b750d827aedbb9762ed33a91e",
+      "bytes": 704
+    },
+    "tests/validate-service-isolation.php": {
+      "sha256": "bf9483db615bce1210e4ba7d6649756c3fd59ad4942bdbfd457f82cf4242a39c",
+      "bytes": 969
+    }
+  }
+}

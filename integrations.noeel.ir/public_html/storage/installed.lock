@@ -1,0 +1,10 @@
+{
+    "service": "integrations",
+    "version": "1.5.0",
+    "installed_at": "2026-10-21T12:25:18+00:00",
+    "migrations": [
+        "202610210001_integrations_core.sql"
+    ],
+    "ui": "1.3.0",
+    "updated_at": "2026-10-23T18:27:32+00:00"
+}

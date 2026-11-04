@@ -1,0 +1,35 @@
+# Identity (auth) service — Apache rules for shared hosting.
+#
+# Preferred deployment: point the (sub)domain document root at `public/`.
+# Fallback deployment: document root at the service root — these rules then
+# block sensitive directories and route all traffic through public/index.php.
+
+RewriteEngine On
+
+# Preserve Bearer credentials on Apache/FastCGI/cPanel.
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# 1) Block direct access to sensitive paths in any deployment layout.
+RewriteRule ^(config|storage|database|src|bin|tests|docs)(/|$) - [F,L]
+RewriteRule ^(\.env|composer\.(json|lock)|package\.json)$ - [F,L]
+
+# 2) Fallback routing: if the document root is the service root, forward
+#    each request path into public/ (real files like /install.php are served
+#    directly; everything else reaches the front controller via public/.htaccess).
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
+
+# 3) Hard deny for the locked installer, if present.
+<FilesMatch "^install\.php\.locked$">
+    Require all denied
+</FilesMatch>
+
+# Security headers.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "no-referrer"
+</IfModule>

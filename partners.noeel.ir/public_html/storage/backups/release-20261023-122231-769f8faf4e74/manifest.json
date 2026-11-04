@@ -1,0 +1,329 @@
+{
+    "files": [
+        {
+            "target": ".htaccess",
+            "existed": true
+        },
+        {
+            "target": "BATCH-1-2026-10-21.md",
+            "existed": true
+        },
+        {
+            "target": "BATCH-2-2026-10-21.md",
+            "existed": true
+        },
+        {
+            "target": "BATCH-3-2026-10-21.md",
+            "existed": true
+        },
+        {
+            "target": "HOTFIX.txt",
+            "existed": true
+        },
+        {
+            "target": "PHASE-3.md",
+            "existed": true
+        },
+        {
+            "target": "PHASE-4.md",
+            "existed": true
+        },
+        {
+            "target": "README.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.0.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.1.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.4.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.5.0.md",
+            "existed": true
+        },
+        {
+            "target": "RELEASE-1.6.0.md",
+            "existed": false
+        },
+        {
+            "target": "bootstrap.php",
+            "existed": true
+        },
+        {
+            "target": "config/env.php",
+            "existed": true
+        },
+        {
+            "target": "config/local.env.example.php",
+            "existed": true
+        },
+        {
+            "target": "config/version.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609290001_create_partner_merchant_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609290002_create_cooperation_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609290003_create_marketplace_and_audit_core.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202609300001_create_contract_engine.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202610210001_create_cooperation_corrections.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202610210002_contract_revisions.php",
+            "existed": true
+        },
+        {
+            "target": "database/migrations/202610220003_contract_pdf_state.php",
+            "existed": true
+        },
+        {
+            "target": "public/.htaccess",
+            "existed": true
+        },
+        {
+            "target": "public/assets/OFL.txt",
+            "existed": true
+        },
+        {
+            "target": "public/assets/babanoell-ui.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/babanoell-ui.js",
+            "existed": true
+        },
+        {
+            "target": "public/assets/brand-logo.png",
+            "existed": true
+        },
+        {
+            "target": "public/assets/panel.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/panel.js",
+            "existed": true
+        },
+        {
+            "target": "public/assets/platform.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/platform.js",
+            "existed": true
+        },
+        {
+            "target": "public/assets/vazirmatn-font.json",
+            "existed": true
+        },
+        {
+            "target": "public/index.php",
+            "existed": true
+        },
+        {
+            "target": "public/ui-asset.php",
+            "existed": true
+        },
+        {
+            "target": "public/update.php",
+            "existed": true
+        },
+        {
+            "target": "router.php",
+            "existed": true
+        },
+        {
+            "target": "src/App/Config.php",
+            "existed": true
+        },
+        {
+            "target": "src/Contract/ContractPrintView.php",
+            "existed": true
+        },
+        {
+            "target": "src/Contract/ContractRepository.php",
+            "existed": true
+        },
+        {
+            "target": "src/Contract/ContractRevisionService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Contract/ContractService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/Connection.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/DatabaseIsolationGuard.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/Migration.php",
+            "existed": true
+        },
+        {
+            "target": "src/Database/MigrationRunner.php",
+            "existed": true
+        },
+        {
+            "target": "src/Domain/PartnerRules.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/DocumentsClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/HttpResponse.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/HttpTransportInterface.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/IdempotencyKey.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/IdentityClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/IntegrationsClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/JsonResponse.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/LoansClient.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/NativeHttpTransport.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/Pagination.php",
+            "existed": true
+        },
+        {
+            "target": "src/Http/Request.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ProxyContext.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ReleaseTransaction.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/RequestContext.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ServiceAuth.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ServiceBoundary.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/Ui.php",
+            "existed": true
+        },
+        {
+            "target": "src/Reports/DailyReport.php",
+            "existed": false
+        },
+        {
+            "target": "src/Repository/PdoPartnerRepository.php",
+            "existed": true
+        },
+        {
+            "target": "src/Security/Authenticator.php",
+            "existed": true
+        },
+        {
+            "target": "src/Security/Principal.php",
+            "existed": true
+        },
+        {
+            "target": "src/Service/PartnerService.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/Json.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/PersianDate.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/PersianDateTime.php",
+            "existed": true
+        },
+        {
+            "target": "src/Support/RandomId.php",
+            "existed": true
+        },
+        {
+            "target": "src/Update/UpdateTool.php",
+            "existed": true
+        },
+        {
+            "target": "src/View/Renderer.php",
+            "existed": true
+        },
+        {
+            "target": "tests/phase10b-pdf.php",
+            "existed": true
+        },
+        {
+            "target": "tests/phase10c-history.php",
+            "existed": false
+        },
+        {
+            "target": "tests/phase8-reporting.php",
+            "existed": true
+        },
+        {
+            "target": "tests/run.php",
+            "existed": true
+        },
+        {
+            "target": "release-manifest.json",
+            "existed": true
+        }
+    ],
+    "installed_lock": "{\n    \"service\": \"partners\",\n    \"version\": \"1.5.0\",\n    \"environment\": \"staging\",\n    \"installed_at\": \"2026-09-29T12:36:18+00:00\",\n    \"ui\": \"1.3.0\",\n    \"updated_at\": \"2026-10-23T11:37:18+00:00\"\n}\n"
+}

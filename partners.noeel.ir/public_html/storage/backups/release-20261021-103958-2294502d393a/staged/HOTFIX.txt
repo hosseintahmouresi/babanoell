@@ -1,0 +1,4 @@
+Partners updater HTTP 500 hotfix
+Target: partners.noeel.ir/public_html
+Action: extract this archive directly into the Partners service root and overwrite src/Http/IdentityClient.php.
+Then open /update.php again and install the corrected Partners Phase 4 updater.

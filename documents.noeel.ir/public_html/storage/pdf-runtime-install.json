@@ -1,0 +1,9 @@
+{
+    "ok": true,
+    "operation": "install_pdf_runtime",
+    "mpdf": "8.3.1",
+    "files_verified": 698,
+    "bytes_verified": 96871945,
+    "manifest_sha256": "0291e5e0f56860aaabc04d39615ecd7916b7de6b7bba27ae1c08aaee055445dc",
+    "at": "2026-10-31T08:44:06+00:00"
+}

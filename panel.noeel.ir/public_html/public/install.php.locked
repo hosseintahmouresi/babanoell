@@ -1,0 +1,237 @@
+<?php
+declare(strict_types=1);
+
+use Babanoell\Panel\Security\TokenVault;
+use Babanoell\Panel\Support\PersianDateTime;
+use Babanoell\Panel\View\Renderer;
+
+$root = dirname(__DIR__);
+$storage = $root . '/storage';
+$lock = $storage . '/installed.lock';
+$local = $root . '/config/local.env.php';
+
+spl_autoload_register(static function (string $class) use ($root): void {
+    $prefix = 'Babanoell\\Panel\\';
+    if (!str_starts_with($class, $prefix)) {
+        return;
+    }
+    $file = $root . '/src/' . str_replace('\\', '/', substr($class, strlen($prefix))) . '.php';
+    if (is_file($file)) {
+        require $file;
+    }
+});
+
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Referrer-Policy: no-referrer');
+header('X-Robots-Tag: noindex, nofollow, noarchive');
+header('Cache-Control: no-store, max-age=0');
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+
+if (!is_dir($storage)) {
+    @mkdir($storage, 0770, true);
+}
+$installSession = $storage . '/tmp';
+if (!is_dir($installSession)) {
+    @mkdir($installSession, 0770, true);
+}
+if (is_dir($installSession) && is_writable($installSession)) {
+    session_save_path($installSession);
+}
+session_name('babanoell_panel_install');
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+    'httponly' => true,
+    'samesite' => 'Strict',
+]);
+session_start();
+
+function e(string $value): string
+{
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
+function csrf(): string
+{
+    if (!isset($_SESSION['_install_csrf'])) {
+        $_SESSION['_install_csrf'] = bin2hex(random_bytes(24));
+    }
+    return (string) $_SESSION['_install_csrf'];
+}
+
+function csrf_ok(): bool
+{
+    return isset($_POST['_csrf'], $_SESSION['_install_csrf'])
+        && is_string($_POST['_csrf'])
+        && hash_equals((string) $_SESSION['_install_csrf'], $_POST['_csrf']);
+}
+
+/** @return array{ok:bool,detail:string} */
+function probe_identity(string $base): array
+{
+    $url = rtrim($base, '/') . '/healthz';
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        if ($ch === false) {
+            return ['ok' => false, 'detail' => 'برقراری ارتباط ممکن نشد'];
+        }
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 6,
+            CURLOPT_CONNECTTIMEOUT => 4,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_HTTPHEADER => ['Accept: application/json', 'User-Agent: BabanoellPanelInstaller/1.0.2'],
+        ]);
+        $raw = curl_exec($ch);
+        $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        curl_close($ch);
+    } else {
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 6,
+                'ignore_errors' => true,
+                'follow_location' => 0,
+                'header' => "Accept: application/json\r\nUser-Agent: BabanoellPanelInstaller/1.0.2",
+            ],
+            'ssl' => ['verify_peer' => true, 'verify_peer_name' => true],
+        ]);
+        $raw = @file_get_contents($url, false, $context);
+        $status = 0;
+        foreach ($http_response_header ?? [] as $line) {
+            if (preg_match('#^HTTP/\S+\s+(\d{3})#', $line, $match)) {
+                $status = (int) $match[1];
+                break;
+            }
+        }
+    }
+
+    $json = is_string($raw) ? json_decode($raw, true) : null;
+    $ok = $status >= 200 && $status < 300 && is_array($json) && ($json['status'] ?? null) === 'ok';
+    return ['ok' => $ok, 'detail' => $ok ? 'ارتباط با Identity تأیید شد' : 'پاسخ سلامت معتبر از Identity دریافت نشد'];
+}
+
+function render_install(string $inside): void
+{
+    echo Renderer::guestFrame('نصب پنل مدیریت', $inside, 'نصب پنل مدیریت');
+}
+
+if (is_file($lock) && is_file($local)) {
+    render_install('<div class="bn-pagehead"><div class="bn-pagehead-main"><div class="bn-eyebrow">وضعیت نصب</div><h1 class="bn-title">پنل قبلاً نصب شده است</h1><p class="bn-subtitle">تنظیمات اولیه این سرویس قبلاً ثبت شده و نیازی به اجرای دوباره نصب‌کننده نیست.</p></div></div><div class="bn-alert bn-alert--info"><strong>پنل آماده استفاده است.</strong> برای ادامه وارد صفحه ورود شوید.</div><div class="bn-form-actions"><a class="bn-btn bn-btn--primary" href="/login">ورود به پنل مدیریت</a></div>');
+    exit;
+}
+
+$requirements = [
+    ['نسخه PHP ۸.۱ یا بالاتر', PHP_VERSION_ID >= 80100, PersianDateTime::digits(PHP_VERSION)],
+    ['افزونه OpenSSL', extension_loaded('openssl'), extension_loaded('openssl') ? 'فعال' : 'غیرفعال'],
+    ['افزونه JSON', extension_loaded('json'), extension_loaded('json') ? 'فعال' : 'غیرفعال'],
+    ['افزونه mbstring', extension_loaded('mbstring'), extension_loaded('mbstring') ? 'فعال' : 'غیرفعال'],
+    ['امکان ارتباط HTTP با Identity', function_exists('curl_init') || filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN), function_exists('curl_init') ? 'cURL فعال است' : 'ارتباط Stream فعال است'],
+    ['دسترسی نوشتن در فضای نگهداری پنل', is_writable($storage), is_writable($storage) ? 'قابل نوشتن' : 'دسترسی نوشتن وجود ندارد'],
+];
+
+$errors = [];
+$identityUrl = trim((string) ($_POST['identity_url'] ?? 'https://identity.noeel.ir'));
+$environment = (string) ($_POST['environment'] ?? 'staging');
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    if (!csrf_ok()) {
+        $errors[] = 'اعتبار فرم نصب منقضی شده است. صفحه را تازه‌سازی کنید و دوباره تلاش کنید.';
+    }
+    foreach ($requirements as $requirement) {
+        if (!$requirement[1]) {
+            $errors[] = 'پیش‌نیاز «' . $requirement[0] . '» برقرار نیست.';
+        }
+    }
+    if (!in_array($environment, ['staging', 'production'], true)) {
+        $errors[] = 'محیط اجرای انتخاب‌شده معتبر نیست.';
+    }
+    if (filter_var($identityUrl, FILTER_VALIDATE_URL) === false) {
+        $errors[] = 'آدرس سرویس احراز هویت معتبر نیست.';
+    }
+    if ($environment === 'production' && !str_starts_with(strtolower($identityUrl), 'https://')) {
+        $errors[] = 'در محیط عملیاتی، ارتباط با Identity باید فقط از طریق HTTPS انجام شود.';
+    }
+    if ($errors === []) {
+        $probe = probe_identity($identityUrl);
+        if (!$probe['ok']) {
+            $errors[] = 'اتصال به سرویس احراز هویت تأیید نشد: ' . $probe['detail'];
+        }
+    }
+    if ($errors === []) {
+        foreach ([$storage . '/sessions', $storage . '/backups', $storage . '/tmp'] as $directory) {
+            if (!is_dir($directory) && !mkdir($directory, 0770, true) && !is_dir($directory)) {
+                $errors[] = 'ساخت پوشه‌های داخلی فضای نگهداری پنل کامل نشد.';
+                break;
+            }
+        }
+    }
+    if ($errors === []) {
+        $config = "<?php\ndeclare(strict_types=1);\n\nreturn [\n"
+            . "    'APP_ENV' => " . var_export($environment, true) . ",\n"
+            . "    'SERVICE_NAME' => 'panel',\n"
+            . "    'PANEL_IDENTITY_BASE_URL' => " . var_export(rtrim($identityUrl, '/'), true) . ",\n"
+            . "    'PANEL_SESSION_ENCRYPTION_KEY' => " . var_export(TokenVault::generateKey(), true) . ",\n"
+            . "    'PANEL_HTTP_TIMEOUT_SECONDS' => '6',\n"
+            . "    'PANEL_SESSION_IDLE_SECONDS' => '1800',\n"
+            . "    'PANEL_SESSION_ABSOLUTE_SECONDS' => '28800',\n];\n";
+        $tmp = $local . '.tmp-' . bin2hex(random_bytes(4));
+        if (file_put_contents($tmp, $config, LOCK_EX) === false || !rename($tmp, $local)) {
+            $errors[] = 'فایل تنظیمات محلی پنل ساخته نشد.';
+        }
+    }
+    if ($errors === []) {
+        $meta = json_encode([
+            'service' => 'panel',
+            'version' => '1.0.2',
+            'installed_at' => gmdate('c'),
+            'environment' => $environment,
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        if (file_put_contents($lock, $meta . "\n", LOCK_EX) === false) {
+            $errors[] = 'ثبت وضعیت نصب پنل انجام نشد.';
+        }
+    }
+    if ($errors === []) {
+        $locked = __DIR__ . '/install.php.locked';
+        @unlink($locked);
+        if (!@rename(__FILE__, $locked)) {
+            if (@copy(__FILE__, $locked)) {
+                @unlink(__FILE__);
+            }
+        }
+        render_install('<div class="bn-pagehead"><div class="bn-pagehead-main"><div class="bn-eyebrow">راه‌اندازی تکمیل شد</div><h1 class="bn-title">پنل با موفقیت نصب شد</h1><p class="bn-subtitle">اتصال پایه با Identity تأیید و تنظیمات امن نشست پنل ایجاد شد.</p></div></div><div class="bn-alert bn-alert--success"><strong>پنل آماده کنترل‌های نهایی است.</strong></div><section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">✓</span><div><h2 class="bn-sectiontitle">کنترل‌های بعد از نصب</h2><p class="bn-sectiondesc">پیش از تست ورود، سلامت سرویس و اتصال Identity را بررسی کنید.</p></div></div><div class="bn-table-wrap"><table class="bn-table"><tbody><tr><td>سلامت پنل</td><td><code>/health</code></td></tr><tr><td>سلامت اتصال Identity</td><td><code>/healthz</code></td></tr><tr><td>صفحه ورود</td><td><code>/login</code></td></tr></tbody></table></div></section><div class="bn-form-actions"><a class="bn-btn bn-btn--primary" href="/login">باز کردن صفحه ورود</a></div>');
+        exit;
+    }
+}
+
+$allOk = true;
+$requirementsHtml = '<div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>کنترل</th><th>نتیجه</th></tr></thead><tbody>';
+foreach ($requirements as $requirement) {
+    $allOk = $allOk && $requirement[1];
+    $requirementsHtml .= '<tr><td>' . e($requirement[0]) . '</td><td><span class="bn-status ' . ($requirement[1] ? 'bn-status--ok' : 'bn-status--bad') . '">' . e($requirement[2]) . '</span></td></tr>';
+}
+$requirementsHtml .= '</tbody></table></div>';
+
+$errorHtml = '';
+if ($errors !== []) {
+    $errorHtml = '<div class="bn-alert bn-alert--error"><strong>نصب کامل نشد</strong><ul>';
+    foreach ($errors as $error) {
+        $errorHtml .= '<li>' . e($error) . '</li>';
+    }
+    $errorHtml .= '</ul></div>';
+}
+
+render_install(
+    '<div class="bn-pagehead"><div class="bn-pagehead-main"><div class="bn-eyebrow">راه‌اندازی اولیه</div><h1 class="bn-title">نصب پنل مدیریت بابانوئل</h1><p class="bn-subtitle">پنل دیتابیس مستقل ندارد و هویت کاربران را فقط از سرویس Identity دریافت می‌کند. در این مرحله، محیط اجرا و اتصال سرویس تنظیم می‌شود.</p></div></div>'
+    . $errorHtml
+    . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۱</span><div><h2 class="bn-sectiontitle">آمادگی محیط اجرا</h2><p class="bn-sectiondesc">پیش‌نیازهای فنی لازم برای اجرای پنل بررسی می‌شوند.</p></div></div>' . $requirementsHtml . (!$allOk ? '<div class="bn-alert bn-alert--warning bn-alert--after"><strong>اقدام لازم:</strong> موارد ناموفق را اصلاح کنید؛ تا آن زمان نصب نباید ادامه پیدا کند.</div>' : '') . '</section>'
+    . '<form method="post" data-submit-lock="1"><input type="hidden" name="_csrf" value="' . e(csrf()) . '">'
+    . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">تنظیمات اتصال</h2><p class="bn-sectiondesc">محیط اجرای پنل و آدرس سرویس احراز هویت را مشخص کنید.</p></div></div><div class="bn-grid">'
+    . '<div class="bn-field"><label class="bn-label" for="environment">محیط اجرا</label><select id="environment" name="environment"><option value="staging"' . ($environment === 'staging' ? ' selected' : '') . '>آزمایشی (Staging)</option><option value="production"' . ($environment === 'production' ? ' selected' : '') . '>عملیاتی (Production)</option></select></div>'
+    . '<div class="bn-field"><label class="bn-label" for="identity_url">آدرس سرویس احراز هویت</label><input id="identity_url" type="url" name="identity_url" value="' . e($identityUrl) . '" required placeholder="https://identity.noeel.ir"></div></div>'
+    . '<div class="bn-alert bn-alert--hint bn-alert--after"><strong>نکته:</strong> اگر این هاست فقط برای توسعه و تست استفاده می‌شود، محیط «آزمایشی (Staging)» را انتخاب کنید.</div>'
+    . '<div class="bn-form-actions"><button class="bn-btn bn-btn--primary" type="submit"' . ($allOk ? '' : ' disabled') . '>بررسی اتصال و نصب پنل</button></div></section></form>'
+);

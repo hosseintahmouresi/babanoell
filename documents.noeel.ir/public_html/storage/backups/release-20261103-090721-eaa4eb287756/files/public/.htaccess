@@ -1,0 +1,17 @@
+Options -Indexes
+DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^install\.php\.locked$ - [F,L,NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+</IfModule>
+<Files "install.php.locked">
+Require all denied
+</Files>
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+Header always set Referrer-Policy "no-referrer"
+</IfModule>

@@ -1,0 +1,69 @@
+{
+    "files": [
+        {
+            "target": "RELEASE-1.6.0.md",
+            "existed": false
+        },
+        {
+            "target": "src/Platform/Ui.php",
+            "existed": true
+        },
+        {
+            "target": "src/Platform/ReleaseTransaction.php",
+            "existed": true
+        },
+        {
+            "target": "src/App/Config.php",
+            "existed": true
+        },
+        {
+            "target": "config/version.php",
+            "existed": true
+        },
+        {
+            "target": "public/index.php",
+            "existed": true
+        },
+        {
+            "target": "public/ui-asset.php",
+            "existed": true
+        },
+        {
+            "target": "public/update.php",
+            "existed": true
+        },
+        {
+            "target": "public/assets/babanoell-ui.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/platform.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/vazirmatn-font.json",
+            "existed": true
+        },
+        {
+            "target": "public/assets/brand-logo.png",
+            "existed": true
+        },
+        {
+            "target": "public/assets/platform.js",
+            "existed": true
+        },
+        {
+            "target": "public/assets/panel.js",
+            "existed": true
+        },
+        {
+            "target": "public/assets/panel.css",
+            "existed": true
+        },
+        {
+            "target": "public/assets/babanoell-ui.js",
+            "existed": true
+        }
+    ],
+    "installed_lock": "{\n    \"service\": \"loans\",\n    \"version\": \"1.5.2\",\n    \"environment\": \"staging\",\n    \"installed_at\": \"2026-08-26T20:37:31+00:00\",\n    \"ui\": \"1.5.0\",\n    \"updated_at\": \"2026-09-26T10:00:59+00:00\"\n}\n"
+}

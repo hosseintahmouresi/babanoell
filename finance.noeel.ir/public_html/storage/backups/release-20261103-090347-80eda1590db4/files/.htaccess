@@ -1,0 +1,24 @@
+Options -Indexes
+RewriteEngine On
+
+# Deny retired installer aliases before public file rewrites.
+RewriteRule ^(?:public/)?install\.php\.locked$ - [F,L,NC]
+
+# Private service internals are never web-accessible when Document Root is the service root.
+RewriteRule ^(bin|config|database|storage|src|tests)(/|$) - [F,L,NC]
+
+# Stable UI asset gateway.
+RewriteRule ^ui-asset\.php$ public/ui-asset.php [L,QSA]
+
+# Public files such as installer/updater/assets are exposed through public/.
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+RewriteRule ^(.+)$ public/$1 [L]
+
+# API, health and application routes enter the public front controller.
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^ public/index.php [L,QSA]
+
+<FilesMatch "(^\.|local\.env|\.log$|\.lock$|\.zip$)">
+  Require all denied
+</FilesMatch>

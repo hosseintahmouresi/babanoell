@@ -1,0 +1,131 @@
+[2026-08-26 10:43:44Z] update started: update.zip
+[2026-08-26 10:43:45Z] update failed: an extracted file is not part of the identity package: htaccess; files NOT restored
+[2026-08-26 10:44:04Z] update started: update.zip
+[2026-08-26 10:44:04Z] update failed: an extracted file is not part of the identity package: htaccess; files NOT restored
+[2026-08-26 10:44:55Z] update started: update.zip
+[2026-08-26 10:44:55Z] update failed: an extracted file is not part of the identity package: htaccess; files NOT restored
+[2026-08-26 10:50:50Z] update started: update.zip
+[2026-08-26 10:50:50Z] files copied: 199
+[2026-08-26 10:50:50Z] update finished successfully
+[2026-08-26 10:52:02Z] update started: update.zip
+[2026-08-26 10:52:02Z] update failed: an extracted file is not part of the identity package: htaccess; files NOT restored
+[2026-08-26 11:03:05Z] update started: update.zip
+[2026-08-26 11:03:06Z] files copied: 200
+[2026-08-26 11:03:06Z] update finished successfully
+[2026-08-26 11:04:15Z] update started: update.zip
+[2026-08-26 11:04:15Z] files copied: 200
+[2026-08-26 11:04:15Z] update finished successfully
+[2026-08-26 11:05:01Z] update started: update.zip
+[2026-08-26 11:05:02Z] files copied: 202
+[2026-08-26 11:05:02Z] update finished successfully
+[2026-08-26 11:11:38Z] update started: update.zip
+[2026-08-26 11:11:39Z] files copied: 202
+[2026-08-26 11:11:39Z] update finished successfully
+[2026-08-26 11:23:21Z] update started: update.zip
+[2026-08-26 11:23:21Z] files copied: 203
+[2026-08-26 11:23:22Z] update finished successfully
+[2026-08-26 11:35:28Z] update started: update.zip
+[2026-08-26 11:35:29Z] files copied: 206
+[2026-08-26 11:35:29Z] update finished successfully
+[2026-08-26 11:36:03Z] update started: update.zip
+[2026-08-26 11:36:04Z] files copied: 206
+[2026-08-26 11:36:04Z] update finished successfully
+[2026-08-26 11:44:11Z] update started: update.zip
+[2026-08-26 11:44:12Z] files copied: 207
+[2026-08-26 11:44:12Z] update finished successfully
+[2026-08-26 12:33:48Z] update started: update.zip
+[2026-08-26 12:33:49Z] files copied: 213
+[2026-08-26 12:33:49Z] update finished successfully
+[2026-08-26 17:56:16Z] update started: update.zip
+[2026-08-26 17:56:16Z] files copied: 215
+[2026-08-26 17:56:17Z] update finished successfully
+[2026-08-26 20:18:27Z] update started: update.zip
+[2026-08-26 20:18:27Z] files copied: 217
+[2026-08-26 20:18:27Z] migration applied: 202608260001 seed_loans_permissions
+[2026-08-26 20:18:27Z] update finished successfully
+[2026-08-26 20:29:52Z] update started: update.zip
+[2026-08-26 20:29:52Z] files copied: 217
+[2026-08-26 20:29:52Z] update finished successfully
+[2026-08-26 21:34:09Z] update started: update.zip
+[2026-08-26 21:34:10Z] files copied: 218
+[2026-08-26 21:34:10Z] update finished successfully
+[2026-08-27 10:49:15Z] update started: update.zip
+[2026-08-27 10:49:15Z] files copied: 222
+[2026-08-27 10:49:15Z] migration applied: 202608270001 seed_documents_permissions
+[2026-08-27 10:49:15Z] update finished successfully
+[2026-09-14 11:13:02Z] update started: update.zip
+[2026-09-14 11:13:04Z] files copied: 160
+[2026-09-14 11:13:05Z] update finished successfully
+[2026-09-15 20:53:47Z] update started: update.zip
+[2026-09-15 20:53:48Z] files copied: 169
+[2026-09-15 20:53:48Z] update finished successfully
+[2026-09-22 11:33:20Z] update started: update.zip
+[2026-09-22 11:33:21Z] files copied: 230
+[2026-09-22 11:33:21Z] update finished successfully
+[2026-09-22 12:02:15Z] update started: update.zip
+[2026-09-22 12:02:15Z] files copied: 9
+[2026-09-22 12:02:15Z] update finished successfully
+[2026-09-22 13:13:05Z] update started: update.zip
+[2026-09-22 13:13:05Z] files copied: 5
+[2026-09-22 13:13:05Z] migration applied: 202609220003 seed_business_roles
+[2026-09-22 13:13:05Z] update finished successfully
+[2026-09-26 10:01:14Z] update started: update.zip
+[2026-09-26 10:01:14Z] files copied: 17
+[2026-09-26 10:01:14Z] update finished successfully
+[2026-09-26 10:33:29Z] update started: update.zip
+[2026-09-26 10:33:29Z] files copied: 6
+[2026-09-26 10:33:29Z] migration applied: 202609260001 create_business_scope_core
+[2026-09-26 10:33:29Z] update finished successfully
+[2026-09-26 11:42:03Z] update started: update.zip
+[2026-09-26 11:42:03Z] files copied: 18
+[2026-09-26 11:42:04Z] migration applied: 202609260002 create_authorization_scope_grants
+[2026-09-26 11:42:04Z] migration applied: 202609260003 seed_production_authorization_matrix
+[2026-09-26 11:42:04Z] update finished successfully
+[2026-09-26 12:22:18Z] update started: update.zip
+[2026-09-26 12:22:18Z] files copied: 6
+[2026-09-26 12:22:18Z] migration applied: 202609260004 seed_case_workflow_permissions
+[2026-09-26 12:22:18Z] update finished successfully
+[2026-09-29 10:14:52Z] update started: update.zip
+[2026-09-29 10:14:53Z] files copied: 256
+[2026-09-29 10:14:53Z] update finished successfully
+[2026-09-29 11:01:00Z] update started: update.zip
+[2026-09-29 11:01:00Z] files copied: 262
+[2026-09-29 11:01:01Z] update finished successfully
+[2026-09-29 12:38:17Z] update started: update.zip
+[2026-09-29 12:38:18Z] files copied: 265
+[2026-09-29 12:38:18Z] migration applied: 202609290005 seed_partners_permissions_and_cooperation_role
+[2026-09-29 12:38:18Z] update finished successfully
+[2026-09-30 18:17:04Z] update started: update.zip
+[2026-09-30 18:17:05Z] files copied: 254
+[2026-09-30 18:17:05Z] update finished successfully
+[2026-09-30 18:42:48Z] update started: update.zip
+[2026-09-30 18:42:49Z] files copied: 254
+[2026-09-30 18:42:49Z] update finished successfully
+[2026-10-01 09:11:38Z] update started: update.zip
+[2026-10-01 09:11:39Z] files copied: 268
+[2026-10-01 09:11:39Z] migration applied: 202610010001 seed_finance_service_permissions
+[2026-10-01 09:11:39Z] update finished successfully
+[2026-10-21 16:25:58Z] update started: update.zip
+[2026-10-21 16:25:58Z] files copied: 11
+[2026-10-21 16:25:58Z] update finished successfully
+[2026-10-21 16:54:12Z] update started: update.zip
+[2026-10-21 16:54:12Z] files copied: 7
+[2026-10-21 16:54:12Z] update finished successfully
+[2026-10-23 12:41:44Z] update started: update.zip
+[2026-10-23 12:41:45Z] files copied: 274
+[2026-10-23 12:41:45Z] update finished successfully
+[2026-10-23 16:52:06Z] update started: update.zip
+[2026-10-23 16:52:06Z] files copied: 276
+[2026-10-23 16:52:06Z] update finished successfully
+[2026-10-23 18:25:39Z] update started: update.zip
+[2026-10-23 18:25:40Z] files copied: 279
+[2026-10-23 18:25:40Z] update finished successfully
+[2026-10-23 18:38:55Z] update started: update.zip
+[2026-10-23 18:38:56Z] files copied: 282
+[2026-10-23 18:38:56Z] update finished successfully
+[2026-10-29 19:51:16Z] update started: update.zip
+[2026-10-29 19:51:17Z] files copied: 206
+[2026-10-29 19:51:17Z] update finished successfully
+[2026-11-03 12:30:02Z] update started: update.zip
+[2026-11-03 12:30:02Z] files copied: 206
+[2026-11-03 12:30:02Z] update finished successfully

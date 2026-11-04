@@ -1,0 +1,20 @@
+<?php
+// Copy to config/local.env.php on the server and replace values; never commit live secrets.
+return [
+ 'APP_ENV'=>'production',
+ 'INTEGRATIONS_DB_HOST'=>'localhost','INTEGRATIONS_DB_PORT'=>'3306',
+ 'INTEGRATIONS_DB_NAME'=>'noeelir_integrations','INTEGRATIONS_DB_USER'=>'noeelir_integrations','INTEGRATIONS_DB_PASSWORD'=>'oiYgYJ50Qei2iJ87',
+ 'NOEEL_SERVICE_SHARED_SECRET'=>'552ee13b9f9cdf924c06214db16dbc73e888e184ddafc5b7bf47d56954f75476',
+ 'INTEGRATIONS_INSTALL_KEY'=>'552ee13b9f9cdf924c06214db16dbc73e888e184ddafc5b7bf47d56954f75476', // random secret, 32+ chars, for first install and upgrades
+ 'INTEGRATIONS_SMS_PROVIDER'=>'melipayamak',
+ 'INTEGRATIONS_SMS_USERNAME'=>'','INTEGRATIONS_SMS_PASSWORD'=>'',
+ 'INTEGRATIONS_SMS_WSDL'=>'https://api.payamak-panel.com/post/send.asmx?wsdl',
+ 'INTEGRATIONS_SMS_CONTRACT_BODY_ID'=>'',
+ 'INTEGRATIONS_SHAHKAR_CLIENT_ID'=>'','INTEGRATIONS_SHAHKAR_CLIENT_SECRET'=>'','INTEGRATIONS_SHAHKAR_OWNER_NID'=>'',
+ 'INTEGRATIONS_ICS24_URL'=>'https://mycredit.ics24.ir','INTEGRATIONS_ICS24_USERNAME'=>'','INTEGRATIONS_ICS24_PASSWORD'=>'',
+ 'INTEGRATIONS_GREENPAY_AUTH_URL'=>'','INTEGRATIONS_GREENPAY_PURCHASE_URL'=>'',
+ 'INTEGRATIONS_GREENPAY_USERNAME'=>'','INTEGRATIONS_GREENPAY_PASSWORD'=>'','INTEGRATIONS_GREENPAY_API_KEY'=>'',
+ 'INTEGRATIONS_GREENPAY_TERMINAL'=>'','INTEGRATIONS_GREENPAY_MERCHANT_ID'=>'',
+ 'INTEGRATIONS_GREENPAY_TIME_SHIFT_SECONDS'=>'0', // signed correction [-120,+120], server/provider clocks must be synchronized
+ 'INTEGRATIONS_GREENPAY_TRANSFERS_ENABLED'=>'0', // enable only after finance approval + live testing
+];

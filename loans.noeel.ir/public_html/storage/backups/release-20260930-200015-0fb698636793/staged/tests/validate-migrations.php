@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=1);
+$root=dirname(__DIR__);require_once $root.'/src/Database/Migration.php';$files=glob($root.'/database/migrations/*.php')?:[];sort($files,SORT_STRING);$seen=[];foreach($files as$f){$m=require$f;if(!$m instanceof Babanoell\Loans\Database\Migration)throw new RuntimeException(basename($f).' is not a Migration');if(!preg_match('/^\d{12}$/',$m->version()))throw new RuntimeException('Invalid migration version');if(isset($seen[$m->version()]))throw new RuntimeException('Duplicate migration version');$seen[$m->version()]=1;}if(count($seen)!==22)throw new RuntimeException('Expected 22 migrations, got '.count($seen));echo 'Validated '.count($seen)." loans migration files.\n";

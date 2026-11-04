@@ -1,0 +1,2 @@
+# Phase 7 — Finance ownership
+Finance is now active and is the source of truth for settlement, financial receipts, settlement cycles and financier payments. Existing Loans finance columns/tables remain shadow-only for compatibility. Financial writes are committed by Finance first, then mirrored into Loans for existing workflow/tasks/UI compatibility. A service-authenticated shadow export supports one-time migration without cross-database access.

@@ -1,0 +1,26 @@
+<?php
+declare(strict_types=1);
+if(PHP_SAPI!=='cli')exit(1);
+$root=dirname(__DIR__);
+require_once $root.'/src/Service/GreenpayTransferService.php';
+use Babanoell\Finance\Service\GreenpayTransferService as G;
+$pass=0;$fail=0;$cases=[];
+$test=static function(string $name,callable $fn)use(&$cases):void{$cases[$name]=$fn;};
+$check=static function(bool $ok,string $message='assertion failed'):void{if(!$ok)throw new RuntimeException($message);};
+$read=static fn(string $path):string=>(string)file_get_contents($root.'/'.$path);
+$test('fixed point Rial exact match',function()use($check){$check(G::sameRialAmount('4000.00',4000));$check(G::sameRialAmount('0004000.0',4000));$check(!G::sameRialAmount('4000.01',4000));$check(!G::sameRialAmount('4000.99',4000));$check(!G::sameRialAmount('4,000',4000));});
+$test('money transfer disabled by default in Finance and Integrations',function()use($read,$check){foreach(['finance','integrations'] as $svc){$example=$read('../'. $svc.'/config/local.env.example.php');$check(str_contains($example,$svc==='finance'?"'FINANCE_GREENPAY_TRANSFERS_ENABLED'=>'0'":"'INTEGRATIONS_GREENPAY_TRANSFERS_ENABLED'=>'0'"));}});
+$test('database enforces only one payout attempt per cycle',function()use($check,$read){$s=$read('database/migrations/202610220005_greenpay_transfer_intents.php');$check(str_contains($s,'UNIQUE KEY uq_greenpay_cycle(cycle_id)'));});
+$test('database stores encrypted, not raw, wallet identifiers',function()use($check,$read){$s=$read('database/migrations/202610220005_greenpay_transfer_intents.php');$check(str_contains($s,'from_pocket_encrypted'));$check(str_contains($s,'to_pocket_encrypted'));$check(!str_contains($s,'from_pocket VARCHAR'));});
+$test('database does not persist plaintext OTP',function()use($check,$read){$s=$read('database/migrations/202610220005_greenpay_transfer_intents.php');$check(!str_contains(strtolower($s),'otp '));$check(!str_contains(strtolower($s),'otp varchar'));});
+$test('transfer lifecycle persisted before outbound network',function()use($check,$read){$s=$read('src/Service/GreenpayTransferService.php');$check(strpos($s,"'dispatching'")<strpos($s,'$this->client->greenpayTransfer('));$check(str_contains($s,'$this->pdo->commit();'));});
+$test('two different approvals enforced',function()use($check,$read){$s=$read('src/Service/GreenpayTransferService.php');$check(substr_count($s,"$".'actor===$r[\'created_by\']')>=2);$check(str_contains($s,'greenpay_second_approver_required'));});
+$test('independent reviewer cannot be creator or approver',function()use($check,$read){$s=$read('src/Service/GreenpayTransferService.php');$check(str_contains($s,'greenpay_independent_reviewer_required'));$check(str_contains($s,"$".'actor===$r[\'approved_by\']'));});
+$test('exact amount and closed cycle checked twice',function()use($check,$read){$s=$read('src/Service/GreenpayTransferService.php');$check(substr_count($s,'sameRialAmount(')>=3);$check(str_contains($s,'greenpay_cycle_changed'));});
+$test('cycle freeze after transfer intent exists',function()use($check,$read){$s=$read('src/Repository/PdoFinanceRepository.php');$check(str_contains($s,'SELECT COUNT(*) FROM finance_greenpay_transfers WHERE cycle_id=:id'));});
+$test('unknown provider outcome is never an automatic retry',function()use($check,$read){$s=$read('src/Service/GreenpayTransferService.php');$check(str_contains($s,"$"."status='uncertain'"));$check(str_contains($s,'greenpay_transfer_already_handled'));});
+$test('transfer requires purpose-specific HMAC secret',function()use($check,$read){$s=$read('src/Http/IntegrationsClient.php');$check(str_contains($s,'FINANCE_GREENPAY_EXECUTION_KEY'));$check(str_contains($s,'X-Noel-Greenpay-Authorization'));});
+$test('pre-dispatch checks transfer authorization and provider readiness',function()use($check,$read){$s=$read('src/Service/GreenpayTransferService.php');$check(str_contains($s,'greenpayCapabilities()'));$check(str_contains($s,'greenpayReadiness()'));});
+$test('Finance API owns payout creation and approval',function()use($check,$read){$s=$read('public/index.php');$check(str_contains($s,'/api/v1/greenpay/transfers'));$check(str_contains($s,"'transfer_endpoint_moved'"));});
+$test('wallet encryption primitive performs safe round trip',function()use($check){$key=random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);$n=random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);$plain='123456789012';$c=sodium_crypto_secretbox($plain,$n,$key);$check(sodium_crypto_secretbox_open($c,$n,$key)===$plain);$c[0]=chr(ord($c[0])^1);$check(sodium_crypto_secretbox_open($c,$n,$key)===false);});
+foreach($cases as $name=>$fn){try{$fn();echo "[PASS] $name\n";$pass++;}catch(Throwable $e){echo "[FAIL] $name: ".$e->getMessage()."\n";$fail++;}}echo "Batch7 Finance: $pass passed / $fail failed\n";exit($fail?1:0);

@@ -1,0 +1,838 @@
+{
+    "service": "identity",
+    "version": "1.13.3",
+    "phase": "phase11e-login-throttle-hotfix",
+    "api_version": "v1",
+    "database_migration_required": true,
+    "created_at_utc": "2026-11-03T12:23:18+00:00",
+    "excluded_runtime": [
+        "config/local.env.php",
+        "storage/",
+        "vendor/",
+        "public/install.php",
+        "public/install.php.locked"
+    ],
+    "migration_policy": "Run pending migrations included in this archive; skip versions already recorded by the owner database.",
+    "files": {
+        ".htaccess": {
+            "sha256": "a121cdb8a16f6f7a4d028f8815e8d2fdba9f9a79ebc053bc84c4e692a848e989",
+            "bytes": 1392
+        },
+        "README.md": {
+            "sha256": "368c0d6fd6f99ea436d46b144a36b0492ff2e7d27a8942c7cc37e17b15a30a3d",
+            "bytes": 21836
+        },
+        "RELEASE-1.13.3.md": {
+            "sha256": "df06e4f52d157f487e9a54a20913ee0eae580c692b128147b69c9cedc872a1e9",
+            "bytes": 214
+        },
+        "bin/login-recovery.php": {
+            "sha256": "412061cf136f6deeb11902fd5226beaf0fbf528ce3308d37371519db2cb53ac3",
+            "bytes": 3372
+        },
+        "bin/migrate.php": {
+            "sha256": "c447e5d2048efeaa775f5144463780dcc21be1a2985aca51554bb74c545285d1",
+            "bytes": 2292
+        },
+        "bin/prune-audit.php": {
+            "sha256": "721da080763ef0adf835f81fb9b6c314c4f44583ce51b028c1a4dfb1479ab525",
+            "bytes": 2965
+        },
+        "config/.env.example": {
+            "sha256": "c690ec24e2dc9b0dcf2939a2d17834bcc0983443f9dc189ad99038be41e1024f",
+            "bytes": 821
+        },
+        "config/database.php": {
+            "sha256": "1a5fde9e05792b9a6220916dc3b8f9237518ff3042098888fdfe62091840f4ee",
+            "bytes": 563
+        },
+        "config/env.php": {
+            "sha256": "5ef96a443fd998d593e7f1b46627657d756a3709539dcbf93700599df0b85df2",
+            "bytes": 5652
+        },
+        "config/local.env.example.php": {
+            "sha256": "f3d3a9608f09665e29bdf432a0f47df95b0c656a0e9ad052a5f5a97906d9a2f7",
+            "bytes": 1978
+        },
+        "config/security.php": {
+            "sha256": "c84e977bce4a5ee4c44631ded509e4b18728ca5cda0732b9f4355c0f224b7d90",
+            "bytes": 2219
+        },
+        "config/version.php": {
+            "sha256": "e76ba1e5321a287b4e071a0f74a78dc0933e1d677a4f34f6864e79622db6e6d9",
+            "bytes": 139
+        },
+        "database/README.md": {
+            "sha256": "9639825ae157957b17f8801699ee62c49608a5f454d979911d5f485c73193984",
+            "bytes": 221
+        },
+        "database/migrations/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "database/migrations/202606130001_create_users_table.php": {
+            "sha256": "331fc1353a04eca2a87fb902b6d82c0fe7f37eaf840e9ebb60a22e6a1ebb20ff",
+            "bytes": 1186
+        },
+        "database/migrations/202606130002_create_roles_table.php": {
+            "sha256": "913fac3616bb266b9f6a2db9bb38e59f4de4002a09a4fff0cf1c8a739e2b1fc5",
+            "bytes": 858
+        },
+        "database/migrations/202606130003_create_permissions_table.php": {
+            "sha256": "d2185fd56842eb41fc20f09a55d62cd79deb76aa95414ba3402e3442c321c458",
+            "bytes": 798
+        },
+        "database/migrations/202606130004_create_role_permissions_table.php": {
+            "sha256": "76acb15d6a23a4e980739a0f34a67182a82a894b0666c3b4c6cba8c0e48b1511",
+            "bytes": 1297
+        },
+        "database/migrations/202606130005_create_user_roles_table.php": {
+            "sha256": "6c2ea32ab5233bfb54f227c42aba273ef30553977822695b9f2dc56903a171f2",
+            "bytes": 1299
+        },
+        "database/migrations/202606130006_create_sessions_table.php": {
+            "sha256": "a5f5e372227c11e4773fa19e926e26d5a7abd7f2a1cde6c09d92de9208d7c83d",
+            "bytes": 1497
+        },
+        "database/migrations/202606130007_create_password_resets_table.php": {
+            "sha256": "a3851aa81c6eaa294afb8eec8fd3635e72f0b1e4f73490988917b2a78d69ba40",
+            "bytes": 1189
+        },
+        "database/migrations/202606130008_create_two_factor_challenges_table.php": {
+            "sha256": "5a481a02345b91a80bcc94a8fe9fec7d79ce237db54140aa8f7ff49e5cc22143",
+            "bytes": 1276
+        },
+        "database/migrations/202606130009_create_auth_audit_logs_table.php": {
+            "sha256": "3be48905d36e4835e622f2514946798dc1d9e5b803dcf7361a7067dc71310bfc",
+            "bytes": 1122
+        },
+        "database/migrations/202608250001_add_access_token_hash_to_sessions_table.php": {
+            "sha256": "aabed9aa4c26c095f129ac8acd0c05f16be650c0134cbf211af0fcb74747a447",
+            "bytes": 611
+        },
+        "database/migrations/202608260001_seed_loans_permissions.php": {
+            "sha256": "6edb2bc6896a8324fd918807d625c1d2a098bb66e9db06153f724c7442abfb42",
+            "bytes": 3080
+        },
+        "database/migrations/202608270001_seed_documents_permissions.php": {
+            "sha256": "55645a62ae71a953608d5790cab9032fb619c6327a836e21d42388019254a01c",
+            "bytes": 2763
+        },
+        "database/migrations/202609220002_seed_acceptor_role.php": {
+            "sha256": "2f674cf429ba2866a06660e1ea210666be1a1653a3ba2c4d03cb506598c93500",
+            "bytes": 2308
+        },
+        "database/migrations/202609220003_seed_business_roles.php": {
+            "sha256": "234a72625818750df0c1a0132afa4884d18f202b68740acbb03d6194608090e5",
+            "bytes": 8794
+        },
+        "database/migrations/202609260001_create_business_scope_core.php": {
+            "sha256": "6efe329c4a14f468e61ffe05788292a48c76d5dd4cbe4af15428b1346f0a0286",
+            "bytes": 3946
+        },
+        "database/migrations/202609260002_create_authorization_scope_grants.php": {
+            "sha256": "c989516c2f592ea8823a53ede3a1c082f6b022289dc22b466bcad73fc8d48081",
+            "bytes": 1494
+        },
+        "database/migrations/202609260003_seed_production_authorization_matrix.php": {
+            "sha256": "80b0b318532646efebff51869c25b357ae4121730207ab0f3270f71ae2a2e2e5",
+            "bytes": 6858
+        },
+        "database/migrations/202609260004_seed_case_workflow_permissions.php": {
+            "sha256": "2ce26344651d68b07e3eea3dd69df19414a19a1ca72c529321ead25321f988ee",
+            "bytes": 3509
+        },
+        "database/migrations/202609290005_seed_partners_permissions.php": {
+            "sha256": "3bd35240267a9afe65ac352f3264557a8083cb1f36990e8afaf4d18b307b2cb7",
+            "bytes": 4468
+        },
+        "database/migrations/202610010001_seed_finance_permissions.php": {
+            "sha256": "bf82276835beaf9a80b25844fdbe53d0bed7efd31446b4edb47afb257ccd196e",
+            "bytes": 3504
+        },
+        "database/seeds/README.md": {
+            "sha256": "36f4cda7f78e03e8f34f30f7c656962281e8a9d1fe6ea89c49353b630a75f9a7",
+            "bytes": 460
+        },
+        "public/.htaccess": {
+            "sha256": "79e4952bee4a05625256063488f951616c5c2017faeb78122399dcf2d74e9032",
+            "bytes": 784
+        },
+        "public/assets/OFL.txt": {
+            "sha256": "17e355067c8284f47743a1ee3b1ef7ff684ff0601eda357f9353b10b3016ab31",
+            "bytes": 4391
+        },
+        "public/assets/babanoell-ui.css": {
+            "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545",
+            "bytes": 76240
+        },
+        "public/assets/babanoell-ui.js": {
+            "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc",
+            "bytes": 16976
+        },
+        "public/assets/brand-logo.png": {
+            "sha256": "9930573d696809165d4cf66ce96b0ce750579397b6abe82d3ea81b00fcbfb69b",
+            "bytes": 27303
+        },
+        "public/assets/brand-mark.svg": {
+            "sha256": "b26f269fbb6869f69fc56cac44e39f52a46290eb71a846106b45254bc1609426",
+            "bytes": 545
+        },
+        "public/assets/panel.css": {
+            "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545",
+            "bytes": 76240
+        },
+        "public/assets/panel.js": {
+            "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc",
+            "bytes": 16976
+        },
+        "public/assets/platform.css": {
+            "sha256": "3be0f030a63bc771b1113aae6e044a00ca86d0bc16954a6d46f88f935963c545",
+            "bytes": 76240
+        },
+        "public/assets/platform.js": {
+            "sha256": "df0dd93973159af312d51d677f073fbf20c52e93e1233a2002bf6196932659bc",
+            "bytes": 16976
+        },
+        "public/assets/vazirmatn-font.json": {
+            "sha256": "06c991556fecf62fb27d00c25077f4b75e4e5f170c6b0ee90bd0a2c2a1c6d237",
+            "bytes": 150608
+        },
+        "public/index.php": {
+            "sha256": "3cf5d8b1f6ebf2ad2736167420d661dcec858fb0ed092d23d8b94399634bec33",
+            "bytes": 835
+        },
+        "public/portal.php": {
+            "sha256": "a9728387ae41b35e754d076b274e37147cf37a73db6b26959040512c5d2ec900",
+            "bytes": 135
+        },
+        "public/ui-asset.php": {
+            "sha256": "78dd1ef5d7dabfbcc935777fc4ddf9cbee9d2bb096b45ffcb3f8a440bc02bf50",
+            "bytes": 1365
+        },
+        "public/update.php": {
+            "sha256": "f34ed0cd6a839f3b5c0a9f2cf0ee28c70db213290d9ece298d516865cb0edc20",
+            "bytes": 54964
+        },
+        "router.php": {
+            "sha256": "675331d79668092fa6d809b91878ad2ac1fc1138d15bcee27483f72e1cea39b0",
+            "bytes": 1125
+        },
+        "src/Administration/AccessDirectory.php": {
+            "sha256": "c7acbb5f55882767c4cba0a47cf953621189dc7178d917fa0ab7f33ece363629",
+            "bytes": 8183
+        },
+        "src/Administration/AdminAuthorization.php": {
+            "sha256": "0463df9fc7397c7cd08d354d3ae0e342ea6903f0b327741dc38379bafada893f",
+            "bytes": 2718
+        },
+        "src/Administration/UserDirectory.php": {
+            "sha256": "959b051ed9a6032d3641df11781d58aa10bf0528fdb859925c59178fd6686f8e",
+            "bytes": 13321
+        },
+        "src/App/App.php": {
+            "sha256": "1082ea74f6fcbcb99815ff4aba2c2a0a708d82a739c09a1c4dfc0acf32ed5a62",
+            "bytes": 2552
+        },
+        "src/App/Config.php": {
+            "sha256": "0853be96989774427202518f62dffdd5980f7da563c8870f681a4aab09f9fbe3",
+            "bytes": 6565
+        },
+        "src/App/Container.php": {
+            "sha256": "31e14b67a661b13c0b19f8af678094b7cbb1d54bc41f62776fa22e5b4f4a396b",
+            "bytes": 10514
+        },
+        "src/App/ErrorHandler.php": {
+            "sha256": "ace276e850119cc49d483e98a0003859503fc90e7fc247117239714bfd08befa",
+            "bytes": 465
+        },
+        "src/App/Routes.php": {
+            "sha256": "9bc3e1bacdb0547905a64c4d518204abec57cfae32f296a2c6d34a3899b4a5e8",
+            "bytes": 7137
+        },
+        "src/Audit/AuditContext.php": {
+            "sha256": "c16661efe022a797ac1bccaad1d5d422f4444b2064e5250d18110c77c9ae8ec9",
+            "bytes": 1532
+        },
+        "src/Audit/AuditEvent.php": {
+            "sha256": "70c40942c75c7a92b3c2ebbd87af4e2c60e440f6e61a7c76c86a7aa308051974",
+            "bytes": 1791
+        },
+        "src/Audit/AuditEventType.php": {
+            "sha256": "50039b6b015bb4391d609f1955fbe3c4240920d4d00b4c57496359e95a06dfe3",
+            "bytes": 661
+        },
+        "src/Audit/AuditWriterInterface.php": {
+            "sha256": "01f5669fd37cf33249bceebb7871bbc9cab4cbc248b32a111209aac86a739e2a",
+            "bytes": 152
+        },
+        "src/Audit/InactiveAuditWriter.php": {
+            "sha256": "de2db25a4573369098ab48b6a871d0fc4db2ba48d8b7f813c8e20821a2dffed8",
+            "bytes": 312
+        },
+        "src/Audit/PdoAuditWriter.php": {
+            "sha256": "8769f9933171fae0e8cc006d66b22d20c7f299d67cfabf00b9a60339d9d3cf7d",
+            "bytes": 2253
+        },
+        "src/Authorization/AuthorizationContext.php": {
+            "sha256": "a264181c4c8e7c41f1c86081cfdd94c909ce177bf18119368ecc72f56c220f6d",
+            "bytes": 1151
+        },
+        "src/Authorization/AuthorizationDecision.php": {
+            "sha256": "37442d8b5b105e81c968f11e5722c4bd47e862315c669aa201eb9d3023ec52ee",
+            "bytes": 982
+        },
+        "src/Authorization/AuthorizationPolicyInterface.php": {
+            "sha256": "4c4e04b4d469e48bbed35de1af7925fe77b8ac3e345730738f281b5a98b819de",
+            "bytes": 222
+        },
+        "src/Authorization/InactiveAuthorizationPolicy.php": {
+            "sha256": "b98b7dc75d671377ec28758401c32fa92031c4cece92238ecd71a2b3bddd5746",
+            "bytes": 539
+        },
+        "src/Authorization/PermissionCheck.php": {
+            "sha256": "71b73b4c27940a2f08ac7e7043d0fec699afa9719c3d6b15419ee039fb6f8201",
+            "bytes": 740
+        },
+        "src/Authorization/RbacAuthorizationPolicy.php": {
+            "sha256": "1bcc95496ca40d66e8b4364f5e6887c4ba01588002dd83c3066e76a291449f04",
+            "bytes": 1280
+        },
+        "src/Authorization/RecordAccessPolicyInterface.php": {
+            "sha256": "6061d6c050e2ca051596385d93a10c4f2964b8ebb6a02b94dc6aa8fa61bbf9af",
+            "bytes": 233
+        },
+        "src/Authorization/ScopeRepositoryInterface.php": {
+            "sha256": "345746bde84860d499683499a2a7befdd3c0dddadefe96a7d72f65957d35e502",
+            "bytes": 193
+        },
+        "src/Controllers/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "src/Database/Connection.php": {
+            "sha256": "a2f529f25265bfaa2ed22c8cf07b443f808679db1375ec0d3d7a7e33128a0034",
+            "bytes": 1364
+        },
+        "src/Database/Migration.php": {
+            "sha256": "9fd2755669626bbbf35870eed0e29beaf9ada201df00f8accc0539d1703fd754",
+            "bytes": 219
+        },
+        "src/Database/MigrationRunner.php": {
+            "sha256": "01d47c91e00eba7ce0a5f989edcb13e5edb23797172929049f98709472c6813d",
+            "bytes": 4730
+        },
+        "src/Exceptions/AuditException.php": {
+            "sha256": "aaef12127e0f6e3f67b17cbc6e978e6a17ba27b1392b449a9ed74f50895f1d83",
+            "bytes": 232
+        },
+        "src/Exceptions/AuthException.php": {
+            "sha256": "cb484425f625b4a3cfa1d39a6048d6b71139900e1d2e5d5a7d179e04ad9186bc",
+            "bytes": 491
+        },
+        "src/Exceptions/AuthorizationException.php": {
+            "sha256": "8552bf02ad9458158a578bb45cfbc457c9594ff1230f7cfc82c1afa7dc44da8f",
+            "bytes": 220
+        },
+        "src/Http/ApiError.php": {
+            "sha256": "f7a13d72dfb66fc804c2a99f2d61401baf342285f18c4d0832d51e9020bbad54",
+            "bytes": 913
+        },
+        "src/Http/Controllers/AuthController.php": {
+            "sha256": "e6c33802a302aabdc28c7f35e21a85cfb503e0272cd142da42a7b84b336db8ce",
+            "bytes": 6303
+        },
+        "src/Http/Controllers/ManagementController.php": {
+            "sha256": "c5612087852315318c021df9aa69d44f839e24e31d71768fdacd98313e212324",
+            "bytes": 5322
+        },
+        "src/Http/Controllers/MeController.php": {
+            "sha256": "c8adb8a618c03babaf274d9279a7b96d24f901b50490fe27e0697bdaf01883ad",
+            "bytes": 2349
+        },
+        "src/Http/Controllers/PermissionsController.php": {
+            "sha256": "5048c4eecd1d9fa6594955fdbb22f19eedd3dc97fd913273bd0cad05fba3e685",
+            "bytes": 345
+        },
+        "src/Http/Controllers/RolesController.php": {
+            "sha256": "62c5ce269d37ab13e6096fc4a18a4365b4689b92066bcc88d79d2e338e241963",
+            "bytes": 339
+        },
+        "src/Http/ErrorCode.php": {
+            "sha256": "d58effb5303d522e0b405eeff6bf09e17301edd9edf2531b1b257eb4962708f5",
+            "bytes": 499
+        },
+        "src/Http/JsonResponse.php": {
+            "sha256": "a1d110a888b0082122feaf703712b573ea1abc600935421b13a858d987c1b0e9",
+            "bytes": 1635
+        },
+        "src/Http/Middleware/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "src/Http/Middleware/AuthenticationMiddleware.php": {
+            "sha256": "238d1330b70878a88dc3fd7f4ff417fc39946f4a5c76622dcb0453d4227f63e6",
+            "bytes": 805
+        },
+        "src/Http/Middleware/AuthorizationMiddleware.php": {
+            "sha256": "d18babed03c8a4c993d9f7f6c1b7cf16e75a996088a006e25a9e41c90b79f3bd",
+            "bytes": 815
+        },
+        "src/Http/Middleware/MiddlewareInterface.php": {
+            "sha256": "be7bd9cf6770b9d58ce507979d4e61847ecc6463c1991673288a24ebebb7357e",
+            "bytes": 313
+        },
+        "src/Http/Middleware/RequestIdMiddleware.php": {
+            "sha256": "c0048ffdabf25f17b9e510bcce71d020e3f79c3ee44eafc4477cf6c683791944",
+            "bytes": 1120
+        },
+        "src/Http/Middleware/SecurityHeadersMiddleware.php": {
+            "sha256": "668c7ac430d47f81f8dd4dac91064b0e5e7532bb9cecd2218eaea1e623b2a456",
+            "bytes": 498
+        },
+        "src/Http/Pagination.php": {
+            "sha256": "633aa5001973126f181541d5a86a612c031e5545d69e86e828aa0fb593c852cf",
+            "bytes": 548
+        },
+        "src/Http/Request.php": {
+            "sha256": "5340dcafceeeb29b50ff42ad071eeae5804571910f098f136549c7d76fec555d",
+            "bytes": 3073
+        },
+        "src/Http/Response.php": {
+            "sha256": "2b95cd89f4c5a4eb2172548542128da16521ba27f3a1bc49cbd80d5d84c61dd1",
+            "bytes": 1372
+        },
+        "src/Http/ResponseMapper.php": {
+            "sha256": "dd98a5d62a543383ec82bfcaa08e1f92c65773fba384b1423dede2195370cdee",
+            "bytes": 2626
+        },
+        "src/Http/Router.php": {
+            "sha256": "b5cd1e5ccf13343a61aec98cd79999b665c1e2a076692a8d4c10d0e44ef40971",
+            "bytes": 1546
+        },
+        "src/Middleware/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "src/Models/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "src/Models/AuditLogEntry.php": {
+            "sha256": "e063e20f4feccbeaeb96b0277ccabb510c537d2f60d9bcb2773aad2eff29b544",
+            "bytes": 1916
+        },
+        "src/Models/DateTimeValue.php": {
+            "sha256": "8785be50a7992e9f41c2980ef1bc8535f10dd53ef2e5dd905991064603746723",
+            "bytes": 476
+        },
+        "src/Models/Permission.php": {
+            "sha256": "8989779a798d1fb79706e274b760aec7e31f90d09cf154ffe0f16fcbe8be4e5b",
+            "bytes": 894
+        },
+        "src/Models/Role.php": {
+            "sha256": "7365a920f0069a00d166ccafe5f260b141f2744375f57e1890bf48c774dcabf7",
+            "bytes": 1058
+        },
+        "src/Models/SessionRecord.php": {
+            "sha256": "95336adf3715ba974b0b9019ddf7fa854ae9305441b1a789ea1a81f002ef02ad",
+            "bytes": 2504
+        },
+        "src/Models/User.php": {
+            "sha256": "14b0147b0c955f2230ad6d5664729f45dc452383e5f0be7a14f55cf8e44aa2aa",
+            "bytes": 1929
+        },
+        "src/Platform/ProxyContext.php": {
+            "sha256": "6e24bcfc38d6849f6cfba63bc1e216b3e38f2870043254019bd8b4dcbf53c491",
+            "bytes": 3083
+        },
+        "src/Platform/ReleaseTransaction.php": {
+            "sha256": "21ec296cefc7c1163e37e4cf4641cba821eb59a1686bcbf093c7ad65ade09d92",
+            "bytes": 10991
+        },
+        "src/Platform/RequestContext.php": {
+            "sha256": "50fc170a3b58fc30f59bdf4cb7498bdecc0b7297335530679e125afc177ec239",
+            "bytes": 2191
+        },
+        "src/Platform/ServiceAuth.php": {
+            "sha256": "9e70c3441ec96b6ac668e4ac3deaf63a581aa39fbf77f8ff36802b3a9ea6d1bd",
+            "bytes": 4097
+        },
+        "src/Platform/ServiceBoundary.php": {
+            "sha256": "0400adac8af1de449560ab8089e729692150520be28f91b94a257f1394324051",
+            "bytes": 969
+        },
+        "src/Platform/Ui.php": {
+            "sha256": "7c8dfb0145523576415d85e2a42727e4f649b2f00161d3702475c99aba65140c",
+            "bytes": 4228
+        },
+        "src/Policies/CredentialPolicy.php": {
+            "sha256": "25ff3318f9e06a6c2c69fdb7c2daf986d1178cde452f07e841bda4107615e13c",
+            "bytes": 550
+        },
+        "src/Policies/SessionPolicy.php": {
+            "sha256": "98ebe0a958259c665ecdc63960aa079e4b3c443b8ca96f3803efccd86f8aa269",
+            "bytes": 752
+        },
+        "src/README.md": {
+            "sha256": "b3cb1adae2a67ee89d4f2c23dd832efbc82deb0ae494f86a541c2e894c0cda66",
+            "bytes": 1607
+        },
+        "src/RateLimit/FileWindowRateLimiter.php": {
+            "sha256": "5b65959b455dd7ca66db1b41d5ef863f18ec62e8ab8974a126db4eccfd52a022",
+            "bytes": 4341
+        },
+        "src/RateLimit/FixedWindowRateLimiter.php": {
+            "sha256": "589f76b12c3557f6fc19cf001f78362065406da7551a2add6f06cc397a85df5d",
+            "bytes": 1723
+        },
+        "src/RateLimit/InactiveRateLimiter.php": {
+            "sha256": "31f30bfcca774c01c17a432293172dfd168eb1948861c81e0eed5d3e4eca1974",
+            "bytes": 267
+        },
+        "src/RateLimit/RateLimitContext.php": {
+            "sha256": "24cd57834964ca93d9f3c13ec55f48cb8d16a25c57a9f7adb5ec7eff429dc706",
+            "bytes": 1582
+        },
+        "src/RateLimit/RateLimitDecision.php": {
+            "sha256": "59646c4471391d11b6d13981fb7d564ae4ea957d0e42c027d54fd6ff25f82c3e",
+            "bytes": 1120
+        },
+        "src/RateLimit/RateLimiterInterface.php": {
+            "sha256": "986fe79f1ac5419d5f174bcf1156661d549621254257d5dd7506b80f0c560fec",
+            "bytes": 177
+        },
+        "src/RateLimit/ResettableRateLimiterInterface.php": {
+            "sha256": "f04583851fd737ec37e196074b6276a0df4d8410d9b4b76eac83cca28ac64404",
+            "bytes": 303
+        },
+        "src/Repositories/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "src/Repositories/AuditLogRepositoryInterface.php": {
+            "sha256": "2d1913f15ceda6584bdd9e50af6584136399b3e116bab581d297fb4685c0a070",
+            "bytes": 265
+        },
+        "src/Repositories/Pdo/PdoAuditLogRepository.php": {
+            "sha256": "40d7a4f348d4dba4ece68486e08a4a83cb8fd4d75976b175ce58e6ca006102cd",
+            "bytes": 1704
+        },
+        "src/Repositories/Pdo/PdoPermissionRepository.php": {
+            "sha256": "6b58a2730de545a2cd71124b7a9e297ba7818748be7bc97afa781b33adb84f8c",
+            "bytes": 2293
+        },
+        "src/Repositories/Pdo/PdoRoleRepository.php": {
+            "sha256": "6c2d70434cd4d2a715faff082ead23b8524a4eeeac281ed36350301f3fbb334a",
+            "bytes": 1504
+        },
+        "src/Repositories/Pdo/PdoScopeRepository.php": {
+            "sha256": "7510f7434d752ed7b043a10dc59766934adbbf5daacfb04d1b67a3d059ffedd1",
+            "bytes": 1627
+        },
+        "src/Repositories/Pdo/PdoSessionRepository.php": {
+            "sha256": "b4c8b151627e88dba91233b1904e132803c7c481b09291e576c69796bd37eadd",
+            "bytes": 4423
+        },
+        "src/Repositories/Pdo/PdoUserRepository.php": {
+            "sha256": "226b8f834b3d53a96065a08349713182b299e70a8b8ef874b1f878d40a6caaeb",
+            "bytes": 1121
+        },
+        "src/Repositories/PermissionRepositoryInterface.php": {
+            "sha256": "f931c8561a4804eb6e8953c348c6721fe74f630213aab849c275cf23bd5815b1",
+            "bytes": 513
+        },
+        "src/Repositories/RoleRepositoryInterface.php": {
+            "sha256": "1197fa4f80d16e77a2f012e0eb52b2fb97b17abf9df50dfc86d4561ed9f30535",
+            "bytes": 355
+        },
+        "src/Repositories/SessionRepositoryInterface.php": {
+            "sha256": "832b2547a74f94d625af71e5095b1d276714c00c2937d745fd1b96d655f6799c",
+            "bytes": 1151
+        },
+        "src/Repositories/UserRepositoryInterface.php": {
+            "sha256": "d2a30ba49c7c420a2e9226937e04795fc595a16d71f55ba4abd71b6f28aa7126",
+            "bytes": 267
+        },
+        "src/Security/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "src/Security/ConstantTimeComparator.php": {
+            "sha256": "c0ca99698ec4fc96ef227583a147578259c6336f94e2e3c37e2e573ebd751f31",
+            "bytes": 336
+        },
+        "src/Security/HmacTokenHasher.php": {
+            "sha256": "7018e7149460fafdd3f567e1fddd1ad7ddf6fedf98b49bf5e67525793e89d859",
+            "bytes": 1072
+        },
+        "src/Security/InputNormalizer.php": {
+            "sha256": "9cbc1eeb4a74ed731cfdde62b3705171a0161fdd40312de29170042a2a2cf993",
+            "bytes": 212
+        },
+        "src/Security/PasswordHasherInterface.php": {
+            "sha256": "33b1a6b52c6036da9cff1c6dd525f2bf85262435bd4815f9cb8ef5e65264fc03",
+            "bytes": 295
+        },
+        "src/Security/PhpPasswordHasher.php": {
+            "sha256": "c7df4018640a5e365524d9829bf5a5f90481e147d6effcf480b7c70ab345990b",
+            "bytes": 1382
+        },
+        "src/Security/SecureTokenGenerator.php": {
+            "sha256": "14d7169348fb01c7eaecfb1123c0109fdd1fe1df38ad33c43e5f058e4522f4d4",
+            "bytes": 412
+        },
+        "src/Security/TokenHasherInterface.php": {
+            "sha256": "8587c33b36d04c690ddbcd97932af57891d015d703b524cfdeefe284e2e80600",
+            "bytes": 222
+        },
+        "src/Services/.gitkeep": {
+            "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+            "bytes": 1
+        },
+        "src/Services/AuditServiceInterface.php": {
+            "sha256": "411f58899bacacbe23fc70337835f2391ba5493982643690b2b1cd55ef94a14a",
+            "bytes": 268
+        },
+        "src/Services/AuthServiceInterface.php": {
+            "sha256": "39359ee4e2a7ab0ea3cdfe67a4f55a72dd6739fc2d003280af5ddf1e3d8808c3",
+            "bytes": 187
+        },
+        "src/Services/AuthorizationServiceInterface.php": {
+            "sha256": "19f09b2f94004dc47d0ed51713b7ef8d33a9756e841589cd720232436a1be77b",
+            "bytes": 197
+        },
+        "src/Services/CredentialPolicyInterface.php": {
+            "sha256": "c3118cbe1e0b1341dfc318ffb735e68700a0ea9726616c90d5ceb1e1a4478c17",
+            "bytes": 178
+        },
+        "src/Services/InactiveAuthService.php": {
+            "sha256": "94700e8adc7fc84c58e849369fadc8709067da9d7163946560d0d94cac916c79",
+            "bytes": 327
+        },
+        "src/Services/SessionPolicyInterface.php": {
+            "sha256": "1cdf765183efedd409e0f17d407f781af34dde341afb772bc4685acf877ca16f",
+            "bytes": 207
+        },
+        "src/Sso/UpdaterBridge.php": {
+            "sha256": "bd88bad072d6225ebff1a8c5054681866f594d5b8c5be44aec7a2cfd8386fe2d",
+            "bytes": 7223
+        },
+        "src/Sso/UserPortal.php": {
+            "sha256": "0cf79a1042b1818936366417a3863c50bf8f6d8ef8fb9701a91a4e870f0ba49c",
+            "bytes": 11533
+        },
+        "src/Support/ClockInterface.php": {
+            "sha256": "17f84c8dcbb229e7db7ba5ddcb39682797de9bff4af052bd1b205a47f295e70c",
+            "bytes": 166
+        },
+        "src/Support/IdGeneratorInterface.php": {
+            "sha256": "04959bbcf5ef540566d9f3310c5aecc85da64071cde8df1c38f0d0655a7485c0",
+            "bytes": 142
+        },
+        "src/Support/IniSize.php": {
+            "sha256": "ef67636f94c9b056468b543ef45708e0e134eba13897ec0e7853e1800fa24c72",
+            "bytes": 732
+        },
+        "src/Support/PersianDateTime.php": {
+            "sha256": "92f50d234017217709cc91487ca1f6c61826d13b9db14882c4f4bcf62596d8a9",
+            "bytes": 4136
+        },
+        "src/Support/RandomIdGenerator.php": {
+            "sha256": "e7261f32e8770c913da4c4ad357a1f00f80107a0fb106ee79eeef0039974cf3f",
+            "bytes": 380
+        },
+        "src/Support/SystemClock.php": {
+            "sha256": "356d61b2b8bd76bfde82ff23b9e2148062e150d8a9b939a6e96c7448ee3b5ea9",
+            "bytes": 290
+        },
+        "src/Update/ExtractedPackageCollectorV122.php": {
+            "sha256": "cfcedaaeeeec4d5916eedc16df48ca6c24c509d8d4350e9ca9ec31ded856dfe7",
+            "bytes": 2768
+        },
+        "src/Update/PackageIntegrity.php": {
+            "sha256": "d83925027a566564a032017c28ff204dffd8c918dcf111ebe53823a38ed0b074",
+            "bytes": 6913
+        },
+        "src/Update/UpdateTool.php": {
+            "sha256": "3b9460db5ae4a4f77b05736ffa051518fe6ed45d48d517238989fcfe61047bd6",
+            "bytes": 18793
+        },
+        "src/UseCases/Login/ActiveLoginUseCase.php": {
+            "sha256": "d54d0791d8ea609739a1b72e758a9dc404a11bf5e9d17c8df0f6252f22ed43fe",
+            "bytes": 7021
+        },
+        "src/UseCases/Login/DatabaseSessionIssuer.php": {
+            "sha256": "a465e05beafe29f78e8814a3f7d0d8809635ce51a8e24597f1c1585ba725235b",
+            "bytes": 3269
+        },
+        "src/UseCases/Login/InactiveLoginUseCase.php": {
+            "sha256": "f58f35c1247b09dbbeb6a720a577bb4bda5453e0ee2b52ce88293bd17ebf9c3b",
+            "bytes": 259
+        },
+        "src/UseCases/Login/InactiveSessionIssuer.php": {
+            "sha256": "13ce5c3e4ef89899088f6961e6632ae8e639ab04e55482f834c9ea9f9143c6b4",
+            "bytes": 327
+        },
+        "src/UseCases/Login/LoginFailureReason.php": {
+            "sha256": "75e7bb73dbe95fca8196758a50c9b30e7b413df8f8ce22f67dda896ea4f358e3",
+            "bytes": 351
+        },
+        "src/UseCases/Login/LoginRequest.php": {
+            "sha256": "a89802e37ec13148382255e6b0656c96a3b22d3b79f006b04de8a556334b0f4f",
+            "bytes": 1953
+        },
+        "src/UseCases/Login/LoginRequestValidator.php": {
+            "sha256": "9306bce1fa3f02311812951c0a101bd2b430fab710379db7826ab230e2e80066",
+            "bytes": 1895
+        },
+        "src/UseCases/Login/LoginResult.php": {
+            "sha256": "4ed8fdf888475d6d2b4605ec644bb106dc76f5abc8f13ade109f204429655d74",
+            "bytes": 2244
+        },
+        "src/UseCases/Login/LoginSecurityContext.php": {
+            "sha256": "97f0be47e58248015ef237d3881e4829f9542dcc3407c4c6033d58d3e0333966",
+            "bytes": 584
+        },
+        "src/UseCases/Login/LoginUseCaseInterface.php": {
+            "sha256": "c0d0429f86c5a7ac9fbfe93b9954e731b9e0fc696d5221d0f6808a2581ab6528",
+            "bytes": 174
+        },
+        "src/UseCases/Login/SessionIssueResult.php": {
+            "sha256": "93aa6136c62343fe4e9a31f33fb81e6a30cfd90bb1d19cb5744b44615c63411e",
+            "bytes": 1938
+        },
+        "src/UseCases/Login/SessionIssuerInterface.php": {
+            "sha256": "873fe5eedd8038e33e320ed7a408a52a11926b9b764100597f554c751525fe57",
+            "bytes": 234
+        },
+        "src/UseCases/Login/UnavailableLoginUseCase.php": {
+            "sha256": "f82ed5b096e439e075169c5f0d47eb9821a12bfa34b843f8bbea3f67f0c8386d",
+            "bytes": 265
+        },
+        "src/UseCases/Logout/ActiveLogoutUseCase.php": {
+            "sha256": "eaa5279c5b2e38f4528df29a1a73d15f3f4079fddac59732fed449201832f3fd",
+            "bytes": 4757
+        },
+        "src/UseCases/Logout/InactiveLogoutUseCase.php": {
+            "sha256": "c142b774787416c3ebd6e99525be84b56e895c51bb9a76f5682fcf71b76f222b",
+            "bytes": 265
+        },
+        "src/UseCases/Logout/LogoutRequest.php": {
+            "sha256": "d34e999e76307b86c241483bdc3a2199f4e7b12bac025f55b5c58dffe69ccd0a",
+            "bytes": 1698
+        },
+        "src/UseCases/Logout/LogoutRequestValidator.php": {
+            "sha256": "cc98082bb96eda2e7d26cb1333f514afeee0cf10d151b568e7b46788021bf31a",
+            "bytes": 582
+        },
+        "src/UseCases/Logout/LogoutResult.php": {
+            "sha256": "985bad4701162ee28ae2d79aaccafcfe5ad1b4b9d166c7ff277086e752dafe60",
+            "bytes": 2248
+        },
+        "src/UseCases/Logout/LogoutUseCaseInterface.php": {
+            "sha256": "b5b340a4444e239fcb9689136274484e7becd7b1383b869a0dace99da873863c",
+            "bytes": 178
+        },
+        "src/UseCases/Me/ActiveMeUseCase.php": {
+            "sha256": "0074678a185ef724ee09a02c1a3231278a36f8e868aead11269e41bdf1e13bc2",
+            "bytes": 3574
+        },
+        "src/UseCases/Me/InactiveMeUseCase.php": {
+            "sha256": "00613f204dd560dab53f28f50e3390e6748a8cc9aa3f8b00c19a120e12111911",
+            "bytes": 241
+        },
+        "src/UseCases/Me/MeRequest.php": {
+            "sha256": "2040d163e1931f2d2c4105b459a6e10132e1af094734b981b76255560cd07d2d",
+            "bytes": 1038
+        },
+        "src/UseCases/Me/MeRequestValidator.php": {
+            "sha256": "57aa5ad50fa1b3384003227e8d247f92eab6da4cc05e35fe15a7c7fc5105ecfe",
+            "bytes": 801
+        },
+        "src/UseCases/Me/MeResult.php": {
+            "sha256": "1e213cf448c4a817175de80bf864916d2c4c952c5cafd2508cd94cd6a035d1f5",
+            "bytes": 2244
+        },
+        "src/UseCases/Me/MeUseCaseInterface.php": {
+            "sha256": "3ed6ff57f650d5cf99048f067e70ca7a02a91d461bb9aa77ac4858aea34c119b",
+            "bytes": 162
+        },
+        "src/UseCases/Refresh/ActiveRefreshUseCase.php": {
+            "sha256": "b194baafbcfa26a5170ffdbe5d6a9e49b4d22fb6aff90c664d9cf32d193e54f3",
+            "bytes": 7017
+        },
+        "src/UseCases/Refresh/DatabaseSessionRotator.php": {
+            "sha256": "34ef596e67cc5021b93c113dd6123f7665434f589253fdd1796b516bdb7c5f92",
+            "bytes": 3770
+        },
+        "src/UseCases/Refresh/InactiveRefreshUseCase.php": {
+            "sha256": "bac1516ff9bfd5ea1730e075f17f1e4f1102f912c8cfc09e1bbf0927df3280c8",
+            "bytes": 271
+        },
+        "src/UseCases/Refresh/RefreshRequest.php": {
+            "sha256": "762956c97527ac834bac7cb00672d1e8dbc7697bed67cf932cd61a02a48c764a",
+            "bytes": 1579
+        },
+        "src/UseCases/Refresh/RefreshRequestValidator.php": {
+            "sha256": "6fcbb8d38824b526d0c09f51f260a0b8b47a9d15050ac25f969891ff4512796a",
+            "bytes": 1040
+        },
+        "src/UseCases/Refresh/RefreshResult.php": {
+            "sha256": "a4ffa95260e94e5efb51e448ba78a361b6a6f8ceb99919011f187a3f9ef5b8b1",
+            "bytes": 2094
+        },
+        "src/UseCases/Refresh/RefreshUseCaseInterface.php": {
+            "sha256": "1bbc380798d0c68119a39f4313581f053df3699443da3f8e92635a3502c848ae",
+            "bytes": 182
+        },
+        "src/UseCases/Refresh/SessionRotatorInterface.php": {
+            "sha256": "3dceccec85be0360c0f7ba9f45fd41cc5119eb7d531292d31bf7382ca67176c0",
+            "bytes": 535
+        },
+        "src/Validation/Rules/AllowedValueRule.php": {
+            "sha256": "14df1c550ac672186ba15cda239c1a27d6bd0e7414cd73c268ec4575af5e953b",
+            "bytes": 810
+        },
+        "src/Validation/Rules/BooleanRule.php": {
+            "sha256": "36a357c1f4c34645128296da6302954c8931145f241fdf40acf544e52494860d",
+            "bytes": 564
+        },
+        "src/Validation/Rules/EmailRule.php": {
+            "sha256": "803c91fba5b0f2aa33ee7ebbb9c9c961a7d0323e841824de790929632a6cd7be",
+            "bytes": 722
+        },
+        "src/Validation/Rules/MaxLengthRule.php": {
+            "sha256": "d6dec8e33b6f4673b9aa3e794e05dd806368ac18be72197cb1a8a5baf5d2a5b1",
+            "bytes": 701
+        },
+        "src/Validation/Rules/MinLengthRule.php": {
+            "sha256": "fd35d4cd06a966f3c01415d286e057cf650e572a0a54434d1db50c269655be63",
+            "bytes": 702
+        },
+        "src/Validation/Rules/RequiredRule.php": {
+            "sha256": "bd92027d60a39ba087be0b282c290070718396d742aef56a55d258bdfb40cb72",
+            "bytes": 659
+        },
+        "src/Validation/Rules/StringRule.php": {
+            "sha256": "b936df6c934335b8d1305a9bb21ebc85a4f49ae7bbf0b43f6620b5ff240944cd",
+            "bytes": 564
+        },
+        "src/Validation/Rules/ValidationRuleInterface.php": {
+            "sha256": "6166f8862801a52ad5fa6ada1ecd6579318b860f6789212e4e913d16a9ba369b",
+            "bytes": 300
+        },
+        "src/Validation/ValidationError.php": {
+            "sha256": "6d0ac8bb9407a070da3dd1a7179e683ef4cc49bbd99d635323b3c66979b3db8f",
+            "bytes": 775
+        },
+        "src/Validation/ValidationResult.php": {
+            "sha256": "5f2cef7296a4af780225a23294227e0fcad6c57d79dbf94f7970ca10e3249e64",
+            "bytes": 1287
+        },
+        "src/Validation/ValidatorInterface.php": {
+            "sha256": "25a226712aefbff2585710ea70c7a623fe373ffbd7dbd813cc2044ff904c4b5c",
+            "bytes": 226
+        }
+    }
+}

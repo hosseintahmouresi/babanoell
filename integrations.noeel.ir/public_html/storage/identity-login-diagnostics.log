@@ -1,0 +1,6 @@
+{"at":"2026-10-21T16:42:42+00:00","request_id":"integrations_59f0f2f045e6811fd3ece393","stage":"login","status":500,"code":"internal_error","transport":""}
+{"at":"2026-10-21T16:42:46+00:00","request_id":"integrations_b5a1034e4d1e2be9c11c4931","stage":"login","status":500,"code":"internal_error","transport":""}
+{"at":"2026-10-21T16:42:50+00:00","request_id":"integrations_3402de9b67618e42e1c569d2","stage":"login","status":500,"code":"internal_error","transport":""}
+{"at":"2026-10-21T16:42:55+00:00","request_id":"integrations_f7536d253f37a2af9503e79b","stage":"login","status":500,"code":"internal_error","transport":""}
+{"at":"2026-10-21T16:54:15+00:00","request_id":"integrations_0691447e2a89b29bda958814","stage":"login","status":503,"code":"service_auth_not_configured","transport":""}
+{"at":"2026-10-21T18:05:01+00:00","request_id":"integrations_60cc81e8304db63d32caa505","stage":"login","status":503,"code":"service_auth_not_configured","transport":""}
