@@ -1,0 +1,125 @@
+.xtra-fixed-mobile-nav {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 99999;
+	width: 100%;
+	display: none;
+	align-items: center;
+	background: #282828;
+}
+
+.xtra-fixed-mobile-nav > a {
+	width: 100%;
+	color: #fff;
+	padding: 10px;
+	display: flex;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column
+}
+
+.xtra-fixed-mobile-nav > a:hover,
+.xtra-fixed-mobile-nav > .xtra-active {
+	color: #ddd
+}
+
+.xtra-fixed-mobile-nav > a i {
+	font-size: 20px;
+	padding: 5px;
+	width: 1em;
+	height: 1em;
+	line-height: 1em;
+}
+
+.xtra-fixed-mobile-nav > a img {
+	padding: 5px
+}
+
+.xtra-fixed-mobile-nav > a span {
+	font-size: 11px;
+	display: none
+}
+
+.xtra-fixed-mobile-nav-title-column > a span,
+.xtra-fixed-mobile-nav-title-row > a span {
+	display: block
+}
+
+.xtra-fixed-mobile-nav-title-column > a {
+	flex-direction: column
+}
+
+.xtra-fixed-mobile-nav-title-row > a {
+	flex-direction: row
+}
+
+.xtra-fixed-mobile-nav-e {
+	position: relative;
+	flex: none;
+	top: -32px;
+	width: 1em;
+	height: 1em;
+	line-height: 1em;
+	text-align: center;
+	background: #ffc700;
+	color: #333;
+	border-radius: 100px;
+	cursor: pointer;
+	box-shadow: 0px 7px 20px #33333342;
+	padding: 18px
+}
+.xtra-fixed-mobile-nav-e.xtra-fixed-mobile-nav-e-active {
+	background: #fff
+}
+.xtra-fixed-mobile-nav-e > div {
+	font-family: "Tahoma";
+	display: none;
+	position: absolute;
+	top: -15px;
+	left: 50%;
+	width: 280px;
+	padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	box-sizing: border-box;
+	transform: translate(-50%, -100%);
+	box-shadow: 0px 7px 20px #33333342
+}
+.xtra-fixed-mobile-nav-e > div:before {
+	content: '';
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	z-index: -1;
+	left: 50%;
+	bottom: -5px;
+	background: inherit;
+	border-radius: 3px;
+	transform: translateX(-50%) rotate(45deg);
+	mask-image: radial-gradient(circle at 150% 150%, black 0%, black 65%, transparent 59%)
+}
+.xtra-fixed-mobile-nav-e > div a {
+	color: #333;
+	text-align: initial;
+	display: block;
+	box-sizing: border-box;
+	background: #3333330a;
+	border-radius: inherit;
+	margin: 0 0 5px;
+	padding: 12px 15px;
+	font-size: 13px;
+}
+.xtra-fixed-mobile-nav-e > div a:hover {
+	color: #fff;
+	background: #333;
+}
+
+@media screen and (max-width:768px) {
+
+	.xtra-fixed-mobile-nav {
+		display: flex
+	}
+
+}

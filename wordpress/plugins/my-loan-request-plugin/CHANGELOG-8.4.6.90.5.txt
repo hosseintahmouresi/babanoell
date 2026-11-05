@@ -1,0 +1,6 @@
+8.4.6.90.5 - Fix contract paragraph flow in management modal
+
+- Convert Hami retirees rich-text paragraphs to independent block DIVs in the rendered copy only.
+- Keep semantic clause splitting for inline "تبصره" and numbered 6-N subclauses.
+- Apply matching rules in admin AJAX preview, frontend preview, public contract viewer and isolated A4 printing.
+- No changes to stored text, signatures, contract digests, reissue data or loan data.

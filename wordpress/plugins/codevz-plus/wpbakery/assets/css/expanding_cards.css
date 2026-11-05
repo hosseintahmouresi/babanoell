@@ -1,0 +1,191 @@
+
+.codevz-plus-ex-cards {
+	display: flex;
+	overflow: hidden;
+	width: 100%;
+	height: 400px
+}
+.codevz-plus-ex-card {
+	position: relative;
+	overflow: hidden;
+	width: 60px;
+	margin: 10px;
+	background-size: auto 120%;
+	background-position: center;
+	cursor: pointer;
+	transition: .6s cubic-bezier(0.9, 0.05, 0.1, 1)
+}
+.codevz-plus-ex-card:not(.codevz-plus-ex-card-active) {
+	border-radius: 100px
+}
+.codevz-plus-ex-card:hover {
+	margin-top: 0px;
+	margin-bottom: 0px
+}
+.codevz-plus-ex-card-active {
+	flex-grow: 10000;
+	transform: scale(1);
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border-radius: 40px;
+	background-size: cover;
+	box-shadow: inset 0 -120px 120px -120px black, inset 0 -120px 120px -100px black
+}
+.codevz-plus-ex-cards-contain .codevz-plus-ex-card-active {
+	background-size: contain
+}
+.codevz-plus-ex-cards-auto .codevz-plus-ex-card-active {
+	background-size: auto
+}
+.codevz-plus-ex-cards-auto-2 .codevz-plus-ex-card-active {
+	background-size: auto 100%
+}
+.codevz-plus-ex-cards-auto-3 .codevz-plus-ex-card-active {
+	background-size: 100% 100%
+}
+.codevz-plus-ex-card .codevz-plus-ex-card-label {
+	display: flex;
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	height: 40px;
+	transition: all .3s ease-in-out
+}
+.codevz-plus-ex-card-active .codevz-plus-ex-card-label {
+	height: 60px;
+	bottom: 20px;
+	left: 20px
+}
+.codevz-plus-ex-cards-label-top .codevz-plus-ex-card-label {
+	bottom: auto;
+	top: 10px
+}
+.codevz-plus-ex-cards-label-top .codevz-plus-ex-card-active .codevz-plus-ex-card-label {
+	top: 20px
+}
+.rtl .codevz-plus-ex-card .codevz-plus-ex-card-label {
+	left: auto;
+	right: 10px
+}
+.rtl .codevz-plus-ex-card-active .codevz-plus-ex-card-label {
+	left: auto;
+	right: 20px
+}
+.codevz-plus-ex-card-info {
+	flex-direction: column;
+	justify-content: center;
+	margin-left: 20px;
+	margin-right: 20px;
+	color: #fff;
+	line-height: 1.2;
+	position: relative;
+	display: flex;
+	left: 200px;
+	opacity: 0;
+	transition: all .5s cubic-bezier(0.9, 0.05, 0.1, 1)
+}
+.codevz-plus-ex-card-active .codevz-plus-ex-card-info {
+	left: 0px;
+	opacity: 1
+}
+.rtl .codevz-plus-ex-card-info {
+	left: auto;
+	right: 200px
+}
+.rtl .codevz-plus-ex-card-active .codevz-plus-ex-card-info {
+	left: auto;
+	right: 0
+}
+.codevz-plus-ex-card-info strong {
+	font-size: 24px
+}
+.codevz-plus-ex-card-info small {
+	font-size: 16px;
+	margin-top: 2px
+}
+.codevz-plus-ex-card-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 40px;
+	height: 40px;
+	font-size: 18px;
+	border-radius: 100px;
+	background-color: white;
+	transition: .2s cubic-bezier(0.9, 0.05, 0.1, 1)
+}
+.codevz-plus-ex-card-active .codevz-plus-ex-card-icon {
+	min-width: 60px;
+	height: 60px;
+	font-size: 32px
+}
+
+.codevz-plus-ex-cards-round-2 .codevz-plus-ex-card:not(.codevz-plus-ex-card-active),
+.codevz-plus-ex-cards-round-2 .codevz-plus-ex-card-active {
+	border-radius: 20px
+}
+.codevz-plus-ex-cards-round-2 .codevz-plus-ex-card-icon {
+	border-radius: 15px
+}
+.codevz-plus-ex-cards-round-3 .codevz-plus-ex-card:not(.codevz-plus-ex-card-active),
+.codevz-plus-ex-cards-round-3 .codevz-plus-ex-card-active,
+.codevz-plus-ex-cards-round-3 .codevz-plus-ex-card-icon {
+	border-radius: 10px
+}
+.codevz-plus-ex-cards-round-4 .codevz-plus-ex-card:not(.codevz-plus-ex-card-active),
+.codevz-plus-ex-cards-round-4 .codevz-plus-ex-card-active,
+.codevz-plus-ex-cards-round-4 .codevz-plus-ex-card-icon {
+	border-radius: 5px
+}
+.codevz-plus-ex-cards-square .codevz-plus-ex-card:not(.codevz-plus-ex-card-active),
+.codevz-plus-ex-cards-square .codevz-plus-ex-card-active,
+.codevz-plus-ex-cards-square .codevz-plus-ex-card-icon {
+	border-radius: 0
+}
+
+@media screen and (max-width:768px) {
+
+	.codevz-plus-ex-card {
+		width: 30px;
+		margin: 5px
+	}
+
+	.codevz-plus-ex-card-icon {
+		min-width: 20px;
+		height: 20px;
+		font-size: 13px
+	}
+
+	.codevz-plus-ex-card:not(.codevz-plus-ex-card-active) .codevz-plus-ex-card-label {
+		transform: translate(-5px, 25px)
+	}
+
+	.rtl .codevz-plus-ex-card:not(.codevz-plus-ex-card-active) .codevz-plus-ex-card-label {
+		transform: translate(5px, 25px)
+	}
+
+	.codevz-plus-ex-cards-label-top .codevz-plus-ex-card:not(.codevz-plus-ex-card-active) .codevz-plus-ex-card-label {
+		transform: translate(-5px, -5px)
+	}
+
+	.rtl .codevz-plus-ex-cards-label-top .codevz-plus-ex-card:not(.codevz-plus-ex-card-active) .codevz-plus-ex-card-label {
+		transform: translate(5px, -5px)
+	}
+
+	.codevz-plus-ex-card-active .codevz-plus-ex-card-icon {
+		min-width: 30px;
+		height: 30px;
+		font-size: 16px
+	}
+	.codevz-plus-ex-card-info strong {
+		font-size: 16px
+	}
+	.codevz-plus-ex-card-info small {
+		font-size: 12px
+	}
+	.codevz-plus-ex-card-info {
+		margin-left: 10px;
+		margin-right: 10px
+	}
+
+}

@@ -1,0 +1,105 @@
+.mihanpanel-card-content
+    {
+        padding-top: 0 !important;
+    }
+    .mihanpanelpanel input{
+        border: 1px solid #dbe2e8 !important;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button
+    {
+        /* -webkit-appearance: none; */
+        display: none;
+    }
+    .mihanpanelpanel input#mw_phone_number
+    {
+        text-align: center;
+        letter-spacing: 10px;
+        height: 50px !important;
+        direction: ltr;
+    }
+    .mihanpanelpanel .mw_dynamic_code_input_box
+    {
+        margin: 0 auto;
+        width: 250px;
+        background: white;
+        border: 1px solid #dbe2e8 !important;
+        border-radius: 5px !important;
+        text-align: center;
+        cursor: text;
+    }
+    .mihanpanelpanel input.mw_dyna_code
+    {
+        width: 100%;
+        text-align: center;
+        border: none !important;
+        height: 50px !important;
+        box-shadow: none !important;
+        margin: 0 auto;
+        letter-spacing: 20px;
+        direction: ltr;
+    }
+    .mihanpanelpanel .mw_dynamic_code_wrapper > div
+    {
+        margin: 0;
+    }
+    .mihanpanelpanel .mw_dynamic_code_wrapper button
+    {
+        margin: 0;
+        padding: 10px 5%;
+        position: relative;
+        overflow: hidden;
+        direction: ltr;
+    }
+    .mihanpanelpanel .mw_dynamic_code_wrapper button[disabled]
+    {
+        opacity: .5;
+    }
+    .mihanpanelpanel .mw_dynamic_code_wrapper button:focus
+    {
+        color: white;
+    }
+    .mihanpanelpanel .mw_dynamic_code_wrapper button:disabled
+    {
+        background: #cccccc;
+        color: #828282;
+    }
+    .mihanpanelpanel .mw_dynamic_code_wrapper button #mw_submit_icon
+    {
+        position: absolute;
+        right: 10%;
+        top: 50%;
+        transform: translateY(-50%);
+        animation-name: show_submit_icon;
+        animation-duration: .5s;
+    }
+    .mihanpanelpanel .mw_dynamic_code_wrapper .display_none
+    {
+        display: none;
+    }
+    @keyframes show_submit_icon
+    {
+        0% {
+            right: -100%;
+        }
+        100% {
+            right: 10%;
+        }
+    }
+    @media screen and (max-width: 767px)
+    {
+        .mihanpanelpanel .mw_dynamic_code_wrapper
+        {
+            text-align: center;
+        }
+        .mihanpanelpanel input.mw_dyna_code
+        {
+            padding: 5px 50px;
+        }
+        .mihanpanelpanel input.mw_dyna_code,
+        .mihanpanelpanel .mw_dynamic_code_wrapper button
+        {
+            width: 200px;
+            margin: 0 auto;
+        }
+    }

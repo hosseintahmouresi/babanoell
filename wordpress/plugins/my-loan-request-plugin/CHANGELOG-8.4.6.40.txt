@@ -1,0 +1,12 @@
+My Loan Request 8.4.6.40 — GreenPay Supplied Sandbox Profile 1023
+
+- Added deterministic GreenPay sandbox profile for the supplied online-purchase 1023 test contract.
+- Sandbox Wallet password is forced to 1 at execution time without overwriting a stored production password.
+- Sandbox FromPocketNumber is forced to 1262010000002551 and ToPocketNumber is forced empty.
+- Sandbox OTP is forced to 123456.
+- sendPurchaseOTP is fully bypassed for the supplied test profile, including API-client defense in depth.
+- Test merchant Username/Terminal/Merchant ID and test host are aligned to the supplied merchant sheet; API Key remains secret and must be entered through WordPress settings, not hard-coded in the plugin.
+- Test Auth/Purchase paths follow the official sample plugin contract on the supplied sandbox host.
+- GreenPass/SMS credentials are explicitly separated from Wallet API credentials and are not sent to submit/transferByPocket.
+- Financial snapshot and runtime payload both enforce the fixed test FromPocket/ToPocket/OTP to prevent stale rows or UI edits from changing the sandbox contract.
+- Existing 8.4.6.39 financial race-condition, snapshot, unknown/reconciliation and redaction hardening is retained.

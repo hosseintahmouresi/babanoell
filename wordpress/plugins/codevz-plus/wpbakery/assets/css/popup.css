@@ -1,0 +1,103 @@
+.cz_popup_modal .cz_overlay {
+	z-index: 1
+}
+.cz_show_popup .cz_overlay {
+	display: block !important
+}
+.cz_popup_modal, 
+.compose-mode .vc_element.vc_cz_popup {
+	display: none;
+	z-index: 99999999;
+	position: fixed !important;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0
+}
+.compose-mode .vc_element.vc_cz_popup {
+	display: block !important;
+	position: relative !important
+}
+.cz_popup_in {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 500px;
+	min-width: 300px;
+	min-height: 30px;
+	max-height: 88%;
+	padding: 40px;
+	z-index: 2;
+	color: #111;
+	overflow: auto;
+	overflow-x: hidden;
+	scrollbar-width: thin;
+	background: #fff;
+	transform-origin: center;
+	animation: CubicInPopup .7s cubic-bezier(.180, .890, .330, 1) forwards
+}
+@keyframes CubicInPopup {
+	from {transform: translate(-50%, -50%) scale(0.9)}
+	to {transform: translate(-50%, -50%) scale(1)}
+}
+.vc_element.vc_cz_popup {
+	overflow: visible !important
+}
+.cz_popup_modal .cz_close_popup {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	margin: 0;
+	color: inherit;
+	font-size: 16px;
+	cursor: pointer;
+	z-index: 9;
+	width: 2em;
+	height: 2em;
+	padding: 2px;
+	line-height: 2em !important;
+	text-align: center;
+	border-radius: inherit;
+	transform-origin: center center;
+	transition: all .3s ease-in-out;
+}
+.rtl .cz_popup_modal .cz_close_popup {
+	left: 20px;
+	right: auto
+}
+.cz_popup_modal .cz_close_popup:hover {
+	opacity: .7
+}
+.xtra-popup {
+	cursor: pointer
+}
+.codevz-preview-popup {
+	display: table;
+	margin: 10px auto;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-size: 14px;
+	opacity: .5;
+	border: 1px dashed #33333382;
+	padding: 10px 25px;
+	border-radius: 5px
+}
+header .codevz-preview-popup,
+footer .codevz-preview-popup,
+div.woocommerce .codevz-preview-popup {
+	display: none
+}
+
+@media screen and (max-width:480px) {
+
+	.cz_popup_in {
+		max-height: 85%!important;
+		max-width: 90%!important;
+		min-width: 0;
+		animation: none;
+		box-sizing: border-box;
+		left: 5%;
+		transform: translate(0, -50%)
+	}
+
+}

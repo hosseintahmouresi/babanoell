@@ -1,0 +1,6 @@
+My Loan Request Plugin 8.4.6.42
+
+GreenPay readiness compatibility fix
+- isReady now uses the exact literal `test123` used by the supplied reference GreenPay plugin.
+- Readiness HTTP failures now include the HTTP status code in the admin notice.
+- Token acquisition behavior and financial transfer payloads are unchanged.

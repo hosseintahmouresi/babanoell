@@ -1,0 +1,8 @@
+Jabili 8.4.6.81
+
+- Restores plan-selected letterhead/footer images for every loan contract, including Hami retirees.
+- Current plan header/footer settings are authoritative in all previews/prints, including previously signed snapshots, without mutating signature data.
+- Keeps Hami Plus isolated from the Hami retirees repeating signature footer.
+- Unifies isolated printing for internal/admin/bank/public/applicant/acceptor loan-contract views and cooperation-contract public print.
+- Print engine snapshots relevant computed visual styles before isolation, then applies the dedicated A4 print stylesheet so typography, borders, spacing, grids/flex layouts and contract styling survive printing without importing destructive theme print rules.
+- Header/footer images are loaded at full contract width and waited for before print is invoked.

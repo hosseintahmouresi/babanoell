@@ -1,0 +1,30 @@
+Database audit summary used for 8.4.6.60
+
+Scope
+- Production dump supplied by the site owner was inspected offline.
+- No database dump was modified and no SQL import is required by this package.
+- Credentials, personal identifiers and provider secrets are intentionally excluded from this report.
+
+Historical digital loan contracts
+- 10 signed digital loan-contract proofs were found.
+- All 10 belong to the Hami Plus pensioner plan present in the dump.
+- Stored proof generations: 1 x version 1, 5 x version 2, 4 x version 3.
+- Older proofs do not all persist full buyer mobile or both party confirmation tokens.
+- Current runtime renderer therefore backfills compatible presentation without rewriting stored signed proofs.
+- All historical Hami Plus signed snapshots predate the requested official-gazette detail.
+- The newer Hami Plus snapshots also contain the former top label «پلتفرم/فروشنده/ضامن».
+- The supplied 18-month sample in the database already resolves to 1407/01/13; the compatibility layer still rechecks explicit structured dates at display time.
+- Two oldest signed proofs use an older, materially different contract body. Their original legal body remains preserved; only the common digital-signature certificate presentation is modernized unless a matching requested field exists in that historical body.
+
+SMS / OTP
+- The saved cooperation-sign OTP mapping is enabled and has a Body ID.
+- Its stored WordPress variable mapping currently contains the OTP code only; no explicit contract-link variable is saved.
+- The actual text/variable count configured inside the external MeliPayamak Body ID is not stored in WordPress and cannot be proven from the database dump alone.
+- 8.4.6.60 adds a dedicated loan-contract SMS pattern option. Recommended canonical mapping:
+  {0} = [[otp_code]]
+  {1} = [[contract_url]]
+- If the shared legacy Body ID is used, the plugin appends the full contract URL as the next parameter, but the external Body ID itself must accept that parameter.
+- A successful OTP verification currently returns «قرارداد با موفقیت امضا شد.» in the contract UI. A separate post-signing SMS is not configured in the supplied database.
+
+Integrity
+- Historical signature option values, stored contract HTML, stored digest and database schema are not rewritten by the compatibility layer.

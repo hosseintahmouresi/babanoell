@@ -1,0 +1,9 @@
+My Loan Request 8.4.6.86 — GreenPay Fresh Transfer SendTime / Clock Drift Fix
+
+- Fixed GreenPay transaction-window expiry after OTP entry. SendTime is no longer reused from the OTP-request moment.
+- transferByPocket now receives a freshly generated Tehran SendTime immediately before the transfer call.
+- The configured GreenPay clock correction (+30s by default per provider support) applies to every transfer SendTime and is read live, so existing transactions do not keep stale clock offsets from config snapshots.
+- Added exactly one automatic retry only for an explicit HTTP 4xx GreenPay time-window rejection; unknown/transport/5xx outcomes are never auto-retried.
+- If the second explicit time-window attempt is also rejected, the transaction safely returns to awaiting_otp so a fresh OTP can be requested in the same modal without page navigation.
+- OTP modal/AJAX flow from 8.4.6.85 remains unchanged.
+- Failed GreenPay retries now also run through the same AJAX modal instead of admin-post page reloads.

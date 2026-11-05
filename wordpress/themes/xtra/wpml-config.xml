@@ -1,0 +1,3209 @@
+<wpml-config>
+
+	<custom-types>
+		<custom-type translate="1">portfolio</custom-type>
+	</custom-types>
+
+	<taxonomies>
+		<taxonomy translate="1">portfolio_cat</taxonomy>
+		<taxonomy translate="1">portfolio_tags</taxonomy>
+	</taxonomies>
+
+	<elementor-widgets>
+		<widget name="cz_2_buttons">
+			<fields>
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINK">link</field>
+				<field editor_type="LINE">title2</field>
+				<field editor_type="LINK">link2</field>
+				<field editor_type="LINE">sep_text</field>
+			</fields>
+		</widget>
+		<widget name="cz_accordion">
+			<fields-in-item items_of="items">
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">subtitle</field>
+				<field editor_type="LINE">number</field>
+				<field editor_type="VISUAL">content</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_animated_text">
+			<fields>
+				<field editor_type="LINE">before_text</field>
+				<field editor_type="LINE">words</field>
+				<field editor_type="LINE">after_text</field>
+			</fields>
+		</widget>
+		<widget name="cz_attribute_box">
+			<fields>
+				<field editor_type="LINK">link</field>
+			</fields>
+			<fields-in-item items_of="attributes">
+				<field editor_type="VISUAL">content</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_banner">
+			<fields>
+				<field editor_type="LINE">title</field>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINK">link</field>
+			</fields>
+		</widget>
+		<widget name="cz_banner_group">
+			<fields-in-item items_of="items">
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINK">link</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_before_after">
+			<fields>
+				<field editor_type="LINE">title_2</field>
+				<field editor_type="LINE">title_1</field>
+			</fields>
+		</widget>
+		<widget name="cz_button">
+			<fields>
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">subtitle</field>
+				<field editor_type="LINK">link</field>
+				<field editor_type="LINE">alt_title</field>
+				<field editor_type="LINE">alt_subtitle</field>
+			</fields>
+		</widget>
+		<widget name="cz_carousel">
+			<fields-in-item items_of="items">
+				<field editor_type="VISUAL">content</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_content_box">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINK">link</field>
+				<field editor_type="LINE">back_title</field>
+				<field editor_type="AREA">back_content</field>
+				<field editor_type="LINE">back_btn_title</field>
+				<field editor_type="LINK">back_btn_link</field>
+			</fields>
+		</widget>
+		<widget name="cz_countdown">
+			<fields>
+				<field editor_type="LINE">year</field>
+				<field editor_type="LINE">day</field>
+				<field editor_type="LINE">hour</field>
+				<field editor_type="LINE">minute</field>
+				<field editor_type="LINE">second</field>
+				<field editor_type="LINE">plus</field>
+				<field editor_type="LINE">expire</field>
+			</fields>
+		</widget>
+		<widget name="cz_counter">
+			<fields>
+				<field editor_type="LINE">before</field>
+				<field editor_type="LINE">number</field>
+				<field editor_type="LINE">symbol</field>
+				<field editor_type="LINE">after</field>
+			</fields>
+		</widget>
+		<widget name="cz_free_position_element">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+			</fields>
+		</widget>
+		<widget name="cz_gallery">
+			<fields>
+				<field editor_type="LINE">browse_all</field>
+				<field editor_type="LINE">search_placeholder</field>
+			</fields>
+			<fields-in-item items_of="gallery2">
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">info</field>
+				<field editor_type="LINK">link</field>
+				<field editor_type="LINE">class</field>
+				<field editor_type="LINE">badge</field>
+			</fields-in-item>
+			<fields-in-item items_of="custom_items">
+				<field editor_type="VISUAL">content</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_google_map">
+			<fields>
+				<field editor_type="LINE">lat</field>
+				<field editor_type="LINE">long</field>
+				<field editor_type="LINE">infowindow</field>
+			</fields>
+		</widget>
+		<widget name="cz_gradient_title">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+			</fields>
+		</widget>
+		<widget name="cz_history_line">
+			<fields>
+				<field editor_type="LINE">year</field>
+				<field editor_type="VISUAL">content</field>
+			</fields>
+		</widget>
+		<widget name="cz_hotspot">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINE">number</field>
+			</fields>
+		</widget>
+		<widget name="cz_image">
+			<fields>
+				<field editor_type="LINK">link</field>
+				<field editor_type="LINE">tooltip</field>
+				<field editor_type="VISUAL">content</field>
+			</fields>
+		</widget>
+		<widget name="cz_login_register">
+			<fields>
+				<field editor_type="LINE">redirect</field>
+				<field editor_type="LINE">gdpr</field>
+				<field editor_type="LINE">gdpr_error</field>
+				<field editor_type="LINE">username</field>
+				<field editor_type="LINE">password</field>
+				<field editor_type="LINE">email</field>
+				<field editor_type="LINE">e_or_p</field>
+				<field editor_type="LINE">login_btn</field>
+				<field editor_type="LINE">register_btn</field>
+				<field editor_type="LINE">pass_r_btn</field>
+				<field editor_type="LINE">login_t</field>
+				<field editor_type="LINE">f_pass_t</field>
+				<field editor_type="LINE">register_t</field>
+				<field editor_type="LINE">logout</field>
+			</fields>
+		</widget>
+		<widget name="cz_logo">
+			<fields>
+	      <field editor_type="LINK">image</field>
+				<field editor_type="LINK">link</field>
+			</fields>
+		</widget>
+		<widget name="cz_menu">
+			<fields>
+				<field editor_type="LINE">menu_title</field>
+			</fields>
+		</widget>
+		<widget name="cz_music_player">
+			<fields-in-item items_of="tracks">
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">badge</field>
+				<field editor_type="LINE">mp3</field>
+				<field editor_type="LINE">icon_title</field>
+				<field editor_type="LINK">icon_link</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_news_ticker">
+			<fields>
+				<field editor_type="LINE">badge_title</field>
+				<field editor_type="LINE">s</field>
+			</fields>
+		</widget>
+		<widget name="cz_popup">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+			</fields>
+		</widget>
+		<widget name="cz_posts">
+			<fields-in-item items_of="custom_items">
+				<field editor_type="VISUAL">content</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_process_line_vertical">
+			<fields>
+				<field editor_type="LINE">number</field>
+				<field editor_type="VISUAL">content</field>
+			</fields>
+		</widget>
+		<widget name="cz_process_road">
+			<fields>
+				<field editor_type="LINE">number</field>
+			</fields>
+		</widget>
+		<widget name="cz_progress_bar">
+			<fields>
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">number</field>
+			</fields>
+		</widget>
+		<widget name="cz_quote">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINE">name</field>
+				<field editor_type="LINE">subname</field>
+			</fields>
+		</widget>
+		<widget name="cz_search">
+			<fields>
+				<field editor_type="LINE">search_placeholder</field>
+			</fields>
+		</widget>
+		<widget name="cz_service_box">
+			<fields>
+				<field editor_type="LINE">title</field>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINE">btn</field>
+				<field editor_type="LINK">link</field>
+				<field editor_type="LINE">number</field>
+			</fields>
+		</widget>
+		<widget name="cz_show_more_less">
+			<fields>
+				<field editor_type="LINE">more</field>
+				<field editor_type="LINE">less</field>
+			</fields>
+		</widget>
+		<widget name="cz_social_icons">
+			<fields-in-item items_of="social">
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINK">link</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_stylish_list">
+			<fields-in-item items_of="items">
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">subtitle</field>
+				<field editor_type="LINE">number</field>
+				<field editor_type="LINK">link</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_subscribe">
+			<fields>
+				<field editor_type="LINE">action</field>
+				<field editor_type="LINE">placeholder</field>
+				<field editor_type="LINE">name_attr</field>
+				<field editor_type="LINE">btn_title</field>
+			</fields>
+		</widget>
+		<widget name="cz_tabs">
+			<fields-in-item items_of="items">
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">subtitle</field>
+				<field editor_type="LINK">link</field>
+				<field editor_type="VISUAL">content</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_team">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINK">link</field>
+			</fields>
+			<fields-in-item items_of="social">
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINK">link</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_testimonials">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINE">name</field>
+				<field editor_type="LINE">subname</field>
+			</fields>
+		</widget>
+		<widget name="cz_text_marquee">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+			</fields>
+		</widget>
+		<widget name="cz_timeline">
+			<fields-in-item items_of="items">
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINE">date</field>
+			</fields-in-item>
+		</widget>
+		<widget name="cz_title">
+			<fields>
+				<field editor_type="VISUAL">content</field>
+				<field editor_type="LINK">link</field>
+				<field editor_type="LINE">number</field>
+				<field editor_type="LINE">number_after</field>
+				<field editor_type="LINE">shape_text</field>
+				<field editor_type="LINE">shape_text2</field>
+			</fields>
+		</widget>
+		<widget name="cz_video_popup">
+			<fields>
+				<field editor_type="LINE">video</field>
+				<field editor_type="LINE">title</field>
+				<field editor_type="LINE">subtitle</field>
+			</fields>
+		</widget>
+		<widget name="cz_working_hours">
+			<fields-in-item items_of="items">
+				<field editor_type="LINE">left_text</field>
+				<field editor_type="LINE">right_text</field>
+				<field editor_type="LINE">sub</field>
+				<field editor_type="LINE">badge</field>
+			</fields-in-item>
+		</widget>
+	</elementor-widgets>
+
+	<admin-texts>
+		<key name="codevz_theme_options">
+
+			<key name="logo" />
+			<key name="logo_2" />
+			<key name="layout" />
+			<key name="share_box_title" />
+			<key name="seo_desc" />
+			<key name="seo_keywords" />
+			<key name="pageloader_img" />
+			<key name="404_title" />
+			<key name="404_msg" />
+			<key name="404_btn" />
+			<key name="cookie_content" />
+			<key name="cookie_button" />
+			<key name="maintenance_message" />
+			<key name="_css_body_typo" />
+			<key name="_css_menu_nav_typo" />
+			<key name="_css_all_headlines" />
+			<key name="mobile_menu_text" />
+			<key name="layout_post" />
+			<key name="readmore" />
+			<key name="not_found" />
+			<key name="not_found_msg" />
+			<key name="layout_single_post" />
+			<key name="related_posts_post" />
+			<key name="prev_post" />
+			<key name="next_post" />
+			<key name="no_comment" />
+			<key name="comment" />
+			<key name="comments" />
+			<key name="cm_disabled" />
+			<key name="search_title_prefix" />
+			<key name="layout_search" />
+			<key name="title_portfolio" />
+			<key name="cat_title_portfolio" />
+			<key name="tags_title_portfolio" />
+			<key name="layout_portfolio" />
+			<key name="desc_portfolio" />
+			<key name="readmore_portfolio" />
+			<key name="related_posts_portfolio" />
+			<key name="prev_portfolio" />
+			<key name="next_portfolio" />
+			<key name="layout_product" />
+			<key name="woo_cart" />
+			<key name="woo_checkout" />
+			<key name="woo_continue_shopping" />
+			<key name="woo_no_products" />
+			<key name="fixed_side" />
+
+			<key name="social">
+				<key name="0">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="1">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="2">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="3">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="4">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="5">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="6">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="7">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="8">
+					<key name="link" />
+					<key name="title" />
+				</key>
+			</key>
+
+			<key name="mobile_fixed_navigation_items">
+				<key name="0">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="1">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="2">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="3">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="4">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="5">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="6">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="7">
+					<key name="link" />
+					<key name="title" />
+				</key>
+				<key name="8">
+					<key name="link" />
+					<key name="title" />
+				</key>
+			</key>
+
+			<key name="header_1_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_1_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_1_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_2_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_2_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_2_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_3_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_3_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_3_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_4_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_4_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_4_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_5_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_5_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="header_5_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="fixed_side_1_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="fixed_side_1_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="fixed_side_1_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="footer_1_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="footer_1_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="footer_1_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="footer_2_center">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="footer_2_left">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+			<key name="footer_2_right">
+				<key name="0">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="1">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="2">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="3">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="4">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="5">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+				<key name="6">
+					<key name="menu_title" />
+					<key name="menu_type" />
+					<key name="it_text" />
+					<key name="it_text_2" />
+					<key name="it_link" />
+					<key name="search_placeholder" />
+					<key name="btn_title" />
+					<key name="btn_link" />
+					<key name="image" />
+					<key name="image_link" />
+					<key name="shopcart_title" />
+					<key name="inview_position_widget" />
+					<key name="avatar_link" />
+					<key name="custom" />
+				</key>
+			</key>
+		</key>
+	</admin-texts>
+
+</wpml-config>

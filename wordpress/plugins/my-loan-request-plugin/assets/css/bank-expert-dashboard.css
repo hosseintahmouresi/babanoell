@@ -1,0 +1,115 @@
+/* Styles specific to the bank expert dashboard */
+.mlr-bank-expert-actions {
+    background-color: #f0f8ff;
+    border: 1px solid #bde0ff;
+    border-radius: var(--mlr-border-radius);
+    padding: 25px;
+    margin: 0 0 25px 0;
+}
+
+.mlr-bank-expert-actions .mlr-modal-subtitle {
+    color: #0056b3;
+    border-bottom-color: #0056b3;
+}
+
+.mlr-bank-expert-actions .mlr-form-group {
+    margin-bottom: 15px;
+}
+
+.mlr-bank-expert-actions label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.mlr-bank-expert-actions .mlr-select,
+.mlr-bank-expert-actions .mlr-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--mlr-border-color);
+    border-radius: var(--mlr-border-radius);
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.mlr-bank-expert-actions .mlr-btn {
+    background-color: var(--mlr-primary-color);
+    color: #fff;
+    border: none;
+    padding: 10px 25px;
+    font-size: 15px;
+    font-weight: 600;
+}
+.mlr-bank-expert-actions .mlr-btn:hover {
+    background-color: #0056b3;
+}
+.mlr-bank-expert-actions .mlr-btn:disabled {
+    background-color: var(--mlr-secondary-color);
+    cursor: not-allowed;
+}
+
+.mlr-action-message {
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: var(--mlr-border-radius);
+    display: none;
+    font-weight: 500;
+}
+.mlr-action-message.loading {
+    background-color: var(--mlr-light-gray);
+    color: var(--mlr-text-dark);
+}
+.mlr-action-message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.mlr-action-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* === MLR Frontend Modal (Scoped by ID) === */
+#mlr-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 22, 41, 0.7);
+    z-index: 99998;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+#mlr-details-content {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 92%;
+    max-width: 1100px;
+    max-height: 88vh;
+    overflow: auto;
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);
+    z-index: 99999;
+    direction: rtl;
+}
+#mlr-close-details {
+    position: sticky;
+    top: 0;
+    float: left;
+    margin: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 34px;
+    text-align: center;
+}
+#mlr-details-inner { padding: 16px 18px 20px; }
+#mlr-details-content a { cursor: pointer; }

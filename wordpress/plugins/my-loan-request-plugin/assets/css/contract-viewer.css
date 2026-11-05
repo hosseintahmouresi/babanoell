@@ -1,0 +1,703 @@
+/* Styles for the Frontend Cooperation Contract Viewer Page */
+body {
+    direction: rtl;
+    font-family: 'Yekan Bakh', 'YekanBakh', 'Yekan Bakh FaNum', 'Vazirmatn', 'Tahoma', sans-serif;
+    background-color: #f0f2f5; /* Light background for the page */
+    color: #333;
+    line-height: 1.6;
+}
+
+.mlr-contract-container {
+    max-width: 800px; /* Standard A4-like width */
+    margin: 30px auto;
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.mlr-contract-container.error {
+    background-color: #fff5f5;
+    border-color: #fecaca;
+    color: #b91c1c;
+    text-align: center;
+    padding: 30px;
+}
+
+.mlr-contract-header,
+.mlr-contract-footer {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.mlr-contract-footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+
+.mlr-contract-header img,
+.mlr-contract-footer img {
+    max-width: 100%;
+    height: auto;
+}
+
+.mlr-contract-body {
+    line-height: 1.8;
+    font-size: 14px; /* Slightly larger for readability */
+    color: #2d3748; /* Darker text */
+    text-align: justify;
+}
+
+.mlr-contract-body p { margin-bottom: 1.5em; }
+.mlr-contract-body h1, .mlr-contract-body h2, .mlr-contract-body h3 { margin-top: 1.8em; margin-bottom: 0.8em; font-weight: 700; color: #1a202c; }
+.mlr-contract-body strong, .mlr-contract-body b { font-weight: 700; }
+
+.mlr-contract-actions {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px dashed #d1d5db;
+}
+
+.mlr-print-button {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px; /* Slightly smaller padding */
+    background-color: #4b5563; /* Gray */
+    color: #fff; border: none; border-radius: 6px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: background-color 0.2s; font-family: inherit;
+}
+.mlr-print-button:hover { background-color: #374151; }
+.mlr-print-button .dashicons { font-size: 18px; line-height: 1; }
+
+/* === START: Signature Section Styles === */
+.mlr-contract-signature-section {
+    margin-top: 40px;
+    padding: 25px;
+    background-color: #f7fafc; /* Light blue/gray background */
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.mlr-sign-button,
+.mlr-verify-button {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 25px;
+    background-color: #34d399; /* Emerald green */
+    color: #064e3b; /* Dark green text */
+    border: none; border-radius: 6px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s; font-family: inherit;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.mlr-sign-button .dashicons { font-size: 20px; }
+.mlr-sign-button:hover,
+.mlr-verify-button:hover {
+    background-color: #10b981;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.mlr-verify-button {
+    background-color: #2563eb; /* Blue */
+    color: #fff;
+    font-size: 15px;
+    padding: 10px 20px;
+}
+.mlr-verify-button:hover { background-color: #1d4ed8; }
+
+#mlr-sign-otp-view p {
+    margin-bottom: 15px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.mlr-otp-input-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.mlr-otp-input {
+    width: 150px;
+    padding: 10px 15px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 20px; /* Larger font for OTP */
+    text-align: center;
+    letter-spacing: 5px; /* Space out digits */
+    font-family: monospace;
+    direction: ltr; /* Ensure LTR for numbers */
+}
+.mlr-otp-input:focus {
+    border-color: #4c51bf;
+    box-shadow: 0 0 0 3px rgba(76, 81, 191, 0.2);
+    outline: none;
+}
+.mlr-otp-input::placeholder {
+    letter-spacing: normal;
+    color: #a0aec0;
+}
+
+.mlr-otp-timer-resend {
+    font-size: 13px;
+    color: #718096;
+}
+#mlr-otp-timer { margin-left: 10px; }
+.mlr-resend-button {
+    background: none;
+    border: none;
+    color: #2563eb;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 13px;
+    padding: 0;
+}
+.mlr-resend-button:disabled {
+    color: #a0aec0;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.mlr-sign-feedback {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    display: none; /* Hidden by default */
+}
+.mlr-sign-feedback.loading { background-color: #ebf4ff; color: #2c5282; border: 1px solid #bee3f8; }
+.mlr-sign-feedback.success { background-color: #f0fff4; color: #2f855a; border: 1px solid #9ae6b4; }
+.mlr-sign-feedback.error { background-color: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+.mlr-sign-feedback.info { background-color: #f7fafc; color: #718096; border: 1px solid #e2e8f0; }
+
+/* Styles for Signed Contract Message */
+.mlr-contract-signed-notice {
+    padding: 30px;
+    background-color: #f0fff4; /* Light green */
+    border: 1px solid #9ae6b4; /* Green border */
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.mlr-signed-icon {
+    display: inline-block;
+    width: 50px; height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: #34d399; /* Emerald green */
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.mlr-contract-signed-notice h2 {
+    margin-top: 0; margin-bottom: 10px;
+    color: #2f855a; /* Dark green */
+    font-size: 20px;
+}
+.mlr-contract-signed-notice p {
+    color: #38a169; /* Medium green */
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+.mlr-contract-signed-notice strong { color: #276749; /* Darker green */ }
+.mlr-contract-signed-notice .mlr-print-button { margin-top: 10px; }
+
+
+/* === END: Signature Section Styles === */
+
+
+/* Print Styles */
+.mlr-print-layout-table { width: 100%; border-collapse: collapse; }
+.mlr-print-layout-table td { padding: 0; border: none; vertical-align: top; }
+
+@media print {
+    body { background-color: #fff; margin: 0; padding: 0; font-size: 10pt; }
+    .mlr-contract-container { max-width: 100%; margin: 0; box-shadow: none; border: none; padding: 1cm; }
+    .mlr-contract-actions, .mlr-contract-signature-section { display: none !important; } /* Hide actions and signature */
+
+    /* New styles for repeating header/footer */
+    .mlr-print-layout-table { page-break-inside: auto; }
+    .mlr-print-layout-table thead { display: table-header-group; }
+    .mlr-print-layout-table tfoot { display: table-footer-group; }
+    .mlr-print-layout-table tr { page-break-inside: auto; }
+    .mlr-print-layout-table .mlr-contract-header, .mlr-print-layout-table .mlr-contract-footer {
+        text-align: center;
+        width: 100%;
+        margin: 0;
+    }
+    .mlr-print-layout-table .mlr-contract-header img, .mlr-print-layout-table .mlr-contract-footer img { max-width: 100%; height: auto; }
+    /* End new styles */
+
+    .mlr-contract-body { font-size: 10pt; line-height: 1.6; }
+    h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
+    p, blockquote { orphans: 3; widows: 3; }
+    table:not(.mlr-print-layout-table) { page-break-inside: avoid; } /* Avoid breaking other tables */
+    .mlr-contract-signed-notice { background-color: #e6fffa !important; border: 1px solid #b2f5ea !important; color: #234e52 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } /* Lighter green for print */
+    .mlr-signed-icon { background-color: #4fd1c5 !important; color: #fff !important; }
+    .mlr-contract-signed-notice h2 { color: #234e52 !important; }
+    .mlr-contract-signed-notice p { color: #285e61 !important; }
+    .mlr-contract-signed-notice strong { color: #1d4044 !important; }
+}
+
+/* === 8.4.6.53: Unified loan-contract typography and structured legal layout === */
+.mlr-contract-container,
+.mlr-contract-body,
+.mlr-contract-document,
+.mlr-contract-signature-section,
+.mlr-loan-contract-sign-box,
+.mlr-contract-signed-notice {
+    font-family: 'Yekan Bakh', 'YekanBakh', 'Yekan Bakh FaNum', 'Vazirmatn', 'Tahoma', sans-serif !important;
+}
+.mlr-contract-body {
+    direction: rtl;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 2.05;
+}
+.mlr-contract-document {
+    direction: rtl;
+    color: #172033;
+    font-size: 13.5px;
+    line-height: 2.05;
+}
+.mlr-contract-document-head {
+    border: 1px solid #dbe3ee;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    background: #fbfdff;
+    page-break-inside: avoid;
+}
+.mlr-contract-document-head h1 {
+    margin: 8px 0 12px !important;
+    text-align: center;
+    font-size: 22px !important;
+    line-height: 1.5;
+    color: #0f172a !important;
+}
+.mlr-contract-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12.5px;
+}
+.mlr-contract-parties-bar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+.mlr-contract-parties-bar span {
+    display: block;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 11.5px;
+    line-height: 1.7;
+}
+.mlr-contract-document h2 {
+    margin: 24px 0 10px !important;
+    padding: 8px 11px 8px 8px;
+    border-right: 4px solid #315b9d;
+    background: #f6f9fd;
+    border-radius: 7px;
+    color: #19345d !important;
+    font-size: 15.5px !important;
+    line-height: 1.7;
+    page-break-after: avoid;
+}
+.mlr-contract-document h3 {
+    margin: 12px 0 10px !important;
+    color: #334155 !important;
+    font-size: 13.5px !important;
+    line-height: 1.8;
+    page-break-after: avoid;
+}
+.mlr-contract-document p {
+    margin: 0 0 9px !important;
+    text-align: justify;
+    line-height: 2.05;
+}
+.mlr-contract-value {
+    display: inline;
+    font-weight: 700;
+    color: #111827;
+    border-bottom: 1px dotted #94a3b8;
+    padding: 0 2px;
+}
+.mlr-contract-subsection {
+    margin-top: 26px;
+    padding-top: 4px;
+    border-top: 2px solid #dbe3ee;
+}
+.mlr-contract-formula {
+    direction: ltr;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 17px;
+    margin: 12px auto 8px;
+    padding: 12px 16px;
+    border: 1px solid #dbe3ee;
+    background: #fafcff;
+    border-radius: 8px;
+    max-width: 560px;
+}
+.mlr-contract-formula-legend {
+    text-align: center !important;
+    font-size: 11.5px;
+    color: #475569;
+}
+.mlr-contract-acknowledgement {
+    margin-top: 16px !important;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fcfcfd;
+}
+.mlr-contract-aml {
+    font-size: 12.5px;
+}
+.mlr-digital-signature-stack {
+    display: grid;
+    gap: 10px;
+    margin-top: 26px;
+    page-break-inside: avoid;
+}
+.mlr-digital-signature-stack .mlr-digital-signature-certificate {
+    margin-top: 0;
+}
+.mlr-digital-signature-company {
+    border-color: #93b4d7;
+    background: #f5f9fd;
+    color: #234f78;
+}
+.mlr-digital-signature-company .mlr-digital-signature-icon {
+    background: #315f8b;
+}
+.mlr-digital-signature-company .mlr-digital-signature-content > strong {
+    color: #234f78;
+}
+.mlr-digital-signature-company .mlr-digital-signature-meta {
+    color: #466a8d;
+}
+.mlr-digital-signature-certificate {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-top: 26px;
+    padding: 16px 18px;
+    border: 1.5px solid #86cda0;
+    border-radius: 12px;
+    background: #f3fbf5;
+    color: #185b32;
+    page-break-inside: avoid;
+}
+.mlr-digital-signature-icon {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1f8f4e;
+    color: #fff;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 1;
+}
+.mlr-digital-signature-content {
+    flex: 1;
+    min-width: 0;
+}
+.mlr-digital-signature-content > strong {
+    display: block;
+    color: #12592d;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+.mlr-digital-signature-content > span {
+    display: block;
+    line-height: 1.9;
+}
+.mlr-digital-signature-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 7px;
+    font-size: 11.5px;
+    color: #3f684e;
+}
+@media (max-width: 700px) {
+    .mlr-contract-container { padding: 22px 16px; margin: 14px auto; }
+    .mlr-contract-parties-bar { grid-template-columns: 1fr; }
+    .mlr-contract-document-head h1 { font-size: 19px !important; }
+    .mlr-contract-document { font-size: 13px; }
+}
+@media print {
+    .mlr-contract-container,
+    .mlr-contract-body,
+    .mlr-contract-document,
+    .mlr-digital-signature-certificate {
+        font-family: 'Yekan Bakh', 'YekanBakh', 'Yekan Bakh FaNum', 'Vazirmatn', 'Tahoma', sans-serif !important;
+    }
+    .mlr-contract-document-head,
+    .mlr-contract-document h2,
+    .mlr-contract-formula,
+    .mlr-contract-acknowledgement,
+    .mlr-digital-signature-certificate {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .mlr-contract-document h2 { page-break-after: avoid; }
+    .mlr-contract-document p { orphans: 3; widows: 3; }
+    .mlr-contract-parties-bar { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* === 8.4.6.59: stable LTR identity/token rendering inside RTL signature blocks === */
+.mlr-contract-mobile-ltr,
+.mlr-contract-token-ltr {
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    display: inline-block;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Hami retirees contract - stable screen/print layout (8.4.6.75) */
+.mlr-hami-retirees-contract{
+    direction:rtl;
+    text-align:justify;
+    font-family:'Yekan Bakh','YekanBakh','Vazirmatn',Tahoma,Arial,sans-serif;
+    color:#111;
+    font-size:13px;
+    line-height:2;
+    max-width:190mm;
+    margin:0 auto;
+    box-sizing:border-box;
+}
+.mlr-hami-retirees-contract p{
+    margin:0 0 9px;
+    text-align:justify;
+    text-justify:inter-word;
+    word-break:normal;
+    overflow-wrap:normal;
+}
+.mlr-hami-retirees-contract h1{font-size:20px;line-height:1.55;margin:0;text-align:center;font-weight:800}
+.mlr-hami-retirees-contract h2{font-size:14px;line-height:1.75;margin:14px 0 6px;font-weight:800;color:#111;border:0;padding:0;background:none;break-after:avoid;page-break-after:avoid}
+.mlr-retirees-contract-head{margin-bottom:14px;break-inside:avoid;page-break-inside:avoid}
+.mlr-retirees-header-grid{
+    display:grid;
+    grid-template-columns:minmax(145px,170px) minmax(260px,1fr) minmax(145px,170px);
+    align-items:start;
+    gap:14px;
+    direction:ltr;
+}
+.mlr-retirees-header-grid>h1{grid-column:2;direction:rtl;align-self:center}
+.mlr-retirees-contract-meta{
+    grid-column:1;
+    direction:rtl;
+    justify-self:start;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    font-size:12px;
+    text-align:right;
+    line-height:1.7;
+}
+.mlr-retirees-logo-wrap{grid-column:3;direction:rtl;justify-self:end;text-align:right;align-self:start}
+.mlr-retirees-fintech-logo{display:block;max-width:150px;max-height:74px;width:auto;height:auto;object-fit:contain;margin:0 0 0 auto}
+.mlr-hami-retirees-contract .mlr-contract-value{font-weight:800;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.mlr-retirees-formula{display:flex;align-items:center;justify-content:center;gap:12px;margin:9px auto 12px;max-width:760px;text-align:center;font-size:12px;line-height:1.55;break-inside:avoid;page-break-inside:avoid}
+.mlr-retirees-formula .mlr-formula-label{white-space:nowrap;font-weight:700}
+.mlr-retirees-formula .mlr-formula-fraction{display:inline-flex;flex-direction:column;align-items:stretch;max-width:100%}
+.mlr-retirees-formula .mlr-formula-num{padding:0 8px 5px;border-bottom:1px solid #111}
+.mlr-retirees-formula .mlr-formula-den{padding:5px 8px 0}
+.mlr-retirees-page-footer{margin-top:28px;background:#fff;break-inside:avoid;page-break-inside:avoid}
+.mlr-print-only-contract-footer{display:none}
+.mlr-retirees-signature-table{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:0 0 10px;text-align:center;direction:rtl}
+.mlr-retirees-signature-table>div{min-height:76px;border-top:1px solid #777;padding-top:7px;display:flex;flex-direction:column;gap:2px;line-height:1.55}
+.mlr-retirees-address-footer{border:1px solid #222;padding:7px 10px;text-align:center;font-weight:700;line-height:1.55}
+@media(max-width:700px){
+    .mlr-retirees-header-grid{grid-template-columns:1fr;gap:10px;direction:rtl}
+    .mlr-retirees-contract-meta,.mlr-retirees-header-grid>h1,.mlr-retirees-logo-wrap{grid-column:1;justify-self:stretch;text-align:center}
+    .mlr-retirees-contract-meta{align-items:center;order:3}
+    .mlr-retirees-logo-wrap{order:1;text-align:center}
+    .mlr-retirees-header-grid>h1{order:2}
+    .mlr-retirees-fintech-logo{max-width:130px;margin:0 auto}
+    .mlr-retirees-signature-table{grid-template-columns:1fr;gap:14px}
+    .mlr-retirees-formula{font-size:11px;overflow-x:auto;justify-content:flex-start}
+}
+@media print{
+    .mlr-hami-retirees-contract{
+        page:auto;
+        max-width:none;
+        width:auto;
+        margin:0;
+        padding:0;
+        font-size:9.3pt;
+        line-height:1.67;
+    }
+    .mlr-hami-retirees-contract p{margin:0 0 4px;orphans:2;widows:2}
+    .mlr-hami-retirees-contract h1{font-size:14pt;line-height:1.35}
+    .mlr-hami-retirees-contract h2{font-size:10pt;line-height:1.45;margin:7px 0 3px;break-after:avoid;page-break-after:avoid}
+    .mlr-retirees-contract-head{margin-bottom:6px}
+    .mlr-retirees-header-grid{grid-template-columns:37mm 1fr 37mm;gap:4mm;align-items:start}
+    .mlr-retirees-contract-meta{font-size:8.7pt;line-height:1.45;gap:1mm}
+    .mlr-retirees-fintech-logo{max-width:34mm;max-height:18mm}
+    .mlr-retirees-formula{font-size:8.2pt;line-height:1.35;margin:4px auto 6px;gap:5px}
+    .mlr-retirees-formula .mlr-formula-num{padding:0 4px 2px}
+    .mlr-retirees-formula .mlr-formula-den{padding:2px 4px 0}
+    .mlr-retirees-page-footer-screen{display:none!important}
+    .mlr-print-only-contract-footer{display:block!important;background:#fff;padding-top:2mm;break-inside:avoid;page-break-inside:avoid}
+    .mlr-retirees-signature-table{grid-template-columns:repeat(3,minmax(0,1fr));gap:8mm;margin:0 0 2mm;direction:rtl}
+    .mlr-retirees-signature-table>div{min-height:16mm;padding-top:1.5mm;font-size:8.2pt;line-height:1.35;gap:.5mm}
+    .mlr-retirees-address-footer{margin:0;padding:1.3mm 2mm;font-size:8pt;line-height:1.3;border:1px solid #222}
+    .mlr-retirees-page-footer,.mlr-retirees-formula{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+
+/* 8.4.6.81: plan-selected contract media must be visible in every preview. */
+.mlr-print-layout-table .mlr-print-header,
+.mlr-print-layout-table .mlr-print-footer,
+.mlr-print-layout-table .mlr-contract-header,
+.mlr-print-layout-table .mlr-contract-footer { width:100%; text-align:center; background:#fff; }
+.mlr-print-layout-table .mlr-contract-media-image,
+.mlr-print-layout-table .mlr-print-header > img,
+.mlr-print-layout-table .mlr-print-footer > img,
+.mlr-print-layout-table .mlr-contract-header > img,
+.mlr-print-layout-table .mlr-contract-footer > img { display:block; width:100%; max-width:100%; height:auto; margin:0 auto; object-fit:contain; }
+
+/* 8.4.6.84: a plan-selected footer image replaces Hami's built-in signature/address footer. */
+.mlr-hami-retirees-contract.mlr-hami-custom-footer-active .mlr-retirees-page-footer-screen{display:none!important;}
+
+/* 8.4.6.90.1: scoped, readable compact rhythm for the Hami retirees legal contract.
+   Overrides the generic .mlr-contract-document h2/p !important rules without
+   changing contract terms, legal variables, signing, or repeating print media. */
+.mlr-contract-document.mlr-hami-retirees-contract {
+    font-size: 13.5px !important;
+    line-height: 1.78 !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract p {
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    font-size: inherit !important;
+    line-height: 1.78 !important;
+    text-align: justify !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract h2 {
+    margin: 10px 0 4px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: #111 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1.48 !important;
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract .mlr-retirees-formula {
+    margin: 7px auto 8px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+}
+@media print {
+    .mlr-contract-document.mlr-hami-retirees-contract {
+        font-size: 9.5pt !important;
+        line-height: 1.56 !important;
+    }
+    .mlr-contract-document.mlr-hami-retirees-contract p {
+        margin: 0 0 1.1mm !important;
+        line-height: 1.56 !important;
+        orphans: 2;
+        widows: 2;
+    }
+    .mlr-contract-document.mlr-hami-retirees-contract h2 {
+        margin: 2.3mm 0 0.8mm !important;
+        font-size: 9.7pt !important;
+        line-height: 1.35 !important;
+    }
+    .mlr-contract-document.mlr-hami-retirees-contract .mlr-retirees-formula {
+        margin: 2mm auto 2.2mm !important;
+        padding: 0 !important;
+        font-size: 8pt !important;
+        line-height: 1.3 !important;
+    }
+}
+
+
+/* 8.4.6.90.2: Hami retirees contract: each <p> must be a real block, not
+   an inline run-on of adjacent clauses.  <p> provides a line break itself;
+   avoid extra <br> tags that would inflate A4 print pages. */
+.mlr-contract-document.mlr-hami-retirees-contract > p,
+.mlr-contract-document.mlr-hami-retirees-contract p {
+    display: block !important;
+    float: none !important;
+    width: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract > h1,
+.mlr-contract-document.mlr-hami-retirees-contract > h2,
+.mlr-contract-document.mlr-hami-retirees-contract > h3 {
+    display: block !important;
+    float: none !important;
+}
+@media print {
+    .mlr-contract-document.mlr-hami-retirees-contract > p,
+    .mlr-contract-document.mlr-hami-retirees-contract p {
+        display: block !important;
+        float: none !important;
+        width: auto !important;
+        margin-top: 0 !important;
+        margin-bottom: 1.1mm !important;
+    }
+}
+
+/* 8.4.6.90.4 - Reliable contract paragraph flow in preview and print. */
+.mlr-contract-body .mlr-contract-document > p,
+.mlr-contract-body .mlr-contract-document p,
+.mlr-loan-contract-review-print .mlr-contract-document > p {
+    display: block !important;
+    float: none !important;
+    clear: none !important;
+}
+
+
+/* 8.4.6.90.5: actual block elements for Hami retirees contract paragraphs.
+   Display-only HTML conversion avoids relying on theme/admin styling for <p>. */
+.mlr-contract-document.mlr-hami-retirees-contract .mlr-contract-paragraph {
+    display: block !important;
+    float: none !important;
+    clear: both !important;
+    box-sizing: border-box !important;
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    width: auto !important;
+    max-width: 100% !important;
+    line-height: 1.78 !important;
+    text-align: justify !important;
+    white-space: normal !important;
+}
+@media print {
+    .mlr-contract-document.mlr-hami-retirees-contract .mlr-contract-paragraph {
+        display: block !important;
+        clear: both !important;
+        margin-bottom: 1.1mm !important;
+        line-height: 1.56 !important;
+    }
+}

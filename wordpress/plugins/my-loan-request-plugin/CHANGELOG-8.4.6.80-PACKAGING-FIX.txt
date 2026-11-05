@@ -1,0 +1,4 @@
+8.4.6.80 packaging correction
+- Plugin archive root restored to: my-loan-request-plugin/
+- Prevents WordPress from installing the update as a second plugin folder (j84680_plugin/)
+- No business logic changes compared with 8.4.6.80 custom request ID step build.

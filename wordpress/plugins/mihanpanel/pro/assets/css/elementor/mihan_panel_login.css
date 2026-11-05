@@ -1,0 +1,146 @@
+.mpanel-login-element .mpanel-before-login a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    outline: 0;
+    border: 0;
+    padding: 10px;
+    border-radius: 7px;
+    will-change: box-shadow, transform;
+    background-color: #354ac4;
+    box-shadow: 0 0.01em 0.01em rgb(45 35 66 / 40%), 0 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0 -0.01em 0 rgb(58 65 111 / 50%);
+    color: #fff;
+    transition: box-shadow 0.15s ease, transform 0.15s ease, ease .15s;
+}
+
+.mpanel-login-element .mpanel-before-login a .btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mpanel-login-element .mpanel-before-login a svg {
+    width: 15px;
+    fill: #fff;
+}
+
+.mpanel-login-element .mpanel-before-login a i {
+    font-size: 15px;
+    color: #fff;
+}
+
+.mpanel-login-element .mpanel-profile-button-wrap .mpanel-profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    color: #fff;
+    background-color: #ea5455;
+    box-shadow: 0 2px 7px #ea545561;
+    transition: ease .2s;
+}
+
+.mpanel-login-element .mpanel-profile-button img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50px;
+}
+
+.mpanel-login-element .mpanel-profile-button > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.mpanel-login-element .mpanel-profile-button .pb-details {
+    font-size: 14px;
+}
+
+.mpanel-login-element .mpanel-profile-button-wrap {
+    position: relative;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 99999;
+    width: 220px;
+    padding-top: 7px;
+    opacity: 0;
+    pointer-events: none;
+    transition: ease .15s;
+    transform: translateY(15px);
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown.menu-position-right {
+    left: auto;
+    right: 0;
+}
+
+.mpanel-login-element .mpanel-profile-button-wrap:hover .mpanel-profile-button-dropdown {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown .pb-dropdown-content {
+    background-color: #fff;
+    box-shadow: 0 7px 15px #00000024;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown .pb-dropdown-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown a {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: #333;
+    gap: 7px;
+    padding: 5px;
+    font-size: 14px;
+    transition: ease .1s;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown a i {
+    font-size: 15px;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown a :is(img, svg) {
+    width: 15px;
+    height: 15px;
+}
+
+.mpanel-login-element .mpanel-profile-button-wrap:hover .mpanel-profile-button-dropdown a {
+    padding: 11px 9px;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown ul li:not(:first-child) a {
+    border-top: 1px solid #f0f0f0;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown ul li a:hover {
+    background-color: #f0f0f0;
+}
+
+.mpanel-login-element .mpanel-profile-button-dropdown .pb-logout a {
+    border-top: 1px solid #f0f0f0;
+}
+
+@media screen and (max-width: 767px) {
+    .mpanel-login-element .mpanel-before-login.title-in-mobile-no a span,
+    .mpanel-login-element .mpanel-after-login .mpanel-profile-button .pb-icon,
+    .mpanel-login-element .mpanel-profile-button-dropdown {
+        display: none;
+    }
+}

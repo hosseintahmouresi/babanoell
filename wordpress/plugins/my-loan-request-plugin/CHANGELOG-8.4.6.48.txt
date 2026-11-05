@@ -1,0 +1,14 @@
+8.4.6.48 - Bank-to-Babanoell settlement clarification and placement
+
+- Kept [mlr_granted_expert_dashboard] as the only granted bank-expert dashboard.
+- Removed settlement filtering/status/date/note columns from the granted request list to avoid any semantic overlap with acceptor settlement.
+- Bank-to-Babanoell settlement is now a completely separate internal card inside a granted request.
+- Moved the internal settlement card directly above «مکالمات پرونده».
+- Renamed all visible labels to explicitly say «تسویه بانک با بابانوئل».
+- Bank expert can explicitly enter the Jalali settlement date; the date is validated by Gregorian/Jalali round-trip before storage.
+- A recorded bank-to-Babanoell settlement uses internal wording «انجام شده / ثبت نشده» instead of merchant-facing «تسویه شده / تسویه نشده».
+- Legacy «در انتظار تسویه» markers created in 8.4.6.46/47 are cleared, and legacy internal «تسویه شده» markers are normalized to «انجام شده» in a one-time internal-only data cleanup.
+- This internal data never changes settlement_status, settlement_date, settlement_cycle_id or any acceptor financial workflow.
+- Front-end rendering remains restricted to the assigned bank expert; applicants and acceptors never receive this card.
+- Babanoell internal admin/operations/finance request details keep read-only visibility with clarified labels.
+- Database schema remains 2.9; no destructive migration is required.

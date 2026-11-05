@@ -1,0 +1,13 @@
+My Loan Request 8.4.6.33
+============================
+
+Frontend / acceptor dashboard table layout fix
+-----------------------------------------------
+- Fixed desktop/laptop request tables collapsing narrow columns until Persian plan names rendered letter-by-letter.
+- Request-table wrappers now own horizontal scrolling at desktop/tablet widths instead of allowing the table to crush its columns.
+- Default/granted 12-column request tables have a safe minimum width.
+- Plan names can wrap only at natural word boundaries.
+- Identity, amount, status/date/action values remain readable without character-level wrapping.
+- Mobile (<=768px) explicitly resets table minimum width and keeps the existing stacked-card layout.
+- CSS is scoped to `.mlr-glass-dashboard` to avoid changing unrelated site/theme tables.
+- No database schema, query, financial calculation, request workflow, upload, security, or stored-data behavior changed in this release.

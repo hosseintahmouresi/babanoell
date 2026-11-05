@@ -1,0 +1,33 @@
+/* Styles for the notification system in the admin panel */
+#mlr-notification-menu {
+    position: relative;
+    display: inline-block;
+}
+
+#mlr-notification-icon {
+    cursor: pointer;
+    padding: 5px;
+}
+
+#mlr-notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 10px;
+}
+
+#mlr-notification-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: none;
+    min-width: 200px;
+    z-index: 1000;
+}

@@ -1,0 +1,165 @@
+.cz_lrpr {
+	position: relative;
+	text-align: center;
+	margin: 0 auto;
+	min-width: 100px;
+	max-width: 320px
+}
+.cz_vl #cz_r,
+.cz_vl #cz_pr,
+.cz_vr #cz_l,
+.cz_vr #cz_pr,
+.cz_vpr #cz_l,
+.cz_vpr #cz_r {
+	display: none
+}
+.cz_lrpr p {
+	margin: 0
+}
+.cz_lrpr img {
+	display: block;
+	margin: 0 auto 20px;
+	border-radius: 100%
+}
+.cz_lrpr a {
+	font-size: 14px;
+	margin: 10px 0 0;
+	display: block
+}
+.cz_lrpr_buttons a {
+	padding: 8px 50px;
+	background: #6767670f;
+	position: relative;
+	text-align: initial
+}
+.cz_lrpr_buttons a:hover {
+	background: #67676717
+}
+.cz_lrpr_buttons a i {
+	margin: 0 5px;
+	opacity: .5;
+	position: absolute;
+	left: 1px;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 10px;
+	background: #11111117;
+	border-radius: inherit;
+	width: 1em;
+	height: 1em;
+	line-height: 1em;
+	text-align: center;
+	box-sizing: content-box
+}
+.rtl .cz_lrpr_buttons a i {
+	left: auto;
+	right: 1px
+}
+.cz_lrpr input {
+	margin: 0 0 10px;
+	display: block;
+	width: 100%
+}
+.cz_lrpr input[type="checkbox"] {
+	display: inline-block
+}
+.cz_lrpr input[type="submit"] {
+	margin: 30px auto 20px;
+	display: table
+}
+.cz_lrpr_banner {
+	display: flex;
+	overflow: hidden;
+	max-width: 750px;
+	flex-direction: row;
+	border: 1px solid #6767672b
+}
+.cz_lrpr_banner_right {
+	flex-direction: row-reverse
+}
+.cz_lrpr_banner > div {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	box-sizing: border-box
+}
+.cz_lrpr_hide_banner > div:first-child {
+	display: none
+}
+.cz_lrpr_hide_banner {
+	box-sizing: border-box;
+	max-width: 320px;
+	padding: 50px
+}
+.cz_lrpr_banner img {
+	box-sizing: border-box;
+	margin: 0;
+	border-radius: 0
+}
+.cz_lrpr_banner form {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 50px 70px
+}
+.cz_lrpr_hide_banner form {
+	padding: 0
+}
+.cz_lrpr .codevz-account-avatar {
+	display: block;
+	border-bottom: 1px solid rgb(205 205 205 / 40%)
+}
+.codevz-widget-login-register .cz_lrpr {
+	padding: 0 20px
+}
+.cz_lrpr_title {
+	font-weight: bold
+}
+.cz_msg {
+	display: none;
+	background: rgba(255, 0, 0, .05);
+	color: #f00;
+	padding: 15px 20px;
+	border-radius: 3px;
+	margin: 15px 0;
+}
+input.cz_loader {
+	position: relative !important;
+	font-size: 0 !important;
+	width: 30px !important;
+	height: 30px !important;
+	padding: 0 !important;
+	border-radius: 100% !important;
+	transform: translateX(-50%);
+	box-shadow: none !important;
+	left: 45% !important;
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+	background: none !important;
+	border: 2px solid rgba(167, 167, 167, .3) !important;
+	border-right-color: #111 !important;
+	transition: none !important;
+	animation: rotateInfinite .6s linear infinite !important
+}
+.rtl input.cz_loader {
+	left: auto !important;
+	right: 45% !important
+}
+@keyframes rotateInfinite {
+	from {transform: rotate(0deg)}
+	to {transform: rotate(360deg)}
+}
+@keyframes xtraLrpAnimation {
+	0%, 10%, 20%, 50%, 80% {transform: translateY(0)}
+	40% {transform: translateY(-8px)}
+	60% {transform: translateY(-8px)}
+}
+
+@media (max-width: 600px) {
+
+	.cz_lrpr_banner > div:first-child {
+		display: none
+	}
+
+}

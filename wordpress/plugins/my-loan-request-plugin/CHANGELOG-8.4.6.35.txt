@@ -1,0 +1,12 @@
+My Loan Request 8.4.6.35
+===========================
+
+Settlement compatibility fix for legacy non-InnoDB installations.
+
+- Removed the hard stop that prevented assigning settlement dates when wp_loan_requests uses MyISAM/another non-transactional engine.
+- Keeps true START TRANSACTION + FOR UPDATE behavior on InnoDB/XtraDB.
+- Adds a safe legacy fallback based on short-lived MySQL WRITE table locks, post-write verification, and compensating restore on verification failure.
+- Applies the same compatibility path to single settlement-date edits and settlement-cycle creation.
+- Settlement-cycle legacy fallback locks both loan_requests and settlement_cycles together and removes/restores partial writes if verification fails.
+- Does NOT automatically ALTER/convert the live table engine.
+- No database schema migration and no changes to financial formulas, existing records, Secret Editor authentication, or ICS24 credentials.

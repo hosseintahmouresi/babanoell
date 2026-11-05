@@ -1,0 +1,8 @@
+Version 8.4.6.43
+
+GreenPay connection-test compatibility fix:
+- A successful /submit token now counts as successful API authentication.
+- isReady remains a diagnostic check only and no longer blocks transaction testing when it returns 401/non-success.
+- This matches the supplied reference GreenPay WooCommerce plugin, where isReady() is defined but never used in the real payment flow.
+- Admin notices now support a warning state.
+- No financial state-machine, OTP, pocket, amount, or transfer payload behavior was changed.

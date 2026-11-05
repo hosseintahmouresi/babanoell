@@ -1,0 +1,9 @@
+Jabili 8.4.6.76 - Hami / Hami Plus Contract Isolation
+
+- Fixed the 8.4.6.74 broad plan matcher that could classify Hami Plus retirees variants as the Hami-retirees plan.
+- Hami Plus can no longer receive the Hami-retirees repeating signature/address footer merely because its name also contains 'retirees'.
+- Added a one-time repair that detects polluted Hami Plus plans and restores their pre-8.4.6.74 Hami Plus contract from the automatic backup when available; otherwise it restores the bundled canonical Hami Plus template.
+- Restores Hami Plus first-due calculation to the standard installment-interval rule.
+- Leaves plan-specific generic letterhead/footer fields untouched.
+- Adds runtime guards in canonical payload, internal review, applicant/acceptor popups, and the public signed-contract viewer so stale Hami-retirees repeat-footer snapshots are never rendered on Hami Plus.
+- Hami retirees keeps its approved repeating signature/address footer unchanged.

@@ -1,0 +1,6 @@
+8.4.6.90.2 - Fix run-on contract paragraphs in previews and print
+- Ensure Hami retirees contract paragraph tags render as distinct display:block elements.
+- Apply scoped paragraph-flow fix to front-end, staff modal and public viewer styles.
+- Guarantee the same flow in the isolated A4 print iframe even with copied inline display styles.
+- Prevent unconditional wpautop re-processing of rich HTML contracts in the plan editor.
+- Preserve paragraph content, legal fields, existing signatures, stored proofs, bank settlements and layout compacting from 8.4.6.90.1.

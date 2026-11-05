@@ -1,0 +1,14 @@
+My Loan Request 8.4.6.36
+==========================
+
+Fix: installment-plan duplicate/delete actions
+
+- Fixed the jQuery confirmation bug that cancelled the duplicate link even after the administrator clicked Confirm.
+- Moved duplicate and delete mutations to dedicated admin-post.php handlers so they execute before admin HTML output and can redirect reliably.
+- Added capability and nonce checks to the dedicated handlers.
+- Added a short database-backed per-user/per-plan duplication lock to prevent double-click/network duplicate copies.
+- A duplicated plan is still created inactive, with a unique copy name and appended display_order.
+- After INSERT, the copy is read back and business payload fields (type/settings/display fields/context/required documents) are verified byte-for-byte; a bad/incomplete clone is deleted automatically.
+- Fixed the same confirmation-event bug on the delete action.
+- Added historical-data protection: a plan referenced by existing loan requests cannot be deleted; it can be deactivated instead.
+- No database schema migration. No financial formula, settlement, document-flow, GreenPay, or request-data changes.

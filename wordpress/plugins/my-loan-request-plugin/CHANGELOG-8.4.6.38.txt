@@ -1,0 +1,11 @@
+My Loan Request 8.4.6.38 — Plan Document Settings / Stale Delete Notice Fix
+
+- Fixed an admin-state bug where a previous failed plan-delete notice (plan_in_use) remained in the URL and was incorrectly added to the plan form validation errors.
+- The stale delete notice could block editing an existing plan, including enabling/saving occupation-specific document requirements.
+- Duplicate/delete redirect notices are now GET-only and stored separately from form-validation errors.
+- Plan edit and plan-order forms now POST to the canonical clean installment-plan admin URL instead of inheriting transient query parameters.
+- One-shot action query parameters are removed from browser history after being consumed, preventing confusing repeated notices.
+- Improved the plan-in-use message so it explicitly states that only deletion was rejected.
+- Historical-data protection remains unchanged: plans referenced by loan requests still cannot be physically deleted.
+- No database migration or schema change.
+- No changes to financial calculations, settlements, guarantor uploads, occupation-document resolution, GreenPay, or Secret Editor logic.

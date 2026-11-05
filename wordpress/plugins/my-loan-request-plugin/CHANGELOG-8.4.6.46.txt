@@ -1,0 +1,18 @@
+Version 8.4.6.46 — Bank Expert Workflow & Bank Settlement Tracking
+
+- Added dedicated bank-expert dashboard for requests in «تکمیل مدارک»:
+  [mlr_bank_documents_completion_dashboard]
+- Added dedicated bank-expert settlement dashboard for granted requests:
+  [mlr_bank_settlement_dashboard]
+- Bank experts can mark their own granted requests as «تسویه شده» / «در انتظار تسویه» and save an internal note.
+- Bank-side settlement is stored in independent fields and does NOT modify acceptor settlement_status, settlement_cycle_id, or settlement_date.
+- Added bank settlement date, actor, note, filtering, and Excel export fields.
+- Existing granted requests assigned to a bank expert are initialized as «در انتظار تسویه» by DB migration 2.9.
+- «تکمیل مدارک» is view/track-only for bank experts; the existing final-document submission flow remains responsible for moving the request to «تأیید مدارک».
+- Fixed bank-expert detail actions so status-change controls only appear in «تأیید کارشناس» and «تأیید مدارک» stages.
+- Hardened bank-expert status updates for legacy MyISAM loan_requests tables using the shared safe transaction/WRITE-lock guard.
+- Added schema completeness checks for all new settlement columns before settlement reads/writes/exports.
+- Bank settlement notes remain internal to the bank/admin interfaces and are not written to the applicant-visible request timeline/messages.
+- Updated plugin-owned expert-dashboard asset versions to MLR_VERSION to avoid stale browser-cache behavior after update.
+
+DB schema: 2.9

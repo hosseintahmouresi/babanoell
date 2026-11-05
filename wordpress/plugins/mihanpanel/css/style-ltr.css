@@ -1,0 +1,52 @@
+.mihanpanelpanel.mpwrapper,
+.mihanpanelpanel.mpwrapper *
+{
+    direction: ltr;
+}
+
+.mihanpanelpanel .mpsidebar
+{
+    border-radius: 10px 0 0 10px !important;
+}
+.back-to-sitehome
+{
+    float: right;
+}
+.mihanpanelpanel .mpsidebar .nav p
+{
+    text-align: left;
+}
+.mihanpanelpanel .mpsidebar .nav i
+{
+    margin-right: 15px !important;
+    float: right;
+}
+.mihanpanelpanel .main-panel>.navbar {
+    float: left !important;
+}
+.mihanpanelpanel .mp-nav-tabs li a{
+  text-align:left;
+}
+.back-to-sitehome{
+  float:right !important
+}
+.mihanpanelpanel .mw_avatar_section label#choose_avatar
+{
+    right: unset !important;
+    left:100px
+}
+input#remove_user_avatar
+{
+    right: unset !important;
+    left: 120px !important;
+}
+.mihanpanelpanel table th
+{
+	text-align: left;
+}
+
+html body .mihanpanelpanel .field-icon {
+    float: left;
+    margin-left: 0;
+    margin-right: 7px;
+}

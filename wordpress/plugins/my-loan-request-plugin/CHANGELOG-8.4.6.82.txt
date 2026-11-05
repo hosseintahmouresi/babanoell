@@ -1,0 +1,10 @@
+8.4.6.82 - Contract print spacing / safe-area refinement
+
+- Added a reliable horizontal print safe-area for every contract type so RTL text never touches/crops at paper edges.
+- Refined A4 @page margins while retaining full-width configured header/footer media inside the safe content region.
+- Improved paragraph, heading and list rhythm in print without changing stored contract HTML.
+- Normalized only the outer print snapshot geometry to prevent portal/modal computed styles from pushing printed content outside the page.
+- Added overflow protection for tables/cells and long dynamic values.
+- Added light body spacing between repeating header/footer regions and the contract text.
+- Hami retirees print spacing refined while preserving its repeating signature footer.
+- No contract data, signatures, snapshots, plan settings or business workflow changed.

@@ -1,0 +1,9 @@
+8.4.6.84 - Hami custom footer precedence
+
+- A footer image selected in a Hami plan now REPLACES the built-in Hami signature/address footer instead of stacking with it.
+- The built-in Hami footer remains the fallback only when the plan footer image is empty.
+- The rule applies to unsigned previews, signed snapshots, public contract links, applicant/acceptor panels and internal review.
+- Existing signed snapshots are presentation-normalized at runtime; no signature record is rewritten.
+- Hami Plus remains isolated from the Hami retirees footer.
+- Added a defensive isolated-print guard so stale legacy repeat-footers cannot print beside a selected image footer.
+- Clearing the plan footer image automatically restores the approved built-in Hami footer.

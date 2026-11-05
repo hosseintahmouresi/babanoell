@@ -1,0 +1,6 @@
+8.4.6.90.1 - Hami retirees contract typography and compact print pages
+- Scoped visual compacting ONLY to .mlr-contract-document.mlr-hami-retirees-contract.
+- Resolves generic h2/p !important collisions in admin modal, frontend, and contract viewer.
+- Unifies readable line height/paragraph gaps with A4 print iframe.
+- No contract text, signing, OTP, persisted contract, header/footer, bank cycle, or settlement changes.
+- Existing saved signed contracts are not rewritten.

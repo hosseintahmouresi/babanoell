@@ -1,0 +1,6 @@
+My Loan Request 8.4.6.67 — Bank Excel grant/installment columns
+
+- Bank expert Excel export now includes «تعداد اقساط».
+- Bank expert Excel export now includes «تاریخ اعطا» for granted requests, using the same grant-date source already used by the plugin.
+- Removed the «آخرین ویرایش» column from the bank expert Excel export.
+- No workflow, financial-calculation, settlement, or permission behavior changed.

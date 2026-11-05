@@ -1,0 +1,10 @@
+8.4.6.47 - Bank expert granted-dashboard settlement correction
+
+- Removed the unnecessary standalone [mlr_bank_settlement_dashboard] shortcode.
+- Merged bank-expert settlement tracking into the existing [mlr_granted_expert_dashboard].
+- The granted dashboard now includes settlement status/date/note columns and settlement filtering.
+- Opening a granted request exposes the existing settlement checkbox and internal note form.
+- Settlement remains scoped to the assigned bank expert and only to requests in «اعطا شده».
+- Bank settlement tracking remains independent from acceptor settlement-cycle fields.
+- UI wording standardized to «تسویه نشده / تسویه شده» while preserving existing stored values for compatibility.
+- Database schema remains 2.9; no destructive migration is required from 8.4.6.46.

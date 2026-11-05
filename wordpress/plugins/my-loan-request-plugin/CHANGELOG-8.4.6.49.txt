@@ -1,0 +1,11 @@
+8.4.6.49 - Internal Bank Settlement administration
+
+- Added a new top-level WordPress admin menu: «تسویه بانک».
+- Access is restricted to WordPress administrators/super-admins and the Babanoell mali role via mlr_view_bank_settlements.
+- The page lists only granted requests that are assigned to a bank expert.
+- Added independent views for all / recorded / unrecorded Bank -> Babanoell settlement tracking.
+- Added filters for bank expert, applicant/request search, and Bank -> Babanoell settlement date.
+- Added internal note, recorder, update timestamp, amount, plan, and request-detail visibility.
+- Added filtered Excel export.
+- This page is read-only: the Bank -> Babanoell settlement data continues to be entered by the assigned bank expert in the existing [mlr_granted_expert_dashboard].
+- No merchant settlement_status, settlement_date, settlement_cycle_id, or merchant settlement workflow is changed.

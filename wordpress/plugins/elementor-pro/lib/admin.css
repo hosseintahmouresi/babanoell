@@ -1,0 +1,390 @@
+/* UDM Library Settings Page Styles */
+.udm-library-settings {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.udm-library-header {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    margin-bottom: 25px;
+    color: #495157;
+    flex-wrap: wrap;
+}
+
+.udm-library-header-main {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.udm-library-header h4 {
+    margin: 5px 0 0;
+    font-size: 22px;
+    font-weight: normal;
+    color: #495157;
+}
+
+.udm-library-header p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #6d7882;
+    line-height: 1.6;
+}
+
+.udm-library-logo {
+    margin-right: 20px;
+}
+
+html[dir=rtl] .udm-library-logo {
+    margin-left: 20px;
+	margin-right:0px
+}
+
+.udm-logo-icon {
+    background: white;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+
+.udm-logo-icon .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: #495157;
+}
+
+.udm-library-main {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.udm-library-content {
+    flex: 2;
+}
+
+.udm-library-sidebar {
+    flex: 1;
+    max-width: 350px;
+}
+
+.udm-library-card {
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    margin: 0px 0px 20px 0px;
+    overflow: hidden;
+}
+
+.udm-library-card-header {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #edf2f7;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.udm-library-card-header .dashicons {
+    color: #a4afb7;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.udm-library-card-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.udm-library-card-body,.udm-library-submit {
+    padding: 20px;
+}
+
+/* Settings Rows */
+.udm-library-settings-row {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.udm-library-settings-row:last-child {
+    border-bottom: none;
+}
+
+.udm-library-settings-icon {
+    margin-right: 15px;
+    background: #f1f3f5;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a4afb7;
+}
+
+html[dir=rtl] .udm-library-settings-icon {
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+.udm-library-settings-content {
+    flex-grow: 1;
+}
+
+.udm-library-settings-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2d3748;
+}
+
+.udm-library-settings-description {
+    color: #718096;
+    font-size: 13px;
+    margin: 0;
+}
+
+.udm-library-settings-description input[type="text"] {
+    margin-top: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.udm-library-settings-description .description {
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* Submit Button Area */
+button#deactivate-license {
+    background: #93003c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+
+button#deactivate-license:hover {
+    background: #800035;
+}
+
+/* Custom Buttons */
+.udm-library-button-primary {
+    background: #93003c !important;
+    border: none !important;
+    color: white !important;
+    padding: 10px 20px !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15) !important;
+    margin-left: 10px !important;
+}
+
+.udm-library-button-primary:hover {
+    background: #800035 !important;
+}
+
+
+/* Sidebar Styles */
+.udm-library-premium-ad {
+    background: linear-gradient(135deg, #93003c 0%, #800035 100%);
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    margin-bottom: 20px;
+    color: white;
+    text-align: center;
+}
+
+.udm-library-premium-ad h5 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+.udm-library-premium-ad p {
+    margin: 0 0 15px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.udm-library-premium-ad .button {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    transition: all 0.3s ease !important;
+    font-size: 13px !important;
+}
+
+.udm-library-premium-ad .button:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.udm-library-about {
+    background: #f8f9fa;
+    border-radius: 3px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+
+.udm-library-about h5 {
+    margin: 0 0 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.udm-library-about p {
+    margin: 0 0 15px;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.udm-library-about ul {
+    margin: 0;
+    padding-right: 20px;
+}
+
+.udm-library-about li {
+    color: #4a5568;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.udm-library-about li:before {
+    content: "✓";
+    color: #28a745;
+    font-weight: bold;
+    position: absolute;
+    right: -20px;
+}
+
+/* Status Colors */
+.status-active {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: #718096;
+    font-weight: bold;
+}
+
+.status-expired {
+    color: #fd7e14;
+    font-weight: bold;
+}
+
+.status-blocked {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.status-error {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.status-unknown {
+    color: #718096;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .udm-library-main {
+        flex-direction: column;
+    }
+    
+    .udm-library-sidebar,
+    .udm-library-content {
+        min-width: 100%;
+    }
+    
+    .udm-library-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .udm-library-header-main {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .udm-library-header-title {
+        align-items: center;
+    }
+    
+    .udm-library-header h4 {
+        margin: 15px 0 0 !important;
+    }
+}
+
+/* License Status Check Box */
+.udm-license-status-check {
+    background: #f8f9fa;
+    border-radius: 3px;
+    padding: 20px;
+	margin-bottom:20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+
+.udm-license-status-check .button {
+    background: #93003c;
+    color: #FFF!important;
+    border: none;
+    padding: 8px 16px !important;
+    font-size: 14px;
+    border-radius: 4px;
+}
+.udm-license-status-check .button:hover,.udm-license-status-check .button:focus {
+	background: #800035;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.udm-license-status-check h5 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #495157;
+}
+
+.udm-license-status-check p {
+    margin: 0 0 15px;
+    font-size: 13px;
+    color: #6d7882;
+    line-height: 1.5;
+}
+
+.udm-license-status-check .button {
+    font-size: 13px;
+    padding: 8px 12px;
+    height: auto;
+    line-height: 1.4;
+}

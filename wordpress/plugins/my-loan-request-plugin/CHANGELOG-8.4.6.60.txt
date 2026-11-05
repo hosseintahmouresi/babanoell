@@ -1,0 +1,18 @@
+8.4.6.60 — Legacy digital-contract compatibility + SMS pattern audit
+
+- Keeps stored signed contract snapshots/digests unchanged.
+- Adds runtime compatibility rendering for historical Hami Plus digital contracts:
+  * top parties label -> «پلتفرم»
+  * official gazette detail -> شماره 23644 مورخ 1405/03/11 where old signed snapshot had placeholders
+  * explicit contract end-date recheck when the signed snapshot has the structured duration clause
+- Historical signature certificates use the current dual-party presentation:
+  * buyer + platform certificates
+  * separate BUY/PLT confirmation tokens
+  * request id on both certificates
+  * full buyer mobile is recovered only when it still matches the mask captured at signing time
+- Adds optional dedicated SMS pattern settings for loan-contract OTP:
+  * {0} / [[otp_code]]
+  * {1} / [[contract_url]]
+  * falls back to the cooperation-sign pattern for backward compatibility
+- Makes provider variable-count errors explicit when the external Body ID does not accept OTP + contract URL.
+- No database schema changes.

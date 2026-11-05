@@ -1,0 +1,7 @@
+8.4.6.61 — Historical Hami Plus layout repair
+
+- Fixes the early mixed-markup signed Hami Plus snapshots whose headings/divs were structured but legal body paragraphs were stored only as newline-delimited text, causing 4 historical contracts in the supplied production dump to render visually stuck together.
+- Detection is narrow and render-time only: only Hami Plus signed snapshots with the known mixed shape (structured document + headings + fewer than 10 paragraph tags) are repaired.
+- Recreates missing header spans and paragraph wrappers without changing the signed snapshot, digest, signature proof, request row, or database schema.
+- Fully structured signed contracts and the two older different contract-family snapshots remain untouched.
+- Keeps all 8.4.6.60 legal-detail, token, mobile and SMS compatibility behavior.

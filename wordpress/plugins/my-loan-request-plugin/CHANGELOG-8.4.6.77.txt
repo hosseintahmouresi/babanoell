@@ -1,0 +1,11 @@
+8.4.6.77 - Per-request contract reissue workflow
+
+- Adds Operations > بازصدور قرارداد admin screen.
+- Supports a request-specific dynamic HTML contract override without changing the plan template.
+- Archives the previously signed immutable snapshot before activating a replacement.
+- Requires a fresh OTP signature for the new revision and keeps the public contract URL stable.
+- Allows pending reissues to be signed from the public contract link even after the normal document stage.
+- Stores revision number in OTP state and final proof.
+- Adds admin-only archived revision history and view.
+- Can send the contract link + 6-digit OTP immediately after reissue or resend later.
+- Never rewrites old signed proofs in place.

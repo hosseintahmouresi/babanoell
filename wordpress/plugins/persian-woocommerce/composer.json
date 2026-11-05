@@ -1,0 +1,11 @@
+{
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "require": {
+        "morilog/jalali": "^3.4",
+        "econea/nusoap": "^0.9.13"
+    }
+}

@@ -1,0 +1,11 @@
+Jabili 8.4.6.75 - Contract Print Isolation & A4 Stability
+
+- Replaced loan-contract printing with an isolated iframe print document, preventing WordPress/theme/Elementor print CSS from hiding the contract or producing a blank preview.
+- Added a dedicated self-contained A4 stylesheet for contracts.
+- Removed the nested named-page assignment that could force an empty leading page when the Hami contract was printed inside the repeating header/footer table.
+- Preserved the complete print target with outerHTML instead of dropping root contract classes.
+- Waits for stylesheet, image and font readiness before opening the browser print dialog.
+- Hami retirees footer/signature block remains a real repeating table footer on every printed page.
+- Hardened RTL, header/logo/date placement, formulas, page-break behavior, overflow and sizing for A4/PDF output.
+- Public signed/unsigned loan-contract viewer now uses the same isolated print path instead of printing the whole WordPress page.
+- Existing bank-panel and Hami contract logic from 8.4.6.74 is preserved.

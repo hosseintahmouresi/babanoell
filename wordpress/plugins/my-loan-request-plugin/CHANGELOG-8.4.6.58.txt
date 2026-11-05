@@ -1,0 +1,8 @@
+8.4.6.58
+
+- «تأیید مدارک» بانک now lists only requests whose final documents were actually submitted with status «تأیید مدارک»; «تکمیل مدارک» no longer leaks into that review queue.
+- Added [mlr_bank_all_requests_dashboard]: a bank-expert master list containing every request whose assigned_bank_user_id equals the logged-in bank expert, regardless of workflow status.
+- The all-requests dashboard is intentionally view-only: no status changes, no bank-settlement edits, no message sending/attachments, no guarantor entry/upload, and no Excel export.
+- Existing documents, credit report, messages, files, contract review/print-save, and read-only settlement summary remain visible.
+- Workflow-specific bank dashboards retain their existing authorized actions.
+- No database schema or historical request data changes.

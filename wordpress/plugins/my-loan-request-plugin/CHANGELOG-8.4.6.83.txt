@@ -1,0 +1,10 @@
+8.4.6.83 - Contract print hard page-frame fix
+
+- Rebuilt print geometry around the repeating table cells instead of root/@page margins.
+- Contract text now has a real 11mm left/right safe area on every printed A4 page, even when Chrome/Edge is set to "Margins: None".
+- Header/footer media use a separate 5mm media gutter and continue repeating through THEAD/TFOOT.
+- Increased contract text rhythm/readability and normalized heading/paragraph spacing for print.
+- Removed screen-only Hami footer nodes from the print clone so they cannot appear as a second footer.
+- Stopped copying screen-computed margins/paddings into the isolated print frame; inline contract styling and visual typography/borders/grid/flex styling remain preserved.
+- Added overflow guards for legacy/custom tables, images, code and long dynamic values.
+- No contract text, signatures, snapshots, plan settings or business workflow changed.

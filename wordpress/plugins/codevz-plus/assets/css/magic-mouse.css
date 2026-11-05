@@ -1,0 +1,58 @@
+.codevz-magic-mouse {
+	opacity: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 30px;
+	height: 30px;
+	z-index: 100000000;
+	pointer-events: none;
+	transition: opacity 0.2s ease-in-out 0.5s;
+}
+.xtra-magic-mouse-invert .codevz-magic-mouse {
+	mix-blend-mode: difference
+}
+.codevz-magic-mouse div {
+	position: absolute;
+	background-color: #111;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	pointer-events: none;
+	transition-duration: 20ms;
+	transition-timing-function: ease-out
+}
+.codevz-magic-mouse div:last-child {
+	width: 50px;
+	height: 50px;
+	background: none;
+	border: 1px solid #111;
+	transition-duration: 150ms
+}
+.codevz-magic-mouse-hover div:last-child {
+	width: 60px;
+	height: 60px;
+	border: 0;
+	background: rgba(167, 167, 167, .2)
+}
+.codevz-magic-mouse-hover div:first-child {
+	opacity: 0
+}
+
+.codevz-magic-mouse-transform,
+a.codevz-magic-mouse-transform {
+	transition-timing-function: ease-out !important
+}
+
+@media screen and (max-width:768px) {
+
+	.xtra-hide-cursor,
+	.xtra-hide-cursor a,
+	.xtra-hide-cursor a:hover {
+		cursor: initial
+	}
+	.codevz-magic-mouse {
+		display: none
+	}
+
+}

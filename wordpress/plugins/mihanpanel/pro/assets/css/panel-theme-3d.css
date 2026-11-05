@@ -1,0 +1,124 @@
+.mpwrapper.mihanpanelpanel
+{
+    box-shadow: none !important;
+}
+@media only screen and (min-width: 901px)
+{
+    .mihanpanelpanel .mpsidebar
+    {
+        border-radius: 20px !important;
+    }
+    .mihanpanelpanel.mp_wrapper_rtl .mpsidebar
+    {
+        box-shadow: 8px 10px 30px rgba(0,0,0,.15);
+    }
+    .mihanpanelpanel.mp_wrapper_ltr .mpsidebar
+    {
+        box-shadow: -8px 10px 30px rgba(0,0,0,.15);
+    }
+}
+body
+{
+    background-color: #f1f3f6 !important;
+}
+.mihanpanel-page .mihanpanelpanel
+{
+    background-color: transparent !important;
+    overflow: visible !important;
+}
+html body .mihanpanelpanel .nocss .mihanpanel-section-title,
+html body .mihanpanelpanel .mihanpanel-section-title
+{
+    margin: 0 40px;
+    border-radius: 10px;
+    padding: 18px 30px !important;
+    color: #636363 !important;
+}
+html body .mihanpanelpanel.mp_wrapper_rtl .mihanpanel-section-title
+{
+    box-shadow: -5px -5px 15px rgba(255,255,255,.85),
+                5px 5px 15px rgba(55,84,170, .15);
+}
+html body .mihanpanelpanel.mp_wrapper_ltr .mihanpanel-section-title
+{
+    box-shadow: 5px -5px 15px rgba(255,255,255,.85),
+                -5px 5px 15px rgba(55,84,170, .15);
+}
+
+html body .mihanpanelpanel .nocss .mihanpanel-card
+{
+    border-radius: 30px !important;
+    background-color: #F1F3F6 !important;
+}
+html body .mihanpanelpanel.mp_wrapper_rtl .nocss .mihanpanel-card
+{
+    box-shadow: -10px -10px 25px rgba(255,255,255, .8),
+                10px 10px 25px rgba(55,84,170, .15) !important;
+}
+html body .mihanpanelpanel.mp_wrapper_ltr .nocss .mihanpanel-card
+{
+    box-shadow: 10px -10px 25px rgba(255,255,255, .8),
+                -10px 10px 25px rgba(55,84,170, .15) !important;
+}
+
+html body .mihanpanelpanel .nocss .mihanpanel-card .mihanpanel-card-header
+{
+    border-radius: 20px !important;
+    margin: 10px 15px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+html body .mihanpanelpanel .nocss .mihanpanel-card .mihanpanel-card-content
+{
+    display: block;
+    text-align: center !important;
+    padding: 0 0 10px 0 !important;
+}
+html body .mihanpanelpanel .nocss .mihanpanel-card .mihanpanel-card-content h3
+{
+    padding: 0 !important;
+}
+.mihanpanelpanel .mp-nav-tabs li.active,
+.mihanpanelpanel .mp-nav-tabs li:hover
+{
+    border-radius: 10px !important;
+}
+.mihanpanelpanel.mp_wrapper_rtl .mp-nav-tabs li.active,
+.mihanpanelpanel.mp_wrapper_rtl .mp-nav-tabs li:hover
+{
+    box-shadow: -5px -5px 10px rgba(255,255,255,.15),
+                5px 5px 10px rgba(0,0,0,.15);
+}
+.mihanpanelpanel.mp_wrapper_ltr .mp-nav-tabs li.active,
+.mihanpanelpanel.mp_wrapper_ltr .mp-nav-tabs li:hover
+{
+    box-shadow: 5px -5px 10px rgba(255,255,255,.15),
+                -5px 5px 10px rgba(0,0,0,.15);
+}
+.mihanpanelpanel .mpsidebar.mp_rtl .nav i
+{
+    float: right !important;
+    margin: 0 0 0 15px !important;
+}
+
+.mihanpanel-card [data-background-color=blue] {
+    background: #1C98BF !important;
+}
+.mihanpanel-card [data-background-color=orange] {
+    background: #ff9900 !important;
+}
+.mihanpanel-card [data-background-color=green] {
+    background: #13B981 !important;
+}
+.mihanpanel-card [data-background-color=purple] {
+    background: #7168EB !important;
+}
+.mihanpanel-card [data-background-color=red] {
+    background: #F80460 !important;
+}
+.mihanpanel-card [data-background-color="pink"]
+{
+    background: #f545a8 !important;
+}

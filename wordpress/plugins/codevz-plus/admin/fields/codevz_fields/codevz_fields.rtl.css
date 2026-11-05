@@ -1,0 +1,306 @@
+.col,
+.codevz-field-icon .codevz-icon-select {
+	float: right
+}
+.codevz-field-background fieldset .codevz-field {
+	margin: 0 0 0 1% !important
+}
+.codevz-slider {
+	left: auto;
+	right: 4%
+}
+.elementor-editor-active #cz_modal_kit .codevz-slider {
+	right: -2px
+}
+#customize-controls .button.cz_sk_btn {
+	padding: 0px 36px 0 18px !important
+}
+.wp-customizer .codevz-field-group .codevz-cloneable-item > .codevz-cloneable-title {
+	padding: 10px 10px 10px 65px !important
+}
+#cz_modal_kit .codevz-field-codevz_sizes i.fa-link,
+#cz_modal_kit .codevz-field-codevz_sizes i.fa-link {
+	right: auto !important;
+	left: -17px !important
+}
+.codevz-field-group .codevz-field-codevz_sizes i.fa-link,
+.codevz-field-group .codevz-field-codevz_box_shadow i.fa-link {
+	left: 30px !important;
+	right: auto !important
+}
+.codevz-customize-field .codevz-field-color_picker .codevz-title {
+	float: right !important
+}
+.codevz-customize-field .codevz-field-color_picker .codevz-fieldset {
+	float: left !important
+}
+.codevz-field-codevz_box_shadow .wp-picker-container {
+	right: auto;
+	left: -1px
+}
+.elementor-editor-active .codevz-field .wp-picker-open+.wp-picker-input-wrap {
+	width: 237px !important
+}
+#cz_modal_kit .codevz-field .wp-picker-open+.wp-picker-input-wrap {
+    transform: translateX(-80%) !important;
+}
+.customize-control-csf .wp-picker-open+.wp-picker-input-wrap {
+    transform: translateX(-7%) !important;
+}
+#cz_modal_kit .codevz-field .wp-picker-holder {
+	transform: translateX(-80%) !important
+}
+.customize-control-csf .wp-picker-holder {
+	transform: translateX(-7%) !important
+}
+[class*="elementor-editor-"]:not(.vc_editor,.elementor-editor-inactive,.wp-editor) #cz_modal_kit .codevz-field-codevz_box_shadow .codevz-field-color_picker .wp-picker-holder, 
+#cz_modal_kit .codevz-field-codevz_box_shadow .wp-picker-holder {
+    transform: translateX(-1%) !important;
+}
+[class*="elementor-editor-"]:not(.vc_editor,.elementor-editor-inactive,.wp-editor) #cz_modal_kit .codevz-field-codevz_box_shadow .wp-picker-open+.wp-picker-input-wrap, 
+#cz_modal_kit .codevz-field-codevz_box_shadow .wp-picker-open+.wp-picker-input-wrap {
+	transform: translateX(-1.5%) !important
+}
+.cz_system_info {
+	margin: 20px 20px 0 0
+}
+.cz_system_info .cz_good,
+.cz_system_info .cz_error {
+	float: left
+}
+.cz_importer > i {
+	margin: 0 10px 0 0
+}
+.cz_demo .importer_settings {
+	padding: 20px 20px 20px 0 !important
+}
+.codevz-modal-content .codevz-field {
+	padding: 15px 2px 15px 30px !important
+}
+.codevz-field-codevz_box_shadow .codevz-field-color_picker {
+	right: auto;
+	left: 0
+}
+.codevz-modal .demo_active ul li:last-child input {
+	float: right;
+	margin: 3px 0 36px 8px
+}
+.button.button-primary.codevz-cloneable-add i,
+.button.codevz-importer-add i {
+	margin: 0 -9px 0 10px
+}
+span.cz_skico {
+	right: 0;
+	left: auto
+}
+span.cz_skico_vc {
+	right: 3px
+}
+.codevz-customize-field .codevz-field .codevz-fieldset {
+	margin: 0 !important
+}
+#customize-controls .wp-picker-input-wrap .button.wp-picker-clear {
+	height: 26px !important;
+	line-height: 24px !important;
+	font-size: 12px !important
+}
+#cz_modal_kit div.col.s12 a.button.cz_advance_bg i,
+#cz_modal_kit a.cz_advance_typo i {
+	margin: 0 5px 0 0
+}
+.customize-pane-parent > .control-section:before {
+	left: auto;
+	right: 10px
+}
+.vc-disable-editor {
+	left: auto !important;
+	right: -10000px !important
+}
+.cz-remove-sidebar {
+	left: 40px;
+	right: auto
+}
+.codevz-nav svg {
+	margin: 0 0 0 10px
+}
+.widget-content .codevz-field:not(.codevz-field-group) .codevz-title {
+	float: right
+}
+.widget-content .codevz-field:not(.codevz-field-group) .codevz-fieldset {
+	margin: 5px 40% 5px 0
+}
+.codevz_image_select > div i {
+	right: auto;
+	left: 20px
+}
+#customize-controls .sk_btn_preview_image {
+	left: 30px;
+	right: auto
+}
+#customize-controls .control-section .codevz-field-group .codevz-field-cz_sk .codevz-fieldset .sk_btn_preview_image {
+	right: auto;
+	left: 60px
+}
+.vc_ui-panel-header .vc_ui-panel-header-controls {
+	float: left
+}
+.cz_video_tutorial {
+	right: auto;
+	left: 34px
+}
+.codevz-icon-select .codevz-icon-remove, 
+.rtl.wp-customizer .codevz-field-group .codevz-icon-select .button.codevz-warning-primary.codevz-icon-remove {
+	right: auto !important;
+	left: -17px !important
+}
+.s5 .codevz-field .codevz-fieldset,
+.s6 .codevz-field .codevz-fieldset {
+	margin-left: 0;
+	margin-right: 45%
+}
+.control-section-csf > li[id*="-_css_"],
+.control-section-csf .codevz-field-checkbox li {
+	float: right
+}
+.control-section .codevz-field-select .codevz-title, 
+.control-section .codevz-field-slider .codevz-title, 
+.control-section .codevz-field-text .codevz-title, 
+.control-section .codevz-field-group .codevz-field-cz_sk .codevz-title,
+.control-section .codevz-field-switcher .codevz-title,
+.control-section .codevz-field-icon .codevz-title {
+	float: right !important
+}
+.control-section .codevz-field-switcher .codevz-fieldset {
+	float: left !important
+}
+.edit_form_line .codevz-field-icon .codevz-icon-select {
+	float: right
+}
+.codevz-field-icon .codevz-icon-select .codevz-icon-preview i {
+	margin: 0 5px 0 0
+}
+
+.rtl .vc_shortcode-param[data-param_type="dropdown"] select.wpb_vc_param_value,
+.rtl .vc_shortcode-param[data-param_type="dropdown"] select.wpb_vc_param_value option {
+	text-align: right
+}
+
+.rtl .edit_form_line .cz_sk_btn .cz_skico_vc{
+	right: 0;
+	top: -1px
+}
+
+.rtl .vc_ui-panel-header .vc_ui-panel-header-controls {
+	margin: 0
+}
+
+[aria-describedby="cz_modal_kit"] .ui-dialog-titlebar span {
+	float: right
+}
+[aria-describedby="cz_modal_kit"] .ui-dialog-titlebar-close {
+	margin: 0 0 0 -20px !important;
+	float: left
+}
+[aria-describedby="cz_modal_kit"] .ui-dialog-titlebar i,
+.codevz-field-key-text-shadow .xtra-pro {
+	float: left
+}
+[aria-describedby="cz_modal_kit"] .ui-dialog-titlebar-close, 
+[aria-describedby="cz_modal_kit"] .ui-dialog-titlebar .fa-refresh, 
+[aria-describedby="cz_modal_kit"] .ui-dialog-titlebar .fa-desktop, 
+[aria-describedby="cz_modal_kit"] .ui-dialog-titlebar .fa-files-o {
+	border-left: 0 !important;
+	border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+[aria-describedby="cz_modal_kit"] span.cz_sk_hover {
+	margin: 0 15px 0 0
+}
+.codevz_image_select ul li:before, [aria-describedby="cz_modal_kit"] [data-title]:not(.codevz-help):after {
+	letter-spacing: 0
+}
+[aria-describedby="cz_modal_kit"] .ui-dialog-title[data-title]:after {
+	margin-top: 0
+}
+#cz_modal_kit .codevz-field {
+	padding: 0 0 10px
+}
+#cz_modal_kit h4 .xtra-pro {
+	left: -32px;
+	right: auto
+}
+#cz_modal_kit .codevz-field-key-font-family h4 .xtra-pro {
+	left: -12px;
+	right: auto
+}
+#cz_modal_kit .codevz-field.codevz-field-key-font-family .codevz-fieldset {
+	margin-left: auto
+}
+.codevz-field-codevz_sizes i,
+.codevz-field-codevz_box_shadow i {
+	margin-left: -1px !important
+}
+
+.elementor-editor-active .codevz-field-codevz_sizes .fa.fa-link,
+.elementor-editor-active .codevz-field-codevz_box_shadow .fa.fa-link {
+	text-align: left !important;
+	width: auto !important
+}
+
+.elementor-editor-active .codevz-field-color_picker .codevz-alpha-slider,
+.elementor-editor-active .codevz-field-color_picker .codevz-alpha-slider-offset {
+	background-size: 230px !important;
+    width: 230px !important
+}
+
+.codevz-field-content .xtra-pro {
+	right: auto;
+	left: 20px
+}
+
+li[id*="customize-control-codevz_theme_options-xtra_control_"] .xtra-pro {
+	right: auto;
+	left: 50%;
+	transform: translateX(-50%)
+}
+
+.wp-customizer .xtra-search-icon {
+	left: auto;
+	right: 48px;
+	border-right: 0;
+	border-left: 1px solid #434343
+}
+
+.wp-customizer .xtra-search input {
+	padding-left: 10px;
+	padding-right: 30px
+}
+
+.wp-customizer .xtra-search i {
+	left: auto;
+	right: 30px
+}
+
+[dir='rtl'] #cz_modal_kit select {
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' transform='rotate(45)'><path fill='%23838392' d='M7 10l5 5 5-5z'/></svg>");
+	background-position: left 0px bottom 0px;
+}
+
+.wp-customizer .accordion-section-title i {
+	left: 30px;
+	right: auto
+}
+
+.codevz-select-page > a {
+	margin-right: 8px;
+	margin-left: 0
+}
+.codevz-font-select .button-primary {
+	margin-left: 0 !important;
+	margin-right: 10px !important
+}
+.codevz-notice > .mr8 {
+	margin: 0 0 0 8px
+}
+.widgets-php .cz_sk_btn_text {
+	padding: 0 20px 0 0
+}

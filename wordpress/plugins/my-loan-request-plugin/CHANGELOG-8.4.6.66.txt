@@ -1,0 +1,6 @@
+My Loan Request 8.4.6.66 — GreenPay 422 diagnostics
+
+- GreenPay token HTTP 422 responses now expose sanitized provider validation details.
+- Supports ASP.NET-style lowercase errors maps plus title/detail fields.
+- Raw non-JSON provider errors are redacted before display.
+- No financial-flow behavior changed.

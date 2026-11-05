@@ -1,0 +1,9 @@
+My Loan Request 8.4.6.42 — GreenPay Sandbox Endpoint Correction
+
+- Corrected sandbox Wallet API bases to exactly match the vendor-supplied reference plugin:
+  - https://wallet.bki.ir/walletbackend/api/sandbox
+  - https://wallet.bki.ir/walletbackend/api/purchase
+- The merchant spreadsheet URL (wlt-test-sandbox.htsc.ir) is no longer inferred to be the Wallet API base.
+- Token test errors now distinguish HTTP 401/403, 404, 405 and 5xx responses instead of showing only a generic message.
+- HTTP code is included in the safe admin diagnostic message.
+- No secrets are written to the diagnostic message.

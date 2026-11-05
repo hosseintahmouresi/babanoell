@@ -1,0 +1,616 @@
+/**
+ * MLR responsive hardening layer
+ * Version: 8.4.6.24
+ *
+ * Loaded after all frontend styles so dashboards, forms and modal content
+ * remain usable inside narrow themes, page builders and mobile webviews.
+ */
+
+/* ---------- Shared layout safety ---------- */
+.mlr-user-requests,
+.mlr-glass-dashboard,
+.mlr-expert-dashboard-container,
+.mlr-form-container,
+.mlr-complete-request,
+.mlr-complete-docs-section,
+.mlr-modal,
+#mlr-details-content {
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.mlr-user-requests *,
+.mlr-user-requests *::before,
+.mlr-user-requests *::after,
+.mlr-glass-dashboard *,
+.mlr-glass-dashboard *::before,
+.mlr-glass-dashboard *::after,
+.mlr-expert-dashboard-container *,
+.mlr-expert-dashboard-container *::before,
+.mlr-expert-dashboard-container *::after,
+.mlr-form-container *,
+.mlr-form-container *::before,
+.mlr-form-container *::after,
+.mlr-modal *,
+.mlr-modal *::before,
+.mlr-modal *::after,
+#mlr-details-content *,
+#mlr-details-content *::before,
+#mlr-details-content *::after {
+    box-sizing: border-box;
+}
+
+.mlr-user-requests img,
+.mlr-glass-dashboard img,
+.mlr-form-container img,
+.mlr-modal img,
+#mlr-details-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.mlr-dashboard-wrapper,
+.mlr-glass-card,
+.mlr-form-wrapper,
+.mlr-form-content,
+.mlr-step-content,
+.mlr-modal-content,
+.mlr-modal-body,
+.mlr-modal-card,
+.mlr-info-box,
+.mlr-table-responsive-wrapper,
+.mlr-table-wrapper {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.mlr-user-requests input,
+.mlr-user-requests select,
+.mlr-user-requests textarea,
+.mlr-glass-dashboard input,
+.mlr-glass-dashboard select,
+.mlr-glass-dashboard textarea,
+.mlr-form-container input,
+.mlr-form-container select,
+.mlr-form-container textarea,
+.mlr-modal input,
+.mlr-modal select,
+.mlr-modal textarea,
+#mlr-details-content input,
+#mlr-details-content select,
+#mlr-details-content textarea {
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.mlr-table-responsive-wrapper,
+.mlr-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mlr-modal-content,
+#mlr-details-content,
+.mlr-conversation-history {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mlr-dashboard-title,
+.mlr-modal-title,
+.mlr-modal-subtitle,
+.mlr-card-title,
+.mlr-info-box h4,
+.mlr-chat-body,
+.mlr-long-text,
+.mlr-file-label,
+.mlr-status-badge,
+.mlr-details-table td,
+.mlr-requests-table td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+    .mlr-glass-dashboard {
+        padding: 22px !important;
+        margin: 20px 0 !important;
+        border-radius: 20px !important;
+    }
+
+    .mlr-glass-card {
+        padding: 20px !important;
+    }
+
+    .mlr-filter-form {
+        align-items: stretch;
+    }
+
+    .mlr-filter-form input,
+    .mlr-filter-form select,
+    .mlr-filter-form .button,
+    .mlr-filter-form button {
+        min-width: min(180px, 100%);
+    }
+
+    #mlr-details-content {
+        width: calc(100% - 24px) !important;
+        max-height: calc(100vh - 24px) !important;
+        max-height: calc(100dvh - 24px) !important;
+    }
+}
+
+/* ---------- Mobile dashboards, tables and modals ---------- */
+@media (max-width: 768px) {
+    .mlr-glass-dashboard {
+        width: 100% !important;
+        padding: 14px !important;
+        margin: 12px 0 !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+    }
+
+    .mlr-dashboard-wrapper {
+        width: 100%;
+    }
+
+    .mlr-dashboard-title {
+        margin-bottom: 16px !important;
+        font-size: 20px !important;
+        line-height: 1.6 !important;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .mlr-dashboard-title .dashicons {
+        flex: 0 0 auto;
+        margin-top: 3px;
+    }
+
+    .mlr-glass-card,
+    .mlr-modal-card,
+    .mlr-info-box,
+    .mlr-bank-expert-actions,
+    .mlr-additional-docs-section,
+    .mlr-complete-docs-content,
+    .mlr-expert-dashboard-container {
+        padding: 14px !important;
+        border-radius: 14px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .mlr-filter-form {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 10px !important;
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    .mlr-filter-form input,
+    .mlr-filter-form select,
+    .mlr-filter-form .button,
+    .mlr-filter-form button,
+    .mlr-glass-input {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* The desktop min-width remained active below 768px and forced a
+       900px table inside a card layout. Reset it before card conversion. */
+    .mlr-table-responsive-wrapper {
+        overflow: visible !important;
+        border: 0 !important;
+    }
+
+    .mlr-requests-table {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        border-spacing: 0 !important;
+    }
+
+    .mlr-requests-table thead {
+        display: none !important;
+    }
+
+    .mlr-requests-table tbody,
+    .mlr-requests-table tr {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .mlr-requests-table tbody tr {
+        margin: 0 0 14px !important;
+        overflow: hidden;
+        border: 1px solid var(--mlr-border, #e2e8f0) !important;
+        border-radius: 14px !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        box-shadow: 0 5px 18px rgba(29, 53, 88, 0.08) !important;
+        transform: none !important;
+    }
+
+    .mlr-requests-table td {
+        display: grid !important;
+        grid-template-columns: minmax(92px, 38%) minmax(0, 1fr) !important;
+        align-items: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 11px 12px !important;
+        text-align: right !important;
+        border: 0 !important;
+        border-bottom: 1px solid #eef2f7 !important;
+        background: transparent !important;
+    }
+
+    .mlr-requests-table td:last-child {
+        border-bottom: 0 !important;
+    }
+
+    .mlr-requests-table td::before {
+        content: attr(data-label);
+        min-width: 0;
+        margin: 0 !important;
+        color: var(--mlr-text-muted, #64748b);
+        font-size: 12px;
+        font-weight: 800;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .mlr-requests-table td[colspan] {
+        display: block !important;
+        text-align: center !important;
+    }
+
+    .mlr-requests-table td[colspan]::before {
+        display: none !important;
+    }
+
+    .mlr-status-badge {
+        max-width: 100%;
+        white-space: normal !important;
+        line-height: 1.65;
+        text-align: center;
+    }
+
+    .mlr-view-details-btn {
+        width: 42px;
+        height: 42px;
+        margin-inline-start: auto;
+    }
+
+    .mlr-modal,
+    #mlr-details-content {
+        width: calc(100% - 12px) !important;
+        max-width: calc(100% - 12px) !important;
+        max-height: calc(100vh - 12px) !important;
+        max-height: calc(100dvh - 12px) !important;
+        border-radius: 14px !important;
+    }
+
+    .mlr-modal-content,
+    .mlr-modal-body,
+    #mlr-details-inner {
+        padding: 14px !important;
+    }
+
+    .mlr-modal-header {
+        min-height: 56px;
+        padding: 12px 50px 12px 14px !important;
+    }
+
+    .mlr-modal-title {
+        font-size: 17px !important;
+        line-height: 1.7 !important;
+    }
+
+    .mlr-modal-close,
+    #mlr-close-details {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        line-height: 38px !important;
+        top: 8px !important;
+        left: 8px !important;
+        margin: 0 !important;
+    }
+
+    .mlr-modal-grid,
+    .mlr-info-grid,
+    .mlr-file-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .mlr-details-table,
+    .mlr-product-details-table,
+    .mlr-report-table {
+        max-width: 100%;
+    }
+
+    .mlr-file-list li,
+    .mlr-doc-item,
+    .mlr-file-actions,
+    .mlr-chat-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .mlr-file-list li > *,
+    .mlr-doc-item > *,
+    .mlr-file-actions > * {
+        max-width: 100%;
+    }
+
+    .mlr-view-file-btn,
+    .mlr-file-actions .button,
+    .mlr-file-actions button {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .mlr-complete-request {
+        width: 100%;
+        padding: 16px !important;
+        margin: 14px 0 !important;
+        border-radius: 14px !important;
+    }
+
+    .mlr-complete-request h2 {
+        font-size: 20px;
+    }
+
+    .mlr-stepper {
+        width: 100%;
+        justify-content: flex-start !important;
+        gap: 8px;
+        padding: 4px 2px 10px !important;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    .mlr-stepper .mlr-step {
+        flex: 0 0 74px;
+        min-width: 74px;
+    }
+
+    .mlr-stepper .mlr-step-connector {
+        flex: 0 0 18px;
+        min-width: 18px;
+        margin-inline: 0 !important;
+    }
+
+    .mlr-stepper-buttons {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .mlr-stepper-buttons .mlr-btn,
+    .mlr-bank-expert-actions .mlr-btn,
+    .mlr-additional-docs-section .mlr-btn {
+        width: 100%;
+    }
+
+    .mlr-custom-datepicker-popup {
+        position: fixed !important;
+        left: 8px !important;
+        right: 8px !important;
+        top: 50% !important;
+        transform: translateY(-50%);
+        width: auto !important;
+        max-width: calc(100% - 16px) !important;
+        max-height: calc(100dvh - 20px);
+        overflow-y: auto;
+    }
+}
+
+/* ---------- Very narrow phones ---------- */
+@media (max-width: 560px) {
+    .mlr-requests-table td {
+        grid-template-columns: minmax(82px, 42%) minmax(0, 1fr) !important;
+        padding: 10px !important;
+        font-size: 13px !important;
+    }
+
+    .mlr-details-table,
+    .mlr-details-table tbody,
+    .mlr-details-table tr,
+    .mlr-details-table td {
+        display: block;
+        width: 100% !important;
+    }
+
+    .mlr-details-table tr {
+        margin-bottom: 10px;
+        border: 1px solid var(--mlr-border, #e2e8f0);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .mlr-details-table td {
+        border: 0 !important;
+        border-bottom: 1px solid var(--mlr-border, #e2e8f0) !important;
+        border-radius: 0 !important;
+    }
+
+    .mlr-details-table td:last-child {
+        border-bottom: 0 !important;
+    }
+
+    .mlr-details-table td:first-child {
+        width: 100% !important;
+        background: #f8fafc;
+    }
+
+    .mlr-chat-header {
+        gap: 4px;
+    }
+
+    .mlr-chat-timestamp {
+        direction: ltr;
+        text-align: right;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mlr-glass-card,
+    .mlr-requests-table tbody tr,
+    .mlr-btn,
+    .mlr-view-file-btn,
+    .mlr-step-item {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ---------- Product invoice field labels (8.4.6.24) ---------- */
+.mlr-form-container .mlr-product-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    min-width: 0;
+    width: 100%;
+    margin: 0 !important;
+    color: var(--mlr-blue-dark, #1d3558);
+    cursor: text;
+}
+
+.mlr-form-container .mlr-product-field-label {
+    display: none;
+    width: 100%;
+    margin: 0 !important;
+    color: var(--mlr-blue-dark, #1d3558) !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1.65 !important;
+    text-align: right !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.mlr-form-container .mlr-product-optional,
+.mlr-form-container .mlr-product-unit {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.mlr-form-container .mlr-required-mark {
+    color: #dc2626;
+    font-weight: 900;
+}
+
+.mlr-form-container .mlr-product-field > .mlr-input,
+.mlr-form-container .mlr-product-field > .product-row-total {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+.mlr-form-container .mlr-product-field--total .product-row-total {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    line-height: 1.5;
+}
+
+.mlr-form-container .mlr-product-row .product-price,
+.mlr-form-container .mlr-product-row .product-qty {
+    direction: ltr;
+    text-align: right;
+}
+
+@media (max-width: 992px) {
+    .mlr-form-container .mlr-product-field-label {
+        display: block !important;
+    }
+
+    .mlr-form-container .mlr-product-row {
+        align-items: stretch !important;
+        padding-top: 48px !important;
+    }
+
+    .mlr-form-container .mlr-product-field--name,
+    .mlr-form-container .mlr-product-field--total {
+        grid-column: 1 / -1 !important;
+    }
+
+    .mlr-form-container .mlr-product-field > .mlr-input,
+    .mlr-form-container .mlr-product-field > .product-row-total {
+        min-height: 46px !important;
+    }
+
+    .mlr-form-container .mlr-product-field--total .product-row-total {
+        background: #e9eef4 !important;
+        border: 1px solid #d7e0ea !important;
+        color: #26384f !important;
+        font-weight: 800 !important;
+    }
+}
+
+@media (max-width: 720px) {
+    .mlr-form-container #mlr-product-repeater {
+        padding: 0 !important;
+        overflow: visible !important;
+        background: transparent !important;
+        border: 0 !important;
+    }
+
+    .mlr-form-container .mlr-product-row {
+        gap: 14px !important;
+        margin: 0 0 14px !important;
+        padding: 48px 14px 16px !important;
+        border: 1px solid rgba(29, 53, 88, 0.16) !important;
+        border-radius: 14px !important;
+        background: rgba(255, 255, 255, 0.74) !important;
+        box-shadow: 0 5px 18px rgba(29, 53, 88, 0.06) !important;
+    }
+
+    .mlr-form-container .mlr-product-row:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .mlr-form-container .mlr-product-field {
+        grid-column: 1 / -1 !important;
+        gap: 6px;
+    }
+
+    .mlr-form-container .mlr-product-field-label {
+        padding-inline: 2px;
+        font-size: 12.5px !important;
+    }
+
+    .mlr-form-container .mlr-product-field > .mlr-input,
+    .mlr-form-container .mlr-product-field > .product-row-total {
+        min-height: 48px !important;
+        border-radius: 10px !important;
+        font-size: 14px !important;
+    }
+
+    .mlr-form-container .mlr-remove-product-btn {
+        top: 10px !important;
+        left: 10px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+        line-height: 32px !important;
+    }
+}
+

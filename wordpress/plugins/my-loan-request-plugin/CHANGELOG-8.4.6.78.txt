@@ -1,0 +1,9 @@
+8.4.6.78 - Deferred OTP for contract reissue
+
+- Reissue/save now sends only the secure contract preview link to the applicant.
+- No OTP is generated, stored, or sent when the administrator creates or resends a reissued contract link.
+- The OTP is generated only after the applicant opens the public contract link, reviews the contract, accepts it, and explicitly requests the verification code.
+- Reissue public OTP requests do not resend the contract link, avoiding duplicate SMS messages.
+- Existing normal contract-signing behavior remains backward-compatible.
+- Reissue admin UI wording now clearly distinguishes preview-link delivery from OTP delivery.
+- Preview-link delivery is recorded on the active reissue revision for auditability.

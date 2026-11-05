@@ -1,0 +1,12 @@
+My Loan Request 8.4.6.85 — GreenPay OTP Modal + Provider Clock Sync
+
+- GreenPay interactive debit no longer redirects/reloads the admin page while requesting or confirming OTP.
+- Added AJAX start/resume, confirm-OTP and resend-OTP endpoints with capability + nonce checks.
+- Added an in-page OTP modal with loading/error/success states and resend support.
+- Starting an eligible ready transaction can queue + request OTP in one click without navigation.
+- Existing awaiting-OTP transactions reopen the modal without requesting another code automatically.
+- GreenPay HTTP Date response header is captured and used as an authoritative clock fallback for SendTime.
+- SendTime source priority: provider body timestamp -> provider HTTP Date -> local Tehran clock with signed emergency shift.
+- Added signed provider_time_shift_seconds setting (-120..+120), default +30 seconds per GreenPay support report; ignored when provider time is available.
+- Existing OTP time buffer remains supported after clock synchronization and defaults to zero.
+- Financial CAS guards, transaction snapshots, unknown-state reconciliation and no-double-debit safety remain unchanged.

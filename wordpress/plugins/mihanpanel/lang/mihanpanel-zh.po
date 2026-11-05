@@ -1,0 +1,1956 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MihanPanel\n"
+"POT-Creation-Date: 2021-05-12 17:28+0430\n"
+"PO-Revision-Date: 2021-06-09 13:58+0430\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: mihanpanel.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: zh\n"
+"X-Poedit-SearchPath-0: lang\n"
+"X-Poedit-SearchPath-1: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: app/adapter/woo.php:12 pro/app/form/admin_user_fields.php:26
+msgid "Address 2"
+msgstr "地址2"
+
+#: app/admin_menu.php:17 app/gutenberg.php:17
+msgid "MihanPanel"
+msgstr ""
+
+#: app/admin_menu.php:25 views/admin/panel-section/general.php:35
+msgid "Login & Register"
+msgstr "登录&注册"
+
+#: app/admin_menu.php:26 app/admin_menu.php:41 app/hooks.php:138
+msgid "User Panel"
+msgstr "用户面版"
+
+#: app/admin_menu.php:27 views/admin/panel-section/register.php:2
+msgid "Register Form"
+msgstr "注册表单"
+
+#: app/admin_menu.php:28 views/admin/panel-section/notification.php:2
+msgid "Notifications"
+msgstr "通知"
+
+#: app/admin_menu.php:29 app/pro_version_detail.php:9 pro/app/options.php:31
+msgid "Login with SMS"
+msgstr ""
+
+#: app/admin_menu.php:30
+msgid "Emails"
+msgstr "电子邮件"
+
+#: app/admin_menu.php:31 app/widget.php:35
+msgid "Tools"
+msgstr "工具"
+
+#: app/admin_menu.php:54
+msgid "User Fields"
+msgstr "用户字段"
+
+#: app/admin_menu.php:71 app/admin_menu.php:125
+msgid "Do you want to save changes?"
+msgstr "是否保存更改?"
+
+#: app/admin_menu.php:72 pro/app/presenter/user_fields.php:21
+msgid "Yes"
+msgstr "是"
+
+#: app/admin_menu.php:80
+msgid "Create new field"
+msgstr "创建字段"
+
+#: app/admin_menu.php:80
+msgid "Close"
+msgstr ""
+
+#: app/admin_menu.php:90
+msgid "Panel Menus"
+msgstr ""
+
+#: app/admin_menu.php:114
+msgid "Successfully added! Watch user panel"
+msgstr ""
+
+#: app/admin_menu.php:116 app/form/admin_user_fields.php:54
+#: app/form/profile.php:62 pro/app/ajax.php:111 pro/app/license.php:127
+#: pro/app/license.php:201 pro/app/license.php:231
+msgid "An error occurred!"
+msgstr "出现错误！"
+
+#: app/admin_menu.php:126
+msgid "yes"
+msgstr "是"
+
+#: app/admin_menu.php:134
+msgid "Menu title"
+msgstr "菜单标题"
+
+#: app/admin_menu.php:135
+msgid "Link / Shortcode"
+msgstr ""
+
+#: app/admin_menu.php:136 app/admin_menu.php:171 app/admin_menu.php:215
+msgid "Icon"
+msgstr "图标"
+
+#: app/admin_menu.php:155
+msgid "FontAwesome"
+msgstr "FontAwesome"
+
+#: app/admin_menu.php:164
+msgid "Create new item"
+msgstr "创建新项目"
+
+#: app/admin_menu.php:169 app/admin_menu.php:175
+msgid "Menu Title"
+msgstr "菜单标题"
+
+#: app/admin_menu.php:170
+msgid "Content"
+msgstr "内容"
+
+#: app/admin_menu.php:178
+msgid "Choose"
+msgstr "选择"
+
+#: app/admin_menu.php:179
+msgid "Link to other page"
+msgstr ""
+
+#: app/admin_menu.php:180
+msgid "Shortcode"
+msgstr "短代码"
+
+#: app/admin_menu.php:191
+msgid "Custom Shortcode"
+msgstr "自定义短代码"
+
+#: app/ajax.php:17 app/ajax.php:72 app/ajax.php:99
+msgid "Has error!"
+msgstr ""
+
+#: app/ajax.php:22 app/ajax.php:83 app/ajax.php:104
+#: app/form/admin_user_fields.php:28 app/form/profile.php:36
+#: pro/app/ajax.php:248 pro/app/ajax.php:306 pro/app/ajax.php:361
+msgid "The operation failed due to security issues."
+msgstr ""
+
+#: app/ajax.php:63 app/ajax.php:145 app/form/profile.php:65
+msgid "Successfully updated!"
+msgstr "已成功更新！"
+
+#: app/ajax.php:63 app/ajax.php:145
+msgid "Nothing updated."
+msgstr ""
+
+#: app/ajax.php:92
+msgid "Successfully deleted!"
+msgstr "成功删除了！"
+
+#: app/ajax.php:92
+msgid "Could not be deleted."
+msgstr ""
+
+#: app/config.php:79
+msgid "Woocommerce Download Products"
+msgstr ""
+
+#: app/config.php:88
+msgid "My Purchases"
+msgstr "我的购买"
+
+#: app/config.php:97
+msgid "Support Telegram"
+msgstr ""
+
+#: app/config.php:145
+msgid ""
+"You need to install easy digital downloads plugin for using this section!"
+msgstr ""
+
+#: app/config.php:208
+msgid "Registration complete. Your account has been activated automatically."
+msgstr ""
+
+#: app/config.php:211 app/email.php:86
+msgid "Registration complete. Please wait for admin approval."
+msgstr ""
+
+#: app/config.php:215
+msgid "Login Page"
+msgstr "登录页面"
+
+#: app/config.php:231
+msgid "Your account is disable! Please wait for admin approval."
+msgstr ""
+
+#: app/config.php:233 pro/app/ajax.php:66 pro/app/ajax.php:91
+#: pro/app/ajax.php:265 views/user/inactive_account.php:8
+msgid "Your account is disable!"
+msgstr ""
+
+#: app/config.php:241
+msgid "Your Account successfully activated!"
+msgstr ""
+
+#: app/config.php:244
+msgid "Request is invalid!"
+msgstr "请求无效！"
+
+#: app/email.php:69
+msgid "Account activation"
+msgstr ""
+
+#: app/email.php:71
+msgid "Click on below link to activate account"
+msgstr ""
+
+#: app/email.php:85 app/email.php:110
+msgid "Registration complete."
+msgstr "注册完成。"
+
+#: app/email.php:86 app/email.php:110
+msgid "Thanks!"
+msgstr "谢谢！"
+
+#. translators: Login details notification email subject. %s: Site title
+#: app/email.php:92 app/email.php:116
+#, php-format
+msgid "[%s] Login Details"
+msgstr "[%s] 登录详细信息"
+
+#: app/email.php:138
+#, php-format
+msgid "[%s] Change Account Status"
+msgstr ""
+
+#: app/email.php:142
+msgid "Unknown"
+msgstr "未知"
+
+#: app/email.php:147 app/users.php:104 app/users.php:121 pro/app/login.php:81
+msgid "Active"
+msgstr ""
+
+#: app/email.php:151 app/users.php:104 app/users.php:121 pro/app/login.php:81
+msgid "Inactive"
+msgstr "未激活"
+
+#: app/emwidg/emwidg_mihanpanel.php:26 app/hooks.php:159
+msgid "Mihan Panel"
+msgstr ""
+
+#: app/form/admin_user_fields.php:50
+msgid "Settings successfully updated!"
+msgstr "设置已成功更新"
+
+#: app/form/admin_user_fields.php:60
+msgid "Please fill all the fields"
+msgstr "请填写所有字段"
+
+#: app/form/admin_user_fields.php:69 app/form/admin_user_fields.php:134
+msgid "Field Id"
+msgstr "欄位ID"
+
+#: app/form/admin_user_fields.php:70 app/form/admin_user_fields.php:138
+#: pro/app/form/admin_user_fields.php:203
+#: pro/app/form/admin_user_fields.php:268
+msgid "Title"
+msgstr "标题"
+
+#: app/form/admin_user_fields.php:71 app/form/admin_user_fields.php:105
+#: app/form/admin_user_fields.php:142 app/form/admin_user_fields.php:144
+#: parts/edit-profile.php:91 pro/app/login.php:62
+msgid "Required"
+msgstr "需要"
+
+#: app/form/admin_user_fields.php:72 app/form/admin_user_fields.php:150
+msgid "Type"
+msgstr "类型"
+
+#: app/form/admin_user_fields.php:76
+msgid "Fields"
+msgstr "字段"
+
+#: app/form/admin_user_fields.php:76
+msgid "New Field"
+msgstr "新字段"
+
+#: app/form/admin_user_fields.php:106 app/form/admin_user_fields.php:145
+msgid "Optional"
+msgstr "可选的"
+
+#: app/form/admin_user_fields.php:154 pro/app/form/admin_user_fields.php:34
+msgid "Save"
+msgstr "保存"
+
+#: app/form/profile.php:54
+msgid "Passwords don't match!"
+msgstr "密码不正确"
+
+#: app/form/profile.php:89 pro/app/file_uploader.php:160
+#: pro/app/file_uploader.php:172 pro/app/file_uploader.php:261
+#: pro/app/sundry.php:35
+#, php-format
+msgid "%1$s must not be empty."
+msgstr ""
+
+#: app/handle_view.php:172
+msgid "You are our user"
+msgstr ""
+
+#: app/handle_view.php:184
+#, php-format
+msgid "%d Day"
+msgstr "％d 天"
+
+#: app/handle_view.php:200
+msgid "Your Comments"
+msgstr "您的评论"
+
+#: app/handle_view.php:224
+msgid "Purchased files"
+msgstr ""
+
+#: app/handle_view.php:258
+msgid "Your purchase count"
+msgstr ""
+
+#: app/handle_view.php:275
+msgid "Your tickets"
+msgstr "您的票券"
+
+#: app/handle_view.php:311 app/middlewares.php:68
+msgid "Pro Version"
+msgstr "专业版"
+
+#: app/handle_view.php:332 pro/app/handle_view.php:264
+msgid "Login Button Text Color"
+msgstr ""
+
+#: app/handle_view.php:334 pro/app/handle_view.php:266
+msgid "Color of Login and Register button text"
+msgstr ""
+
+#: app/handle_view.php:347 pro/app/handle_view.php:274
+msgid "Login Fields Background Color"
+msgstr ""
+
+#: app/handle_view.php:349 pro/app/handle_view.php:276
+msgid "Color of Login and Register fields"
+msgstr ""
+
+#: app/handle_view.php:362 pro/app/handle_view.php:284
+msgid "Login Field's Label Color"
+msgstr ""
+
+#: app/handle_view.php:364 pro/app/handle_view.php:286
+msgid "Color of Login and Register labels"
+msgstr ""
+
+#: app/handle_view.php:377 pro/app/handle_view.php:294
+msgid "Login Fields Text Color"
+msgstr ""
+
+#: app/handle_view.php:379 pro/app/handle_view.php:296
+msgid "Color of Login and Register fields text"
+msgstr ""
+
+#: app/handle_view.php:392 pro/app/handle_view.php:304
+msgid "Login Info Messagebox Background Color"
+msgstr ""
+
+#: app/handle_view.php:394
+msgid "Background Color of Login and Register Info Messagebox"
+msgstr ""
+
+#: app/handle_view.php:407 pro/app/handle_view.php:314
+msgid "Login Info Messagebox Text Color"
+msgstr ""
+
+#: app/handle_view.php:409
+msgid "Color of Login and Register Info Messagebox Text"
+msgstr ""
+
+#: app/handle_view.php:422 pro/app/handle_view.php:324
+msgid "Login Error Messagebox Text Color"
+msgstr ""
+
+#: app/handle_view.php:424 pro/app/handle_view.php:326
+msgid "Color of Login and Register Error Messagebox Text"
+msgstr ""
+
+#: app/handle_view.php:437 pro/app/handle_view.php:334
+msgid "Login Error Messagebox Background Color"
+msgstr ""
+
+#: app/handle_view.php:439 pro/app/handle_view.php:336
+msgid "Background Color of Login and Register Error Messagebox"
+msgstr ""
+
+#: app/handle_view.php:608 pro/app/handle_view.php:560
+msgid "Auto confirm phone number after user register"
+msgstr ""
+
+#: app/handle_view.php:612 pro/app/handle_view.php:564
+msgid "User can change phone number"
+msgstr ""
+
+#: app/middlewares.php:69
+#, php-format
+msgid ""
+"Max item count is 4 in lite version. Upgrade to %s for disable this "
+"restriction."
+msgstr ""
+
+#: app/options.php:12
+msgid "Automatic activation"
+msgstr ""
+
+#: app/options.php:13
+msgid "Send Activation Link"
+msgstr ""
+
+#: app/options.php:14
+msgid "Manual Activation"
+msgstr "手动激活"
+
+#: app/panel.php:25
+msgid "Order Details"
+msgstr "订单详情"
+
+#: app/pro_version_detail.php:8 pro/app/options.php:30
+msgid "Wordpress Password Mode"
+msgstr ""
+
+#: app/pro_version_detail.php:10 pro/app/options.php:32
+msgid "Both"
+msgstr "两者"
+
+#: app/shortcode.php:20
+msgid "Please install Woocommerce plugin."
+msgstr ""
+
+#: app/shortcode.php:27
+msgid "You need to install woocommerce for use this section!"
+msgstr ""
+
+#: app/shortcode.php:39
+msgid "Go shop"
+msgstr "前往商店"
+
+#: app/shortcode.php:41
+msgid "No downloads available yet."
+msgstr "目前还没有下载。"
+
+#: app/shortcode.php:53
+msgid "Open Menu"
+msgstr "打开菜单"
+
+#: app/shortcode.php:77
+msgid "Please login to your account"
+msgstr "请登录您的帐户"
+
+#: app/sundry.php:10 app/widget/profile.php:68
+#: views/admin/panel-section/general.php:10
+msgid "Login"
+msgstr "登录"
+
+#: app/sundry.php:46 pro/app/implemented/melipayamak.php:112
+msgid "Password"
+msgstr "密码"
+
+#: app/sundry.php:58
+msgid "Password must not empty"
+msgstr ""
+
+#: app/sundry.php:189
+msgid " Should not be empty!"
+msgstr ""
+
+#: app/user_fields.php:11
+msgid "Text input"
+msgstr "文字输入"
+
+#: app/user_fields.php:15
+msgid "Textarea"
+msgstr "文本区域"
+
+#: app/user_fields.php:19
+msgid "Email"
+msgstr "邮箱"
+
+#: app/user_fields.php:23
+msgid "Numeral"
+msgstr ""
+
+#: app/user_fields.php:27
+msgid "Checkbox"
+msgstr "复选框"
+
+#: app/user_fields.php:31
+msgid "Selectbox"
+msgstr "选择框"
+
+#: app/user_fields.php:35
+msgid "Radio Button"
+msgstr "单选按钮"
+
+#: app/user_fields.php:39
+msgid "Date Picker"
+msgstr "日期选择器"
+
+#: app/user_fields.php:43
+msgid "File Uploader"
+msgstr "文件上传器"
+
+#: app/users.php:88
+msgid "Status"
+msgstr "状态"
+
+#: app/widget.php:11
+msgid "MihanPanel Status"
+msgstr ""
+
+#: app/widget.php:24
+msgid "PHP version must be higher than 7.4"
+msgstr ""
+
+#: app/widget.php:29
+msgid "Wordpress version must be higher than 5.6"
+msgstr ""
+
+#: app/widget.php:36
+#, php-format
+msgid "Panel page not exists. You can create it from this section: %s"
+msgstr ""
+
+#: app/widget.php:41
+msgid "Everything on your site is OK."
+msgstr ""
+
+#: app/widget.php:44
+msgid "You must check:"
+msgstr ""
+
+#: app/widget.php:70
+msgid "mihanwp.com"
+msgstr ""
+
+#: app/widget.php:71
+#, php-format
+msgid "Latest news in %s"
+msgstr ""
+
+#: app/widget.php:79
+msgid "No item"
+msgstr "没有项目"
+
+#: app/widget.php:82
+msgid "ago"
+msgstr "前"
+
+#: app/widget.php:91
+msgid "More Articles"
+msgstr "更多文章"
+
+#: app/widget/profile.php:8
+msgid "User Profile - Mihanpanel"
+msgstr ""
+
+#: app/widget/profile.php:9
+msgid "Show User Profile"
+msgstr ""
+
+#: app/widget/profile.php:36 parts/sidebar.php:16
+msgid "User Dashboard"
+msgstr "用户面板"
+
+#: app/widget/profile.php:42 parts/sidebar.php:22
+msgid "Edit Profile"
+msgstr "编辑个人资料"
+
+#: app/widget/profile.php:61 parts/sidebar.php:43
+msgid "Logout"
+msgstr "注销"
+
+#: app/widget/profile.php:74
+msgid "Register"
+msgstr "注册"
+
+#: parts/dashboard.php:3
+msgid "Back to Home Page"
+msgstr "返回首页"
+
+#: parts/dashboard.php:9
+#, php-format
+msgid "Howdy, %1$s!"
+msgstr ""
+
+#: parts/dashboard.php:26
+#, php-format
+msgid "%1$s off code for your next purchase"
+msgstr ""
+
+#: parts/dashboard.php:29
+#, php-format
+msgid "Off code: %1$s"
+msgstr ""
+
+#: parts/edit-profile.php:2
+msgid "Edit User Profile"
+msgstr "编辑用户资料"
+
+#: parts/edit-profile.php:41 views/admin/panel-section/email.php:40
+#: views/admin/panel-section/email.php:60
+msgid "First Name"
+msgstr "名字"
+
+#: parts/edit-profile.php:49 views/admin/panel-section/email.php:41
+#: views/admin/panel-section/email.php:61
+msgid "Last Name"
+msgstr "姓"
+
+#: parts/edit-profile.php:58
+msgid "New password"
+msgstr "新密码"
+
+#: parts/edit-profile.php:64
+msgid "Password repeat"
+msgstr "重复密码"
+
+#: parts/edit-profile.php:73
+msgid "Bio"
+msgstr "简介"
+
+#: parts/edit-profile.php:102
+msgid "Save Changes"
+msgstr "保存更改"
+
+#: pro/app/ajax.php:46 pro/app/login.php:285 pro/app/smart_login.php:111
+msgid "Username must not be empty!"
+msgstr ""
+
+#: pro/app/ajax.php:72
+msgid ""
+"No any user found by this email. Please register by your phone number first."
+msgstr ""
+
+#: pro/app/ajax.php:80
+msgid "No any user found. Please register by your phone number first."
+msgstr ""
+
+#: pro/app/ajax.php:120 pro/app/smart_login.php:72
+msgid "User data not found!"
+msgstr "找不到用户数据！"
+
+#: pro/app/ajax.php:126
+msgid "No any phone number found for this user"
+msgstr ""
+
+#: pro/app/ajax.php:139 pro/app/ajax.php:271 pro/app/ajax.php:331
+msgid "Dynamic code was generated for you!"
+msgstr ""
+
+#: pro/app/ajax.php:147 pro/app/ajax.php:284 pro/app/ajax.php:338
+msgid "Dynamic code did not create for your account!"
+msgstr ""
+
+#: pro/app/ajax.php:176
+msgid "User data not found"
+msgstr ""
+
+#: pro/app/ajax.php:183
+msgid "No any user found by this phone number"
+msgstr ""
+
+#: pro/app/ajax.php:191
+msgid "Sorry, but you do not have a valid phone."
+msgstr ""
+
+#: pro/app/ajax.php:201 pro/app/ajax.php:213 pro/app/ajax.php:226
+#: pro/app/license.php:187 pro/app/license.php:219
+msgid "Has Error!"
+msgstr ""
+
+#: pro/app/ajax.php:217 pro/app/ajax.php:230
+msgid "Invalid license key"
+msgstr "无效的许可证密钥"
+
+#: pro/app/ajax.php:242
+msgid "Username not recevied!"
+msgstr ""
+
+#: pro/app/ajax.php:257
+msgid "User not exists!"
+msgstr ""
+
+#: pro/app/ajax.php:277
+msgid "No any valid phone number for this username!"
+msgstr ""
+
+#: pro/app/ajax.php:292
+msgid "Has problem in send sms process"
+msgstr ""
+
+#: pro/app/ajax.php:297 pro/app/ajax.php:352
+msgid "Dynamic code send for you!"
+msgstr ""
+
+#: pro/app/ajax.php:312 pro/app/assets.php:129
+msgid "Please use valid phone number."
+msgstr ""
+
+#: pro/app/ajax.php:324
+msgid "This phone number is not available."
+msgstr ""
+
+#: pro/app/ajax.php:347
+msgid "Sory, has problem in send sms"
+msgstr ""
+
+#: pro/app/ajax.php:367
+msgid "Please enter dynamic code"
+msgstr ""
+
+#: pro/app/ajax.php:374
+msgid "Dynamic code was wrong"
+msgstr ""
+
+#: pro/app/ajax.php:380
+msgid "Sory, has problem in validate your phone."
+msgstr ""
+
+#: pro/app/ajax.php:385
+msgid "Your phone successfully validate!"
+msgstr ""
+
+#: pro/app/ajax.php:394
+msgid "Provider must send!"
+msgstr ""
+
+#: pro/app/ajax.php:398
+msgid "Provider is not valid."
+msgstr ""
+
+#: pro/app/avatar.php:48
+msgid "Has error in uploading media"
+msgstr ""
+
+#: pro/app/avatar.php:61
+msgid "Avatar successfully saved!"
+msgstr ""
+
+#: pro/app/avatar.php:64
+msgid "Has error in set avatar data"
+msgstr ""
+
+#: pro/app/avatar.php:114
+msgid "Avatar successfully deleted!"
+msgstr ""
+
+#: pro/app/avatar.php:117
+msgid "Has error in deleting avatar."
+msgstr ""
+
+#: pro/app/config.php:11
+msgid "MihanPanel Pro"
+msgstr ""
+
+#: pro/app/config.php:92
+msgid "Role"
+msgstr "角色"
+
+#: pro/app/config.php:103
+msgid "Role must not be empty"
+msgstr ""
+
+#: pro/app/file_uploader.php:27
+msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
+msgstr "上传的文件超过了php.ini中的upload_max_filesize指令"
+
+#: pro/app/file_uploader.php:28
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML form"
+msgstr "在HTML表单中上传文件的超过MAX_FILE_SIZE限制"
+
+#: pro/app/file_uploader.php:29
+msgid "The uploaded file was only partially uploaded"
+msgstr "上传的文件仅部分上传"
+
+#: pro/app/file_uploader.php:30
+msgid "No file was uploaded"
+msgstr "没有文件被上传"
+
+#: pro/app/file_uploader.php:31
+msgid "Missing a temporary folder"
+msgstr "缺少临时文件夹"
+
+#: pro/app/file_uploader.php:32
+msgid "Failed to write file to disk."
+msgstr "无法将文件写入磁盘。"
+
+#: pro/app/file_uploader.php:33
+msgid "A PHP extension stopped the file upload."
+msgstr "PHP扩展停止了文件上传。"
+
+#: pro/app/file_uploader.php:186 pro/app/sundry.php:57
+#, php-format
+msgid "%1$s: Invalid file type"
+msgstr ""
+
+#: pro/app/file_uploader.php:194 pro/app/sundry.php:65
+#, php-format
+msgid "%1$s: Invalid file size"
+msgstr ""
+
+#: pro/app/file_uploader.php:212
+#, php-format
+msgid "%1$s: Has error in upload file."
+msgstr ""
+
+#: pro/app/form/admin_tabs_fields.php:8
+msgid "Upload"
+msgstr "上传"
+
+#: pro/app/form/admin_user_fields.php:20
+msgid "Woocommerce Fields"
+msgstr ""
+
+#: pro/app/form/admin_user_fields.php:128
+#: pro/app/form/admin_user_fields.php:287
+msgid "Allow upload this types"
+msgstr ""
+
+#: pro/app/form/admin_user_fields.php:134
+#: pro/app/form/admin_user_fields.php:293
+msgid "Audio"
+msgstr "音频"
+
+#: pro/app/form/admin_user_fields.php:139
+#: pro/app/form/admin_user_fields.php:298
+msgid "Image"
+msgstr ""
+
+#: pro/app/form/admin_user_fields.php:143
+#: pro/app/form/admin_user_fields.php:302
+msgid "Video"
+msgstr "视频"
+
+#: pro/app/form/admin_user_fields.php:147
+#: pro/app/form/admin_user_fields.php:306
+msgid "PDF"
+msgstr "PDF"
+
+#: pro/app/form/admin_user_fields.php:151
+#: pro/app/form/admin_user_fields.php:310
+msgid "Compressed"
+msgstr "压缩的"
+
+#: pro/app/form/admin_user_fields.php:155
+#: pro/app/form/admin_user_fields.php:314
+msgid "Text"
+msgstr "文本"
+
+#: pro/app/form/admin_user_fields.php:162
+#: pro/app/form/admin_user_fields.php:320
+msgid "Maximum file size"
+msgstr "最大文件大小"
+
+#: pro/app/form/admin_user_fields.php:162
+#: pro/app/form/admin_user_fields.php:320
+msgid "MB"
+msgstr "MB"
+
+#: pro/app/form/admin_user_fields.php:200
+#: pro/app/form/admin_user_fields.php:265
+msgid "Field id"
+msgstr "将字段 ID 替换为字段标签"
+
+#: pro/app/form/admin_user_fields.php:353
+msgid "Where show field"
+msgstr ""
+
+#: pro/app/form/admin_user_fields.php:355
+msgid "Profile & Register"
+msgstr ""
+
+#: pro/app/form/admin_user_fields.php:356
+msgid "Just in profile"
+msgstr ""
+
+#: pro/app/form/admin_user_fields.php:373
+msgid "Prevent edit this field"
+msgstr ""
+
+#: pro/app/handle_view.php:15
+msgid ""
+"<p>License is not active! Please activate it from <strong>Plugins > Mihan "
+"Panel License.</strong> Thanks!</p>"
+msgstr ""
+
+#: pro/app/handle_view.php:205
+msgid "Light"
+msgstr "浅色"
+
+#: pro/app/handle_view.php:216
+msgid "Dark"
+msgstr "黑暗"
+
+#: pro/app/handle_view.php:232
+msgid "Right"
+msgstr ""
+
+#: pro/app/handle_view.php:243
+msgid "Center"
+msgstr "居中"
+
+#: pro/app/handle_view.php:254
+msgid "Left"
+msgstr ""
+
+#: pro/app/handle_view.php:306
+msgid "Background Color of Login and Register Messagebox"
+msgstr ""
+
+#: pro/app/handle_view.php:316
+msgid "Color of Login and Register Messagebox Text"
+msgstr ""
+
+#: pro/app/handle_view.php:363
+msgid "Default"
+msgstr "默认"
+
+#: pro/app/handle_view.php:374
+msgid "Modern"
+msgstr "现代"
+
+#: pro/app/handle_view.php:385
+msgid "3D"
+msgstr "3D"
+
+#: pro/app/handle_view.php:402 pro/app/handle_view.php:420
+msgid "IRANYekan"
+msgstr ""
+
+#: pro/app/handle_view.php:413 pro/app/handle_view.php:419
+msgid "IRANSans"
+msgstr ""
+
+#: pro/app/handle_view.php:577
+msgid "Select SMS Provider"
+msgstr ""
+
+#: pro/app/handle_view.php:582
+msgid "Don't found any SMS provider!"
+msgstr ""
+
+#: pro/app/handle_view.php:591 pro/app/handle_view.php:603
+#: views/admin/panel-section/email.php:19
+#: views/admin/panel-section/email.php:36
+#: views/admin/panel-section/email.php:56
+msgid "You can use this:"
+msgstr ""
+
+#: pro/app/handle_view.php:593 pro/app/handle_view.php:605
+#: pro/app/implemented/melipayamak.php:108
+#: pro/views/admin/live-view/panel-general.php:4
+#: views/admin/panel-section/email.php:21
+#: views/admin/panel-section/email.php:39
+#: views/admin/panel-section/email.php:59
+msgid "Username"
+msgstr "用户名"
+
+#: pro/app/handle_view.php:594 pro/app/handle_view.php:606
+#: views/admin/panel-section/email.php:22
+#: views/admin/panel-section/email.php:42
+#: views/admin/panel-section/email.php:62
+msgid "Display Name"
+msgstr "显示名称"
+
+#: pro/app/handle_view.php:595 pro/app/handle_view.php:607
+msgid "Activation Code"
+msgstr "激活码"
+
+#: pro/app/implemented/kavenegar.php:24
+#, php-format
+msgid "%s Rial"
+msgstr ""
+
+#: pro/app/implemented/kavenegar.php:78 pro/app/implemented/melipayamak.php:104
+#: pro/app/implemented/sabanovin.php:85 pro/app/implemented/smsir.php:162
+msgid "Account Credit"
+msgstr ""
+
+#: pro/app/implemented/kavenegar.php:82 pro/app/implemented/smsir.php:170
+msgid "API Key"
+msgstr "API密钥"
+
+#: pro/app/implemented/kavenegar.php:86 pro/app/implemented/melipayamak.php:116
+#: pro/app/implemented/sabanovin.php:89
+msgid "Gateway Number"
+msgstr ""
+
+#: pro/app/implemented/kavenegar.php:88
+msgid "It's can be empty"
+msgstr ""
+
+#: pro/app/implemented/kavenegar.php:91
+msgid "Template Name"
+msgstr "模板名称"
+
+#: pro/app/implemented/kavenegar.php:93 pro/app/implemented/melipayamak.php:122
+#: pro/app/implemented/smsir.php:176
+msgid ""
+"You can enter template id if this feature is enable in your sms provider "
+"account."
+msgstr ""
+
+#: pro/app/implemented/kavenegar.php:94 pro/app/implemented/melipayamak.php:123
+msgid ""
+"If Use this feature, just enter mihanpanel pre-defined variables in new line "
+"according the variables order defined in sms provider templates for sms "
+"content field value; like this:"
+msgstr ""
+
+#: pro/app/implemented/melipayamak.php:120 pro/app/implemented/smsir.php:174
+msgid "Template ID"
+msgstr "模板ID"
+
+#: pro/app/implemented/sabanovin.php:32
+#, php-format
+msgid "%s Toman"
+msgstr ""
+
+#: pro/app/implemented/sabanovin.php:44
+msgid "Please use latin numbers as the gateway number"
+msgstr ""
+
+#: pro/app/implemented/sabanovin.php:93
+msgid "Gateway API Key"
+msgstr ""
+
+#: pro/app/implemented/smsir.php:163
+msgid "Not connected to sms provider"
+msgstr ""
+
+#: pro/app/implemented/smsir.php:166
+msgid "Secret Key"
+msgstr "密钥"
+
+#: pro/app/implemented/smsir.php:177
+msgid ""
+"If Use this feature, sms content field value must be like this (Put each "
+"item in new line):"
+msgstr ""
+
+#: pro/app/implemented/smsir.php:180
+msgid ""
+"Instead of \"username\" and \"verification_code\" user your own field_name "
+"that defined in your sms provider account."
+msgstr ""
+
+#: pro/app/implemented/smsir.php:184 pro/app/implemented/smsir.php:186
+msgid "Choose gateway number"
+msgstr ""
+
+#: pro/app/license.php:84
+msgid ""
+"<p>Mihan Panel plugin is not active! For using all features enter license "
+"key from <strong>Plugins > Mihan Panel License.</strong> Thanks!</p>"
+msgstr ""
+
+#: pro/app/license.php:102
+msgid "License"
+msgstr "许可证"
+
+#: pro/app/license.php:158
+msgid "Missing license key"
+msgstr ""
+
+#: pro/app/license.php:173
+msgid "License is inactive."
+msgstr "许可证不活动。"
+
+#: pro/app/license.php:179 pro/app/license.php:209
+msgid "MihanPanel is active with this license key"
+msgstr ""
+
+#: pro/app/license.php:208
+msgid "Successfully activated."
+msgstr ""
+
+#: pro/app/license.php:212
+msgid ""
+"License key is invalid or the number of activation has exceeded the allowed "
+"limit."
+msgstr ""
+
+#: pro/app/license.php:238
+msgid "Successfully deactivated."
+msgstr ""
+
+#: pro/app/license.php:239
+msgid "License is inactive"
+msgstr ""
+
+#: pro/app/login.php:52 pro/app/smart_login.php:123
+msgid "Username, Email or Phone number"
+msgstr ""
+
+#: pro/app/login.php:62 pro/app/login.php:93
+#: pro/app/presenter/user_fields.php:44 pro/views/user/validate_phone.php:22
+msgid "Phone Number"
+msgstr "电话号码"
+
+#: pro/app/login.php:87 views/admin/admin-profile/account-status.php:11
+msgid "Deactivate"
+msgstr "停用"
+
+#: pro/app/login.php:87 views/admin/admin-profile/account-status.php:10
+msgid "Activate"
+msgstr ""
+
+#: pro/app/login.php:111
+msgid "This phone number is used by another user"
+msgstr ""
+
+#: pro/app/login.php:158 pro/app/login.php:163 pro/app/login.php:168
+#: pro/app/login.php:217 pro/app/login.php:235 pro/app/smart_login.php:48
+#: pro/app/smart_login.php:54
+msgid "Error"
+msgstr "错误"
+
+#: pro/app/login.php:158
+msgid "Invalida phone number!"
+msgstr ""
+
+#: pro/app/login.php:163
+msgid "Unavailable phone number!"
+msgstr ""
+
+#: pro/app/login.php:168
+msgid "Phone Number field must not be empty!"
+msgstr ""
+
+#: pro/app/login.php:217 pro/app/login.php:235
+msgid "Incorrecnt login data"
+msgstr ""
+
+#: pro/app/login.php:224
+msgid "This phone is inactive on your account"
+msgstr ""
+
+#: pro/app/login.php:255
+msgid "Invalid dynamic code!"
+msgstr ""
+
+#: pro/app/login.php:262
+msgid "Dynamic code was wrong!"
+msgstr ""
+
+#: pro/app/presenter/user_fields.php:20
+msgid "Do you want to save this change?"
+msgstr ""
+
+#: pro/app/presenter/user_fields.php:29
+msgid "Choose Image"
+msgstr "选择图像"
+
+#: pro/app/presenter/user_fields.php:31
+msgid "Remove"
+msgstr "移除"
+
+#: pro/app/presenter/user_fields.php:75
+msgid "Choose an item"
+msgstr ""
+
+#: pro/app/presenter/user_fields.php:136
+msgid "Delete File"
+msgstr "删除文件"
+
+#: pro/app/presenter/user_fields.php:145
+msgid "Show File"
+msgstr ""
+
+#: pro/app/presenter/user_fields.php:149
+msgid "Choose File"
+msgstr "选择文件"
+
+#: pro/app/smart_login.php:48
+msgid "Dynamic code must not be empty"
+msgstr ""
+
+#: pro/app/smart_login.php:54
+msgid "Invalid dynamic code"
+msgstr ""
+
+#: pro/app/smart_login.php:79
+msgid "User not found!"
+msgstr "未找到学员！"
+
+#: pro/app/smart_login.php:108
+msgid "Login with dynamic code"
+msgstr ""
+
+#: pro/app/smart_login.php:109
+msgid "Back"
+msgstr "返回"
+
+#: pro/app/smart_login.php:112
+msgid "Has error"
+msgstr "有错"
+
+#: pro/app/sms.php:17
+msgid "Your validation code is: [[code]]"
+msgstr ""
+
+#: pro/app/sms.php:27
+msgid "Your login code is: [[code]]"
+msgstr ""
+
+#: pro/app/sms_provider.php:58
+msgid "Sabanovin"
+msgstr ""
+
+#: pro/app/sms_provider.php:62
+msgid "Meli Payamak"
+msgstr ""
+
+#: pro/app/sms_provider.php:66
+msgid "SMS.ir"
+msgstr ""
+
+#: pro/app/sms_provider.php:70
+msgid "Kavenegar"
+msgstr ""
+
+#: pro/views/admin/license.php:11
+msgid "License Key"
+msgstr "许可证密钥"
+
+#: pro/views/admin/license.php:21
+msgid "Activate License"
+msgstr "激活许可证"
+
+#: pro/views/admin/license.php:22
+msgid "Deactivate License"
+msgstr "停用许可证"
+
+#: pro/views/admin/license.php:23
+msgid "Get License Key"
+msgstr "现在获取许可证密钥"
+
+#: pro/views/admin/live-view/panel-general.php:11
+#: pro/views/admin/live-view/panel-general.php:16
+msgid "Message Text..."
+msgstr ""
+
+#: pro/views/user/login_dynamic_code.php:3 pro/views/user/smart_login.php:3
+msgid "Dynamic Password"
+msgstr ""
+
+#: pro/views/user/login_dynamic_code.php:5 pro/views/user/smart_login.php:5
+msgid "Enter Dynamic Password"
+msgstr ""
+
+#: pro/views/user/login_dynamic_code.php:6 pro/views/user/smart_login.php:7
+msgid "Get Code"
+msgstr "获取验证码"
+
+#: pro/views/user/login_dynamic_code.php:16
+msgid "Use password"
+msgstr ""
+
+#: pro/views/user/validate_phone.php:12
+msgid "Phone Number Validation"
+msgstr "Phone Number Validation"
+
+#: pro/views/user/validate_phone.php:13
+msgid "Validate your phone"
+msgstr ""
+
+#: pro/views/user/validate_phone.php:30
+msgid "Dynamic Code"
+msgstr ""
+
+#: pro/views/user/validate_phone.php:37
+msgid "Request Code"
+msgstr ""
+
+#: rename-wp-login.php:79
+#, php-format
+msgid "Please upgrade to the latest version of WordPress to activate %s."
+msgstr ""
+
+#: rename-wp-login.php:79 rename-wp-login.php:103
+msgid "Rename wp-login.php"
+msgstr ""
+
+#: rename-wp-login.php:104
+msgid ""
+"This option allows you to set a networkwide default, which can be overridden "
+"by individual sites. Simply go to to the site’s permalink settings to change "
+"the url."
+msgstr ""
+"此选项使您可以设置网络范围的默认值，该默认值可以被单个站点覆盖。 只需转到网站"
+"的永久链接设置即可更改网址。"
+
+#: rename-wp-login.php:107
+msgid "Networkwide default"
+msgstr "全网默认"
+
+#: rename-wp-login.php:126
+msgid "Change login url"
+msgstr ""
+
+#: rename-wp-login.php:132
+msgid "Login page address"
+msgstr ""
+
+#: rename-wp-login.php:164
+#, php-format
+msgid "To set a networkwide default, go to %s."
+msgstr ""
+
+#: rename-wp-login.php:164
+msgid "Network Settings"
+msgstr "网络设置"
+
+#: rename-wp-login.php:183
+msgid "Your site login url is"
+msgstr ""
+
+#: rename-wp-login.php:188
+#, php-format
+msgid "Your login page is now here: %s. Bookmark this page!"
+msgstr ""
+
+#: rename-wp-login.php:193 rename-wp-login.php:195
+msgid "Settings"
+msgstr "设置"
+
+#: rename-wp-login.php:208
+msgid "This feature is not enabled."
+msgstr "此功能未启用。"
+
+#: views/admin/admin-profile/account-status.php:1
+msgid "User Account Status"
+msgstr ""
+
+#: views/admin/admin-profile/account-status.php:4
+msgid "Account status"
+msgstr "帐户状态"
+
+#: views/admin/admin-profile/account-status.php:8
+msgid "Change account status"
+msgstr ""
+
+#: views/admin/panel-section/email.php:3
+msgid "Welcome Email"
+msgstr "欢迎邮件"
+
+#: views/admin/panel-section/email.php:4
+msgid "Text of email that send to new user"
+msgstr ""
+
+#: views/admin/panel-section/email.php:10
+#: views/admin/panel-section/email.php:32
+#: views/admin/panel-section/email.php:52
+msgid "Email Content"
+msgstr "邮件内容"
+
+#: views/admin/panel-section/email.php:25
+msgid "Reset Password Email"
+msgstr "重置密码电子邮件"
+
+#: views/admin/panel-section/email.php:26
+msgid "Subject and Text of reset password email"
+msgstr ""
+
+#: views/admin/panel-section/email.php:28
+msgid "Reset password email subject"
+msgstr ""
+
+#: views/admin/panel-section/email.php:38
+msgid "Activation Link"
+msgstr "过期激活链接"
+
+#: views/admin/panel-section/email.php:45
+msgid "Change Accoutn Status Email"
+msgstr ""
+
+#: views/admin/panel-section/email.php:46
+msgid "Subject and Text of change account status email"
+msgstr ""
+
+#: views/admin/panel-section/email.php:48
+msgid "Change account status email subject"
+msgstr ""
+
+#: views/admin/panel-section/email.php:58
+msgid "Account Status"
+msgstr "账户状态"
+
+#: views/admin/panel-section/general.php:15
+msgid "Logo"
+msgstr "Logo"
+
+#: views/admin/panel-section/general.php:21
+msgid "Activation process"
+msgstr "激活过程"
+
+#: views/admin/panel-section/general.php:37
+msgid "Login Form Theme"
+msgstr "登录表单主题"
+
+#: views/admin/panel-section/general.php:39
+msgid "Login and Register form theme"
+msgstr ""
+
+#: views/admin/panel-section/general.php:42
+msgid "Form Position"
+msgstr "表格位置"
+
+#: views/admin/panel-section/general.php:46
+msgid "Login Button Color"
+msgstr "登录按钮颜色"
+
+#: views/admin/panel-section/general.php:48
+msgid "Color of Login and Register button"
+msgstr ""
+
+#: views/admin/panel-section/general.php:61
+msgid "Login and Register form Logo"
+msgstr ""
+
+#: views/admin/panel-section/general.php:63
+#: views/admin/panel-section/general.php:77
+msgid "Upload Image"
+msgstr "上传图片"
+
+#: views/admin/panel-section/general.php:64
+msgid "We suggest to use 120 * 120 px for logo size."
+msgstr ""
+
+#: views/admin/panel-section/general.php:67
+msgid "Logo Width (px)"
+msgstr "Logo 宽度 (px)"
+
+#: views/admin/panel-section/general.php:71
+msgid "Logo Height (px)"
+msgstr "LOGO高度（单位：px）。"
+
+#: views/admin/panel-section/general.php:75
+msgid "Login and Register form background"
+msgstr ""
+
+#: views/admin/panel-section/general.php:80
+msgid "Redirect non Admin user to"
+msgstr ""
+
+#: views/admin/panel-section/general.php:82
+msgid ""
+"Users who don't have admin or author caps, redirect to this address after "
+"login (with http or https)"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:6
+msgid "Smart Login"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:9
+msgid "Activate smart login"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:13
+msgid "Password Type"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:15
+msgid "Disable register form fields"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:18
+msgid "Disable email field"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:21
+msgid ""
+"You can disable email field in register form if login with sms dynamic code "
+"is active."
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:23
+msgid "Disable username field"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:26
+msgid ""
+"You can disable username field in register form if login with sms dynamic "
+"code is active."
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:28
+msgid "Disable password field"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:31
+msgid ""
+"You can disable password field in register form if login with sms dynamic "
+"code is active."
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:33
+msgid "User Phone"
+msgstr "用户手机"
+
+#: views/admin/panel-section/login_with_sms.php:35
+msgid "SMS Provider Settings"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:37
+msgid "Select Provider"
+msgstr "选择提供商"
+
+#: views/admin/panel-section/login_with_sms.php:39
+msgid ""
+"If your sms service provider not exists in this list, ask theme to provide "
+"you with the relevant plugin."
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:39
+msgid "According to this documents"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:45
+msgid "Mobile validation code sms content"
+msgstr ""
+
+#: views/admin/panel-section/login_with_sms.php:49
+msgid "Dynamic login code sms content"
+msgstr ""
+
+#: views/admin/panel-section/notification.php:9
+msgid "Notification 1"
+msgstr "通知1"
+
+#: views/admin/panel-section/notification.php:11
+#: views/admin/panel-section/notification.php:16
+#: views/admin/panel-section/notification.php:21
+#: views/admin/panel-section/notification.php:26
+#: views/admin/panel-section/notification.php:31
+#: views/admin/panel-section/notification.php:36
+#: views/admin/panel-section/notification.php:41
+#: views/admin/panel-section/notification.php:46
+msgid "Create a notification to show to your users in their dashboard."
+msgstr ""
+
+#: views/admin/panel-section/notification.php:14
+msgid "Notification 2"
+msgstr "通知2"
+
+#: views/admin/panel-section/notification.php:19
+msgid "Notification 3"
+msgstr ""
+
+#: views/admin/panel-section/notification.php:24
+msgid "Notification 4"
+msgstr ""
+
+#: views/admin/panel-section/notification.php:29
+msgid "Notification 5"
+msgstr ""
+
+#: views/admin/panel-section/notification.php:34
+msgid "Notification 6"
+msgstr ""
+
+#: views/admin/panel-section/notification.php:39
+msgid "Notification 7"
+msgstr ""
+
+#: views/admin/panel-section/notification.php:44
+msgid "Notification 8"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:2
+msgid "User panel settings"
+msgstr "用户面板设置"
+
+#: views/admin/panel-section/panel.php:8
+msgid "Hide topbar"
+msgstr "隐藏顶部栏"
+
+#: views/admin/panel-section/panel.php:10
+msgid "Activate this if you want to hide wp topbar from your site for users"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:13
+msgid "Use mihan avatar"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:15
+msgid "User can choose avatar image in panel"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:18
+msgid "Don't use MihanPanel fonts"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:20
+msgid "Use theme or other plugins fonts instead of MihanPanel fonts."
+msgstr ""
+
+#: views/admin/panel-section/panel.php:23 views/admin/panel-section/tools.php:3
+msgid "User panel page"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:42
+msgid "No any page exists"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:45
+msgid "Select user panel page"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:48
+msgid "Panel Theme"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:50
+msgid "Choose User Panel Theme"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:53
+msgid "Panel Font Family"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:55
+msgid "User Panel Font Family"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:58
+msgid "Off Code"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:60
+msgid "Off Code that you want to show in user panel"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:63
+msgid "Off Code percentage"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:65
+msgid "Off Code percentage will show in user panel. ex => 25%"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:67
+msgid "Color scheme"
+msgstr "配色方案"
+
+#: views/admin/panel-section/panel.php:69
+msgid "Sidebar background color in panel"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:73
+msgid "Sidebar link color that show in panel"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:76
+msgid "Dashboard Widgets"
+msgstr "仪表板小部件"
+
+#: views/admin/panel-section/panel.php:78
+msgid "Hide register day count widget"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:82
+msgid "Hide Comment widget"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:86
+msgid "Hide Woocommerce widget"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:90
+msgid "Hide EDD widget"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:94
+msgid "Hide Awesome Support widget"
+msgstr ""
+
+#: views/admin/panel-section/panel.php:97
+msgid "Roles who can't use admin panel"
+msgstr ""
+
+#: views/admin/panel-section/register.php:8
+msgid "Text that shows in top of register form"
+msgstr ""
+
+#: views/admin/panel-section/register.php:12
+msgid "Sender Email"
+msgstr "发件人电子邮件"
+
+#: views/admin/panel-section/register.php:14
+msgid "Register and other email send from this address"
+msgstr ""
+
+#: views/admin/panel-section/register.php:16
+msgid "User Role"
+msgstr "用户角色"
+
+#: views/admin/panel-section/register.php:17
+msgid "User can select this roles from list in registration form"
+msgstr ""
+
+#: views/admin/panel-section/register.php:18
+msgid "For disable this feature leave this section empty!"
+msgstr ""
+
+#: views/admin/panel-section/tools.php:6
+msgid "Create user panel page"
+msgstr ""
+
+#: views/admin/panel-section/tools.php:8
+msgid "Create"
+msgstr "创建"
+
+#: views/admin/panel-section/tools.php:10
+msgid "User panel page already exists."
+msgstr ""
+
+#: views/admin/settings.php:22
+msgid "MihanWP"
+msgstr ""
+
+#: views/admin/settings.php:23
+msgid "New Airlines"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "https://mihanwp.com/mihanpanel/"
+msgstr ""
+
+msgid "The best way to build user interface in WordPress"
+msgstr ""
+
+msgid "https://mihanwp.com"
+msgstr ""
+
+msgid "Change login url. Please set the Settings > Permalink to the post name."
+msgstr ""
+
+msgid "Email field"
+msgstr "电子邮件字段"
+
+#| msgid "User Panel"
+msgid "User Panel devmode"
+msgstr ""
+
+msgid "Site Status"
+msgstr "站点状态"
+
+msgid "developermode"
+msgstr ""
+
+msgid "License is active"
+msgstr "许可证正在使用中"
+
+msgid "Invalid License Key"
+msgstr "无效的许可证密钥"
+
+msgid "Your license is active for lifetime"
+msgstr ""
+
+msgid "Your license is active until"
+msgstr ""
+
+msgid "License is deactive."
+msgstr ""
+
+msgid "License is deactive"
+msgstr ""
+
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr "有一个新版本的 %1$s 可用。%2$s查看版本 %3$s 细节%4$s."
+
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
+msgstr ""
+"有一个新版本的 %1$s 可用。 %2$s查看版本 %3$s 细节%4$s 或者 %5$s现在更新%6$s."
+
+msgid "You do not have permission to install plugin updates"
+msgstr "您没有安装插件更新的权限"
+
+msgid "License expired at"
+msgstr ""
+
+msgid "License key is invalid"
+msgstr "许可证密钥无效"
+
+msgid "Your license is not activated for this domain"
+msgstr ""
+
+msgid "License is not for this product: Mihan Panel"
+msgstr ""
+
+msgid "Your license is already used; please purchase another license"
+msgstr ""
+
+msgid "An error occurred, try again"
+msgstr ""
+
+msgid "Mihan Panel License"
+msgstr ""
+
+msgid "Plugin License"
+msgstr "许可证"
+
+msgid "Get your License from MihanWp in License section"
+msgstr ""
+
+msgid "Not deleted."
+msgstr ""
+
+msgid "Download products update"
+msgstr ""
+
+msgid "Send Support Ticket"
+msgstr ""
+
+msgid "Support Ticket"
+msgstr "支持工单"
+
+msgid "Successfully edited!"
+msgstr ""
+
+msgid "Priorities was changed! Save changes?"
+msgstr ""
+
+msgid ""
+"For using Social login just use \"Nextend Social Login\" plugin with Mihan "
+"Panel plugin."
+msgstr ""
+
+msgid "Click for installing"
+msgstr ""
+
+msgid "Menus management"
+msgstr ""
+
+msgid "No any data saved!"
+msgstr ""
+
+msgid "List"
+msgstr "列表"
+
+msgid "MihanWp"
+msgstr ""
+
+msgid "Email Address"
+msgstr "电子邮件地址"
+
+msgid "Company Name"
+msgstr "公司名称"
+
+msgid "Address 1"
+msgstr "地址1"
+
+msgid "City"
+msgstr "城市"
+
+msgid "Zip Code"
+msgstr "邮编"
+
+msgid "Phone"
+msgstr "电话"
+
+msgid ""
+"If Use this feature, just enter mihanpanel pre-defined variables in new line "
+"according the variables order defined in sms provider templates; like this:"
+msgstr ""
+
+msgid "Link"
+msgstr "链接"
+
+msgid "Shortcode or Content"
+msgstr ""
+
+msgid "Credit"
+msgstr "信用"
+
+msgid "Notification"
+msgstr "通知"
+
+msgid "ZIP"
+msgstr "Zip"
+
+msgid "Enter user panel url"
+msgstr ""
+
+msgid ""
+"This url or slug must equal to user panel page. We recommended don't change "
+"it!"
+msgstr ""
+
+msgid "Complete your profile"
+msgstr "完成您的个人资料"
+
+msgid "Write anything about yourself"
+msgstr ""
+
+msgid "Day "
+msgstr "天"
+
+msgid "1"
+msgstr "1"
+
+msgid "Username: "
+msgstr "用户名："
+
+msgid "Display Name: "
+msgstr ""
+
+msgid "First Name: "
+msgstr "名字： "
+
+msgid "Last Name: "
+msgstr "姓"
+
+msgid "Error:"
+msgstr "错误："
+
+msgid "Use wordpress password"
+msgstr ""
+
+msgid "phone must not be empty"
+msgstr ""
+
+msgid "Today"
+msgstr "今天"
+
+msgid "dev mode section"
+msgstr ""

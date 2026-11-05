@@ -1,0 +1,27 @@
+/* =========================================================
+!!! CAUTION !!!
+These styles are ENTIRELY DUPLICATED from bank-expert-dashboard.css
+If you make changes, apply to BOTH files.
+Consider consolidating or using variables in future
+========================================================= */
+
+/* General container styling */
+.mlr-bank-expert-dashboard-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styling */
+.mlr-bank-expert-dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.mlr-bank-expert-dashboard-table th,
+.mlr-bank-expert-dashboard-table td {
+  padding: 12px 15px;
+  text-align: left;
+}

@@ -1,0 +1,19 @@
+My Loan Request 8.4.6.39 — GreenPay Financial Safety Hardening
+
+- GreenPay state transitions are now compare-and-swap guarded to prevent concurrent admin/Cron races.
+- Fixed confirm-OTP vs resend-OTP race that could previously move a processing transaction back to queued.
+- Fixed queued cancellation / eligibility-disable races against a worker that had already claimed the transaction.
+- transferByPocket now receives the transaction-snapshot ToPocketNumber instead of silently using the latest global setting.
+- Added per-transaction non-secret configuration snapshot with HMAC credential fingerprint. A queued transaction fails closed if GreenPay credentials are changed before execution.
+- Retry of definite failed transactions refreshes amount, applicant pocket mapping and GreenPay config snapshot.
+- Resend OTP preserves the original financial/config snapshot.
+- GreenPay amount is normalized to integer Rial before financial execution; no x10 conversion is performed.
+- Added stricter FromPocket/ToPocket validation and blocked the known sandbox pocket in Production.
+- Production activation is rejected when required fields are missing, HTTPS is not used, or Auth Base URL still points to /sandbox.
+- Added manual reconciliation workflow for unknown transactions. Admin must record an explicit verified outcome and note before an unknown transaction becomes success/failed.
+- Unknown transactions still cannot be retried directly.
+- Added string-level redaction for non-JSON/raw provider responses to reduce secret/pocket leakage in logs.
+- Connection test now validates configuration, obtains a token and calls isReady; it no longer reports token acquisition alone as full readiness.
+- Added GreenPay schema 1.2 fields for config snapshot and reconciliation audit trail.
+- Added dedicated GreenPay safety tests for secret-free snapshots, credential drift, pocket validation, raw-response redaction, exact ToPocket usage, Rial amount handling and stable reference numbers.
+- GreenPay remains safe-by-default and disabled until explicitly configured/enabled.

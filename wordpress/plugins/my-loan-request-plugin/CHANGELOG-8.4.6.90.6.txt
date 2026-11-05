@@ -1,0 +1,9 @@
+Version 8.4.6.90.6 – Visual-only legal clause breaks
+
+Fix for the Hami retirees contract in management and customer preview and printing.
+- Recognize party labels (الف- تسهیلات دهنده / ب- فروشنده / ج- خریدار), تبصره 1/2/3 and numbered subsections such as 6-1, 6-2.
+- Split merged paragraph or already-normalized paragraph DIVs into separate blocks.
+- Insert real line breaks for rich HTML whose paragraph tags were stripped by the editor.
+- Keep block DIV rendering to isolate the contract from conflicting modal or theme paragraph styling.
+- The transformation runs only at render time; do not change template settings, canonical payloads, stored digital signatures, digests, or application data.
+- Scope limited to mlr-hami-retirees-contract.

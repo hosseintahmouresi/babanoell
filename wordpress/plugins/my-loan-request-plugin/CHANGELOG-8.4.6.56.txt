@@ -1,0 +1,7 @@
+8.4.6.56
+
+- Fixed direct-applicant final submission incorrectly rejecting an already completed bank credit validation.
+- Added a server-signed, identity-bound credit proof token issued only after OTP verification and report generation.
+- Final request submission can now validate the exact browser-held credit report against the signed digest if the temporary server transient is no longer available.
+- The token is bound to the current user/session identity, national code, mobile number, report digest and expiry; tampered report JSON is rejected.
+- Applied the same reliability path to applicant and acceptor request forms without changing database schema or existing request data.

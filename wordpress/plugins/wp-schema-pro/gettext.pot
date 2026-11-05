@@ -1,0 +1,694 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"X-Generator: babel-plugin-makepot\n"
+
+#: src/blocks_src/blocks/how-to/render.js:319
+msgid "30"
+msgstr ""
+
+#: src/blocks_src/blocks/faq-child/attributes.js:13
+msgid ""
+"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "
+"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim "
+"veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea "
+"commodo consequat."
+msgstr ""
+
+#: src/blocks_src/blocks/faq-child/attributes.js:9
+msgid "What is FAQ?"
+msgstr ""
+
+#: src/blocks_src/blocks/faq-child/render.js:41
+#: src/blocks_src/blocks/faq/settings.js:731
+msgid "Question"
+msgstr ""
+
+#: src/blocks_src/blocks/faq-child/render.js:59
+#: src/blocks_src/blocks/faq/settings.js:1208
+msgid "Answer"
+msgstr ""
+
+#: src/blocks_src/blocks/faq-child/settings.js:9
+msgid ""
+"For the styling options please select the parent block from the Block "
+"Navigation."
+msgstr ""
+
+#: src/blocks_src/blocks/faq/block.js:54
+msgid "faq"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/block.js:55
+#: src/blocks_src/blocks/how-to/block.js:19
+msgid "schema"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/block.js:56
+#: src/blocks_src/blocks/how-to/block.js:19
+msgid "wpsp"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/block.js:57
+msgid "accordion"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:1213
+#: src/blocks_src/blocks/how-to-child/settings.js:540
+#: src/blocks_src/blocks/how-to/settings.js:373
+msgid "Typography"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:1266
+#: src/blocks_src/blocks/how-to-child/settings.js:380
+msgid "Text Color"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:1468
+#: src/blocks_src/blocks/how-to-child/settings.js:213
+#: src/blocks_src/components/typography/range-typography.js:31
+msgid "Size Type"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:1511
+msgid "Padding"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:153
+#: src/blocks_src/blocks/how-to/settings.js:164
+msgid "General"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:158
+msgid "Layout"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:161
+msgid "Accordion"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:162
+msgid "Grid"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:169
+msgid "Collapse other items"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:179
+msgid "Expand First Item"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:189
+msgid "Enable Toggle"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:231
+msgid "Mobile Columns"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:245
+msgid "Tab Columns"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:259
+msgid "Desktop Columns"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:278
+msgid "Alignment"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:318
+msgid "Background Color"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:332
+msgid "Rows Gap (px)"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:341
+msgid "Columns Gap (px)"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:350
+msgid "Equal Height"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:361
+msgid "Enable Separator"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:370
+msgid "Border"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:372
+#: src/blocks_src/blocks/how-to-child/settings.js:185
+#: src/blocks_src/blocks/how-to/settings.js:324
+msgid "Style"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:375
+#: src/blocks_src/blocks/how-to-child/settings.js:282
+msgid "None"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:376
+#: src/blocks_src/blocks/how-to-child/settings.js:192
+msgid "Solid"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:377
+#: src/blocks_src/blocks/how-to-child/settings.js:195
+msgid "Dotted"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:378
+#: src/blocks_src/blocks/how-to-child/settings.js:194
+msgid "Dashed"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:379
+#: src/blocks_src/blocks/how-to-child/settings.js:193
+msgid "Double"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:387
+msgid "Thickness (px)"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:398
+#: src/blocks_src/blocks/how-to-child/settings.js:760
+msgid "Rounded Corners (px)"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:408
+msgid "Color"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:613
+msgid "Size"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:633
+msgid "Gap between Icon and Question"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:644
+msgid "Expand Color"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:660
+msgid "Collapse Color"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:685
+msgid "Icon"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:686
+msgid "Expand"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:697
+msgid "Collapse"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:706
+msgid "Select Icon"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:708
+msgid "Icon Alignment"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:736
+msgid "Question Tag"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:740
+msgid "Span"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:741
+msgid "P"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:742
+#: src/blocks_src/blocks/how-to-child/settings.js:456
+#: src/blocks_src/blocks/how-to/settings.js:170
+msgid "H1"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:743
+#: src/blocks_src/blocks/how-to-child/settings.js:457
+#: src/blocks_src/blocks/how-to/settings.js:171
+msgid "H2"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:744
+#: src/blocks_src/blocks/how-to-child/settings.js:458
+#: src/blocks_src/blocks/how-to/settings.js:172
+msgid "H3"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:745
+#: src/blocks_src/blocks/how-to-child/settings.js:459
+#: src/blocks_src/blocks/how-to/settings.js:173
+msgid "H4"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:746
+#: src/blocks_src/blocks/how-to-child/settings.js:460
+#: src/blocks_src/blocks/how-to/settings.js:174
+msgid "H5"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:747
+#: src/blocks_src/blocks/how-to-child/settings.js:461
+#: src/blocks_src/blocks/how-to/settings.js:175
+msgid "H6"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:821
+msgid "Text Active/Hover Color"
+msgstr ""
+
+#: src/blocks_src/blocks/faq/settings.js:834
+#: src/blocks_src/blocks/how-to-child/settings.js:406
+msgid "Text Hover Color"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/components/HowToChildDesc.js:22
+msgid "Write a Description"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/components/Title.js:21
+msgid "Write a Heading"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/render.js:20
+#: src/blocks_src/blocks/how-to-child/settings.js:28
+#: src/blocks_src/blocks/how-to/settings.js:26
+msgid "Thumbnail"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/render.js:21
+#: src/blocks_src/blocks/how-to-child/settings.js:29
+#: src/blocks_src/blocks/how-to/settings.js:27
+msgid "Medium"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/render.js:22
+#: src/blocks_src/blocks/how-to-child/settings.js:30
+#: src/blocks_src/blocks/how-to/settings.js:28
+msgid "Large"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/render.js:245
+#: src/blocks_src/blocks/how-to-child/settings.js:710
+#: src/blocks_src/blocks/how-to/render.js:240
+msgid "Select Image"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/render.js:262
+#: src/blocks_src/blocks/how-to/render.js:252
+msgid "Remove Image"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/render.js:86
+#: src/blocks_src/blocks/how-to-child/settings.js:712
+msgid "Replace Image"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:171
+msgid "Separator"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:173
+msgid "Position"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:179
+msgid "After Image"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:180
+msgid "After Title"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:181
+msgid "After Description"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:201
+msgid "Thickness"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:241
+msgid "Width"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:252
+msgid "Separator Color"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:276
+msgid "Add Link"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:278
+msgid "Type"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:284
+msgid "Complete Box"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:290
+msgid "Text"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:341
+msgid "Link"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:348
+msgid "Open in new Window"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:364
+msgid "Normal"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:369
+msgid "Hover"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:441
+msgid "Content"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:443
+msgid "Enable Title"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:450
+msgid "Title Tag"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:518
+msgid "Title Color"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:536
+#: src/blocks_src/blocks/how-to/render.js:454
+#: src/blocks_src/blocks/how-to/settings.js:481
+msgid "Description"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:593
+msgid "Description Color"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:617
+#: src/blocks_src/blocks/how-to/settings.js:534
+msgid "Spacing"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:620
+msgid "Title Bottom Margin"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:633
+msgid "Separator Bottom Margin"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:646
+msgid "Description Bottom Margin"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:658
+msgid "Image Margin (px)"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:735
+msgid "Custom Size"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:742
+msgid "Turn this ON to apply the custom size to image."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:748
+msgid "Size (px)"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:780
+msgid "Image"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:782
+msgid "Select Position"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:788
+msgid "Above Title"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:789
+msgid "Below Title"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to-child/settings.js:792
+msgid "Below Description"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:112
+#: src/blocks_src/blocks/how-to/render.js:185
+msgid "Configure How-to Schema In Schema Pro."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:12
+msgid "- A Computer."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:121
+#: src/blocks_src/blocks/how-to/render.js:212
+msgid ""
+"So to get started, you will just need to drag-n-drop the How-to Schema "
+"block in the Gutenberg editor."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:16
+msgid "- A WordPress Website."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:29
+msgid "Required Tools:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:33
+msgid "Things Needed?"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:37
+msgid "Add Steps:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:79
+#: src/blocks_src/blocks/how-to/render.js:305
+msgid "Total Cost:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:83
+msgid "Total Time Needed :"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/attributes.js:87
+msgid " Minutes"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/block.js:19
+msgid "how to"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:241
+msgid "Replace image"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:259
+msgid "Total Time Needed ( Minutes ):"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:289
+msgid "Minutes"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:333
+msgid "USD"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:349
+msgid "requirements tools:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:374
+msgid "Requirements Tools:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:410
+msgid "requirements materials:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:438
+msgid "Requirements Materials:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/render.js:474
+msgid "requirements Steps:"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/schema-notices.js:114
+msgid ""
+"It seems the following fields are empty. This may generate Schema errors / "
+"warnings for your Page, we recommend you to fill these fields."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/schema-notices.js:120
+msgid ""
+"P.S. Note that this notice is visible only in the editor. This will not be "
+"visible in frontend. Also, once the required fields are added, this notice "
+"will go away."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/schema-notices.js:129
+msgid "Read more."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:166
+msgid "Primary Heading Tag"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:180
+msgid "Image Size"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:188
+msgid "Show Total Time"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:193
+msgid ""
+"Note: Time is recommended field for schema, please turn this ON to avoid "
+"warnings on your page."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:198
+msgid "Show Estimated Cost"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:203
+msgid ""
+"Note: Cost is recommended field for schema, please turn this ON to avoid "
+"warnings on your page."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:212
+msgid "Click here to find ISO code for currency of your country."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:218
+msgid "Show Tools"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:227
+msgid "Number of Tools"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:268
+msgid "Show Materials"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:273
+msgid ""
+"Note: This is recommended field for schema, please turn this ON to avoid "
+"warnings on your page."
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:279
+msgid "Number of Materials"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:325
+msgid "Colors"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:375
+msgid "Heading"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:428
+msgid "Secondary Heading"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:537
+msgid "Time Margin"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:549
+msgid "Cost Margin"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:560
+msgid "Row Gap"
+msgstr ""
+
+#: src/blocks_src/blocks/how-to/settings.js:568
+msgid "Gap Between Steps"
+msgstr ""
+
+#: src/blocks_src/components/typography/font-typography.js:13
+msgid "Default"
+msgstr ""
+
+#: src/blocks_src/components/typography/font-typography.js:178
+msgid "Font Family"
+msgstr ""
+
+#: src/blocks_src/components/typography/font-typography.js:194
+msgid "Font Weight"
+msgstr ""
+
+#: src/blocks_src/components/typography/font-typography.js:202
+msgid "Font Subset"
+msgstr ""
+
+#: src/blocks_src/components/typography/index.js:123
+msgid "Font Size"
+msgstr ""
+
+#: src/blocks_src/components/typography/index.js:23
+msgid "Hide Advanced"
+msgstr ""
+
+#: src/blocks_src/components/typography/index.js:27
+msgid "Advanced"
+msgstr ""
+
+#: src/blocks_src/components/typography/index.js:93
+msgid "Line Height"
+msgstr ""
+
+#: src/blocks_src/components/typography/range-typography.js:23
+msgid "px"
+msgstr ""
+
+#: src/blocks_src/components/typography/range-typography.js:24
+msgid "em"
+msgstr ""
+
+#: wpsp-config/controls/lazy-loader.js:4
+msgid "Loading.."
+msgstr ""

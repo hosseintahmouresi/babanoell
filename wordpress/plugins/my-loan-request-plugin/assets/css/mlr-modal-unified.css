@@ -1,0 +1,1234 @@
+/*
+ * MLR Unified Modal Styles - V3.0 (Dynamic, Fluid & Premium)
+ * ----------------------------------------------------------
+ * Palette: #1D3558 (Dark Blue), #D0E2F2 (Light Blue), #EDA900 (Gold)
+ * Focus: Visual depth, gradients, fluid interactions, and premium feel.
+ */
+
+:root {
+    /* --- Color Palette --- */
+    --mlr-ui-primary: #1D3558;       /* Dark Blue */
+    --mlr-ui-primary-hover: #2a4a70; /* Lighter Navy */
+    --mlr-ui-accent: #EDA900;        /* Gold */
+    --mlr-ui-bg-light: #D0E2F2;      /* Light Blue */
+    
+    --mlr-ui-secondary: #64748b;     /* Slate */
+    --mlr-ui-success: #10b981;       /* Emerald */
+    --mlr-ui-warning: #f59e0b;       /* Amber */
+    --mlr-ui-danger: #ef4444;        /* Red */
+    
+    --mlr-ui-bg: #f4f7fa;            /* Very light blue-gray bg */
+    --mlr-ui-card-bg: #ffffff;       /* White for cards */
+    --mlr-ui-border: #e2e8f0;        /* Light border for structure */
+    
+    --mlr-ui-text: #1D3558;          /* Dark Blue for headings */
+    --mlr-ui-text-body: #334155;     /* Slate 700 for body text */
+    --mlr-ui-text-muted: #64748b;    /* Slate 500 for labels */
+    
+    /* --- Dimensions & Effects --- */
+    --mlr-ui-radius-lg: 24px;        /* Modal corners */
+    --mlr-ui-radius-md: 16px;        /* Card corners */
+    --mlr-ui-radius-sm: 12px;        /* Button/Input corners */
+    
+    --mlr-ui-shadow-sm: rgb(69, 75, 83)px -1px rgba(29, 53, 88, 0.05);
+    --mlr-ui-shadow-md: 0 10px 15px -3px rgba(29, 53, 88, 0.1), 0 4px 6px -2px rgba(29, 53, 88, 0.05);
+    --mlr-ui-shadow-lg: 0 25px 50px -12px rgba(29, 53, 88, 0.25);
+    
+    --mlr-ui-font: 'Vazirmatn', Tahoma, sans-serif;
+    --mlr-ui-z-index: 2147483641;
+}
+
+/* --- Global Reset for Modal Context --- */
+body.mlr-modal-open {
+    overflow: hidden !important;
+}
+
+.mlr-glass-wrapper, .mlr-uni-wrapper {
+    font-family: var(--mlr-ui-font);
+    background-color: var(--mlr-ui-bg);
+    color: var(--mlr-ui-text-body);
+    direction: rtl;
+    line-height: 1.6;
+    box-sizing: border-box;
+    padding: 20px; /* Reduced wrapper padding */
+}
+
+.mlr-glass-wrapper *, .mlr-glass-wrapper *::before, .mlr-glass-wrapper *::after {
+    box-sizing: inherit;
+}
+
+/* --- Header Section --- */
+.mlr-glass-header, .mlr-uni-header {
+    background: linear-gradient(135deg, var(--mlr-ui-primary) 0%, #2a4a70 100%);
+    padding: 12px 25px; /* Smaller height */
+    border-bottom: 3px solid var(--mlr-ui-accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 5px; /* Floating sticky effect */
+    z-index: 100;
+    box-shadow: 0 8px 20px rgba(29, 53, 88, 0.2);
+    color: #fff;
+    border-radius: 20px; /* Rounded corners */
+    margin-bottom: 20px;
+}
+
+.mlr-header-title h3, .mlr-uni-title {
+    margin: 0;
+    font-size: 16px; /* Smaller font */
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.mlr-header-title .dashicons, .mlr-uni-title .dashicons {
+    color: var(--mlr-ui-accent);
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px;
+    border-radius: 10px;
+    width: 32px; /* Smaller icon */
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    backdrop-filter: blur(4px);
+}
+
+.mlr-highlight {
+    color: var(--mlr-ui-bg-light);
+    font-weight: 400;
+    margin-right: 5px;
+    opacity: 0.9;
+}
+
+/* --- Body & Layout --- */
+.mlr-glass-body, .mlr-uni-body {
+    padding: 0 5px; /* Minimal padding to maximize space */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    background-image: radial-gradient(var(--mlr-ui-bg-light) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-color: var(--mlr-ui-bg);
+}
+
+/* --- Cards (The Core of Categorization) --- */
+.mlr-glass-card, .mlr-uni-card, .mlr-modal-card {
+    background: var(--mlr-ui-card-bg);
+    border: none;
+    border-radius: var(--mlr-ui-radius-md);
+    box-shadow: var(--mlr-ui-shadow-md);
+    padding: 30px;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-top: 3px solid var(--mlr-ui-bg-light);
+}
+
+.mlr-glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--mlr-ui-shadow-lg);
+    border-top-color: var(--mlr-ui-accent);
+}
+
+/* Card Titles with Icons */
+.mlr-card-title, .mlr-uni-card-title {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--mlr-ui-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: linear-gradient(to left, rgba(208, 226, 242, 0.3), transparent);
+    border-radius: var(--mlr-ui-radius-sm);
+}
+
+.mlr-card-title .dashicons {
+    color: var(--mlr-ui-accent);
+    background: #fff;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --- Data Grid (Key-Value Pairs) --- */
+.mlr-data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.mlr-data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: #fff;
+    border: 1px solid #f1f5f9;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.mlr-data-row:hover {
+    background: #f8fafc;
+    border-color: var(--mlr-ui-bg-light);
+    transform: translateX(-3px);
+}
+
+.mlr-data-label {
+    color: var(--mlr-ui-text-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.mlr-data-value {
+    font-weight: 700;
+    color: var(--mlr-ui-primary);
+    font-size: 14px;
+    text-align: left;
+}
+
+.mlr-row-wide {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+/* --- Status Badges --- */
+.mlr-glass-badge, .mlr-uni-badge, .mlr-status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Header Badge Specifics */
+.mlr-glass-header .mlr-glass-badge, .mlr-uni-header .mlr-uni-badge {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+/* Status Colors */
+.status-در-حال-بررسی, .status-pending { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
+.status-نقص-مدارک, .status-incomplete { background: #fefce8; color: #a16207; border: 1px solid #fef08a; }
+.status-تأیید-کارشناس, .status-expert-approved { background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }
+.status-تکمیل-مدارک, .status-docs-completed { background: #f0f9ff; color: #0284c7; border: 1px solid #e0f2fe; }
+.status-تأیید-مدارک, .status-docs-verified { background: #f0fdfa; color: #0f766e; border: 1px solid #ccfbf1; }
+.status-اعطا-شده, .status-granted, .status-signed { background: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+.status-رد-شده, .status-rejected { background: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
+
+/* --- Buttons --- */
+.mlr-btn, .mlr-uni-btn {
+    padding: 12px 24px;
+    border-radius: var(--mlr-ui-radius-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.mlr-btn-primary {
+    background: var(--mlr-ui-primary);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(29, 53, 88, 0.3);
+}
+
+.mlr-btn-primary:hover {
+    background: var(--mlr-ui-accent);
+    color: var(--mlr-ui-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(237, 169, 0, 0.4);
+}
+
+.mlr-btn-secondary {
+    background: #fff;
+    border: 2px solid var(--mlr-ui-bg-light);
+    color: var(--mlr-ui-primary);
+}
+
+.mlr-btn-secondary:hover {
+    background: var(--mlr-ui-bg-light);
+    border-color: var(--mlr-ui-primary);
+    color: var(--mlr-ui-primary);
+}
+
+/* --- Inputs --- */
+.mlr-glass-input, .mlr-uni-input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--mlr-ui-border);
+    border-radius: var(--mlr-ui-radius-sm);
+    background: #fcfcfc;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--mlr-ui-text);
+}
+
+.mlr-glass-input:focus {
+    border-color: var(--mlr-ui-accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(237, 169, 0, 0.15);
+    outline: none;
+}
+
+/* --- Files Grid --- */
+.mlr-file-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.mlr-file-item {
+    background: #f8fafc;
+    border: 1px solid var(--mlr-ui-border);
+    border-radius: var(--mlr-ui-radius-md);
+    padding: 20px;
+    text-align: center;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.mlr-file-item:hover {
+    background: #fff;
+    border-color: var(--mlr-ui-bg-light);
+    box-shadow: var(--mlr-ui-shadow-md);
+    transform: translateY(-3px);
+}
+
+.mlr-file-label {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--mlr-ui-primary);
+}
+
+.mlr-view-file-btn {
+    background: #fff;
+    border: 1px solid var(--mlr-ui-bg-light);
+    color: var(--mlr-ui-primary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: all 0.2s;
+}
+
+.mlr-view-file-btn:hover {
+    background: var(--mlr-ui-primary);
+    color: #fff;
+    border-color: var(--mlr-ui-primary);
+}
+
+.mlr-file-item .mlr-file-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+/* --- Chat / Comments --- */
+.mlr-comment-bubble {
+    background: #fff;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 15px;
+    position: relative;
+    border-right: 4px solid var(--mlr-ui-primary);
+    box-shadow: var(--mlr-ui-shadow-sm);
+}
+
+.mlr-comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--mlr-ui-text-muted);
+}
+
+.mlr-comment-author {
+    color: var(--mlr-ui-primary);
+    font-weight: 700;
+}
+
+.mlr-comment-body {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--mlr-ui-text-body);
+}
+
+.mlr-conversation-compose {
+    border-top: 1px solid var(--mlr-ui-border);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.mlr-attachment-controls {
+    margin-top: 10px;
+}
+
+.mlr-attachment-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 15px;
+    background-color: #f8fafc;
+    border: 1px solid var(--mlr-ui-border);
+    color: var(--mlr-ui-text-muted);
+    border-radius: var(--mlr-ui-radius-sm);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    cursor: pointer !important;
+}
+.mlr-attachment-btn:hover {
+    background-color: var(--mlr-ui-bg-light);
+    color: var(--mlr-ui-primary);
+    border-color: var(--mlr-ui-bg-light);
+}
+
+#mlr-attachment-previews ul, #mlr-attachment-previews-front ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    font-size: 12px;
+    color: var(--mlr-ui-text-muted);
+}
+#mlr-attachment-previews li, #mlr-attachment-previews-front li {
+    margin-bottom: 4px;
+    background: #f8fafc;
+    padding: 5px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    border: 1px solid var(--mlr-ui-border);
+}
+.mlr-remove-file, .mlr-remove-file-front {
+    color: #ef4444;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: 5px;
+    font-size: 16px;
+}
+.mlr-remove-file:hover, .mlr-remove-file-front:hover {
+    color: #b91c1c;
+}
+.mlr-conversation-actions {
+    display: flex; gap: 10px; margin-top: 15px; align-items: center; flex-wrap: wrap;
+}
+
+.mlr-conversation-history {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding-right: 5px;
+}
+
+.mlr-conv-attachments {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--mlr-ui-border);
+}
+.mlr-attachments-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--mlr-ui-text-muted);
+    display: block;
+    margin-bottom: 8px;
+}
+.mlr-attachments-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+
+/* --- Accordion (Contracts/Invoices) --- */
+.mlr-glass-accordion, .mlr-accordion {
+    border: 1px solid var(--mlr-ui-border);
+    border-radius: var(--mlr-ui-radius-md);
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 15px;
+    box-shadow: var(--mlr-ui-shadow-sm);
+}
+
+.mlr-glass-acc-btn, .mlr-acc-btn {
+    width: 100%;
+    text-align: right;
+    background: #fff;
+    border: none;
+    padding: 18px 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+    color: var(--mlr-ui-primary);
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.mlr-glass-acc-btn:hover, .mlr-acc-btn:hover {
+    background: var(--mlr-ui-bg-light);
+}
+
+.mlr-glass-acc-content, .mlr-acc-content {
+    display: none;
+    padding: 25px;
+    border-top: 1px solid var(--mlr-ui-border);
+    background: #fcfcfc;
+}
+
+.mlr-glass-acc-content.is-open, .mlr-acc-content.is-open {
+    display: block;
+}
+
+/* --- Document Categories (Tabs) --- */
+.mlr-docs-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.mlr-doc-cat-btn {
+    background: #fff;
+    border: 1px solid transparent;
+    color: var(--mlr-ui-secondary);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--mlr-ui-shadow-sm);
+}
+
+.mlr-doc-cat-btn:hover {
+    background: var(--mlr-ui-bg-light);
+    color: var(--mlr-ui-primary);
+}
+
+.mlr-doc-cat-btn.is-active {
+    background: var(--mlr-ui-primary);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(29, 53, 88, 0.3);
+}
+
+/* --- Report Styles (Preserved & Modernized) --- */
+.mlr-report-container {
+    background: #fff;
+    border-radius: var(--mlr-ui-radius-md);
+    overflow: hidden;
+    border: none;
+    box-shadow: var(--mlr-ui-shadow-md);
+}
+
+.mlr-report-header {
+    display: flex;
+    align-items: center;
+    padding: 30px;
+    color: #fff;
+    gap: 20px;
+}
+
+.mlr-risk-low { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+.mlr-risk-medium { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+.mlr-risk-high { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+.mlr-risk-unknown { background: linear-gradient(135deg, #64748b 0%, #475569 100%); }
+
+.mlr-score-circle {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.mlr-circular-chart {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.mlr-circle-bg {
+    fill: none;
+    stroke: rgba(255,255,255,0.3);
+    stroke-width: 3.8;
+}
+
+.mlr-circle {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s ease-out;
+}
+
+.mlr-percentage {
+    fill: #fff;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 0.5em;
+    text-anchor: middle;
+}
+
+.mlr-score-label {
+    font-size: 10px;
+    font-weight: normal;
+    margin-top: 2px;
+    opacity: 0.9;
+    display: block;
+}
+
+.mlr-report-section {
+    border-bottom: 1px solid var(--mlr-ui-border);
+}
+
+.mlr-report-section:last-child {
+    border-bottom: none;
+}
+
+.mlr-report-section h4 {
+    background: #fff;
+    padding: 15px 25px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--mlr-ui-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px dashed var(--mlr-ui-border);
+}
+
+.mlr-report-content {
+    padding: 25px;
+}
+
+.mlr-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.mlr-summary-card {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: var(--mlr-ui-radius-sm);
+    text-align: center;
+    border: 1px solid var(--mlr-ui-border);
+    transition: transform 0.2s;
+}
+
+.mlr-summary-card:hover {
+    transform: translateY(-3px);
+    background: #fff;
+    box-shadow: var(--mlr-ui-shadow-md);
+    border-color: var(--mlr-ui-accent);
+}
+
+.mlr-summary-val {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--mlr-ui-primary);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.mlr-summary-lbl {
+    font-size: 11px;
+    color: var(--mlr-ui-text-muted);
+}
+
+.mlr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.mlr-table th {
+    background: var(--mlr-ui-bg-light);
+    padding: 12px;
+    text-align: right;
+    color: var(--mlr-ui-primary);
+    border-bottom: 2px solid #fff;
+    white-space: nowrap;
+    font-weight: 700;
+}
+
+.mlr-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: var(--mlr-ui-text-body);
+}
+
+.mlr-table tr:last-child td {
+    border-bottom: none;
+}
+
+.mlr-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.mlr-contract-card {
+    border: 1px solid var(--mlr-ui-border);
+    border-radius: var(--mlr-ui-radius-md);
+    overflow: hidden;
+    background: #fff;
+    box-shadow: var(--mlr-ui-shadow-sm);
+}
+
+.mlr-contract-header {
+    background: linear-gradient(to left, #f1f5f9, #fff);
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--mlr-ui-border);
+}
+
+.mlr-contract-org {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--mlr-ui-primary);
+}
+
+.mlr-contract-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.mlr-contract-body {
+    padding: 15px;
+    font-size: 13px;
+}
+
+.mlr-contract-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed #f1f5f9;
+    padding-bottom: 4px;
+}
+
+.mlr-contract-row:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.mlr-badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    color: #fff;
+    display: inline-block;
+}
+
+.mlr-badge-success { background: var(--mlr-ui-success); }
+.mlr-badge-warning { background: var(--mlr-ui-warning); }
+.mlr-badge-danger { background: var(--mlr-ui-danger); }
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .mlr-glass-body, .mlr-uni-body { padding: 15px; }
+    .mlr-data-grid { grid-template-columns: 1fr; }
+    .mlr-modal, #mlr-details-content { width: 95% !important; max-height: 95vh !important; }
+    .mlr-glass-header, .mlr-uni-header { padding: 15px 20px; }
+}
+
+
+/* === 8.4.6.53: Loan-contract typography/layout inside dashboard modals === */
+.mlr-contract-container,
+.mlr-contract-body,
+.mlr-contract-document,
+.mlr-contract-signature-section,
+.mlr-loan-contract-sign-box,
+.mlr-contract-signed-notice {
+    font-family: 'Yekan Bakh', 'YekanBakh', 'Yekan Bakh FaNum', 'Vazirmatn', 'Tahoma', sans-serif !important;
+}
+.mlr-contract-body {
+    direction: rtl;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height: 2.05;
+}
+.mlr-contract-document {
+    direction: rtl;
+    color: #172033;
+    font-size: 13.5px;
+    line-height: 2.05;
+}
+.mlr-contract-document-head {
+    border: 1px solid #dbe3ee;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    background: #fbfdff;
+    page-break-inside: avoid;
+}
+.mlr-contract-document-head h1 {
+    margin: 8px 0 12px !important;
+    text-align: center;
+    font-size: 22px !important;
+    line-height: 1.5;
+    color: #0f172a !important;
+}
+.mlr-contract-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12.5px;
+}
+.mlr-contract-parties-bar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+.mlr-contract-parties-bar span {
+    display: block;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 11.5px;
+    line-height: 1.7;
+}
+.mlr-contract-document h2 {
+    margin: 24px 0 10px !important;
+    padding: 8px 11px 8px 8px;
+    border-right: 4px solid #315b9d;
+    background: #f6f9fd;
+    border-radius: 7px;
+    color: #19345d !important;
+    font-size: 15.5px !important;
+    line-height: 1.7;
+    page-break-after: avoid;
+}
+.mlr-contract-document h3 {
+    margin: 12px 0 10px !important;
+    color: #334155 !important;
+    font-size: 13.5px !important;
+    line-height: 1.8;
+    page-break-after: avoid;
+}
+.mlr-contract-document p {
+    margin: 0 0 9px !important;
+    text-align: justify;
+    line-height: 2.05;
+}
+.mlr-contract-value {
+    display: inline;
+    font-weight: 700;
+    color: #111827;
+    border-bottom: 1px dotted #94a3b8;
+    padding: 0 2px;
+}
+.mlr-contract-subsection {
+    margin-top: 26px;
+    padding-top: 4px;
+    border-top: 2px solid #dbe3ee;
+}
+.mlr-contract-formula {
+    direction: ltr;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 17px;
+    margin: 12px auto 8px;
+    padding: 12px 16px;
+    border: 1px solid #dbe3ee;
+    background: #fafcff;
+    border-radius: 8px;
+    max-width: 560px;
+}
+.mlr-contract-formula-legend {
+    text-align: center !important;
+    font-size: 11.5px;
+    color: #475569;
+}
+.mlr-contract-acknowledgement {
+    margin-top: 16px !important;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fcfcfd;
+}
+.mlr-contract-aml {
+    font-size: 12.5px;
+}
+.mlr-digital-signature-stack {
+    display: grid;
+    gap: 10px;
+    margin-top: 26px;
+    page-break-inside: avoid;
+}
+.mlr-digital-signature-stack .mlr-digital-signature-certificate {
+    margin-top: 0;
+}
+.mlr-digital-signature-company {
+    border-color: #93b4d7;
+    background: #f5f9fd;
+    color: #234f78;
+}
+.mlr-digital-signature-company .mlr-digital-signature-icon {
+    background: #315f8b;
+}
+.mlr-digital-signature-company .mlr-digital-signature-content > strong {
+    color: #234f78;
+}
+.mlr-digital-signature-company .mlr-digital-signature-meta {
+    color: #466a8d;
+}
+.mlr-digital-signature-certificate {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-top: 26px;
+    padding: 16px 18px;
+    border: 1.5px solid #86cda0;
+    border-radius: 12px;
+    background: #f3fbf5;
+    color: #185b32;
+    page-break-inside: avoid;
+}
+.mlr-digital-signature-icon {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1f8f4e;
+    color: #fff;
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 1;
+}
+.mlr-digital-signature-content {
+    flex: 1;
+    min-width: 0;
+}
+.mlr-digital-signature-content > strong {
+    display: block;
+    color: #12592d;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+.mlr-digital-signature-content > span {
+    display: block;
+    line-height: 1.9;
+}
+.mlr-digital-signature-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 7px;
+    font-size: 11.5px;
+    color: #3f684e;
+}
+@media (max-width: 700px) {
+    .mlr-contract-container { padding: 22px 16px; margin: 14px auto; }
+    .mlr-contract-parties-bar { grid-template-columns: 1fr; }
+    .mlr-contract-document-head h1 { font-size: 19px !important; }
+    .mlr-contract-document { font-size: 13px; }
+}
+.mlr-print-layout-table { width:100%; border-collapse:collapse; page-break-inside:auto; }
+.mlr-print-layout-table td { padding:0; border:none !important; vertical-align:top; }
+
+@media print {
+    .mlr-print-layout-table thead { display:table-header-group; }
+    .mlr-print-layout-table tfoot { display:table-footer-group; }
+    .mlr-print-layout-table tr { page-break-inside:auto; }
+    .mlr-print-header, .mlr-print-footer { text-align:center; width:100%; }
+    .mlr-print-header img, .mlr-print-footer img { max-width:100%; height:auto; }
+    .mlr-contract-container,
+    .mlr-contract-body,
+    .mlr-contract-document,
+    .mlr-digital-signature-certificate {
+        font-family: 'Yekan Bakh', 'YekanBakh', 'Yekan Bakh FaNum', 'Vazirmatn', 'Tahoma', sans-serif !important;
+    }
+    .mlr-contract-document-head,
+    .mlr-contract-document h2,
+    .mlr-contract-formula,
+    .mlr-contract-acknowledgement,
+    .mlr-digital-signature-certificate {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .mlr-contract-document h2 { page-break-after: avoid; }
+    .mlr-contract-document p { orphans: 3; widows: 3; }
+    .mlr-contract-parties-bar { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Hami retirees contract - stable screen/print layout (8.4.6.75) */
+.mlr-hami-retirees-contract{
+    direction:rtl;
+    text-align:justify;
+    font-family:'Yekan Bakh','YekanBakh','Vazirmatn',Tahoma,Arial,sans-serif;
+    color:#111;
+    font-size:13px;
+    line-height:2;
+    max-width:190mm;
+    margin:0 auto;
+    box-sizing:border-box;
+}
+.mlr-hami-retirees-contract p{
+    margin:0 0 9px;
+    text-align:justify;
+    text-justify:inter-word;
+    word-break:normal;
+    overflow-wrap:normal;
+}
+.mlr-hami-retirees-contract h1{font-size:20px;line-height:1.55;margin:0;text-align:center;font-weight:800}
+.mlr-hami-retirees-contract h2{font-size:14px;line-height:1.75;margin:14px 0 6px;font-weight:800;color:#111;border:0;padding:0;background:none;break-after:avoid;page-break-after:avoid}
+.mlr-retirees-contract-head{margin-bottom:14px;break-inside:avoid;page-break-inside:avoid}
+.mlr-retirees-header-grid{
+    display:grid;
+    grid-template-columns:minmax(145px,170px) minmax(260px,1fr) minmax(145px,170px);
+    align-items:start;
+    gap:14px;
+    direction:ltr;
+}
+.mlr-retirees-header-grid>h1{grid-column:2;direction:rtl;align-self:center}
+.mlr-retirees-contract-meta{
+    grid-column:1;
+    direction:rtl;
+    justify-self:start;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    font-size:12px;
+    text-align:right;
+    line-height:1.7;
+}
+.mlr-retirees-logo-wrap{grid-column:3;direction:rtl;justify-self:end;text-align:right;align-self:start}
+.mlr-retirees-fintech-logo{display:block;max-width:150px;max-height:74px;width:auto;height:auto;object-fit:contain;margin:0 0 0 auto}
+.mlr-hami-retirees-contract .mlr-contract-value{font-weight:800;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.mlr-retirees-formula{display:flex;align-items:center;justify-content:center;gap:12px;margin:9px auto 12px;max-width:760px;text-align:center;font-size:12px;line-height:1.55;break-inside:avoid;page-break-inside:avoid}
+.mlr-retirees-formula .mlr-formula-label{white-space:nowrap;font-weight:700}
+.mlr-retirees-formula .mlr-formula-fraction{display:inline-flex;flex-direction:column;align-items:stretch;max-width:100%}
+.mlr-retirees-formula .mlr-formula-num{padding:0 8px 5px;border-bottom:1px solid #111}
+.mlr-retirees-formula .mlr-formula-den{padding:5px 8px 0}
+.mlr-retirees-page-footer{margin-top:28px;background:#fff;break-inside:avoid;page-break-inside:avoid}
+.mlr-print-only-contract-footer{display:none}
+.mlr-retirees-signature-table{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:0 0 10px;text-align:center;direction:rtl}
+.mlr-retirees-signature-table>div{min-height:76px;border-top:1px solid #777;padding-top:7px;display:flex;flex-direction:column;gap:2px;line-height:1.55}
+.mlr-retirees-address-footer{border:1px solid #222;padding:7px 10px;text-align:center;font-weight:700;line-height:1.55}
+@media(max-width:700px){
+    .mlr-retirees-header-grid{grid-template-columns:1fr;gap:10px;direction:rtl}
+    .mlr-retirees-contract-meta,.mlr-retirees-header-grid>h1,.mlr-retirees-logo-wrap{grid-column:1;justify-self:stretch;text-align:center}
+    .mlr-retirees-contract-meta{align-items:center;order:3}
+    .mlr-retirees-logo-wrap{order:1;text-align:center}
+    .mlr-retirees-header-grid>h1{order:2}
+    .mlr-retirees-fintech-logo{max-width:130px;margin:0 auto}
+    .mlr-retirees-signature-table{grid-template-columns:1fr;gap:14px}
+    .mlr-retirees-formula{font-size:11px;overflow-x:auto;justify-content:flex-start}
+}
+@media print{
+    .mlr-hami-retirees-contract{
+        page:auto;
+        max-width:none;
+        width:auto;
+        margin:0;
+        padding:0;
+        font-size:9.3pt;
+        line-height:1.67;
+    }
+    .mlr-hami-retirees-contract p{margin:0 0 4px;orphans:2;widows:2}
+    .mlr-hami-retirees-contract h1{font-size:14pt;line-height:1.35}
+    .mlr-hami-retirees-contract h2{font-size:10pt;line-height:1.45;margin:7px 0 3px;break-after:avoid;page-break-after:avoid}
+    .mlr-retirees-contract-head{margin-bottom:6px}
+    .mlr-retirees-header-grid{grid-template-columns:37mm 1fr 37mm;gap:4mm;align-items:start}
+    .mlr-retirees-contract-meta{font-size:8.7pt;line-height:1.45;gap:1mm}
+    .mlr-retirees-fintech-logo{max-width:34mm;max-height:18mm}
+    .mlr-retirees-formula{font-size:8.2pt;line-height:1.35;margin:4px auto 6px;gap:5px}
+    .mlr-retirees-formula .mlr-formula-num{padding:0 4px 2px}
+    .mlr-retirees-formula .mlr-formula-den{padding:2px 4px 0}
+    .mlr-retirees-page-footer-screen{display:none!important}
+    .mlr-print-only-contract-footer{display:block!important;background:#fff;padding-top:2mm;break-inside:avoid;page-break-inside:avoid}
+    .mlr-retirees-signature-table{grid-template-columns:repeat(3,minmax(0,1fr));gap:8mm;margin:0 0 2mm;direction:rtl}
+    .mlr-retirees-signature-table>div{min-height:16mm;padding-top:1.5mm;font-size:8.2pt;line-height:1.35;gap:.5mm}
+    .mlr-retirees-address-footer{margin:0;padding:1.3mm 2mm;font-size:8pt;line-height:1.3;border:1px solid #222}
+    .mlr-retirees-page-footer,.mlr-retirees-formula{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+
+/* 8.4.6.81: plan-selected contract media must be visible in every preview. */
+.mlr-print-layout-table .mlr-print-header,
+.mlr-print-layout-table .mlr-print-footer,
+.mlr-print-layout-table .mlr-contract-header,
+.mlr-print-layout-table .mlr-contract-footer { width:100%; text-align:center; background:#fff; }
+.mlr-print-layout-table .mlr-contract-media-image,
+.mlr-print-layout-table .mlr-print-header > img,
+.mlr-print-layout-table .mlr-print-footer > img,
+.mlr-print-layout-table .mlr-contract-header > img,
+.mlr-print-layout-table .mlr-contract-footer > img { display:block; width:100%; max-width:100%; height:auto; margin:0 auto; object-fit:contain; }
+
+/* 8.4.6.84: a plan-selected footer image replaces Hami's built-in signature/address footer. */
+.mlr-hami-retirees-contract.mlr-hami-custom-footer-active .mlr-retirees-page-footer-screen{display:none!important;}
+
+/* 8.4.6.90.1: scoped, readable compact rhythm for the Hami retirees legal contract.
+   Overrides the generic .mlr-contract-document h2/p !important rules without
+   changing contract terms, legal variables, signing, or repeating print media. */
+.mlr-contract-document.mlr-hami-retirees-contract {
+    font-size: 13.5px !important;
+    line-height: 1.78 !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract p {
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    font-size: inherit !important;
+    line-height: 1.78 !important;
+    text-align: justify !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract h2 {
+    margin: 10px 0 4px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: #111 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1.48 !important;
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract .mlr-retirees-formula {
+    margin: 7px auto 8px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+}
+@media print {
+    .mlr-contract-document.mlr-hami-retirees-contract {
+        font-size: 9.5pt !important;
+        line-height: 1.56 !important;
+    }
+    .mlr-contract-document.mlr-hami-retirees-contract p {
+        margin: 0 0 1.1mm !important;
+        line-height: 1.56 !important;
+        orphans: 2;
+        widows: 2;
+    }
+    .mlr-contract-document.mlr-hami-retirees-contract h2 {
+        margin: 2.3mm 0 0.8mm !important;
+        font-size: 9.7pt !important;
+        line-height: 1.35 !important;
+    }
+    .mlr-contract-document.mlr-hami-retirees-contract .mlr-retirees-formula {
+        margin: 2mm auto 2.2mm !important;
+        padding: 0 !important;
+        font-size: 8pt !important;
+        line-height: 1.3 !important;
+    }
+}
+
+
+/* 8.4.6.90.2: Hami retirees contract: each <p> must be a real block, not
+   an inline run-on of adjacent clauses.  <p> provides a line break itself;
+   avoid extra <br> tags that would inflate A4 print pages. */
+.mlr-contract-document.mlr-hami-retirees-contract > p,
+.mlr-contract-document.mlr-hami-retirees-contract p {
+    display: block !important;
+    float: none !important;
+    width: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;
+}
+.mlr-contract-document.mlr-hami-retirees-contract > h1,
+.mlr-contract-document.mlr-hami-retirees-contract > h2,
+.mlr-contract-document.mlr-hami-retirees-contract > h3 {
+    display: block !important;
+    float: none !important;
+}
+@media print {
+    .mlr-contract-document.mlr-hami-retirees-contract > p,
+    .mlr-contract-document.mlr-hami-retirees-contract p {
+        display: block !important;
+        float: none !important;
+        width: auto !important;
+        margin-top: 0 !important;
+        margin-bottom: 1.1mm !important;
+    }
+}
+
+/* 8.4.6.90.4 - Reliable contract paragraph flow in preview and print. */
+.mlr-contract-body .mlr-contract-document > p,
+.mlr-contract-body .mlr-contract-document p,
+.mlr-loan-contract-review-print .mlr-contract-document > p {
+    display: block !important;
+    float: none !important;
+    clear: none !important;
+}
+
+
+/* 8.4.6.90.5: actual block elements for Hami retirees contract paragraphs.
+   Display-only HTML conversion avoids relying on theme/admin styling for <p>. */
+.mlr-contract-document.mlr-hami-retirees-contract .mlr-contract-paragraph {
+    display: block !important;
+    float: none !important;
+    clear: both !important;
+    box-sizing: border-box !important;
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    width: auto !important;
+    max-width: 100% !important;
+    line-height: 1.78 !important;
+    text-align: justify !important;
+    white-space: normal !important;
+}
+@media print {
+    .mlr-contract-document.mlr-hami-retirees-contract .mlr-contract-paragraph {
+        display: block !important;
+        clear: both !important;
+        margin-bottom: 1.1mm !important;
+        line-height: 1.56 !important;
+    }
+}

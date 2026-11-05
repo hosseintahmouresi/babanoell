@@ -1,0 +1,150 @@
+@font-face {
+  font-family: 'codevz-farsi';
+  src: url('codevz-farsi.woff2') format('woff2'),
+       url('codevz-farsi.woff') format('woff'),
+       url('codevz-farsi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block
+}
+
+[class^="czfa-"]:before, 
+[class*=" czfa-"]:before {
+  font-family: "codevz-farsi";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.czfa-ansar:before { --fa: '\e800'; content: '\e800'; } /* '' */
+.czfa-anten:before { --fa: '\e801'; content: '\e801'; } /* '' */
+.czfa-aparat-kodak:before { --fa: '\e802'; content: '\e802'; } /* '' */
+.czfa-aparat-sport:before { --fa: '\e803'; content: '\e803'; } /* '' */
+.czfa-aparat:before { --fa: '\e804'; content: '\e804'; } /* '' */
+.czfa-asan-pardakht:before { --fa: '\e805'; content: '\e805'; } /* '' */
+.czfa-ateshneshani:before { --fa: '\e806'; content: '\e806'; } /* '' */
+.czfa-ayandeh:before { --fa: '\e807'; content: '\e807'; } /* '' */
+.czfa-bale:before { --fa: '\e808'; content: '\e808'; } /* '' */
+.czfa-bazar:before { --fa: '\e80a'; content: '\e80a'; } /* '' */
+.czfa-blu-bank:before { --fa: '\e80b'; content: '\e80b'; } /* '' */
+.czfa-behzisti:before { --fa: '\e80c'; content: '\e80c'; } /* '' */
+.czfa-borse-oraghe-bahador:before { --fa: '\e80d'; content: '\e80d'; } /* '' */
+.czfa-caspian:before { --fa: '\e80e'; content: '\e80e'; } /* '' */
+.czfa-dey:before { --fa: '\e80f'; content: '\e80f'; } /* '' */
+.czfa-digipay:before { --fa: '\e810'; content: '\e810'; } /* '' */
+.czfa-eghtesad-novin:before { --fa: '\e811'; content: '\e811'; } /* '' */
+.czfa-eih:before { --fa: '\e812'; content: '\e812'; } /* '' */
+.czfa-enamad:before { --fa: '\e813'; content: '\e813'; } /* '' */
+.czfa-eita:before { --fa: '\e814'; content: '\e814'; } /* '' */
+.czfa-enteghal-khon:before { --fa: '\e815'; content: '\e815'; } /* '' */
+.czfa-etehadie-kasb-va-kar-majazi:before { --fa: '\e816'; content: '\e816'; } /* '' */
+.czfa-fani-o-herfeei:before { --fa: '\e817'; content: '\e817'; } /* '' */
+.czfa-filimo:before { --fa: '\e818'; content: '\e818'; } /* '' */
+.czfa-filmnet:before { --fa: '\e819'; content: '\e819'; } /* '' */
+.czfa-gap:before { --fa: '\e81a'; content: '\e81a'; } /* '' */
+.czfa-gardeshgari:before { --fa: '\e81b'; content: '\e81b'; } /* '' */
+.czfa-gas:before { --fa: '\e81c'; content: '\e81c'; } /* '' */
+.czfa-ghavamin:before { --fa: '\e81d'; content: '\e81d'; } /* '' */
+.czfa-ghaza-o-darou:before { --fa: '\e81e'; content: '\e81e'; } /* '' */
+.czfa-ghove-ghazaeie:before { --fa: '\e81f'; content: '\e81f'; } /* '' */
+.czfa-hekmat:before { --fa: '\e820'; content: '\e820'; } /* '' */
+.czfa-helal-ahmar:before { --fa: '\e821'; content: '\e821'; } /* '' */
+.czfa-iapps:before { --fa: '\e822'; content: '\e822'; } /* '' */
+.czfa-idpay:before { --fa: '\e823'; content: '\e823'; } /* '' */
+.czfa-igap:before { --fa: '\e824'; content: '\e824'; } /* '' */
+.czfa-iran-venezuela:before { --fa: '\e825'; content: '\e825'; } /* '' */
+.czfa-iran-zamin:before { --fa: '\e826'; content: '\e826'; } /* '' */
+.czfa-karafarin:before { --fa: '\e827'; content: '\e827'; } /* '' */
+.czfa-keshavarzi:before { --fa: '\e828'; content: '\e828'; } /* '' */
+.czfa-khane-cinema:before { --fa: '\e829'; content: '\e829'; } /* '' */
+.czfa-khavar-mianeh:before { --fa: '\e82a'; content: '\e82a'; } /* '' */
+.czfa-komite-emdad:before { --fa: '\e82b'; content: '\e82b'; } /* '' */
+.czfa-kosar:before { --fa: '\e82c'; content: '\e82c'; } /* '' */
+.czfa-mahak:before { --fa: '\e82d'; content: '\e82d'; } /* '' */
+.czfa-markazi:before { --fa: '\e82e'; content: '\e82e'; } /* '' */
+.czfa-mehr-eghtesad:before { --fa: '\e830'; content: '\e830'; } /* '' */
+.czfa-mehr-iran:before { --fa: '\e831'; content: '\e831'; } /* '' */
+.czfa-melall:before { --fa: '\e832'; content: '\e832'; } /* '' */
+.czfa-mellat:before { --fa: '\e833'; content: '\e833'; } /* '' */
+.czfa-miras-farhangi:before { --fa: '\e836'; content: '\e836'; } /* '' */
+.czfa-mokhaberat:before { --fa: '\e837'; content: '\e837'; } /* '' */
+.czfa-namava:before { --fa: '\e839'; content: '\e839'; } /* '' */
+.czfa-nazdika:before { --fa: '\e83a'; content: '\e83a'; } /* '' */
+.czfa-next-pay:before { --fa: '\e83b'; content: '\e83b'; } /* '' */
+.czfa-nezam-mohandesi:before { --fa: '\e83c'; content: '\e83c'; } /* '' */
+.czfa-nezam-pezeshki:before { --fa: '\e83d'; content: '\e83d'; } /* '' */
+.czfa-noor:before { --fa: '\e83e'; content: '\e83e'; } /* '' */
+.czfa-omur-maliati:before { --fa: '\e83f'; content: '\e83f'; } /* '' */
+.czfa-parsian:before { --fa: '\e840'; content: '\e840'; } /* '' */
+.czfa-pasargad-pep:before { --fa: '\e841'; content: '\e841'; } /* '' */
+.czfa-pasargad:before { --fa: '\e842'; content: '\e842'; } /* '' */
+.czfa-pay-ping:before { --fa: '\e843'; content: '\e843'; } /* '' */
+.czfa-payfa:before { --fa: '\e844'; content: '\e844'; } /* '' */
+.czfa-post-bank:before { --fa: '\e845'; content: '\e845'; } /* '' */
+.czfa-post:before { --fa: '\e846'; content: '\e846'; } /* '' */
+.czfa-rah-ahan:before { --fa: '\e847'; content: '\e847'; } /* '' */
+.czfa-refah:before { --fa: '\e848'; content: '\e848'; } /* '' */
+.czfa-resalat:before { --fa: '\e849'; content: '\e849'; } /* '' */
+.czfa-rubika:before { --fa: '\e84a'; content: '\e84a'; } /* '' */
+.czfa-sabteahval:before { --fa: '\e84b'; content: '\e84b'; } /* '' */
+.czfa-sadad:before { --fa: '\e84c'; content: '\e84c'; } /* '' */
+.czfa-saderat:before { --fa: '\e84d'; content: '\e84d'; } /* '' */
+.czfa-saman-kish:before { --fa: '\e84e'; content: '\e84e'; } /* '' */
+.czfa-saman:before { --fa: '\e84f'; content: '\e84f'; } /* '' */
+.czfa-sanat-madan:before { --fa: '\e850'; content: '\e850'; } /* '' */
+.czfa-sanjesh:before { --fa: '\e851'; content: '\e851'; } /* '' */
+.czfa-sarmayeh:before { --fa: '\e852'; content: '\e852'; } /* '' */
+.czfa-sedaosima:before { --fa: '\e853'; content: '\e853'; } /* '' */
+.czfa-sep:before { --fa: '\e854'; content: '\e854'; } /* '' */
+.czfa-shabake-1:before { --fa: '\e856'; content: '\e856'; } /* '' */
+.czfa-shabake-2:before { --fa: '\e857'; content: '\e857'; } /* '' */
+.czfa-shabake-3:before { --fa: '\e858'; content: '\e858'; } /* '' */
+.czfa-shabake-4:before { --fa: '\e859'; content: '\e859'; } /* '' */
+.czfa-shabake-alkosar:before { --fa: '\e85a'; content: '\e85a'; } /* '' */
+.czfa-shabake-amuzesh:before { --fa: '\e85b'; content: '\e85b'; } /* '' */
+.czfa-shabake-ifilm:before { --fa: '\e85c'; content: '\e85c'; } /* '' */
+.czfa-shabake-jamejam:before { --fa: '\e85d'; content: '\e85d'; } /* '' */
+.czfa-shabake-khabar:before { --fa: '\e85e'; content: '\e85e'; } /* '' */
+.czfa-shabake-mostanad:before { --fa: '\e85f'; content: '\e85f'; } /* '' */
+.czfa-shabake-namayesh:before { --fa: '\e860'; content: '\e860'; } /* '' */
+.czfa-shabake-nasim:before { --fa: '\e861'; content: '\e861'; } /* '' */
+.czfa-shabake-ofogh:before { --fa: '\e862'; content: '\e862'; } /* '' */
+.czfa-shabake-omid:before { --fa: '\e863'; content: '\e863'; } /* '' */
+.czfa-shabake-puya:before { --fa: '\e864'; content: '\e864'; } /* '' */
+.czfa-shabake-quran:before { --fa: '\e865'; content: '\e865'; } /* '' */
+.czfa-shabake-salamat:before { --fa: '\e866'; content: '\e866'; } /* '' */
+.czfa-shabake-sepehr:before { --fa: '\e867'; content: '\e867'; } /* '' */
+.czfa-shabake-tamasha:before { --fa: '\e868'; content: '\e868'; } /* '' */
+.czfa-shabake-tehran:before { --fa: '\e869'; content: '\e869'; } /* '' */
+.czfa-shabake-varzesh:before { --fa: '\e86a'; content: '\e86a'; } /* '' */
+.czfa-shad:before { --fa: '\e86b'; content: '\e86b'; } /* '' */
+.czfa-shahr:before { --fa: '\e86c'; content: '\e86c'; } /* '' */
+.czfa-shahrdari:before { --fa: '\e86d'; content: '\e86d'; } /* '' */
+.czfa-shaparak:before { --fa: '\e86e'; content: '\e86e'; } /* '' */
+.czfa-sib-app:before { --fa: '\e86f'; content: '\e86f'; } /* '' */
+.czfa-sina:before { --fa: '\e870'; content: '\e870'; } /* '' */
+.czfa-snap-pay:before { --fa: '\e871'; content: '\e871'; } /* '' */
+.czfa-soroush:before { --fa: '\e872'; content: '\e872'; } /* '' */
+.czfa-standard:before { --fa: '\e873'; content: '\e873'; } /* '' */
+.czfa-tamasha:before { --fa: '\e874'; content: '\e874'; } /* '' */
+.czfa-tamin-ejtemaei:before { --fa: '\e875'; content: '\e875'; } /* '' */
+.czfa-taxirani:before { --fa: '\e876'; content: '\e876'; } /* '' */
+.czfa-tejarat:before { --fa: '\e877'; content: '\e877'; } /* '' */
+.czfa-tosee-fanavari-etelaat-va-rasanehaye-digital:before { --fa: '\e879'; content: '\e879'; } /* '' */
+.czfa-tosee-taavon:before { --fa: '\e87a'; content: '\e87a'; } /* '' */
+.czfa-vandar:before { --fa: '\e87b'; content: '\e87b'; } /* '' */
+.czfa-vezarat-taavon:before { --fa: '\e87c'; content: '\e87c'; } /* '' */
+.czfa-zarinpal:before { --fa: '\e87d'; content: '\e87d'; } /* '' */
+.czfa-zibal:before { --fa: '\e87e'; content: '\e87e'; } /* '' */
+.czfa-ab:before { --fa: '\e87f'; content: '\e87f'; } /* '' */
+.czfa-aio:before { --fa: '\e880'; content: '\e880'; } /* '' */
+.czfa-amuzesh-parvaresh:before { --fa: '\e881'; content: '\e881'; } /* '' */
+.czfa-anardooni:before { --fa: '\e882'; content: '\e882'; } /* '' */

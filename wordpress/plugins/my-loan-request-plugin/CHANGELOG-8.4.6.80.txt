@@ -1,0 +1,11 @@
+8.4.6.80 — Configurable loan request ID sequence
+
+- Added Operations > تنظیم شناسه پرونده.
+- Admin can set any positive request-ID increment from 1 to 1,000,000,000.
+- Step 1 preserves the original AUTO_INCREMENT behavior.
+- Step >1 allocates the actual canonical loan_requests.id with the configured gap.
+- Existing request IDs are never changed.
+- Both acceptor and applicant submission paths use the same allocator.
+- MySQL advisory locking prevents duplicate IDs during concurrent submissions.
+- The allocator considers MAX(id), current AUTO_INCREMENT state, and last allocated ID to avoid reusing old/deleted high IDs.
+- Cooperation requests, plan IDs, settlement IDs and other unrelated tables are unaffected.

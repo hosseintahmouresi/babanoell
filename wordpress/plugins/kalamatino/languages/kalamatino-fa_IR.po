@@ -1,0 +1,110 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Kalamatino\n"
+"POT-Creation-Date: 2022-06-08 13:02+0430\n"
+"PO-Revision-Date: 2022-06-08 13:04+0430\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: kalamatino.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: inc/admin/menus.php:6
+msgid "Kalamatino Options"
+msgstr "تنظیمات کلماتینو"
+
+#. Plugin Name of the plugin/theme
+#: inc/admin/menus.php:7
+msgid "Kalamatino"
+msgstr "کلماتینو"
+
+#: inc/templates/words-page.php:143
+msgid "Words List"
+msgstr "لیست کلمات"
+
+#: inc/templates/words-page.php:153
+msgid "from"
+msgstr "از"
+
+#: inc/templates/words-page.php:157
+msgid "to"
+msgstr "به"
+
+#: inc/templates/words-page.php:160
+msgid "add to list"
+msgstr "افزودن به لیست"
+
+#: inc/templates/words-page.php:162
+msgid ""
+"simply add the text (from) you want to change (to) . kalamatino works 99%"
+msgstr ""
+"به راحتی کلمه مورد نظر را در (از) و کلمه ای که با آن جایگزین میشود را در "
+"(به) قرار دهید. کلماتینو 99% مواقع جایگزینی را انجام میدهد"
+
+#: inc/templates/words-page.php:167
+msgid "From"
+msgstr "از"
+
+#: inc/templates/words-page.php:169
+msgid "Replaced with"
+msgstr "جایگزین شده با"
+
+#: inc/templates/words-page.php:171
+msgid "Actions"
+msgstr "عملیات"
+
+#: inc/templates/words-page.php:193
+msgid "delete this row"
+msgstr "حذف این ردیف"
+
+#: kalamatino.php:45
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: kalamatino.php:58
+msgid ""
+"Both fields must be filled! if you want to hide a text use SPACE in \"to\" "
+"field"
+msgstr ""
+"هر دو فیلد باید پرشده باشند. اگر میخواهید یک کلمه را مخفی کنید میتوانید "
+"فیلد دوم \"به\" را با یک کاراکتر فاصله (SPACE) پر کنید"
+
+#. Plugin URI of the plugin/theme
+msgid "https://shokrino.ir/kalamatino"
+msgstr "https://shokrino.ir/kalamatino"
+
+#. Description of the plugin/theme
+msgid "You can do changes on your website words."
+msgstr "شما میتوانی کلمات سایت خود را تغییر دهید"
+
+#. Author of the plugin/theme
+msgid "Shokrino"
+msgstr "شکرینو"
+
+#. Author URI of the plugin/theme
+msgid "https://shokrino.ir"
+msgstr "https://shokrino.ir"
+
+#~ msgid "Turn on replacer"
+#~ msgstr "فعال کردن جایگزین کننده"
+
+#~ msgid "Save"
+#~ msgstr "ذخیره"
+
+#~ msgid "Go to Words List"
+#~ msgstr "رفتن به لیست کلمات"
+
+#~ msgid "delete"
+#~ msgstr "حذف"

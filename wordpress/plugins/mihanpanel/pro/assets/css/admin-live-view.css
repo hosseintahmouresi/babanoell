@@ -1,0 +1,38 @@
+.mwpl_live_view#mwpl_live_view_login_text_fields .mwpl_login_form_wrapper .label
+{
+    margin-bottom: 5px;
+    width: 80%;
+    color: #222;
+}
+.mwpl_live_view#mwpl_live_view_login_text_fields.dark .mwpl_login_form_wrapper .label
+{
+    color: white;
+}
+.mwpl_live_view#mwpl_live_view_login_text_fields .mwpl_login_form_wrapper .field
+{
+    border: none;
+    width: 75%;
+    font-size: 16px;
+    padding: 15px 20px;
+    border-radius: 50px;
+    background-color: rgba(255,255,255,.8);
+    box-shadow: 0 5px 30px 0px rgb(0 0 0 / 10%);
+    color: #222;
+    text-align: left;
+}
+.mwpl_live_view#mwpl_live_view_login_text_fields.dark .mwpl_login_form_wrapper .field
+{
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+}
+.mwpl_live_view#mwpl_live_view_login_info_messagebox .mwpl_login_form_wrapper .info_messagebox
+{
+    width: 80%;
+    color: white;
+    padding: 12px;
+    border-radius: 4px;
+}
+.mwpl_live_view#mwpl_live_view_login_info_messagebox .mwpl_login_form_wrapper .info_messagebox
+{
+    background-color: #246cfc;
+}

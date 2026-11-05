@@ -1,0 +1,10 @@
+8.4.6.63 — Bank expert settlement dashboard minimal detail view
+
+- Identified the bank settlement menu as [mlr_granted_expert_dashboard].
+- Its request detail modal now uses a dedicated bank_settlement context.
+- Settlement details show only applicant identity/contact fields, financial/plan fields, and the bank-to-Babanoell settlement control.
+- Conversations, messages, attachments, uploaded documents, contracts, credit reports, guarantors, order extras, workflow forms and other case-history sections are not rendered in the settlement menu.
+- The settlement context returns before those datasets are loaded, so hidden information is not fetched in the background either.
+- Other bank dashboards, including [mlr_bank_all_requests_dashboard] and document-review dashboards, keep their existing detail views unchanged.
+- Existing bank settlement write protections remain intact: bank role, assigned expert, granted status, nonce and isolated bank-settlement fields only.
+- No database schema or stored case data is changed.

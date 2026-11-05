@@ -1,0 +1,33 @@
+Jabili 8.4.6.74 - Hami Retirees Contract Display & Print Finalization
+
+1) Hami retirees contract visibility
+- Contract preview is no longer blocked by strict legal-value validation.
+- Strict validation remains enforced when requesting/verifying the OTP, so an incomplete contract cannot be signed.
+- Existing signed contract snapshots are not rewritten.
+
+2) Marketing/sales amount
+- Removed the customer-facing marketing/development amount placeholder from the Hami retirees contract.
+- Removed the Hami customer-contract admin field that was introduced for this amount.
+- Bank settlement fields/calculation logic are not repurposed or changed by this contract revision.
+
+3) Contract header
+- ETN / اقتصاد فناور شرقی logo is aligned to the right.
+- Contract date and number are aligned to the left.
+- Header remains responsive on small screens.
+
+4) Stable multi-page print/PDF layout
+- Added dedicated A4 print typography and spacing for the Hami retirees contract.
+- Print windows now preserve the plugin's active styles instead of using a minimal generic stylesheet.
+- Generic plan letterhead/footer assets are suppressed for the Hami retirees v2 template to prevent duplicate/broken print layout.
+
+5) Repeating signatures/footer on every page
+- The three-party signature/address block is rendered through the print table footer and repeats on every printed/PDF page.
+- Supported in the public contract viewer, applicant/acceptor contract views, and internal/bank contract review.
+- The repeating footer is preserved in newly signed OTP proof snapshots.
+
+6) Automatic migration
+- Matching Hami retirees plans are backed up and upgraded to template key hami-retirees-final-1405-v2 on admin_init.
+- The current unsigned plan template is updated automatically; signed historical snapshots remain immutable.
+
+7) Regression safety
+- All previous bank-panel settlement visibility fixes through 8.4.6.73 are retained.

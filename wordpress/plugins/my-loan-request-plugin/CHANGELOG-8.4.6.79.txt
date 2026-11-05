@@ -1,0 +1,8 @@
+8.4.6.79 - Reissue preview-link SMS parity fix
+
+- Fixed the reissue preview-link sender referencing an undefined $send_contract_link variable.
+- Link-only reissue delivery now always resolves the same approved cooperation "تایید مدارک" Body ID used by the established contract-link flow.
+- Link SMS variables now preserve the exact configured var_0..var_2 count/order, matching the normal cooperation sender and avoiding Body ID/variable-count mismatch notices.
+- Reissue OTP requests no longer validate or touch the link Body ID because the applicant already received/opened the preview link; only the OTP Body ID is used at that stage.
+- Normal non-reissue contract signing remains unchanged: link first, then OTP.
+- No contract text, signature history, plan settings, database schema, or SMS credentials are modified.

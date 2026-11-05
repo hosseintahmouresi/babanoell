@@ -1,0 +1,180 @@
+@import '../../../css/font-face-iranyekan.css';
+#wpwrap::before
+{
+    content: '';
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.license-wrapper
+{
+    font-family: iranyekan, sans-serif !important;
+    width: 80%;
+    margin: 80px auto;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 40px rgba(0,0,0,0.1);
+    display: flex;
+    height: 500px;
+}
+.license-box .mwpl_notice[notice-type="error"]
+{
+    color: #d81515;
+}
+.license-box .mwpl_notice[notice-type="success"]
+{
+    color: #118c11;
+}
+.logo-section
+{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logo-section img
+{
+    width: 70%;
+    height: auto;
+}
+.license-box
+{
+    margin-top: 70px;
+    /* background-color: orange; */
+    width: 60%;
+    min-height: 250px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+.license-box label
+{
+    margin-top: 50px;
+    font-size: 20px;
+    padding: 0 10px 5px;
+}
+
+.license-box .field-wrapper
+{
+    margin-top: 10px;
+    width: 88%;
+    position: relative;
+    /* background-color: orange; */
+}
+.license-box .field-wrapper .loading
+{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #00c67b;
+    color: #105ce7;
+    
+    color: #0c7ef31a;
+    /* color: #0c7ef3; */
+    /* color: #1785b9; */
+    color: #0c7ef3b3;
+    color: #6798ca;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    animation-name: license_loading;
+    animation-duration: .4s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+.display_none
+{
+    display: none !important;
+}
+@keyframes license_loading
+{
+    0%
+    {
+        font-size: 20px;
+    }
+    100%
+    {
+        font-size: 30px;
+    }
+}
+.license-box input[type=text]
+{
+    width: 100%;
+    padding: 10px;
+    border-color: #a2a2a2;
+    font-size: 20px;
+    color: grey;
+    border-color: #d4d4d4;
+    transition: background-color .2s;
+    box-shadow: none;
+}
+.license-box input[type=text]:focus,
+.license-box input[type=text]:disabled
+{
+    box-shadow: none;
+    border-color: #d4d4d4;
+    
+    border-color: #e71210;
+    background-color: #f30c0c1a;
+    color: red;
+
+    border-color: #105ce7;
+    background-color: #0c7ef31a;
+    color: #1785b9;
+}
+.license-box .status-bar
+{
+    padding: 6px 10px;
+    box-sizing: border-box;
+}
+.license-box .status-bar.active
+{
+    background-color: #2aba5f35;
+    color: #18843f;
+}
+.license-box .status-bar.deactive
+{
+    background-color: #ba2a2a35;
+    color: #841818;
+}
+.license-box .btn
+{
+    margin-top: 10px;
+    cursor: pointer;
+    width: 29%;
+    line-height: 45px;
+    color: #fff;
+    border: none;
+    display: inline-block;
+    border-radius: 4px;
+}
+.license-box .btn:focus
+{
+    outline: none;
+}
+.license-box .btn.activate
+{
+    background-image: linear-gradient(135deg,#01e08c,#00C178);
+    box-shadow: 0 5px 15px #00C17890;
+}
+.license-box .btn.deactivate
+{
+    background-image: linear-gradient(135deg,#e0015e,rgb(193, 0, 48));
+    box-shadow: 0 5px 15px rgba(193, 0, 32, 0.565);
+}
+.license-box .get-license
+{
+    text-decoration: none;
+    background-color: #1896e0;
+    background-image: linear-gradient(135deg,#01cbe0,#00a6c1);
+    text-align: center;
+    padding: 2px 0 0;
+}

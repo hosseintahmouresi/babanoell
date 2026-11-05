@@ -1,0 +1,19 @@
+Version 8.4.6.44
+
+Cleanup & packaging / readability release (zero functional change)
+
+- Version bumped to 8.4.6.44.
+- Removed Python cache artifacts (__pycache__ / *.pyc) from the distribution package.
+  These files are not required at runtime and should not ship with the plugin.
+- Improved section comments around core module loading, admin pages and shortcodes
+  in my-loan-request-plugin.php for better readability and safer future maintenance.
+- Load order of all require_once statements is unchanged.
+- No database schema, GreenPay state machine, snapshot, financial logic,
+  OTP, pocket, amount, transfer payload, or status transition behavior was modified.
+- No AJAX handlers, shortcodes, admin pages, or helper functions were moved or rewritten.
+- Fully backward-compatible with 8.4.6.43 installations.
+  Safe to update in place; no data migration is performed by this release.
+
+This release addresses the first item of the technical-debt list only at the
+packaging and documentation level. Full structural refactoring of the large
+core files is intentionally deferred to keep the system stable.

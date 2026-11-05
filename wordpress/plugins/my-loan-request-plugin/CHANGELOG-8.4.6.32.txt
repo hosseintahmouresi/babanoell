@@ -1,0 +1,10 @@
+My Loan Request 8.4.6.32
+
+- Added safe duplication for installment plans from the plan management list.
+- The duplicate copies the complete current plan row (settings, calculations, documents, occupation-specific documents, visibility/display fields, contract text and file settings) while receiving a new database ID.
+- Duplicates are created inactive to prevent accidental duplicate exposure on the live site.
+- Duplicate names are generated distinctly ("— کپی", then numbered copies when necessary).
+- New duplicates append to the configured global display order without changing the existing order.
+- Duplication uses a dedicated WordPress nonce, checks the source row, checks the database insert result, and redirects after success to prevent refresh-based duplicate creation.
+- The newly duplicated plan automatically opens in the edit form for immediate review.
+- No database schema migration and no financial formula changes in this release.

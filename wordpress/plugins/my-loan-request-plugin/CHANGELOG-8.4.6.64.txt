@@ -1,0 +1,5 @@
+8.4.6.64 — Bank expert settlement amount visibility adjustment
+
+- Removed only the «مبلغ تسویه» row from the financial information card in [mlr_granted_expert_dashboard] settlement details.
+- Kept all other identity, financial and bank-to-Babanoell settlement controls unchanged.
+- No database/schema/data migration.

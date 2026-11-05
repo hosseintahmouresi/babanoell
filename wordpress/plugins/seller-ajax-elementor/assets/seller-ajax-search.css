@@ -1,0 +1,44 @@
+.seller-ajax-results {
+    position: relative;
+    transition: opacity .18s ease;
+}
+
+.seller-ajax-results.seller-ajax-is-loading {
+    opacity: .48;
+    pointer-events: none;
+    min-height: 80px;
+}
+
+.seller-ajax-results.seller-ajax-is-loading::after {
+    content: "";
+    position: absolute;
+    z-index: 20;
+    top: 28px;
+    left: 50%;
+    width: 28px;
+    height: 28px;
+    margin-left: -14px;
+    border: 3px solid currentColor;
+    border-left-color: transparent;
+    border-radius: 50%;
+    animation: sellerAjaxSpin .65s linear infinite;
+}
+
+.seller-ajax-search .seller-ajax-error {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+@keyframes sellerAjaxSpin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .seller-ajax-results,
+    .seller-ajax-results.seller-ajax-is-loading::after {
+        transition: none;
+        animation-duration: 1.5s;
+    }
+}

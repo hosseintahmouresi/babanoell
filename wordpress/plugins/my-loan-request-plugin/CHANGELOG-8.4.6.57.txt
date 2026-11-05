@@ -1,0 +1,9 @@
+8.4.6.57
+
+- Bank/leasing review dashboard now keeps assigned files visible during both «تکمیل مدارک» and «تأیید مدارک», so a customer does not disappear before final document submission.
+- Added a read-only contract review card for assigned bank experts directly after documents/files. It works before and after digital signature.
+- Signed state uses the immutable signed snapshot and dual-party certificate; unsigned state uses the canonical current contract renderer.
+- Added «چاپ / ذخیره PDF» for bank experts and internal staff without allowing the reviewer to sign the applicant contract.
+- Moved the bank-side «مرحله تکمیل مدارک» notice next to documents/files instead of the bottom of the modal.
+- Internal admin/operations/finance request details now show the same contract review card immediately after «مدارک و فایل‌ها» instead of a late signed-only block.
+- No database schema or historical request data changes.

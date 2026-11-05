@@ -1,0 +1,17 @@
+label[for^="quarter_"],
+label[for^="last_quarter_"] {
+    display: none;
+}
+
+.woocommerce-segmented-selection__item:has(label[for^="quarter_"]),
+.woocommerce-segmented-selection__item:has(label[for^="last_quarter_"]) {
+    border-top: none;
+}
+
+[id^="tab-panel-"][id$="-custom"] {
+    display: none;
+}
+
+.components-button.woocommerce-dropdown-button.is-open:after {
+    transform: translateX(12px) translateY(2px) rotate(-180deg) !important;
+}

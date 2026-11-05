@@ -1,0 +1,63 @@
+Babanoell / My Loan Request Plugin 8.4.6.28
+
+Hardening and consistency release focused on preserving the existing UI/data model while making the backend rules, financial workflow, uploads, migrations, and asynchronous operations safer and deterministic.
+
+Core request flow
+- Added a shared server-side validation layer for applicant and acceptor submissions.
+- Recalculate order item totals on the server; browser-supplied line totals are no longer authoritative.
+- Enforce plan amount limits, allowed installment counts, leasing intervals, and non-fractional payment schedules on final submission.
+- Added duplicate-submission protection to the acceptor flow.
+- Fixed request-created event logging to use the newly inserted request ID.
+
+Credit / Shahkar
+- Final loan submission now requires server-side MyCredit proof for plans that require bank validation; browser JSON alone cannot satisfy the requirement.
+- Bind MyCredit flow/proof to the initiating client identity, national code, mobile, and issued hash.
+- Added request/verification/status throttling and restricted callbacks to server-issued active flows.
+- Added Shahkar throttling and short-lived successful-result caching.
+
+Documents / uploads / messages
+- Initial staged uploads now receive ownership tokens bound to client/context/field and are validated on final submit.
+- Kept a compatibility bridge for files uploaded immediately before the update by older cached frontend JavaScript.
+- Added cleanup for abandoned initial uploads and stale chunk directories.
+- Message attachments are authorized before file I/O and newly uploaded files are removed if the message cannot be saved.
+- Cooperation uploads use the same staged-upload proof model and clean up failed direct uploads.
+
+Settlement
+- Settlement-cycle creation is transactional, row-locked, conditionally updated, and requires an exact affected-row match before commit.
+- Settlement-date updates are transactional and cannot modify requests already assigned to a settlement cycle or already settled.
+
+Cooperation OTP
+- New contract OTPs are generated with random_int(), use six digits, and are stored as password hashes.
+- Added resend/verification rate limits and a maximum failed-attempt policy.
+- Existing unexpired legacy five-digit plaintext OTPs remain verifiable for backward compatibility.
+
+Database / migrations
+- Unified the canonical request schema and added columns that previously depended on historical runtime ALTER TABLE operations.
+- Runtime schema mutation was removed from guarantor, pending-document, and transfer-receipt AJAX handlers.
+- Database version advancement now occurs only after required columns are verified.
+- The stale secondary installer now delegates to the canonical installer.
+
+Workflow / calculators / settings
+- Legacy "تأیید نهایی / تایید نهایی" is treated as an alias of canonical "تأیید مدارک"; new legacy-page completions write the canonical status.
+- Frontend/applicant/admin calculators use the same numeric plan rules as final submission.
+- Frontend calculator no longer trusts browser-supplied user commission.
+- Added range/consistency validation for installment-plan settings while preserving existing calculation formulas and rounding behavior.
+
+Logging / maintenance / API-settings backup
+- Default plugin log storage moved away from public uploads to a private temporary directory (or MLR_LOG_DIR when configured), with best-effort legacy-log migration/removal and additional redaction.
+- Deactivation now clears plugin cron hooks, including argumented scheduled events, without deleting loan/business data.
+- Secondary API-settings backup no longer stores GreenPay password/API key or Shahkar client secret; old secret copies are purged from that backup.
+
+Compatibility decisions
+- Existing monetary formulas and rounding were intentionally not rewritten to fixed-point arithmetic in this release, to avoid changing historical outputs or customer-facing calculations. Validation around those formulas was hardened instead.
+- Existing database records and legacy status/OTP formats are read compatibly where required; new writes use the canonical formats.
+
+Explicitly excluded by request
+- Secret Editor authentication/default credentials were not changed.
+- Bundled ICS24/MyCredit hardcoded credential definitions and their priority behavior were not changed.
+
+Automated verification included in /tests
+- PHP syntax lint: all plugin PHP files.
+- JavaScript syntax checks: all plugin JavaScript files.
+- Hardening unit tests: validation, totals, rate limits, upload ownership, and credit proof.
+- Static/invariant tests: settlement atomicity, schema consistency, workflow compatibility, upload behavior, OTP hardening, secret-backup behavior, and verification that the two explicit exclusions remain unchanged when compared with the source tree.

@@ -1,0 +1,9 @@
+8.4.6.65
+
+- GreenPay Production aligned with the vendor reference plugin endpoints: token acquisition may use /api/sandbox/submit in live mode.
+- Production no longer requires a global FromPocketNumber.
+- Each Production GreenPay enrollment requires the applicant's own 16-digit FromPocketNumber.
+- Production bulk enrollment is disabled to prevent assigning one pocket to multiple applicants.
+- Added safe FromPocket update for eligible transactions only while not_started/cancelled/failed.
+- Queue/retry preserve the transaction-bound applicant pocket.
+- Existing GreenPay hardening, OTP flow, snapshots, unknown-state reconciliation and concurrency protections remain intact.

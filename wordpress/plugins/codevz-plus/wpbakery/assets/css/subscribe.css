@@ -1,0 +1,183 @@
+.cz_subscribe_elm {
+	position: relative;
+	float: left;
+	width: 100%;
+	max-width: 100%
+}
+.cz_subscribe_elm > div {
+	display: flex;
+	align-items: center
+}
+.cz_subscribe_has_name {
+	width: 80%
+}
+.cz_subscribe_has_name > div > input:first-child {
+	margin: 0 25px 0 0
+}
+.rtl .cz_subscribe_has_name > div > input:first-child {
+	margin: 0 0 0 25px
+}
+.cz_subscribe_elm input {
+	padding: 11px 24px
+}
+.cz_subscribe_elm button {
+	position: absolute;
+	right: 0;
+	top: 0
+}
+.cz_subscribe_elm:not(.cz_subscribe_relative) button {
+	position: absolute;
+	right: 0;
+	top: 0
+}
+.rtl .cz_subscribe_elm:not(.cz_subscribe_relative) button {
+	left: 0;
+	right: auto
+}
+.cz_subscribe_has_name:not(.cz_subscribe_relative) button {
+	transform: translateX(calc(100% + 25px))
+}
+.rtl .cz_subscribe_has_name:not(.cz_subscribe_relative) button {
+	transform: translateX(calc(-100% + 25px))
+}
+.cz_subscribe_style_4 button,
+.cz_subscribe_style_5 button {
+	transform: none
+}
+form.cz_subscribe_relative button {
+	position: static !important;
+	margin-top: 25px
+}
+.cz_subscribe_relative.cz_subscribe_elm_center button {
+	margin: 25px auto 0
+}
+.cz_subscribe_round button, 
+.cz_subscribe_round input, 
+.cz_subscribe_round_2 button, 
+.cz_subscribe_round_2 input {
+	border-radius: 50px !important
+}
+.cz_subscribe_round_2 button {
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important
+}
+.rtl .cz_subscribe_round_2 button {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+	border-top-left-radius: 20px !important;
+	border-bottom-left-radius: 20px !important
+}
+.cz_subscribe_elm_center {
+	margin: 0 auto;
+	float: none;
+	display: table
+}
+.cz_subscribe_btn_center button {
+	margin: 5px auto 0;
+	display: table
+}
+.cz_subscribe_elm_right,
+.cz_subscribe_btn_right button {
+	float: right
+}
+.rtl .cz_subscribe_elm_right,
+.rtl .cz_subscribe_btn_right button {
+	float: left
+}
+.cz_subscribe_square input,
+.cz_subscribe_square button {
+	border-radius: 0 !important
+}
+
+.cz_subscribe_elm.cz_subscribe_col > div {
+	display: block
+}
+.cz_subscribe_elm.cz_subscribe_col > div input {
+	margin: 0 0 25px 0
+}
+form.cz_subscribe_elm.cz_subscribe_col button {
+	position: static !important;
+	transform: translate(0)
+}
+.cz_subscribe_elm p.cz_subscribe_msg {
+	display: none;
+	margin: 20px 0 0;
+	padding: 22px;
+	line-height: 1.5;
+	background: #ebfee3;
+	color: #398f14;
+	border: 1px solid #398f142e;
+	border-radius: 4px;
+	font-size: 14px
+}
+.cz_subscribe_elm p.cz_subscribe_msg.cz_subscribe_msg_error {
+	background: #ffe7e7;
+	color: #ff2929;
+	border-color: #ff292929
+}
+.cz_subscribe_loader button {
+	position: relative !important;
+	font-size: 0 !important;
+	width: 30px !important;
+	height: 30px !important;
+	padding: 0 !important;
+	border-radius: 100% !important;
+	box-shadow: none !important;
+	left: 45% !important;
+	background: none !important;
+	border: 2px solid rgba(167, 167, 167, .3) !important;
+	border-right-color: #111 !important;
+	transition: none !important;
+	animation: rotateInfinite .6s linear infinite !important
+}
+.rtl .cz_subscribe_loader button {
+	left: auto !important;
+	right: 45% !important
+}
+@keyframes rotateInfinite {
+	from {transform: rotate(0deg)}
+	to {transform: rotate(360deg)}
+}
+.cz_subscribe_loader > div {
+	opacity: .5
+}
+.cz_subscribe_style_default.cz_subscribe_loader button,
+.cz_subscribe_style_1.cz_subscribe_loader button,
+.cz_subscribe_style_2.cz_subscribe_loader button {
+	position: absolute;
+	margin: 12px 0
+}
+.cz_subscribe_elm input[name="website"] {
+	display: none
+}
+
+@media screen and (max-width:768px) {
+
+	.cz_subscribe_elm_center {
+		width: 100% !important
+	}
+
+}
+
+@media screen and (max-width:480px) {
+
+	.cz_subscribe_elm {
+		width:100% !important
+	}
+	.cz_subscribe_elm > div {
+		flex-direction: column
+	}
+	.cz_subscribe_has_name > div > input {
+		margin: 0 0 10px 0
+	}
+	.cz_subscribe_elm input {
+		text-align: center
+	}
+	.cz_subscribe_elm button[name="subscribe"] {
+		position: static;
+		margin: 10px auto 0 !important;
+		display: table;
+		transform: none
+	}
+
+}

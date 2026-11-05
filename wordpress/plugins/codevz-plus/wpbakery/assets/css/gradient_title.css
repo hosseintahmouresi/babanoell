@@ -1,0 +1,41 @@
+.cz_gradient_title {
+	display: block;
+	visibility: visible;
+	position: relative;
+	z-index: 2;
+	background-size: cover;
+	background-position: center;
+	background-image: linear-gradient(to right, #282828, #ffbb00, #282828);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent
+}
+.cz_gradient_title * {
+	-webkit-background-clip: inherit;
+	-webkit-text-fill-color: inherit;
+	background: inherit;
+}
+.cz_gradient_title_center {
+	display: table;
+	margin: 0 auto;
+}
+.cz_gradient_title.cz_mobile_text_center {
+	display: block
+}
+
+.cz_gradient_title_animation {
+	background-size: 1600px 200px;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation-duration: 6s;
+	animation-name: animationgradienttitle;
+	animation-iteration-count: infinite;
+	animation-fill-mode: forwards
+}
+@keyframes animationgradienttitle {
+	0% {
+		background-position: 0 1600px
+	}
+	100% {
+		background-position: 1600px 0
+	}
+}

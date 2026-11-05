@@ -1,0 +1,109 @@
+.codevz-pwa * {
+	box-sizing: border-box
+}
+.codevz-pwa {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	display: none;
+	z-index: 99999999999;
+	background: #000000de;
+	box-sizing: border-box
+}
+.codevz-pwa-footer span {
+	display: none
+}
+.codevz-pwa-desktop {
+	display: none !important
+}
+
+@media (max-width:768px) and (min-width:200px) {
+
+	.codevz-pwa > div {
+		position: absolute;
+		width: 85%;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		overflow: hidden;
+		background: #fff;
+		color: #111;
+		border-radius: 10px;
+		padding: 50px;
+		font-size: 15px;
+		text-align: center
+	}
+	.codevz-pwa-plc {
+		position: relative;
+		height: 80px;
+		margin-bottom: 10px
+	}
+	.codevz-pwa-plc div {
+		position: absolute;
+		left: 50%;
+		top: 0;
+		transform: translateX(-50%);
+		width: 1000px;
+		text-align: center
+	}
+	.codevz-pwa > div > .codevz-pwa-plc:first-child {
+		margin-top: -70px
+	}
+	.codevz-pwa-plc i {
+		width: 80px;
+		height: 80px;
+		display: inline-block;
+		background: #f5f5f5;
+		border-radius: 25px;
+		margin: 0 5px;
+		padding: 5px
+	}
+	.codevz-pwa-plc img {
+		border-radius: inherit
+	}
+	.codevz-pwa-close {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		font-size: 30px;
+		line-height: 1;
+		color: #666
+	}
+	.codevz-pwa-title {
+		background: #333;
+		color: #fff;
+		line-height: 1;
+		padding: 10px 15px;
+		border-radius: 100px;
+		margin: -70px auto 0;
+		position: relative;
+		font-weight: bold;
+		display: table
+	}
+	.codevz-pwa > div > p {
+		margin: 60px 0 40px
+	}
+	.codevz-pwa-footer {
+		position: absolute;
+		font-size: 14px;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background: #f5f5f5;
+		padding: 10px
+	}
+	.codevz-pwa-footer img {
+		width: 15px;
+		display: inline-block;
+		vertical-align: top;
+		margin: 0 6px;
+	}
+	.codevz-pwa-show,
+	.codevz-pwa-ios .codevz-pwa-footer span:first-child,
+	.codevz-pwa-android .codevz-pwa-footer span:last-child {
+		display: block
+	}
+
+}

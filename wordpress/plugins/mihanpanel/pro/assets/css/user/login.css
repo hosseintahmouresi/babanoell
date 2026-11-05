@@ -1,0 +1,73 @@
+
+.mwpl-login-body.mwpl-dark {
+    background-color: #2f2f2f;
+}
+
+.mwpl-login-body.mwpl-right {
+    justify-content: right;
+}
+
+.mwpl-login-body.mwpl-left {
+    justify-content: left;
+}
+
+.mwpl-login-body.mwpl-left .mwpl-login-wrapper,
+.mwpl-login-body.mwpl-right .mwpl-login-wrapper {
+    max-height: 100%;
+}
+
+.mwpl-login-body.mwpl-dark .mwpl-login-wrapper {
+    background-color: #1e1e1e;
+}
+
+.mwpl-login-body.mwpl-right .mwpl-login-wrapper {
+    grid-template-columns: 1fr 2fr;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+}
+
+.mwpl-login-body.mwpl-left .mwpl-login-wrapper {
+    grid-template-columns: 2fr 1fr;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+}
+
+.mwpl-login-body.mwpl-left .mwpl-login-wrapper>form {
+    order: 1;
+}
+
+.mwpl-login-body.mwpl-dark .mwpl-form-fields .mwpl-input-item label {
+    background-color: #282828;
+    border-color: #282828;
+}
+
+.agr-recaptcha-wrapper {
+    margin: 15px 0;
+}
+
+.agr-recaptcha-wrapper>div {
+    margin: 0 auto 0 auto;
+}
+
+.mwpl-login-body .mwpl-form-fields .mwpl-notice-wrapper .mwpl-action-bar>span[mwpl-action="send_code"] {
+    border: 1px solid #dfdffb;
+    padding: 10px;
+    border-radius: 7px;
+    background-color: #efefff;
+    color: #4a4abb;
+}
+.mwpl-login-body .captcha-field-group .captcha-code .mwpl-captcha img
+{
+    width: 100%;
+}
+.mwpl-login-body .mwpl-timer[mwpl-resend-code="1"]
+{
+    cursor: pointer;
+}
+.mwpl-login-body .mwpl-timer[mwpl-resend-code="1"].mwpl-disable-resend-code-btn
+{
+    opacity: .5;
+    pointer-events: none;
+}

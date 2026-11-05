@@ -1,0 +1,11 @@
+8.4.6.62 — Loan contract SMS flow mirrors cooperation exactly
+
+- Reuses the production-proven cooperation SMS flow instead of forcing OTP + URL into one Body ID.
+- Contract link is sent with the existing cooperation «تایید مدارک» pattern and its original variable mapping.
+- Facility-contract public links keep using the shared cooperation-contract route; lc... tokens are routed to the facility contract viewer.
+- OTP is then sent with the exact cooperation_sign Body ID and exact configured variable count (normally one [[otp_code]] variable).
+- Removes the previous behavior that appended contract_url to the cooperation OTP pattern and caused provider variable-count/template mismatch errors.
+- Fails closed if the cooperation link pattern or cooperation OTP pattern is unavailable; no OTP is activated when the link SMS fails.
+- Expands MeliPayamak shared-service error decoding for documented negative return codes -1 through -7.
+- Keeps the legacy dedicated loan-contract SMS settings visible for compatibility but they are no longer used by the runtime path.
+- No database schema changes and no rewrite of existing signed contracts.

@@ -1,0 +1,262 @@
+.mihanpanelpanel #avatar_field .alert {
+    display: none;
+    animation-name: show_alert !important;
+    animation-duration: 1s !important;
+}
+
+@keyframes show_alert {
+    0% {
+        padding: 0 30px !important;
+        opacity: 0 !important;
+    }
+
+    100% {
+        padding: 15px 30px !important;
+    }
+}
+
+.mihanpanelpanel .nocss .mw_avatar_section {
+    position: relative !important;
+    display: flex;
+}
+
+.mihanpanelpanel .mw_avatar_section #user_avatar_wrapper {
+    display: inline-block !important;
+    width: 100px !important;
+    height: 100px !important;
+    overflow: hidden !important;
+    border-radius: 10px !important;
+    box-shadow: 0 0px 10px 0 #d4d4d4 !important;
+}
+
+.mihanpanelpanel .mw_avatar_section img#user_avatar_display {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.mihanpanelpanel .mw_avatar_section label#choose_avatar {
+    display: inline-block !important;
+    background-image: radial-gradient(circle 502px at 2.7% 23.7%, rgba(142, 5, 254, 1) 0%, rgba(33, 250, 214, 1) 99.6%) !important;
+    color: white !important;
+    padding: 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    position: absolute !important;
+    margin: 0 20px !important;
+    right: 100px !important;
+    width: 150px !important;
+    text-align: center !important;
+}
+
+input#user_avatar {
+    display: none !important;
+}
+
+input#remove_user_avatar {
+    right: 120px !important;
+    bottom: 0px !important;
+    position: absolute !important;
+    width: 150px !important;
+    padding: 0 !important;
+    text-align: center;
+    background: #fb5353 !important;
+    color: white !important;
+    cursor: pointer;
+    border: none !important;
+}
+
+.mihanpanelpanel .mpsidebar .nav li>a img {
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.mihanpanelpanel .mpsidebar.mp_rtl .nav li>a img {
+    margin: 0 0 0 10px !important;
+}
+
+.mihanpanelpanel .mpsidebar.mp_ltr .nav li>a img {
+    margin-right: 15px !important;
+}
+
+html body .mihanpanelpanel .news-box .dashboard-title {
+    line-height: 1.9em !important;
+    display: block;
+    color: #35495c;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+html body .mihanpanelpanel .news-box .dashboard-title.cursor {
+    cursor: pointer;
+}
+
+html body .mihanpanelpanel .news-box {
+    padding: 0 15px;
+    display: block;
+}
+
+html body .mihanpanelpanel .news-box .post-items-wrapper {
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 25px;
+}
+
+html body .mihanpanelpanel .news-box .post-item {
+    background: #fff;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 30px;
+    box-shadow: 0 5px 30px rgb(70 72 77 / 8%);
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+html body .mihanpanelpanel .news-box .post-item .thumbnail {
+    width: 100%;
+    overflow: hidden;
+    display: block;
+    position: relative;
+}
+
+html body .mihanpanelpanel .news-box .post-item .thumbnail img {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+html body .mihanpanelpanel .news-box .post-item header {
+    padding: 15px 30px;
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+html body .mihanpanelpanel .news-box .post-item header h3 {
+    font-weight: 400;
+    font-size: 17px;
+    display: block;
+    line-height: 2em;
+}
+
+html body .mihanpanelpanel .products-widget-box .product-widget-box-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+html body .mihanpanelpanel .products-widget-box .product-widget-box-title .section-link {
+    border: 1px solid;
+    padding: 7px 15px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color .4s, color .4s;
+}
+
+html body .mihanpanelpanel .products-widget-box .product-widget-box-title .section-link:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .empty-section {
+    opacity: .4;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item .pr-item-body {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item .pr-item-body .show-more-btn {
+    border: 1px solid #0000002e;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: border-color .4s, background-color .4s, color .4s;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item:hover .pr-item-body .show-more-btn {
+    border-color: #000000;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item:hover .pr-item-body .show-more-btn:hover {
+    color: #ffffff;
+    background-color: black;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item .pr-item-body .price-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item .pr-item-body .price-wrapper>del {
+    opacity: .4;
+}
+
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item .pr-item-body .price-wrapper>ins,
+html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item .pr-item-body .price-wrapper>.woocommerce-Price-amount.amount {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+html body .mihanpanelpanel .clear {
+    display: block;
+}
+
+html body .mihanpanelpanel .notification-box {
+    width: 90%;
+    margin: 10px auto;
+    padding: 15px 30px;
+    font-size: 15px;
+    display: block;
+    box-sizing: border-box;
+    border: 2px solid #cae7d2;
+    border-radius: 10px;
+    background-color: #eaf7ee;
+}
+
+html body .mihanpanelpanel .notification-box.success {
+    background-color: #eef9ee;
+    border-color: #d8e8d8;
+}
+
+html body .mihanpanelpanel .notification-box.info {
+    background-color: #eef3f9;
+    border-color: #d8dbe8;
+}
+
+html body .mihanpanelpanel .notification-box.warning {
+    border-color: #e6ded9;
+    background-color: #f9f2ee;
+}
+
+html body .mihanpanelpanel .notification-box.error {
+    background-color: #f9eeee;
+    border-color: #e8d8d8;
+}
+
+
+/* mobile */
+@media only screen and (max-width: 480px) {
+    html body .mihanpanelpanel .news-box .post-items-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ipads and tablets */
+/* @media only screen and (max-width: 768px) {} */
+
+/* laptop */
+@media only screen and (max-width: 1024px) {
+    html body .mihanpanelpanel .products-widget-box .post-items-wrapper .post-item .pr-item-body {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* desktop */
+/* @media only screen and (max-width: 1200px) {} */

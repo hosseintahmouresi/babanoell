@@ -1,0 +1,24 @@
+My Loan Request 8.4.6.30
+========================
+
+Feature: Occupation-specific required documents per installment plan
+
+- Added optional per-plan document separation by applicant occupation.
+- Supported occupations use the plugin's existing canonical occupation list:
+  official employee, contract employee, worker, freelancer, retired, pensioner, employer, other.
+- Existing required_documents remain the plan's default/legacy document list.
+- Existing plans keep their previous behavior until occupation-specific documents are explicitly enabled.
+- When enabled, applicant and acceptor forms request the selected occupation's exact document list.
+- Before an occupation is selected, the generic/default document list is not exposed as the upload requirement for occupation-mode plans.
+- Server-side submit validation resolves the selected occupation independently and only accepts document keys assigned to that occupation.
+- Staged/direct uploads for unrelated occupation document keys are ignored rather than persisted as required documents.
+- Incomplete-request editing is occupation-aware while preserving already stored historical document references.
+- Plan administration includes independent document configuration for all supported occupations and a helper to copy default documents to all occupations.
+- No database table/column migration is required; configuration is stored in the existing serialized plan settings field.
+- Database schema version remains unchanged.
+- Core financial calculation formulas are unchanged.
+- Previously excluded Secret Editor files and the existing hardcoded ICS24 credential block are unchanged.
+
+Compatibility goal
+------------------
+This release is backward-compatible: plans that do not enable occupation-specific documents continue to use their original required_documents behavior.

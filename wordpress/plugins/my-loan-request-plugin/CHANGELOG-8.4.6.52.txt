@@ -1,0 +1,7 @@
+8.4.6.52
+
+- Loan contract OTP now reuses the exact cooperation-signing SMS pattern and reports provider errors cleanly.
+- Secure loan-contract view/sign token is sent via [[contract_link]], with [[contract_url]] also available.
+- Existing cooperation-contract public route can display and digitally sign eligible loan contracts.
+- Added per-plan switch for required check images in completed-documents stage; existing plans preserve previous required behavior by default.
+- No database schema changes.

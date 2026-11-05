@@ -1,0 +1,5 @@
+8.4.6.90.4 - independent legal paragraphs
+- Split run-on clauses in rendered HTML at bold Persian or Latin numbered clause labels (e.g. تبصره ۲ and ۶-۲), preserving the original content.
+- Apply the same display-only normalizer to contract views for the applicant, internal expert, public signed viewer, review and reissue previews.
+- Never change canonical contract payload, saved signature evidence or hash/digest as a side effect of the formatting repair.
+- Ensure semantic paragraphs remain separate in preview and isolated A4 printing.

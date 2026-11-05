@@ -1,0 +1,11 @@
+Babanoell / My Loan Request Plugin 8.4.6.27
+
+- Added a stable, provider-agnostic online payment callback endpoint:
+  /wp-json/mlr/v1/payment-callback
+- Callback accepts GET and POST and is intentionally public for payment-provider access.
+- The generic endpoint does not mutate loan/payment state and does not treat arbitrary callback data as a successful payment.
+- Added extension hooks so future payment gateway verification can be attached without changing the public callback URL:
+  mlr_payment_callback_received
+  mlr_payment_callback_response
+- Added a read-only Callback URL card to the existing API settings page for easy copy/paste.
+- Existing GreenPay, loan workflow, calculator, API credentials, and all other system behavior remain unchanged.

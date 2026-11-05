@@ -1,0 +1,55 @@
+Babanoell / My Loan Request Plugin 8.4.6.29
+
+Final regression and data-safety release built on 8.4.6.28. This pass focuses on edge cases that matter on an existing, populated production site: interrupted requests, concurrent writes, legacy ownership, orphan-file cleanup, repair idempotency, and server-authoritative invoice/message flows. Existing UI, historical financial formulas, and stored business data formats remain compatible.
+
+Additional data-safety fixes since 8.4.6.28
+- Abandoned initial-upload cleanup no longer depends on an already-expired transient to locate the file.
+- Before deleting an allegedly abandoned staged upload, cleanup now checks canonical database fields and preserves any file already referenced by a loan/cooperation record. On database uncertainty it fails safe and preserves the file.
+- Acceptor duplicate/idempotency checks run before staged/direct file I/O, preventing retry/double-click orphan uploads.
+- Cooperation submission gained idempotency protection before file I/O; a successful retry returns the prior result instead of creating a duplicate request.
+- Applicant-specific messaging now authorizes request ownership before attachment I/O and removes newly uploaded attachments if persistence fails.
+- Guarantor, transfer-receipt, and pending-document attachment handlers remove newly uploaded files when the corresponding database update fails.
+
+Database / migration reliability
+- Database schema version is 2.6.
+- Schema verification now fails when required core tables themselves are missing; the stored DB version advances only after successful verification.
+- Status normalization repair is version-gated and records completion only after all required updates succeed.
+- Granted/settlement-state repair is version-gated, transactional, rollback-safe, and records completion only on success.
+- Finance/admin pages no longer execute broad status-repair UPDATE statements on every page view.
+- No runtime ALTER TABLE remains in AJAX handlers.
+
+Settlement / concurrency
+- Settlement-cycle creation still uses row locks, conditional updates, exact affected-row checks, commit/rollback, and now explicitly requires transactional table engines.
+- Single settlement-date updates require a transactional engine, use row locks, and reject requests already assigned to a cycle.
+- Bulk settlement-date assignment is now all-or-nothing: rows are locked and validated first, affected-row counts are verified, rollback occurs on any failure, and events are emitted only after commit.
+- The user-facing settlement-cycle detail query now resolves the effective acceptor, so applicant-created requests later claimed by an acceptor remain visible to the correct acceptor.
+
+Atomic admin / expert writes
+- Admin internal-comment writes check transaction startup, lock the target request, clean uploaded files on transaction failure, and commit database state before external side effects.
+- Bank-expert review updates check transaction startup and run notifications/SMS only after a successful commit.
+- Cooperation-status updates check transaction startup before mutating status/contract state.
+
+Invoice compatibility / integrity
+- Invoice editing no longer trusts browser-supplied line totals; quantity × unit price is recalculated server-side.
+- New invoice item data uses the canonical quantity key while the renderer also understands historical order_qty records, preventing legacy quantities from appearing as 1.
+
+Logging / diagnostics
+- mlr_log() accepts structured context and redacts it before writing, so request IDs/database errors can be diagnosed without silently discarding context.
+- Existing private-log/redaction behavior from 8.4.6.28 is retained.
+
+Financial calculations
+- includes/loan-calculations.php remains byte-for-byte unchanged from the original source package.
+- Added regression matrices over valid market/leasing inputs to verify finite/stable outputs and rejection of invalid zero/interval inputs.
+- Existing monetary formulas and rounding behavior are intentionally preserved to avoid changing historical/customer-facing calculations.
+
+Explicitly excluded by request
+- Secret Editor authentication/default credentials were not changed.
+- Bundled ICS24/MyCredit hardcoded credential definitions and their priority behavior were not changed.
+
+Final automated verification for the release source tree
+- PHP syntax lint: 97/97 files passed.
+- JavaScript syntax check: 19/19 files passed.
+- Hardening unit/regression tests: 33 passed, 0 failed.
+- Static/invariant checks: 92 passed, 0 failed.
+- Total dedicated hardening/regression checks: 125 passed, 0 failed.
+- The packaged ZIP is separately extracted and the same suite is run again before delivery.
