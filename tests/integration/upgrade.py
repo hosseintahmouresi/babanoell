@@ -26,11 +26,13 @@ def main():
             backups={};original_counts={}
             dump=stack.maria/'bin/mariadb-dump'
             for service in SERVICES:
+                if service=='panel':continue  # Panel keeps encrypted sessions in private storage, not a database.
                 original_counts[service]=json.loads(stack.command(stack.php_command()+[str(fixture_script),str(stack.root/'fixture.json'),'counts','test_'+service],'Snapshot synthetic row counts'))
                 path=stack.root/('backup-'+service+'.sql')
                 with path.open('wb') as file:
                     subprocess.run([str(dump),'--no-defaults','--socket='+stack.socket,'--user='+stack.user,'--single-transaction','--skip-comments','test_'+service],env=stack.env,stdout=file,stderr=subprocess.PIPE,check=True,timeout=60)
                 backups[service]=path
+            for service in SERVICES:
                 (stack.root/service/'storage/release-canary.bin').write_bytes(b'Synthetic private runtime data must survive the upgrade.')
                 (stack.root/service/'config/service-auth.local.php').write_text('<?php return [];\n')
             raw=stack.command(stack.php_command()+[str(Path(__file__).with_name('upgrade-apply.php')),str(stack.root/'fixture.json'),str(args.packages)],'Native update rehearsal')
