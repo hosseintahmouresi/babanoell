@@ -1,0 +1,141 @@
+{
+  "release_id": "20261107-080540-ui-2.16.0",
+  "source_commit": "dcce4420c3add06b18da77ca641cf752decf96cd",
+  "complete": true,
+  "scope": "Disposable upgrade rehearsal with synthetic data; no production host or live providers involved.",
+  "package_validation": [
+    {
+      "service": "identity",
+      "native_validator": true,
+      "files": 202,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "documents",
+      "native_validator": true,
+      "files": 91,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "integrations",
+      "native_validator": true,
+      "files": 50,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "partners",
+      "native_validator": true,
+      "files": 82,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "loans",
+      "native_validator": true,
+      "files": 131,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "finance",
+      "native_validator": true,
+      "files": 78,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "panel",
+      "native_validator": true,
+      "files": 78,
+      "archive_sha256_matches": true
+    },
+    {
+      "negative_case": "corrupt-composer.zip",
+      "rejected": true
+    },
+    {
+      "negative_case": "unknown-lock.zip",
+      "rejected": true
+    },
+    {
+      "negative_case": "private-config.zip",
+      "rejected": true
+    }
+  ],
+  "baseline_commit": "973a4acad9d3a68edda8ae5d66231937394d138d",
+  "initial_migrations": {
+    "identity": 20,
+    "loans": 26,
+    "documents": 8,
+    "partners": 8,
+    "finance": 6,
+    "integrations": 1
+  },
+  "initial_migrations_total": 69,
+  "applied_migrations": 3,
+  "final_migrations_total": 72,
+  "updates": [
+    {
+      "service": "identity",
+      "copied": 202,
+      "migrations_applied": 1,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 2,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "documents",
+      "copied": 91,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 2,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "integrations",
+      "copied": 50,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 2,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "partners",
+      "copied": 82,
+      "migrations_applied": 2,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 2,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "loans",
+      "copied": 131,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 2,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "finance",
+      "copied": 78,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 2,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "panel",
+      "copied": 78,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 2,
+      "exact_manifest_bytes": true,
+      "complete": true
+    }
+  ],
+  "post_upgrade_http_checks": 474,
+  "post_upgrade_http_checks_passed": true
+}

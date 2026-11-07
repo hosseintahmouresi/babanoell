@@ -1,0 +1,133 @@
+{
+  "release_id": "20261107-080540-ui-2.16.0",
+  "created_at_utc": "2026-11-07T08:05:40+00:00",
+  "source_commit": "dcce4420c3add06b18da77ca641cf752decf96cd",
+  "includes_uncommitted_work": false,
+  "deployment_order": [
+    "identity",
+    "documents",
+    "integrations",
+    "partners",
+    "loans",
+    "finance",
+    "panel"
+  ],
+  "packages": [
+    {
+      "service": "identity",
+      "version": "1.13.3",
+      "ui": "2.16.0",
+      "phase": "phase11e-login-throttle-hotfix",
+      "file": "babanoell-identity-1.13.3-ui-2.16.0.zip",
+      "bytes": 557110,
+      "sha256": "4cd557921ef428ba82db00c3b48bd635dc164680698b61937072727c01a2eb24",
+      "uncompressed_bytes": 1270008,
+      "files": 202,
+      "migrations": 21,
+      "new_migrations": [
+        "database/migrations/202611050001_partner_role_activations.php"
+      ],
+      "source_fingerprint": "f81fa235711b28a54350cf26464e3d9e48ebfe677078cdc40a675dbd1bc3f170"
+    },
+    {
+      "service": "documents",
+      "version": "1.21.1",
+      "ui": "2.16.0",
+      "phase": "cooperation-form-policy",
+      "file": "babanoell-documents-1.21.1-ui-2.16.0.zip",
+      "bytes": 590440,
+      "sha256": "695999fd1cefd6f464f7b72a8e7a8ecb97be13ca9fb6030c65b8541b6fc77d11",
+      "uncompressed_bytes": 1365830,
+      "files": 91,
+      "migrations": 8,
+      "new_migrations": [],
+      "source_fingerprint": "28ddd9b1e8932b73be5743cb3aac2f8fa7b21d214249620a0796421bd7410b5a"
+    },
+    {
+      "service": "integrations",
+      "version": "1.5.0",
+      "ui": "2.16.0",
+      "phase": "phase11e-user-sso",
+      "file": "babanoell-integrations-1.5.0-ui-2.16.0.zip",
+      "bytes": 319225,
+      "sha256": "738eac97bc6e1225568e40a0a285660ebca0a8ad6105a336f21104975f69350b",
+      "uncompressed_bytes": 807352,
+      "files": 50,
+      "migrations": 1,
+      "new_migrations": [],
+      "source_fingerprint": "1cc9408490dfe848100cb81df7d684a6dc132b46519c327a0cf6cfe8bff19c62"
+    },
+    {
+      "service": "partners",
+      "version": "1.10.1",
+      "ui": "2.16.0",
+      "phase": "cooperation-form-policy",
+      "file": "babanoell-partners-1.10.1-ui-2.16.0.zip",
+      "bytes": 490868,
+      "sha256": "9d96a02c601636fe482f3a3ba34ffc7d7c257cbfedc27218746b13d962065b3e",
+      "uncompressed_bytes": 1133886,
+      "files": 82,
+      "migrations": 10,
+      "new_migrations": [
+        "database/migrations/202611050001_marketplace_configuration.php",
+        "database/migrations/202611050002_cooperation_activations.php"
+      ],
+      "source_fingerprint": "93194c141cc07dc56565861920a816ccc3922e028ce9bc9071c320efb088e8ad"
+    },
+    {
+      "service": "loans",
+      "version": "2.16.7",
+      "ui": "2.16.0",
+      "phase": "role-workflow-acceptance",
+      "file": "babanoell-loans-2.16.7-ui-2.16.0.zip",
+      "bytes": 560006,
+      "sha256": "15afaecfb727069d1ecbe73582e9f5661e594df1a2659373dfbe72c28a507b0a",
+      "uncompressed_bytes": 1377812,
+      "files": 131,
+      "migrations": 26,
+      "new_migrations": [],
+      "source_fingerprint": "2fded029aa97d127f990fb620f5e8bbceec7cc09c0b10178bc924db41e2ab57a"
+    },
+    {
+      "service": "finance",
+      "version": "1.8.6",
+      "ui": "2.16.0",
+      "phase": "role-workflow-acceptance",
+      "file": "babanoell-finance-1.8.6-ui-2.16.0.zip",
+      "bytes": 472899,
+      "sha256": "7184442cebec307a5b87114f104b8d5e38c2a90874d031b69a571fb8205aaad7",
+      "uncompressed_bytes": 1081222,
+      "files": 78,
+      "migrations": 6,
+      "new_migrations": [],
+      "source_fingerprint": "981ec0579df54486fdac6c7c8b48beb5ae2dd0a34537df31cff11732ab10d836"
+    },
+    {
+      "service": "panel",
+      "version": "2.24.0",
+      "ui": "2.16.0",
+      "phase": "cooperation-form-policy",
+      "file": "babanoell-panel-2.24.0-ui-2.16.0.zip",
+      "bytes": 591298,
+      "sha256": "cb132c0821e006d8acabe3c95777daa354e240b10b0c206e23f23f17d0d94d1a",
+      "uncompressed_bytes": 1644175,
+      "files": 78,
+      "migrations": 0,
+      "new_migrations": [],
+      "source_fingerprint": "1e0099aac14258629b9228c1e44f560a1b06b30dda2b33c0252b023db0f43967"
+    }
+  ],
+  "updater_bootstrap": {
+    "file": "bootstrap-updaters.zip",
+    "bytes": 16989,
+    "sha256": "ca421ba752fc1c6b65d1f0940e7a07d93e4eb3ae4d4a5bbeb4b3b52a1f175704",
+    "files": {
+      "identity/src/Update/UpdateTool.php": "11db17dd6044b5b58c415bd8b8d96529e65ab888a67773d585128c359566bef1",
+      "identity/src/Update/PackageIntegrity.php": "d83925027a566564a032017c28ff204dffd8c918dcf111ebe53823a38ed0b074",
+      "documents/src/Update/UpdateTool.php": "3d962a38e52c75e346b5dcd50bce417724c209bb12d45b5bb6af537475305726",
+      "documents/src/Update/PackageIntegrity.php": "ebf3ed98c0b73f1126af143af5b8917a12ceaf7f61b21ac48d35589fc0d1572d",
+      "integrations/src/Update/UpdateTool.php": "a970f604b0c71706916021ed1ba0ba91459477a56c8b7bae503ac2c02476601b",
+      "integrations/src/Update/PackageIntegrity.php": "babe8d64a9aba9db4f63212cc44acdf4e25d3b8c3c7aa5afb7323944cd0bf48d"
+    }
+  }
+}

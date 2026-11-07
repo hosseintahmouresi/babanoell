@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
@@ -23,7 +24,56 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def select_files(service: str) -> dict[str, bytes]:
+def permitted(relative: str) -> bool:
+    path = Path(relative)
+    if relative in PROTECTED:
+        return False
+    if len(path.parts) == 1:
+        if relative not in ROOT_FILES:
+            return False
+    elif path.parts[0] not in DIRECTORIES:
+        return False
+    if any(part in ('storage', 'vendor', 'backups', 'uploads', 'logs', '__pycache__', 'tests', '.git') for part in path.parts):
+        return False
+    if path.name.endswith(('.local.php', '.locked', '.log', '.zip', '.dump', '.pyc', '~')):
+        return False
+    if path.suffix == '.sql' and not relative.startswith(('database/migrations/', 'migrations/')):
+        return False
+    if path.name.startswith('.env') and path.name != '.env.example':
+        return False
+    return not any(part.startswith('.') and part not in ('.htaccess', '.env.example') for part in path.parts)
+
+
+def git_files(service: str, commit: str) -> dict[str, bytes]:
+    prefix = f'{service}.noeel.ir/public_html/'
+    listing = subprocess.check_output(['git', 'ls-tree', '-r', '-z', commit, '--', prefix], cwd=ROOT)
+    selected = []
+    for entry in listing.split(b'\0'):
+        if not entry:
+            continue
+        header, encoded_path = entry.split(b'\t', 1)
+        mode, kind, object_id = header.decode().split()
+        relative = encoded_path.decode().removeprefix(prefix)
+        if mode in ('100644', '100755') and kind == 'blob' and permitted(relative):
+            selected.append((relative, object_id))
+    # Filter paths before reading blobs; private configuration and runtime are never read.
+    output = subprocess.check_output(['git', 'cat-file', '--batch'], cwd=ROOT,
+                                     input=''.join(oid + '\n' for _, oid in selected).encode())
+    stream = io.BytesIO(output)
+    files = {}
+    for relative, expected in selected:
+        actual, kind, size = stream.readline().decode().split()
+        if actual != expected or kind != 'blob':
+            raise ValueError(f'Unexpected Git object for {relative}')
+        files[relative] = stream.read(int(size))
+        if len(files[relative]) != int(size) or stream.read(1) != b'\n':
+            raise ValueError(f'Truncated Git object for {relative}')
+    return files
+
+
+def select_files(service: str, commit: str | None = None) -> dict[str, bytes]:
+    if commit:
+        return git_files(service, commit)
     source = ROOT / f'{service}.noeel.ir/public_html'
     paths = [source / name for name in ROOT_FILES if (source / name).is_file()]
     for directory in DIRECTORIES:
@@ -32,17 +82,7 @@ def select_files(service: str) -> dict[str, bytes]:
     result = {}
     for path in sorted(paths):
         relative = path.relative_to(source).as_posix()
-        if relative in PROTECTED or path.is_symlink():
-            continue
-        if any(part in ('storage', 'vendor', 'backups', 'uploads', 'logs', '__pycache__', 'tests', '.git') for part in path.relative_to(source).parts):
-            continue
-        if path.name.endswith(('.local.php', '.locked', '.log', '.zip', '.dump', '.pyc', '~')):
-            continue
-        if path.suffix == '.sql' and not relative.startswith(('database/migrations/', 'migrations/')):
-            continue
-        if path.name.startswith('.env') and path.name != '.env.example':
-            continue
-        if any(part.startswith('.') and part not in ('.htaccess', '.env.example') for part in path.relative_to(source).parts):
+        if path.is_symlink() or not permitted(relative):
             continue
         result[relative] = path.read_bytes()
     return result
@@ -69,20 +109,22 @@ def archive(path: Path, entries: dict[str, bytes], stamp: dt.datetime) -> None:
             target.writestr(info, data, compresslevel=9)
 
 
-def build(output: Path) -> None:
+def build(output: Path, ref: str | None = None) -> None:
     output.mkdir(parents=True, exist_ok=True)
     stamp = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
     release_id = stamp.strftime('%Y%m%d-%H%M%S') + '-ui-2.16.0'
-    commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    commit = subprocess.check_output(['git', 'rev-parse', '--verify', (ref or 'HEAD') + '^{commit}'], cwd=ROOT, text=True).strip()
+    dirty = False if ref else bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT))
     index = {'release_id': release_id, 'created_at_utc': stamp.isoformat(), 'source_commit': commit,
-             'includes_uncommitted_work': True, 'deployment_order': list(SERVICES), 'packages': []}
+             'includes_uncommitted_work': dirty, 'deployment_order': list(SERVICES), 'packages': []}
     bootstrap = {}
     for service in SERVICES:
-        files = select_files(service)
+        files = select_files(service, commit if ref else None)
         meta = metadata(files)
         migrations = sorted(name for name in files if name.startswith(('database/migrations/', 'migrations/')) and name.endswith(('.php', '.sql')))
         new_migrations = sorted(name for name in migrations if Path(name).name.startswith('20261105'))
         manifest = {'service': service, **meta, 'api_version': 'v1', 'release_id': release_id,
+                    'source_commit': commit, 'includes_uncommitted_work': dirty,
                     'created_at_utc': stamp.isoformat(), 'database_migration_required': bool(migrations),
                     'excluded_runtime': ['config/local.env.php', 'config/service-auth.local.php', 'storage/', 'vendor/',
                                          'public/install.php', 'public/install.php.locked'],
@@ -91,7 +133,6 @@ def build(output: Path) -> None:
         source_fingerprint = digest('\n'.join(f'{name}\0{digest(data)}' for name, data in sorted(files.items())).encode())
         manifest['source_fingerprint'] = source_fingerprint
         encoded = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode()
-        (ROOT / f'{service}.noeel.ir/public_html/release-manifest.json').write_bytes(encoded)
         files['release-manifest.json'] = encoded
         name = f'babanoell-{service}-{meta["version"]}-ui-{meta["ui"]}.zip'
         path = output / name
@@ -120,4 +161,6 @@ def build(output: Path) -> None:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    build(parser.parse_args().output)
+    parser.add_argument('--ref', help='Build only the committed files at this Git ref; leave the source tree unchanged.')
+    args = parser.parse_args()
+    build(args.output, args.ref)
