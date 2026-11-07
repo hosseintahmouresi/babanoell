@@ -55,8 +55,9 @@ final class BankCycleService {
                 throw new InvalidArgumentException('تمام پرونده‌ها باید اعطاشده و متعلق به همان کارشناس بانک باشند.');
             if(($case['bank_settlement_status']??'not_recorded')==='recorded'||!empty($case['bank_settlement_cycle_id']))
                 throw new InvalidArgumentException('حداقل یک پرونده قبلاً تسویه بانک شده است.');
-            // The server-side loan amount, never the browser-supplied amount, is authoritative.
-            $cents=self::amountCents($case['facility_amount']??$case['requested_amount']??'');
+            // The reference bank cycle sums loan_amount: the purchase/requested amount,
+            // including leasing cases whose financed share is below 100 percent.
+            $cents=self::referenceAmountCents($case);
             $items[]=['request_id'=>$id,'loan_cents'=>$cents,'applicant_name'=>mb_substr((string)($case['full_name']??''),0,255),
                 'national_code'=>mb_substr((string)($case['national_code']??''),0,20)];
         }
@@ -64,6 +65,7 @@ final class BankCycleService {
         return $this->tryProjection($cycle);
     }
     public function retry(string $id):array {$cycle=$this->repo->get($id);if($cycle===null)throw new InvalidArgumentException('سیکل بانک یافت نشد.');return $this->tryProjection($cycle);}
+    public static function referenceAmountCents(array $case): int {return self::amountCents($case['requested_amount']??'');}
     private function tryProjection(array $cycle):array {
         if(($cycle['projection_status']??'')==='synced')return $cycle;
         $ids=array_column($cycle['items'],'request_id');

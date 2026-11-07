@@ -120,7 +120,7 @@ final class Renderer
                 .$item('acceptor','/acceptor','house','خانه')
                 .$item('acceptor-calculator','/acceptor/calculator','calculator','محاسبه تسهیلات')
                 .$item('acceptor-requests','/acceptor/requests','folder-open','پرونده‌های من')
-                .$item('acceptor-new','/acceptor/requests/new','plus','ثبت پرونده جدید')
+                .$item('acceptor-new','/acceptor/requests/new','plus','ثبت پرونده جدید').$item('acceptor-invitation','/acceptor/invitation','handshake','دعوت متقاضی').$item('notifications','/notifications','comments','اعلان‌ها')
                 .($canPartners?$item('partners','/partners/marketplace','store','بازار پرونده‌ها'):'')
                 .'<div class="bn-panel-nav-label">دسترسی پرونده</div><span class="bn-panel-nav-note">مدارک هر پرونده از داخل همان پرونده در دسترس است.</span></nav>';
         }
@@ -129,12 +129,13 @@ final class Renderer
                 .$item('applicant','/applicant','house','خانه')
                 .$item('applicant-calculator','/applicant/calculator','calculator','محاسبه تسهیلات')
                 .$item('applicant-requests','/applicant/requests','folder-open','درخواست‌های من')
-                .$item('applicant-new','/applicant/requests/new','plus','درخواست تسهیلات')
+                .$item('applicant-new','/applicant/requests/new','plus','درخواست تسهیلات').$item('applicant-invitation','/applicant/invitation','handshake','دعوت پذیرنده').$item('notifications','/notifications','comments','اعلان‌ها')
                 .($canPartners?$item('partners','/partners/cooperation','handshake','همکاری با بابانوئل'):'')
                 .'<div class="bn-panel-nav-label">دسترسی پرونده</div><span class="bn-panel-nav-note">مدارک و ضامن‌های هر پرونده از داخل همان پرونده قابل مدیریت هستند.</span></nav>';
         }
         $html='<nav class="bn-panel-nav" aria-label="منوی فضای کار"><div class="bn-panel-nav-label">کارهای روزانه</div>'.$item('dashboard','/dashboard','house','خانه');
         if($canLoans){$html.=$item('tasks','/loans/tasks?scope=mine','list-check','کارتابل من').$item('loans','/loans','folder-open','تسهیلات');}
+        $html.=$item('notifications','/notifications','comments','اعلان‌ها');
         if($canBank)$html.=$item('bank','/bank','building-columns','کارتابل بانک');
         if($canDocuments)$html.=$item('documents','/documents','file-circle-check','مدارک');
         if($canPartners)$html.=$item('partners','/partners','handshake','پذیرندگان و همکاری');

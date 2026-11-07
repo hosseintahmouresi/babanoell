@@ -542,6 +542,7 @@ final class LoansModule
         $r = $this->client->post('/api/v1/requests', $this->bearer, $payload, 'panel-'.bin2hex(random_bytes(16)));
         if (!$r->ok()) { $this->requestForm($this->apiMessage($r)); return; }
         $id = (string)($r->json['data']['request']['id'] ?? '');
+        \Babanoell\Panel\Credit\CreditModule::continueCreated((array)($r->json['data']['request']??[]),$submit,'loans');
         $this->flash('success', $submit ? 'پرونده ثبت و برای بررسی ارسال شد.' : 'پیش‌نویس پرونده ذخیره شد.');
         header('Location: /loans/requests/'.$id, true, 303); exit;
     }
@@ -600,6 +601,7 @@ final class LoansModule
         $content = $this->head('پرونده '.(string)($x['request_no'] ?? ''), (string)($x['full_name'] ?? 'متقاضی').' · '.$this->requestStatusLabel((string)($x['status'] ?? '')), $actions)
             . $this->takeFlash()
             . CaseJourney::render($this->client,$this->bearer,$id,$this->identity)
+            . \Babanoell\Panel\Credit\CreditModule::entry($x,'loans',$this->identity)
             . '<div class="bn-stats">'.$this->stat('مبلغ درخواست',$this->money((float)($x['requested_amount'] ?? 0)),'ریال').$this->stat('مبلغ تسهیلات',$this->money((float)($x['facility_amount'] ?? 0)),'ریال').$this->stat('مبلغ هر قسط',$this->money((float)($x['installment_amount'] ?? 0)),'ریال').$this->stat('وضعیت',$this->requestStatusLabel((string)($x['status'] ?? '')),'مرحله جاری',true).'</div>'
             . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۱</span><div><h2 class="bn-sectiontitle">اطلاعات پرونده</h2><p class="bn-sectiondesc">طرح '.Renderer::e((string)($x['plan_name'] ?? '—')).' · نسخه '.PersianDateTime::digits((string)($x['plan_version'] ?? '—')).'</p></div></div><div class="bn-detail-grid">'
             . $this->detail('کد ملی',(string)($x['national_code'] ?? '—')).$this->detail('موبایل',(string)($x['mobile_number'] ?? '—')).$this->detail('نام پدر',(string)($x['father_name'] ?? '—')).$this->detail('کد پستی',(string)($x['postal_code'] ?? '—')).$this->detail('تاریخ تولد',PersianDateTime::dateOnly((string)($x['birth_date'] ?? '')) ?? '—').$this->detail('محصول / خدمت',(string)($x['product_name'] ?? '—')).$this->detail('پیش‌پرداخت',$this->money((float)($x['prepayment'] ?? 0))).$this->detail('جمع بازپرداخت',$this->money((float)($x['total_payment'] ?? 0))).$this->detail('سود',$this->money((float)($x['profit'] ?? 0))).$this->detail('پرداخت پذیرنده',$this->money((float)($x['acceptor_payment_amount'] ?? 0))).'</div></section>'

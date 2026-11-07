@@ -38,7 +38,7 @@ final class CaseJourney
         if($action==='edit'&&$can('loans.requests.update')&&in_array($status,['draft','need_correction'],true)){$destination=$prefix.'/requests/'.$id.'/edit';$label='تکمیل اطلاعات';}
         elseif($action==='documents'){$destination='/loans/requests/'.$id.'/documents';$label='مشاهده و تکمیل مدارک';}
         elseif($action==='contracts'){$destination='/contracts/loan/'.$id;$label='مشاهده قراردادها';}
-        elseif($action==='verification'&&($admin||$can('loans.requests.bank_review'))){$destination='/bank/cases/'.$id;$label='پیگیری اعتبارسنجی';}
+        elseif($action==='verification'&&($admin||$can('loans.requests.bank_review')||in_array('applicant',$roles,true)||in_array('acceptor',$roles,true))){$destination='/credit/requests/'.$id.(($admin||$can('loans.requests.bank_review'))?'?workspace=bank':'');$label='پیگیری اعتبارسنجی';}
         elseif($action==='grant'&&$ready&&$can('loans.requests.grant')){$destination='/loans/requests/'.$id.'#case-workflow';$label='ثبت اعطا';}
         elseif($action==='review'&&$can('loans.requests.transition')){$destination='/loans/requests/'.$id.'#case-workflow';$label='بررسی و تغییر مرحله';}
         return $destination===null?'<span class="bn-helper">اقدام بعدی مطابق نقش مسئول پرونده پیگیری می‌شود.</span>':'<a class="bn-btn bn-btn--primary" href="'.Renderer::e($destination).'">'.$label.'</a>';

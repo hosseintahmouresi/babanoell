@@ -24,6 +24,8 @@ if args.state:
 else:
  owned_stack=Stack(Path(__file__).resolve().parents[2]);atexit.register(owned_stack.close)
  owned_stack.prepare();owned_stack.start();Workflow(owned_stack).run();owned_stack.restart('partners')
+ # Referral binding has its own browser acceptance; keep the original free-selection UI controls covered here.
+ owned_stack.command(owned_stack.php_command()+[str(Path(__file__).with_name('fixtures')/'referral-state.php'),str(owned_stack.root/'fixture.json'),'expire-lock',owned_stack.accounts['applicant']['id']],'Reset synthetic referral window for general UI audit')
  state={'urls':owned_stack.urls,'accounts':owned_stack.accounts,'password':owned_stack.password,'root':str(owned_stack.root)}
 base=state['urls']['panel'];report={'pages':[],'interactions':[],'errors':[]};shots=work/'screenshots';shots.mkdir(exist_ok=True)
 roles={
@@ -132,9 +134,9 @@ with sync_playwright() as p:
    check(page.locator('[data-guided-step]').first.is_visible(),'Required birth date prevents skipping the first stage')
    for field,value in [('birth_day','1'),('birth_month','1'),('birth_year','1370')]:page.locator('[name='+field+']').select_option(value)
    page.locator('.bn-guided-controls button').last.click()
-   check(page.locator('[name=merchant_id]').is_disabled(),'Open marketplace disables direct merchant choice')
+   check(page.locator('select[name=merchant_id]').is_disabled(),'Open marketplace disables direct merchant choice')
    page.locator('[name=acceptor_assignment_mode]').select_option('applicant_selected_acceptor')
-   check(page.locator('[name=merchant_id]').is_visible() and not page.locator('[name=merchant_id]').is_disabled(),'Direct assignment shows the merchant selector')
+   check(page.locator('select[name=merchant_id]').is_visible() and not page.locator('select[name=merchant_id]').is_disabled(),'Direct assignment shows the merchant selector')
    check(not page.locator('[data-marketplace-fields]').is_visible(),'Direct assignment hides marketplace-only fields')
    page.locator('.bn-guided-controls button').last.click()
    page.locator('button[value=submit]').click()

@@ -5,7 +5,8 @@ use Babanoell\Integrations\Support\ProviderException;
 use Babanoell\Integrations\Support\Validation;
 final class Operations {
  public function __construct(private readonly \PDO $pdo,private readonly string $secret){}
- public function claim(string $caller,string $operation,string $key,array $payload,string $target,int $limit=5):array {
+ public function claim(string $caller,string $operation,string $key,array $payload,string $target,int $limit=5,int $windowSeconds=3600):array {
+  $windowSeconds=max(1,min(86400,$windowSeconds));
   $key=Validation::key($key);$body=json_encode($payload,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR);
   $hash=hash_hmac('sha256',$body,$this->secret);$targetHash=hash_hmac('sha256',$target,$this->secret);
   $find=$this->pdo->prepare('SELECT status,request_hash,result_json FROM integration_operations WHERE caller=:c AND operation=:o AND idempotency_key=:k LIMIT 1');$find->execute([':c'=>$caller,':o'=>$operation,':k'=>$key]);$old=$find->fetch();
@@ -17,7 +18,7 @@ final class Operations {
    $l=$this->pdo->prepare('SELECT GET_LOCK(:l,5)');$l->execute([':l'=>$lock]);if((int)$l->fetchColumn()!==1)throw new ProviderException('request_temporarily_locked',429);
    try {
     $find->execute([':c'=>$caller,':o'=>$operation,':k'=>$key]);$old=$find->fetch();if(is_array($old)){$this->pdo->commit();return $this->existing($old,$hash);}
-    $q=$this->pdo->prepare('SELECT COUNT(*) FROM integration_operations WHERE caller=:c AND operation=:o AND target_hash=:h AND created_at > DATE_SUB(NOW(6), INTERVAL 1 HOUR)');$q->execute([':c'=>$caller,':o'=>$operation,':h'=>$targetHash]);
+    $q=$this->pdo->prepare('SELECT COUNT(*) FROM integration_operations WHERE caller=:c AND operation=:o AND target_hash=:h AND created_at > DATE_SUB(NOW(6), INTERVAL '.$windowSeconds.' SECOND)');$q->execute([':c'=>$caller,':o'=>$operation,':h'=>$targetHash]);
     if((int)$q->fetchColumn()>=$limit)throw new ProviderException('rate_limit_exceeded',429);
     $id=bin2hex(random_bytes(16));$s=$this->pdo->prepare("INSERT INTO integration_operations(id,caller,operation,idempotency_key,request_hash,target_hash,status) VALUES(:id,:c,:o,:k,:rh,:th,'pending')");$s->execute([':id'=>$id,':c'=>$caller,':o'=>$operation,':k'=>$key,':rh'=>$hash,':th'=>$targetHash]);
     $this->pdo->commit();return ['state'=>'new','id'=>$id];

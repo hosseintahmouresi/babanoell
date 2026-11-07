@@ -14,6 +14,10 @@ import sys
 from stack import SERVICES, Stack
 from suites import run_suites
 from onboarding import CooperationWorkflow
+from credit import CreditFixture, complete_credit, credit_acceptance
+from notifications import notification_acceptance
+from leasing import leasing_acceptance
+from referrals import referral_acceptance
 
 
 class Workflow:
@@ -21,6 +25,12 @@ class Workflow:
         self.stack = stack
         self.tokens = {}
         self.checks = []
+
+    @property
+    def credit_fixture(self):
+        if not hasattr(self.stack, 'credit_fixture'):
+            self.stack.credit_fixture = CreditFixture(self.stack)
+        return self.stack.credit_fixture
 
     def check(self, condition, label):
         self.checks.append({"name": label, "passed": bool(condition)})
@@ -163,6 +173,12 @@ class Workflow:
         prefix = f"/api/v1/requests/{request_id}"
         market_path = "/api/v1/marketplace/requests?q=e2e-public-summary"
         claim_path = f"/api/v1/marketplace/requests/{request_id}/claim"
+        self.call('loans', prefix + '/submit', 'POST', {}, role='applicant', expected=422)
+        self.check(self.call('loans', market_path, role='acceptor')['total'] == 0, 'Private draft is not offered before final credit validation')
+        _, preflight = complete_credit(self, request_id, role='applicant', fixture=self.credit_fixture)
+        self.check(preflight['credit_status'] == 'verified', 'Required report is completed before final reference-style submission')
+        self.call('loans', prefix + '/submit', 'POST', {}, role='applicant')
+        self.credit_fixture.mode('disabled')
         self.check(self.call("loans", market_path, role="acceptor")["total"] == 0, "Allowlisted plan is hidden until permission is granted")
         self.call("loans", claim_path, "POST", {}, role="acceptor", expected=409)
         permission_path = f'/api/v1/merchants/{merchant_id}/plan-permissions/{plan["id"]}'
@@ -171,6 +187,16 @@ class Workflow:
         self.call("partners", membership_path, "POST", {"user_id": self.stack.accounts["acceptor"]["id"], "membership_role": "viewer", "status": "active"}, expected=201)
         self.call("loans", claim_path, "POST", {}, role="acceptor", expected=409)
         self.call("partners", membership_path, "POST", {"user_id": self.stack.accounts["acceptor"]["id"], "membership_role": "owner", "status": "active", "is_primary": True}, expected=201)
+        self.check(self.call('loans', market_path, role='acceptor')['total'] == 1, 'Matching merchant can see the finalized reference request')
+        private = self.call('loans', '/api/v1/requests', 'POST', {
+            'plan_id': plan['id'], 'full_name': 'Private draft owner', 'requested_amount': 1000000,
+            'installment_count': 6, 'installment_interval': 1, 'first_due_date': self.stack.first_due,
+            'acceptor_assignment_mode': 'open_acceptor_marketplace', 'requested_service_scope': 'all_country',
+            'requested_activity_categories': ['goods'], 'request_public_summary': 'private-draft-case',
+        }, role='applicant', key='private-draft-case', expected=201)['request']
+        self.check(self.call('loans', '/api/v1/marketplace/requests?q=private-draft-case', role='acceptor')['total'] == 0,
+                   'An otherwise matching private draft cannot appear before final submission')
+        self.call('partners', '/api/v1/marketplace/requests/'+private['id']+'/claim', 'POST', {}, role='acceptor', expected=409)
         for change, label in (({"category_ids": ["services"]}, "different activity"),
                               ({"location_ids": ["shiraz"]}, "different geographic tree"),
                               ({"max_facility_amount": 1}, "amount above the merchant ceiling"),
@@ -196,7 +222,6 @@ class Workflow:
         self.call("partners", f"/api/v1/marketplace/requests/{request_id}/claim", "POST", {}, role="acceptor", expected=201)
         self.call("partners", f"/api/v1/marketplace/requests/{request_id}/claim", "POST", {}, role="acceptor", expected=409)
         self.call("loans", f"/api/v1/marketplace/requests/{request_id}/claim", "POST", {}, role="acceptor", expected=409)
-        self.call("loans", prefix + "/submit", "POST", {}, role="applicant")
         self.call("loans", prefix + "/assignment", "POST", {
             "type": "bank_expert", "user_id": self.stack.accounts["bank_expert"]["id"],
         }, role="operations_expert")
@@ -274,7 +299,7 @@ class Workflow:
                            key="e2e-bank-cycle", expected=201)["cycle"]
         self.check(replay["id"] == bank_cycle["id"] and bank_cycle["projection_status"] == "synced",
                    "Bank batch is idempotent and projects to Loans")
-        self.check(float(bank_cycle["total_loan_amount"]) == float(granted["request"]["facility_amount"]),
+        self.check(float(bank_cycle["total_loan_amount"]) == float(granted["request"]["requested_amount"]),
                    "Bank cycle ignores browser-supplied total")
         self.call("finance", "/api/v1/bank-cycles", "POST", dict(bank_body, notes="Changed"), role="bank_expert",
                   key="e2e-bank-cycle", expected=409)
@@ -323,6 +348,10 @@ class Workflow:
         self.call("finance", transfer_path + "/execute", "POST", {"otp": "123456"}, role="admin", expected=503)
         self.check(True, "Real provider transfer remains disabled; no external money movement attempted")
         CooperationWorkflow(self).run()
+        leasing_acceptance(self)
+        credit_acceptance(self)
+        notification_acceptance(self)
+        referral_acceptance(self)
         self.stack.stop("partners")
         self.call("loans", "/api/v1/marketplace/requests", role="acceptor", expected=503)
         self.call("loans", claim_path, "POST", {}, role="acceptor", expected=503)

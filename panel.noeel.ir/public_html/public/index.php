@@ -32,6 +32,7 @@ require $root . '/bootstrap.php';
 
 $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+if($path==='/applicant/invitation'&&$method==='GET'&&is_string($_GET['code']??null)&&preg_match('/^[A-Za-z0-9_-]{8,40}$/D',$_GET['code']))$_SESSION['pending_referral_code']=$_GET['code'];
 $ip = \Babanoell\Panel\Platform\ProxyContext::clientIp($_SERVER);
 $ua = isset($_SERVER['HTTP_USER_AGENT']) ? substr((string) $_SERVER['HTTP_USER_AGENT'], 0, 512) : null;
 header('X-Request-Id: '.\Babanoell\Panel\Platform\RequestContext::id());
@@ -130,7 +131,7 @@ if ($path === '/login') {
             if ($result['ok']) {
                 $continue = $_SESSION['panel_sso_continue'] ?? null;
                 unset($_SESSION['panel_sso_continue']);
-                $destination = (is_string($continue) && (str_starts_with($continue, '/sso/authorize?') || str_starts_with($continue, '/sso/user/authorize?')) && strlen($continue)<500) ? $continue : '/dashboard';
+                $destination = (is_string($continue) && (str_starts_with($continue, '/sso/authorize?') || str_starts_with($continue, '/sso/user/authorize?')) && strlen($continue)<500) ? $continue : (!empty($_SESSION['pending_referral_code'])?'/applicant/invitation':'/dashboard');
                 header('Location: '.$destination, true, 303);
                 exit;
             }
@@ -235,6 +236,15 @@ $partnersModule = new PartnersModule($partnersClient, $documentsClient, $loansCl
 if ($partnersModule->handle($path, $method)) {
     exit;
 }
+
+$referralModule = new \Babanoell\Panel\Partners\ReferralModule($partnersClient, $serviceCredential, $identity);
+if ($referralModule->handle($path, $method)) { exit; }
+
+$notificationModule = new \Babanoell\Panel\Notification\NotificationModule($loansClient, $serviceCredential, $identity);
+if ($notificationModule->handle($path, $method)) { exit; }
+
+$creditModule = new \Babanoell\Panel\Credit\CreditModule($loansClient, $serviceCredential, $identity);
+if ($creditModule->handle($path, $method)) { exit; }
 
 $acceptorModule = new AcceptorModule($loansClient, $serviceCredential, $identity);
 if ($acceptorModule->handle($path, $method)) {

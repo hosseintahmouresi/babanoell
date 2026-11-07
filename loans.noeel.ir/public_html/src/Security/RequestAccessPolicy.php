@@ -13,11 +13,11 @@ final class RequestAccessPolicy {
   if($branch!==''&&in_array($branch,$s['deny_branches'],true))return false;
   if($merchant!==''&&in_array($merchant,$s['deny_merchants'],true))return false;
   if($this->p->can('loans.requests.global')||$s['global']!==[])return true;
-  foreach(['created_by_user_id','applicant_user_id','acceptor_user_id','assigned_bank_user_id','assigned_operations_user_id']as$f)if((string)($r[$f]??'')===$this->p->userId)return true;
+  foreach(['created_by_user_id','applicant_user_id','acceptor_user_id','assigned_bank_user_id','assigned_operations_user_id']as$f){if($f==='acceptor_user_id'&&($r['status']??'')==='draft')continue;if((string)($r[$f]??'')===$this->p->userId)return true;}
   if($id!==''&&in_array($id,$s['loan_requests'],true))return true;
   if(($org!==''&&in_array($org,$s['organizations'],true))||($bankOrg!==''&&in_array($bankOrg,$s['organizations'],true)))return true;
   if($branch!==''&&in_array($branch,$s['branches'],true))return true;
-  if($merchant!==''&&(in_array($merchant,$s['merchants'],true)||in_array($merchant,$this->extraMerchantIds,true)))return true;
+  if(($r['status']??'')!=='draft'&&$merchant!==''&&(in_array($merchant,$s['merchants'],true)||in_array($merchant,$this->extraMerchantIds,true)))return true;
   return false;
  }
  public function canUpdate(array$r):bool{return$this->canRead($r)&&$this->p->can('loans.requests.update');}

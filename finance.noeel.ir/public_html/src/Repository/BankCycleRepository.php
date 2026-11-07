@@ -49,7 +49,7 @@ final class BankCycleRepository {
                 if($s->fetchColumn()!==false)throw new RuntimeException('bank_case_already_in_cycle');
             }
             $id=RandomId::make();$number='BC-'.gmdate('Ymd-His').'-'.strtoupper(substr($id,-6));
-            $s=$this->db->prepare('INSERT INTO bank_settlement_cycles(id,cycle_no,bank_user_id,created_by_user_id,settlement_date,notes,item_count,total_loan_amount,request_hash,idempotency_key) VALUES(:id,:number,:owner,:actor,:date,:notes,:count,:total,:hash,:key)');
+            $s=$this->db->prepare("INSERT INTO bank_settlement_cycles(id,cycle_no,bank_user_id,created_by_user_id,settlement_date,notes,item_count,total_loan_amount,request_hash,idempotency_key,amount_basis) VALUES(:id,:number,:owner,:actor,:date,:notes,:count,:total,:hash,:key,'reference_purchase_amount')");
             $s->execute([':id'=>$id,':number'=>$number,':owner'=>$actor,':actor'=>$actor,':date'=>$date,':notes'=>$notes!==''?$notes:null,':count'=>count($items),':total'=>sprintf('%d.%02d',intdiv($total,100),$total%100),':hash'=>$hash,':key'=>$key]);
             foreach($items as $item){
                 $amount=(int)$item['loan_cents'];$amount=sprintf('%d.%02d',intdiv($amount,100),$amount%100);$requestId=(string)$item['request_id'];

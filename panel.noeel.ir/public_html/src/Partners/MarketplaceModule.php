@@ -37,7 +37,7 @@ final class MarketplaceModule
       $kind=($_POST['kind']??'')==='locations'?'locations':'categories';$id=trim((string)($_POST['term_id']??''));if($id==='')$id=bin2hex(random_bytes(13));
       $term=['id'=>$id,'label'=>trim((string)($_POST['label']??'')),'parent_id'=>$kind==='locations'?trim((string)($_POST['parent_id']??'')):'','active'=>isset($_POST['active'])];
       $found=false;foreach($payload[$kind]as&$row)if($row['id']===$id){$row=$term;$found=true;}unset($row);if(!$found)$payload[$kind][]=$term;
-     }else foreach(['enabled','require_category','require_location','allow_all_country']as$key)$payload[$key]=isset($_POST[$key]);
+     }else {foreach(['enabled','require_category','require_location','allow_all_country','enable_acceptor_invitation_links','allow_override_existing_invitation_lock','show_claimed_cards_to_other_acceptors']as$key)$payload[$key]=isset($_POST[$key]);foreach(['invitation_lock_days','claimed_cards_visible_days'] as $key)$payload[$key]=(int)($_POST[$key]??$catalog[$key]);}
      $r=$this->client->put('/api/v1/marketplace/configuration',$this->bearer,$payload);
      if($r->ok()){header('Location:'.$path,true,303);return true;}$error=(string)($r->json['error']['message']??'ذخیره تنظیمات انجام نشد.');
     }
@@ -65,7 +65,8 @@ final class MarketplaceModule
  private function settings(array $c):string
  {
   $html='<h1 class="bn-page-title">تنظیمات بازار پذیرندگان</h1><p>حوزه‌های فعالیت و درخت موقعیت‌ها مرجع مشترک فرم متقاضی و پروفایل پذیرنده‌اند.</p><form method="post">'.$this->csrf().'<input type="hidden" name="revision" value="'.(int)$c['revision'].'"><section class="bn-section">';
-  foreach(['enabled'=>'بازار فعال باشد','require_category'=>'حوزه فعالیت الزامی باشد','require_location'=>'موقعیت در محدوده انتخابی الزامی باشد','allow_all_country'=>'درخواست سراسر کشور مجاز باشد']as$key=>$label)$html.=$this->checkbox($key,$label,$c[$key]);
+  foreach(['enabled'=>'بازار فعال باشد','require_category'=>'حوزه فعالیت الزامی باشد','require_location'=>'موقعیت در محدوده انتخابی الزامی باشد','allow_all_country'=>'درخواست سراسر کشور مجاز باشد','enable_acceptor_invitation_links'=>'لینک دعوت پذیرنده فعال باشد','allow_override_existing_invitation_lock'=>'دعوت تازه بتواند پذیرندهٔ دعوت‌کنندهٔ قبلی را تغییر دهد','show_claimed_cards_to_other_acceptors'=>'پروندهٔ پذیرفته‌شده برای دیگر پذیرندگان نمایش داده شود']as$key=>$label)$html.=$this->checkbox($key,$label,$c[$key]);
+  foreach(['invitation_lock_days'=>'اعتبار اتصال دعوت به پذیرنده (روز)','claimed_cards_visible_days'=>'مدت نمایش پروندهٔ پذیرفته‌شده (روز)'] as $key=>$label)$html.='<label class="bn-field">'.$label.'<input type="number" min="1" max="'.($key==='invitation_lock_days'?365:90).'" name="'.$key.'" value="'.(int)$c[$key].'" required></label>';
   $html.='<button class="bn-btn bn-btn--primary">ذخیره قواعد</button></section></form>';
   $kind=($_GET['kind']??'')==='locations'?'locations':'categories';$locations=$kind==='locations';$title=$locations?'موقعیت':'حوزه فعالیت';
   $html.='<nav class="bn-actions"><a href="?kind=categories">حوزه‌های فعالیت</a> · <a href="?kind=locations">موقعیت‌ها</a></nav><section class="bn-section"><h2>فهرست '.$title.'</h2><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>نام</th><th>وضعیت</th><th>ویرایش</th></tr></thead><tbody>';

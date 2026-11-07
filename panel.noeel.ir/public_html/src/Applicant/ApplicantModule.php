@@ -328,18 +328,27 @@ final class ApplicantModule
         $items = is_array($plans->json['data']['items'] ?? null) ? $plans->json['data']['items'] : [];
         $options = '<option value="">انتخاب کنید</option>';
         foreach ($items as $p) if (is_array($p)) $options .= '<option value="'.Renderer::e((string)$p['id']).'"'.(((string)($_POST['plan_id'] ?? '')) === (string)$p['id'] ? ' selected' : '').'>'.Renderer::e((string)$p['name']).' · '.$this->typeLabel((string)$p['type']).'</option>';
+        $lockResponse=$this->partners->get('/api/v1/me/invitation-lock',$this->bearer);
+        if(!$lockResponse->ok()){http_response_code(503);echo Renderer::page('دعوت پذیرنده','<p class="bn-alert bn-alert--error">وضعیت دعوت قابل تأیید نیست؛ کمی بعد دوباره تلاش کنید.</p>',$this->identity,'applicant');return;}
+        $lock=$lockResponse->json['data']['lock']??null;$lockBanner='';
+        if(is_array($lock)){
+            $_POST['merchant_id']=$lock['merchant_id'];$_POST['acceptor_assignment_mode']='applicant_selected_acceptor';
+            $lockBanner='<p class="bn-alert bn-alert--info">پذیرندهٔ دعوت‌کننده: '.Renderer::e((string)$lock['name']).'؛ این انتخاب تا '.Renderer::e(PersianDateTime::fromIso((string)$lock['expires_at'],false)??'').' معتبر است.</p>';
+        }
         $directory=$this->partners->get('/api/v1/directory/merchants',$this->bearer,['per_page'=>100]);$merchants=(array)($directory->json['data']['items']??[]);
         $merchantOptions='<option value="">انتخاب پذیرنده</option>';foreach($merchants as$m)if(is_array($m))$merchantOptions.='<option value="'.Renderer::e((string)$m['id']).'"'.(((string)($_POST['merchant_id']??''))===(string)$m['id']?' selected':'').'>'.Renderer::e((string)($m['name']??$m['code']??'پذیرنده')).'</option>';
+        if(is_array($lock)&&!in_array($lock['merchant_id'],array_column($merchants,'id'),true))$merchantOptions.='<option selected value="'.Renderer::e($lock['merchant_id']).'">'.Renderer::e($lock['name']).'</option>';
         $v = static fn(string $key, string $default=''): string => (string)($_POST[$key] ?? $default);
         $content = $this->head('درخواست تسهیلات', 'در سه مرحله اطلاعات را تکمیل کنید. پیش از ارسال، امکان ذخیره پیش‌نویس دارید.')
-            . ($error !== '' ? $this->alert('error', 'ثبت انجام نشد', $error) : '')
-            . '<form method="post" action="/applicant/requests/new" data-submit-lock="1" data-guided-form data-assignment-form data-server-error="'.($error!==''?'1':'0').'"><input type="hidden" name="_csrf" value="'.Renderer::e(Csrf::token()).'">'
+            . $lockBanner.($error !== '' ? $this->alert('error', 'ثبت انجام نشد', $error) : '')
+            . '<form method="post" action="/applicant/requests/new" data-submit-lock="1" data-guided-form data-assignment-form data-assignment-locked="'.(is_array($lock)?'1':'0').'" data-server-error="'.($error!==''?'1':'0').'"><input type="hidden" name="_csrf" value="'.Renderer::e(Csrf::token()).'">'
+            . (is_array($lock)?'<input type="hidden" name="merchant_id" value="'.Renderer::e($lock['merchant_id']).'"><input type="hidden" name="acceptor_assignment_mode" value="applicant_selected_acceptor">':'')
             . '<section class="bn-section" data-guided-step data-title="اطلاعات شما"><div class="bn-sectionhead"><span class="bn-step">۱</span><div><h2 class="bn-sectiontitle">اطلاعات شما</h2><p class="bn-sectiondesc">برای ارسال پرونده، اطلاعات هویتی و تماس باید کامل و معتبر باشند.</p></div></div><div class="bn-grid bn-grid--2">'
             . $this->field('نام و نام خانوادگی','full_name',$v('full_name')).$this->field('نام پدر','father_name',$v('father_name')).$this->field('شماره شناسنامه','certificate_number',$v('certificate_number')).$this->field('کد ملی','national_code',$v('national_code'),'text','numeric','۱۰ رقم').$this->field('شماره موبایل','mobile_number',$v('mobile_number'),'text','tel','با ۰۹ شروع شود').$this->field('شماره تلفن ثابت','phone_number',$v('phone_number'),'text','tel').$this->birthDateField($this->buildBirthDateFromPost()).$this->occupationField($v('occupation')).$this->field('کد پستی','postal_code',$v('postal_code'),'text','numeric','۱۰ رقم').'</div><div class="bn-grid bn-grid--2">'.$this->area('آدرس محل سکونت','residential_address',$v('residential_address')).$this->area('آدرس محل فعالیت','work_address',$v('work_address')).'</div></section>'
-            . '<div data-guided-step data-title="انتخاب پذیرنده"><section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">روش انتخاب پذیرنده</h2><p class="bn-sectiondesc">می‌توانید پذیرنده مشخصی را انتخاب کنید یا پرونده را در بازار پذیرندگان قرار دهید.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">روش انتخاب</label><select name="acceptor_assignment_mode">'.$this->option('applicant_selected_acceptor','انتخاب پذیرنده مشخص',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).$this->option('open_acceptor_marketplace','بازار پذیرندگان',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).'</select></div><div class="bn-field"><label class="bn-label">پذیرنده انتخابی</label><select name="merchant_id">'.$merchantOptions.'</select></div></div>'.$this->area('توضیح کوتاه درخواست برای پذیرندگان','request_public_summary',$v('request_public_summary')).'</section>'
+            . '<div data-guided-step data-title="انتخاب پذیرنده"><section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">روش انتخاب پذیرنده</h2><p class="bn-sectiondesc">می‌توانید پذیرنده مشخصی را انتخاب کنید یا پرونده را در بازار پذیرندگان قرار دهید.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">روش انتخاب</label><select name="acceptor_assignment_mode"'.(is_array($lock)?' disabled':'').'>'.$this->option('applicant_selected_acceptor','انتخاب پذیرنده مشخص',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).$this->option('open_acceptor_marketplace','بازار پذیرندگان',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).'</select></div><div class="bn-field"><label class="bn-label">پذیرنده انتخابی</label><select name="merchant_id"'.(is_array($lock)?' disabled':'').'>'.$merchantOptions.'</select></div></div>'.$this->area('توضیح کوتاه درخواست برای پذیرندگان','request_public_summary',$v('request_public_summary')).'</section>'
             . $this->marketplaceRequestFields() . '</div>'
             . '<section class="bn-section" data-guided-step data-title="طرح و سفارش"><div class="bn-sectionhead"><span class="bn-step">۳</span><div><h2 class="bn-sectiontitle">طرح و سفارش</h2><p class="bn-sectiondesc">مبلغ سفارش باید با مبلغ درخواست برابر باشد.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">طرح تسهیلات <span class="bn-required">*</span></label><select name="plan_id" required>'.$options.'</select></div>'.$this->field('نام محصول / خدمت','product_name',$v('product_name')).$this->moneyField('مبلغ سفارش','amount',$v('amount'),true).$this->field('تعداد اقساط','installment_count',$v('installment_count'),'number','numeric','',true).$this->field('فاصله سررسیدها (ماه)','installment_interval',$v('installment_interval','1'),'number','numeric','',true).$this->field('اولین سررسید شمسی','first_due_date',$v('first_due_date'),'text','numeric','مثال: ۱۴۰۵/۰۷/۰۱',true).'</div></section>'
-            . '<div class="bn-form-actions"><button class="bn-btn bn-btn--secondary" type="submit" name="_action" value="draft" formnovalidate>ذخیره پیش‌نویس</button><button class="bn-btn bn-btn--primary" type="submit" name="_action" value="submit">ثبت و ارسال برای بررسی</button><a class="bn-btn bn-btn--ghost" href="/applicant/requests">انصراف</a></div></form>';
+            . '<div class="bn-form-actions"><button class="bn-btn bn-btn--secondary" type="submit" name="_action" value="draft" formnovalidate>ذخیره پیش‌نویس</button><button class="bn-btn bn-btn--primary" type="submit" name="_action" value="submit">ادامهٔ ثبت درخواست</button><a class="bn-btn bn-btn--ghost" href="/applicant/requests">انصراف</a></div></form>';
         echo Renderer::page('ثبت پرونده', $content, $this->identity, 'applicant-new');
     }
 
@@ -371,6 +380,7 @@ final class ApplicantModule
         $r = $this->client->post('/api/v1/requests', $this->bearer, $payload, 'panel-'.bin2hex(random_bytes(16)));
         if (!$r->ok()) { $this->requestForm($this->apiMessage($r)); return; }
         $id = (string)($r->json['data']['request']['id'] ?? '');
+        \Babanoell\Panel\Credit\CreditModule::continueCreated((array)($r->json['data']['request']??[]),$submit,'applicant');
         $this->flash('success', $submit ? 'پرونده ثبت و برای بررسی ارسال شد.' : 'پیش‌نویس پرونده ذخیره شد.');
         header('Location: /applicant/requests/'.$id, true, 303); exit;
     }
@@ -441,15 +451,17 @@ final class ApplicantModule
         $messages = $messagesResponse->ok() && is_array($messagesResponse->json['data']['items'] ?? null) ? $messagesResponse->json['data']['items'] : [];
         $editable = in_array((string)($x['status'] ?? ''), ['draft','need_correction'], true);
         $submitAction=$editable?'<form method="post" action="/applicant/requests/'.$id.'/submit" class="bn-inline-form" data-submit-lock="1"><input type="hidden" name="_csrf" value="'.Renderer::e(Csrf::token()).'"><button class="bn-btn bn-btn--primary" type="submit">'.((string)($x['status']??'')==='need_correction'?'ارسال مجدد برای بررسی':'ارسال برای بررسی').'</button></form>':'';
+        if($editable&&!empty($x['plan_rules']['requires_bank_validation']))$submitAction='<a class="bn-btn bn-btn--primary" href="/credit/requests/'.$id.'?workspace=applicant">اعتبارسنجی و ثبت نهایی</a>';
         $actions = '<a class="bn-btn bn-btn--secondary" href="/loans/requests/'.$id.'/documents">مدارک پرونده</a>'.($editable ? '<a class="bn-btn bn-btn--secondary" href="/applicant/requests/'.$id.'/edit">ویرایش اطلاعات</a>' : '').$submitAction;
         $content = $this->head('پرونده '.(string)($x['request_no'] ?? ''), (string)($x['full_name'] ?? 'متقاضی').' · '.$this->requestStatusLabel((string)($x['status'] ?? '')), $actions)
             . $this->takeFlash()
             . CaseJourney::render($this->client,$this->bearer,$id,$this->identity)
+            . \Babanoell\Panel\Credit\CreditModule::entry($x,'applicant',$this->identity)
             . '<div class="bn-stats">'.$this->stat('مبلغ درخواست',$this->money((float)($x['requested_amount'] ?? 0)),'ریال').$this->stat('مبلغ تسهیلات',$this->money((float)($x['facility_amount'] ?? 0)),'ریال').$this->stat('مبلغ هر قسط',$this->money((float)($x['installment_amount'] ?? 0)),'ریال').$this->stat('وضعیت',$this->requestStatusLabel((string)($x['status'] ?? '')),'مرحله جاری',true).'</div>'
             . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۱</span><div><h2 class="bn-sectiontitle">اطلاعات پرونده</h2><p class="bn-sectiondesc">طرح '.Renderer::e((string)($x['plan_name'] ?? '—')).' · نسخه '.PersianDateTime::digits((string)($x['plan_version'] ?? '—')).'</p></div></div><div class="bn-detail-grid">'
             . $this->detail('کد ملی',(string)($x['national_code'] ?? '—')).$this->detail('موبایل',(string)($x['mobile_number'] ?? '—')).$this->detail('نام پدر',(string)($x['father_name'] ?? '—')).$this->detail('کد پستی',(string)($x['postal_code'] ?? '—')).$this->detail('تاریخ تولد',PersianDateTime::dateOnly((string)($x['birth_date'] ?? '')) ?? '—').$this->detail('محصول / خدمت',(string)($x['product_name'] ?? '—')).$this->detail('پیش‌پرداخت',$this->money((float)($x['prepayment'] ?? 0))).$this->detail('جمع بازپرداخت',$this->money((float)($x['total_payment'] ?? 0))).$this->detail('سود',$this->money((float)($x['profit'] ?? 0))).$this->detail('پرداخت پذیرنده',$this->money((float)($x['acceptor_payment_amount'] ?? 0))).'</div></section>'
             . $this->scheduleSection($schedule)
-            . $this->guarantorsSection($id, $guarantors)
+            . $this->guarantorsSection($id, $guarantors,in_array((string)($x['status']??''),['draft','need_correction','docs_completion'],true))
             . $this->messagesSection($id, $messages)
             . $this->historySection($history)
             . $this->eventsSection($events);
@@ -467,8 +479,12 @@ final class ApplicantModule
         return '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">زمان‌بندی اقساط</h2><p class="bn-sectiondesc">سررسیدها به تاریخ شمسی نمایش داده می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>قسط</th><th>سررسید</th><th>مبلغ</th><th>اصل</th><th>سود</th></tr></thead><tbody>'.$rows.'</tbody></table></div></section>';
     }
 
-    private function guarantorsSection(string $id, array $guarantors): string
+    private function guarantorsSection(string $id, array $guarantors,bool $editable=true): string
     {
+        if(!$editable){
+            $items='';foreach($guarantors as $g)if(is_array($g))$items.='<div class="bn-detail-item"><span>'.Renderer::e((string)($g['full_name']??'')).'</span><strong>'.Renderer::e(PersianDateTime::digits((string)($g['national_code']??'—'))).'</strong></div>';
+            return '<section class="bn-section"><h2 class="bn-sectiontitle">ضامن‌های پرونده</h2><div class="bn-detail-grid">'.$items.'</div><p class="bn-helper">ویرایش ضامن‌ها در مرحلهٔ تکمیل اطلاعات یا رفع نقص در دسترس است.</p></section>';
+        }
         $rows = [];
         foreach ($guarantors as $g) if (is_array($g)) $rows[] = $g;
         while (count($rows) < max(2, min(4, count($rows)+1))) $rows[] = [];

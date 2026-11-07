@@ -39,7 +39,18 @@ final class ContractService
   return ['queued'=>true,'delivery'=>'provider_accepted','expires_in'=>300,'test_otp'=>null];
  }
  public function verifyOtp(string $token,string $otp,?string $ip,?string $ua):array{$c=$this->repo->byPublicToken($token);if($c===null)throw new InvalidArgumentException('لینک قرارداد معتبر نیست یا منقضی شده است.');$otp=$this->normalizeDigits(trim($otp));if(!preg_match('/^\d{6}$/',$otp))throw new InvalidArgumentException('رمز تأیید باید شش رقم باشد.');$signed=$this->repo->verifyOtpAndSign((string)$c['id'],$otp,$ip,$ua);try{$this->storeArtifact((string)$c['id']);}catch(\Throwable $e){error_log('[partners] signed contract artifact pending: '.$e->getMessage());}return $this->repo->contract((string)$c['id'])??$signed;}
- public function markPhysical(string $id,string $actor,?string $ip,?string $ua):array{$c=$this->repo->markPhysicalSigned($id,$actor,$ip,$ua);try{$this->storeArtifact($id);}catch(\Throwable $e){error_log('[partners] physical contract artifact pending: '.$e->getMessage());}return $this->repo->contract($id)??$c;}
+ public function markPhysical(string $id,string $actor,?string $ip,?string $ua,array $input=[],string $bearer=''):array {
+  $document=(string)($input['document_id']??'');$version=(string)($input['version_id']??'');
+  if(($input['confirmed']??false)!==true||!preg_match('/^[a-f0-9]{26}$/D',$document)||!preg_match('/^[a-f0-9]{26}$/D',$version)||(int)($input['row_version']??0)<1)throw new InvalidArgumentException('فایل نسخهٔ امضاشده، تأیید دریافت اصل امضا و نسخهٔ رکورد الزامی است.');
+  $response=$this->documents->file($document,$bearer);$file=$response->json['data']['document']??null;
+  if(!$response->ok()||!is_array($file)||($file['status']??'')!=='active'||($file['document_type']??'')!=='signed_contract'||($file['current_version_id']??'')!==$version)throw new InvalidArgumentException('فایل قرارداد امضاشده معتبر یا قابل دسترسی نیست.');
+  $linked=false;foreach($file['links']??[] as $link)if(($link['entity_type']??'')==='contract'&&($link['entity_id']??'')===$id)$linked=true;
+  if(!$linked||!preg_match('/^[a-f0-9]{64}$/D',(string)($file['checksum_sha256']??'')))throw new InvalidArgumentException('فایل باید به همین نسخهٔ قرارداد متصل باشد.');
+  $c=$this->repo->markPhysicalSigned($id,$actor,$ip,$ua,['document_id'=>$document,'version_id'=>$version,'sha256'=>$file['checksum_sha256'],'row_version'=>(int)$input['row_version']]);
+  try{$this->storeArtifact($id);}catch(\Throwable){error_log('[partners] physical contract artifact pending');}
+  return $this->repo->contract($id)??$c;
+ }
+
  public function issueLink(string $id,string $actor):array{$c=$this->repo->contract($id);if($c===null)throw new RuntimeException('قرارداد پیدا نشد.');$siblings=$this->repo->bySubject((string)$c['subject_type'],(string)$c['subject_id']);foreach($siblings as $other){if((string)$other['contract_kind']===(string)$c['contract_kind']&&(int)($other['revision']??1)>(int)($c['revision']??1))throw new RuntimeException('صدور لینک جدید برای نسخه قدیمی مجاز نیست.');}return $this->repo->issuePublicToken($id,$actor);}
  public function retryArtifact(string $id):array{$this->storeArtifact($id);return $this->repo->contract($id)??[];}
  private function storeArtifact(string $id):void{$h=$this->repo->createArtifactHandoff($id);$r=$this->documents->storeContractArtifact($id,(string)$h['token'],(string)$h['sha256'],(string)$h['content'],(string)$h['filename'],(string)$h['mime_type']);if($r->ok()){ $doc=(string)($r->json['data']['document']['id']??'');if($doc!=='')$this->repo->markArtifact($id,$doc,(string)$h['sha256']);}}

@@ -78,6 +78,7 @@ $plan=$plans->status($plan['id'],'active');
 $calc=new Babanoell\Loans\Service\CalculationService($repo,new Babanoell\Loans\Calculation\CalculatorRegistry());
 $requests=new Babanoell\Loans\Service\RequestService($repo,$calc,new Babanoell\Loans\Domain\ScheduleGenerator());
 $loan=$requests->create($actor,['plan_id'=>$plan['id'],'requested_amount'=>1000000,'installment_count'=>6,'acceptor_assignment_mode'=>'open_acceptor_marketplace','request_public_summary'=>'unique-regression-summary'], 'regression-request',Babanoell\Loans\Domain\RequestOrigin::APPLICANT);
+$pdo->prepare("UPDATE loan_requests SET status='under_review',national_code='0013543318',mobile_number='09121234567' WHERE id=:id")->execute([':id'=>$loan['id']]);
 $merchant=substr(hash('sha256','integration:merchant:regression'),0,26);
 $repo->upsertShadowMerchant(['id'=>$merchant,'code'=>'REGRESSION','name'=>'Synthetic merchant','owner_user_id'=>$acceptor,'status'=>'active']);
 $check('marketplace search matches summary with native prepares',static function()use($repo,$loan,$assert):void{
@@ -133,7 +134,7 @@ foreach(['UTC','Asia/Tehran']as$timezone){
     date_default_timezone_set($timezone);
     $check('verification expiry is UTC in '.$timezone,static function()use($repo,$pdo,$loan,$actor,$assert,$timezone):void{
         $bank=new Babanoell\Loans\Service\BankCreditService($repo);
-        $create=static fn(string$key):array=>$repo->createVerificationRequest($loan['id'],'identity_match','shahkar',$key,str_repeat('a',64),str_repeat('b',64),$actor,120);
+        $create=static fn(string$key):array=>$repo->createVerificationRequest($loan['id'],'identity_match','shahkar',$key,hash('sha256','0013543318|09121234567'),str_repeat('b',64),$actor,120);
         $live=$create('live-'.$timezone);
         $result=$bank->complete($live['id'],$actor,['status'=>'verified','provider_reference'=>'synthetic']);
         $assert($result['status']==='verified');

@@ -164,6 +164,7 @@ final class PdoLoanRepository
             if($submitted){$this->insertHistory($id,'draft','submitted',$actor,'ثبت نهایی پرونده','api');$this->insertHistory($id,'submitted','under_review',$actor,'ورود به صف بررسی','api');}
             foreach($schedule as$row){$i=$this->pdo->prepare('INSERT INTO installment_schedule (id,request_id,sequence_no,due_date,amount,principal_amount,profit_amount,status) VALUES (:id,:request_id,:sequence,:due_date,:amount,:principal,:profit,:status)');$i->execute([':id'=>RandomId::make(),':request_id'=>$id,':sequence'=>$row['sequence'],':due_date'=>$row['due_date'],':amount'=>$row['amount'],':principal'=>$row['principal_amount'],':profit'=>$row['profit_amount'],':status'=>'scheduled']);}
             $this->recordEvent($id,'request.created',$actor,'allowed',['submitted'=>$submitted,'plan_version_id'=>$plan['current_version_id']]);
+            if($submitted){$this->notifyRequestParticipants($id,$actor,'request.status_changed','ثبت نهایی پرونده','پرونده برای بررسی ارسال شد.');$this->queueOutbox('request.status_changed','loan_request',$id,'notifications',['request_id'=>$id,'from'=>'draft','to'=>'under_review','source'=>'api']);}
             $this->pdo->commit();return $this->getRequest($id)??throw new RuntimeException('پرونده پس از ثبت قابل بازیابی نیست.');
         }catch(Throwable $e){if($this->pdo->inTransaction())$this->pdo->rollBack();throw$e;}
     }
@@ -203,6 +204,13 @@ final class PdoLoanRepository
     {
         $request=$this->getRequest($id);if($request===null)throw new RuntimeException('پرونده پیدا نشد.');if($request['status']!=='draft'&&$request['status']!=='need_correction')throw new RuntimeException('ویرایش اطلاعات فقط در پیش‌نویس یا وضعیت نقص مدارک مجاز است.');
         $allowed=['full_name','father_name','certificate_number','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address','product_name','merchant_ref','assigned_bank_user_id'];$set=[];$params=[':id'=>$id];foreach($allowed as$k){if(array_key_exists($k,$fields)){$ph=':f_'.$k;$set[]=$k.'='.$ph;$params[$ph]=$fields[$k]!==''?$fields[$k]:null;}}
+        $identityChanged=false;
+        foreach(['national_code','mobile_number'] as $field)if(array_key_exists($field,$fields)&&\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$fields[$field])!==\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)($request[$field]??'')))$identityChanged=true;
+        if($identityChanged){
+            $set[]="credit_validation_status='".(CreditValidationPolicy::required($request)?'pending':'not_required')."'";
+            $set[]="identity_verification_status='".(CreditValidationPolicy::identityRequired($request)?'pending':'not_required')."'";
+            foreach(['credit_validation_verified_at','credit_validation_reference','credit_validation_check_id','credit_report_external_id','credit_score','credit_risk','identity_verification_verified_at','identity_verification_reference','identity_verification_request_id'] as $column)$set[]=$column.'=NULL';
+        }
         if($set!==[]){
             $params[':expected_version']=(int)($request['row_version']??0);$set[]='row_version=row_version+1';
             $this->pdo->beginTransaction();
@@ -222,6 +230,13 @@ final class PdoLoanRepository
     {
         $this->pdo->beginTransaction();
         try{
+            if(in_array($from,['draft','need_correction'],true)&&in_array($to,['submitted','under_review'],true)){
+                $lock=$this->pdo->prepare('SELECT id FROM loan_requests WHERE id=:id FOR UPDATE');$lock->execute([':id'=>$id]);
+                $current=$this->getRequest($id)??throw new RuntimeException('پرونده پیدا نشد.');
+                \Babanoell\Loans\Domain\InputValidator::assertStoredRequestSubmittable($current);
+                $this->assertCreditSubmissionAllowed($current);
+                $this->consumeCreditEvidence($current);
+            }
             $sql='UPDATE loan_requests SET status=:to_status, assigned_bank_user_id=CASE WHEN :bank_supplied=1 THEN :bank_user ELSE assigned_bank_user_id END, submitted_at=CASE WHEN :submitted_status = \'submitted\' AND submitted_at IS NULL THEN NOW(6) ELSE submitted_at END, granted_at=CASE WHEN :granted_status = \'granted\' THEN NOW(6) ELSE granted_at END, rejected_at=CASE WHEN :to_rejected = \'rejected\' THEN NOW(6) ELSE rejected_at END, cancelled_at=CASE WHEN :to_cancelled = \'cancelled\' THEN NOW(6) ELSE cancelled_at END, archived_at=CASE WHEN :to_archived = \'archived\' THEN NOW(6) ELSE archived_at END, last_transition_at=NOW(6), row_version=row_version+1 WHERE id=:id AND status=:from_status';
             $s=$this->pdo->prepare($sql);
             $s->execute([
@@ -253,6 +268,10 @@ final class PdoLoanRepository
             $lock=$this->pdo->prepare('SELECT status FROM loan_requests WHERE id=:id FOR UPDATE');$lock->execute([':id'=>$requestId]);$from=$lock->fetchColumn();
             if(!is_string($from))throw new RuntimeException('پرونده پیدا نشد.');
             if(!in_array($from,['draft','need_correction'],true))throw new RuntimeException('ارسال پرونده در وضعیت فعلی مجاز نیست.');
+            $current=$this->getRequest($requestId)??throw new RuntimeException('پرونده پیدا نشد.');
+            \Babanoell\Loans\Domain\InputValidator::assertStoredRequestSubmittable($current);
+            $this->assertCreditSubmissionAllowed($current);
+            $this->consumeCreditEvidence($current);
             $u=$this->pdo->prepare("UPDATE loan_requests SET status='under_review',submitted_at=COALESCE(submitted_at,NOW(6)),last_transition_at=NOW(6),row_version=row_version+1 WHERE id=:id AND status=:from_status");
             $u->execute([':id'=>$requestId,':from_status'=>$from]);if($u->rowCount()!==1)throw new RuntimeException('وضعیت پرونده هم‌زمان تغییر کرده است؛ صفحه را تازه‌سازی کنید.');
             if($from==='draft'){$this->insertHistory($requestId,'draft','submitted',$actor,'ثبت نهایی پرونده',$source);$this->insertHistory($requestId,'submitted','under_review',$actor,'ورود به صف بررسی',$source);}
@@ -294,7 +313,7 @@ final class PdoLoanRepository
         try{
             $lock=$this->pdo->prepare("SELECT status FROM loan_requests WHERE id=:id FOR UPDATE");$lock->execute([':id'=>$requestId]);$status=$lock->fetchColumn();
             if(!is_string($status))throw new RuntimeException('پرونده پیدا نشد.');
-            if(in_array($status,['granted','archived'],true))throw new \InvalidArgumentException('ویرایش ضامن‌های پرونده اعطاشده یا بایگانی‌شده از این مسیر مجاز نیست.');
+            if(in_array($status,['granted','archived','cancelled'],true))throw new \InvalidArgumentException('ویرایش ضامن‌های پرونده اعطاشده یا بایگانی‌شده از این مسیر مجاز نیست.');
             $existing=$this->guarantors($requestId,false);$byId=[];foreach($existing as$row)$byId[(string)$row['id']]=$row;
             $kept=[];$position=0;
             $update=$this->pdo->prepare("UPDATE loan_request_guarantors SET full_name=:full_name,national_code=:national_code,mobile_number=:mobile_number,relation_label=:relation_label,position_no=:position,status='active',removed_at=NULL WHERE id=:id AND request_id=:request_id");
@@ -303,6 +322,10 @@ final class PdoLoanRepository
                 if(!is_array($g)||trim((string)($g['full_name']??''))==='')continue;
                 $position++;$givenId=trim((string)($g['id']??''));$id='';
                 if($givenId!==''&&isset($byId[$givenId])&&!in_array($givenId,$kept,true))$id=$givenId;
+                if($id!==''){
+                    $previous=$byId[$id];$national=trim((string)($g['national_code']??''));
+                    if((string)($previous['national_code']??'')!==$national||($national===''&&trim((string)$previous['full_name'])!==trim((string)$g['full_name'])))$id='';
+                }
                 if($id===''){$id=RandomId::make();$insert->execute([':id'=>$id,':request_id'=>$requestId,':full_name'=>trim((string)$g['full_name']),':national_code'=>trim((string)($g['national_code']??''))?:null,':mobile_number'=>trim((string)($g['mobile_number']??''))?:null,':relation_label'=>trim((string)($g['relation_label']??''))?:null,':position'=>$position]);}
                 else{$update->execute([':id'=>$id,':request_id'=>$requestId,':full_name'=>trim((string)$g['full_name']),':national_code'=>trim((string)($g['national_code']??''))?:null,':mobile_number'=>trim((string)($g['mobile_number']??''))?:null,':relation_label'=>trim((string)($g['relation_label']??''))?:null,':position'=>$position]);}
                 $kept[]=$id;
@@ -334,10 +357,27 @@ final class PdoLoanRepository
         return $this->latestCreditCheck($requestId)??throw new RuntimeException('نتیجه اعتبارسنجی قابل بازیابی نیست.');
     }
 
+    /** Rejects obsolete tabs before a paid request or OTP is sent. Parent lock serializes dispatch with replacement. */
+    public function assertCurrentVerification(array $verification): void
+    {
+        $latest=$this->pdo->prepare('SELECT id FROM verification_requests WHERE request_id=:request AND verification_type=:type ORDER BY requested_at DESC,id DESC LIMIT 1');
+        $latest->execute([':request'=>$verification['request_id'],':type'=>$verification['verification_type']]);
+        if((string)$latest->fetchColumn()!==(string)$verification['id'])throw new RuntimeException('verification_superseded');
+        $subject=$this->pdo->prepare('SELECT national_code,mobile_number FROM loan_requests WHERE id=:id');
+        $subject->execute([':id'=>$verification['request_id']]);$row=$subject->fetch();
+        if(!is_array($row))throw new RuntimeException('verification_missing');
+        $fingerprint=hash('sha256',\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$row['national_code']).'|'.\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$row['mobile_number']));
+        if(!hash_equals((string)$verification['subject_fingerprint'],$fingerprint))throw new RuntimeException('verification_subject_changed');
+        if(!empty($verification['expires_at'])&&strtotime((string)$verification['expires_at'].' UTC')<=time())throw new RuntimeException('verification_expired');
+    }
+
     /** Atomically reserves a queued check before reaching an external provider. */
     public function claimProviderVerification(string $verificationId,string $actor):array {
+        $context=$this->getVerificationRequest($verificationId)??throw new RuntimeException('verification_missing');
         $this->pdo->beginTransaction();
         try {
+            $lock=$this->pdo->prepare('SELECT id FROM loan_requests WHERE id=:id FOR UPDATE');$lock->execute([':id'=>$context['request_id']]);
+            $this->assertCurrentVerification($context);
             $sql="UPDATE verification_requests SET status='pending',metadata_json=:metadata WHERE id=:id AND status='queued'";
             $s=$this->pdo->prepare($sql);$s->execute([':id'=>$verificationId,':metadata'=>Json::encode(['source'=>'integrations','stage'=>'provider_request_reserved','claimed_by'=>$actor,'claimed_at'=>gmdate('c')])]);
             if($s->rowCount()!==1)throw new RuntimeException('verification_already_dispatched');
@@ -348,16 +388,26 @@ final class PdoLoanRepository
     }
 
     /** Stores safe dispatch metadata without ever storing an OTP or credentials. */
-    public function noteProviderVerification(string $verificationId,string $actor,array $details,?string $reference=null):array {
-        $v=$this->getVerificationRequest($verificationId);if($v===null||(string)$v['status']!=='pending')throw new RuntimeException('verification_not_pending');
+    public function noteProviderVerification(string $verificationId,string $actor,array $details,?string $reference=null):array
+    {
+        $context=$this->getVerificationRequest($verificationId);if($context===null)throw new RuntimeException('verification_missing');
         $allowed=['delivery','stage','http_status','code','otp_verified','provider_status','status_checked_at'];
-        foreach($details as $key=>$value)if(!in_array($key,$allowed,true)||!is_scalar($value))throw new InvalidArgumentException('فیلد اطلاعات ارائه‌دهنده مجاز نیست.');
-        $meta=is_array($v['metadata']??null)?$v['metadata']:[];
-        foreach($details as $key=>$value)$meta[$key]=$value;
-        $s=$this->pdo->prepare("UPDATE verification_requests SET metadata_json=:meta,provider_reference=COALESCE(:ref,provider_reference) WHERE id=:id AND status='pending'");
-        $s->execute([':id'=>$verificationId,':meta'=>Json::encode($meta),':ref'=>$reference]);
-        if($s->rowCount()!==1 && ($this->getVerificationRequest($verificationId)['status']??null)!=='pending')throw new RuntimeException('verification_changed_during_update');
-        $this->recordEvent((string)$v['request_id'],'request.verification.provider_update',$actor,'allowed',['verification_id'=>$verificationId,'stage'=>$details['stage']??null]);
+        foreach($details as $key=>$value)if(!in_array($key,$allowed,true)||!is_scalar($value))throw new \InvalidArgumentException('فیلد اطلاعات ارائه‌دهنده مجاز نیست.');
+        $this->pdo->beginTransaction();
+        try {
+            $lock=$this->pdo->prepare('SELECT id FROM loan_requests WHERE id=:id FOR UPDATE');$lock->execute([':id'=>$context['request_id']]);
+            $query=$this->pdo->prepare('SELECT * FROM verification_requests WHERE id=:id FOR UPDATE');$query->execute([':id'=>$verificationId]);$current=$query->fetch();
+            if(!is_array($current)||$current['status']!=='pending')throw new RuntimeException('verification_not_pending');
+            if($reference!==null&&!empty($current['provider_reference'])&&!hash_equals((string)$current['provider_reference'],$reference))throw new RuntimeException('verification_reference_changed');
+            $meta=Json::decode((string)($current['metadata_json']??''));
+            $firstOtp=($details['otp_verified']??false)===true&&($meta['otp_verified']??false)!==true;
+            $meta=array_merge($meta,$details);
+            $expires=$firstOtp?gmdate('Y-m-d H:i:s',time()+7200):$current['expires_at'];
+            $update=$this->pdo->prepare("UPDATE verification_requests SET metadata_json=:meta,provider_reference=COALESCE(:ref,provider_reference),expires_at=:expires WHERE id=:id AND status='pending'");
+            $update->execute([':id'=>$verificationId,':meta'=>Json::encode($meta),':ref'=>$reference,':expires'=>$expires]);
+            $this->recordEvent((string)$context['request_id'],'request.verification.provider_update',$actor,'allowed',['verification_id'=>$verificationId,'stage'=>$details['stage']??null]);
+            $this->pdo->commit();
+        }catch(Throwable $error){if($this->pdo->inTransaction())$this->pdo->rollBack();throw $error;}
         return $this->getVerificationRequest($verificationId)??throw new RuntimeException('verification_missing');
     }
 
@@ -368,31 +418,100 @@ final class PdoLoanRepository
         foreach($rows as&$row){$row['metadata']=Json::decode((string)($row['metadata_json']??''));unset($row['metadata_json']);}unset($row);return$rows;
     }
 
+    /** The raw report is read only through an authorized, case-scoped report endpoint. */
+    public function creditReportEvidence(string $verificationId): ?array
+    {
+        $query=$this->pdo->prepare('SELECT * FROM credit_report_evidence WHERE verification_id=:id');
+        $query->execute([':id'=>$verificationId]);$row=$query->fetch();
+        return is_array($row)?$row:null;
+    }
+
+    public function creditSubmissionState(array $loan): array
+    {
+        if(!CreditValidationPolicy::required($loan))return ['required'=>false,'ready'=>true];
+        $query=$this->pdo->prepare('SELECT e.verification_id,e.report_code,e.report_sha256,e.subject_fingerprint,e.valid_until,e.consumed_at,e.canonical_json FROM credit_report_evidence e JOIN credit_checks c ON c.verification_request_id=e.verification_id JOIN verification_requests v ON v.id=e.verification_id WHERE e.request_id=:request AND c.id=:check AND v.status=\'verified\'');
+        $query->execute([':request'=>$loan['id'],':check'=>$loan['credit_validation_check_id']??'']);$evidence=$query->fetch();
+        $fingerprint=hash('sha256',\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)($loan['national_code']??'')).'|'.\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)($loan['mobile_number']??'')));
+        $bound=is_array($evidence)&&hash_equals($fingerprint,(string)$evidence['subject_fingerprint'])&&hash_equals((string)$evidence['report_sha256'],hash('sha256',(string)$evidence['canonical_json']))&&CreditValidationPolicy::verified($loan);
+        $fresh=$bound&&(!empty($evidence['consumed_at'])||strtotime((string)$evidence['valid_until'].' UTC')>time());
+        return ['required'=>true,'ready'=>$fresh,'reason'=>$fresh?'verified':($bound?'expired':'report_required'),
+            'report'=>$bound?array_diff_key($evidence,['subject_fingerprint'=>true,'canonical_json'=>true]):null];
+    }
+
+    public function assertCreditSubmissionAllowed(array $loan): void
+    {
+        $state=$this->creditSubmissionState($loan);
+        if(($state['ready']??false)!==true)throw new \InvalidArgumentException(($state['reason']??'')==='expired'
+            ?'مهلت گزارش اعتبارسنجی برای ثبت نهایی تمام شده است؛ اعتبارسنجی را دوباره انجام دهید.'
+            :'برای این طرح، دریافت گزارش معتبر اعتبارسنجی پیش از ثبت نهایی الزامی است.');
+    }
+
+    private function consumeCreditEvidence(array $loan): void
+    {
+        if(!CreditValidationPolicy::required($loan))return;
+        $state=$this->creditSubmissionState($loan);$id=$state['report']['verification_id']??null;
+        if(!is_string($id))throw new RuntimeException('credit_report_required');
+        $query=$this->pdo->prepare('UPDATE credit_report_evidence SET consumed_at=COALESCE(consumed_at,UTC_TIMESTAMP(6)) WHERE verification_id=:id AND request_id=:request');
+        $query->execute([':id'=>$id,':request'=>$loan['id']]);
+    }
+
     public function getVerificationRequest(string $id): ?array
     {
         $s=$this->pdo->prepare('SELECT v.*,r.request_no,r.full_name,r.national_code,r.mobile_number,r.status AS request_status,r.plan_rules_snapshot_json FROM verification_requests v JOIN loan_requests r ON r.id=v.request_id WHERE v.id=:id LIMIT 1');$s->execute([':id'=>$id]);$row=$s->fetch();if(!is_array($row))return null;$row['metadata']=Json::decode((string)($row['metadata_json']??''));$row['plan_rules']=Json::decode((string)($row['plan_rules_snapshot_json']??''));unset($row['metadata_json'],$row['plan_rules_snapshot_json']);return$row;
     }
 
-    public function createVerificationRequest(string $requestId,string $type,string $provider,string $idempotencyKey,string $subjectFingerprint,string $requestHash,string $actor,int $ttlMinutes=1440): array
+    public function createVerificationRequest(string $requestId,string $type,string $provider,string $idempotencyKey,string $subjectFingerprint,string $requestHash,string $actor,int $ttlMinutes=120): array
     {
-        $old=$this->pdo->prepare('SELECT id,provider,request_hash FROM verification_requests WHERE request_id=:request_id AND verification_type=:type AND idempotency_key=:idem LIMIT 1');$old->execute([':request_id'=>$requestId,':type'=>$type,':idem'=>$idempotencyKey]);$oldRow=$old->fetch();if(is_array($oldRow)){if((string)$oldRow['provider']!==$provider||(string)$oldRow['request_hash']!==$requestHash)throw new RuntimeException('Idempotency-Key قبلاً برای درخواست متفاوتی استفاده شده است.');return$this->getVerificationRequest((string)$oldRow['id'])??throw new RuntimeException('درخواست اعتبارسنجی قابل بازیابی نیست.');}
-        $id=RandomId::make();$expiresAt=gmdate('Y-m-d H:i:s',time()+max(5,min(10080,$ttlMinutes))*60);$this->pdo->beginTransaction();try{
-            $s=$this->pdo->prepare("INSERT INTO verification_requests (id,request_id,verification_type,provider,status,idempotency_key,subject_fingerprint,request_hash,requested_by_user_id,expires_at) VALUES (:id,:request_id,:type,:provider,'queued',:idem,:fingerprint,:request_hash,:actor,:expires_at)");
-            $s->execute([':id'=>$id,':request_id'=>$requestId,':type'=>$type,':provider'=>$provider,':idem'=>$idempotencyKey,':fingerprint'=>$subjectFingerprint,':request_hash'=>$requestHash,':actor'=>$actor,':expires_at'=>$expiresAt]);
-            if($type==='identity_match'){$u=$this->pdo->prepare("UPDATE loan_requests SET identity_verification_status='queued',identity_verification_provider=:provider,identity_verification_request_id=:vid,row_version=row_version+1 WHERE id=:id");$u->execute([':provider'=>$provider,':vid'=>$id,':id'=>$requestId]);}
-            else{$u=$this->pdo->prepare("UPDATE loan_requests SET credit_validation_status='pending',credit_validation_provider=:provider,row_version=row_version+1 WHERE id=:id");$u->execute([':provider'=>$provider,':id'=>$requestId]);}
+        $this->pdo->beginTransaction();
+        try {
+            $lock=$this->pdo->prepare('SELECT national_code,mobile_number FROM loan_requests WHERE id=:id FOR UPDATE');
+            $lock->execute([':id'=>$requestId]);$subject=$lock->fetch();
+            if(!is_array($subject))throw new RuntimeException('پرونده پیدا نشد.');
+            $fingerprint=hash('sha256',\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$subject['national_code']).'|'.\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$subject['mobile_number']));
+            if(!hash_equals($subjectFingerprint,$fingerprint))throw new RuntimeException('verification_subject_changed');
+            $old=$this->pdo->prepare('SELECT id,provider,request_hash FROM verification_requests WHERE request_id=:request_id AND verification_type=:type AND idempotency_key=:idem LIMIT 1');
+            $old->execute([':request_id'=>$requestId,':type'=>$type,':idem'=>$idempotencyKey]);$row=$old->fetch();
+            if(is_array($row)){
+                if((string)$row['provider']!==$provider||!hash_equals((string)$row['request_hash'],$requestHash))throw new RuntimeException('Idempotency-Key قبلاً برای درخواست متفاوتی استفاده شده است.');
+                $this->pdo->commit();return $this->getVerificationRequest((string)$row['id'])??throw new RuntimeException('درخواست اعتبارسنجی قابل بازیابی نیست.');
+            }
+            $id=RandomId::make();$expiresAt=gmdate('Y-m-d H:i:s',time()+max(5,min(10080,$ttlMinutes))*60);
+            $insert=$this->pdo->prepare("INSERT INTO verification_requests (id,request_id,verification_type,provider,status,idempotency_key,subject_fingerprint,request_hash,requested_by_user_id,expires_at) VALUES (:id,:request_id,:type,:provider,'queued',:idem,:fingerprint,:request_hash,:actor,:expires_at)");
+            $insert->execute([':id'=>$id,':request_id'=>$requestId,':type'=>$type,':provider'=>$provider,':idem'=>$idempotencyKey,':fingerprint'=>$subjectFingerprint,':request_hash'=>$requestHash,':actor'=>$actor,':expires_at'=>$expiresAt]);
+            if($type==='identity_match'){
+                $update=$this->pdo->prepare("UPDATE loan_requests SET identity_verification_status='queued',identity_verification_provider=:provider,identity_verification_request_id=:vid,identity_verification_verified_at=NULL,identity_verification_reference=NULL,row_version=row_version+1 WHERE id=:id");
+                $update->execute([':provider'=>$provider,':vid'=>$id,':id'=>$requestId]);
+            }else{
+                $update=$this->pdo->prepare("UPDATE loan_requests SET credit_validation_status='pending',credit_validation_provider=:provider,credit_validation_verified_at=NULL,credit_validation_reference=NULL,credit_validation_check_id=NULL,credit_report_external_id=NULL,credit_score=NULL,credit_risk=NULL,row_version=row_version+1 WHERE id=:id");
+                $update->execute([':provider'=>$provider,':id'=>$requestId]);
+            }
             $this->recordEvent($requestId,'request.verification.queued',$actor,'allowed',['verification_id'=>$id,'verification_type'=>$type,'provider'=>$provider,'request_hash'=>$requestHash]);
             $this->queueOutbox('verification.requested','verification_request',$id,'integrations',['verification_id'=>$id,'request_id'=>$requestId,'verification_type'=>$type,'provider'=>$provider]);
             $this->pdo->commit();
-        }catch(Throwable$e){if($this->pdo->inTransaction())$this->pdo->rollBack();throw$e;}
-        return$this->getVerificationRequest($id)??throw new RuntimeException('درخواست اعتبارسنجی قابل بازیابی نیست.');
+            return $this->getVerificationRequest($id)??throw new RuntimeException('درخواست اعتبارسنجی قابل بازیابی نیست.');
+        }catch(Throwable $error){if($this->pdo->inTransaction())$this->pdo->rollBack();throw $error;}
     }
 
-    public function completeVerificationRequest(string $verificationId,string $actor,string $status,string $providerReference,string $responseHash,?int $score,string $risk,array $metadata): array
+    public function completeVerificationRequest(string $verificationId,string $actor,string $status,string $providerReference,string $responseHash,?int $score,string $risk,array $metadata,?array $reportEvidence=null): array
     {
+        $context=$this->getVerificationRequest($verificationId);if($context===null)throw new RuntimeException('درخواست اعتبارسنجی پیدا نشد.');
         $this->pdo->beginTransaction();try{
+            $loanLock=$this->pdo->prepare('SELECT national_code,mobile_number FROM loan_requests WHERE id=:id FOR UPDATE');$loanLock->execute([':id'=>$context['request_id']]);$subject=$loanLock->fetch();
+            if(!is_array($subject))throw new RuntimeException('پرونده پیدا نشد.');
             $q=$this->pdo->prepare('SELECT * FROM verification_requests WHERE id=:id FOR UPDATE');$q->execute([':id'=>$verificationId]);$v=$q->fetch();if(!is_array($v))throw new RuntimeException('درخواست اعتبارسنجی پیدا نشد.');
-            $terminal=in_array((string)$v['status'],['verified','failed','expired','cancelled'],true);if($terminal){if((string)($v['response_hash']??'')===$responseHash){$this->pdo->commit();return$this->getVerificationRequest($verificationId)??$v;}throw new RuntimeException('نتیجه این درخواست اعتبارسنجی قبلاً نهایی شده است.');}
+            $terminal=in_array((string)$v['status'],['verified','failed','expired','cancelled'],true);if($terminal){if((string)($v['response_hash']??'')===$responseHash&&(string)$v['status']===$status&&(string)($v['provider_reference']??'')===$providerReference){$this->pdo->commit();return$this->getVerificationRequest($verificationId)??$v;}throw new RuntimeException('نتیجه این درخواست اعتبارسنجی قبلاً نهایی شده است.');}
+            if($status==='verified'&&!empty($v['expires_at'])&&strtotime((string)$v['expires_at'].' UTC')<=time())throw new RuntimeException('verification_expired');
+            $fingerprint=hash('sha256',\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$subject['national_code']).'|'.\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$subject['mobile_number']));
+            if(!hash_equals((string)$v['subject_fingerprint'],$fingerprint))throw new RuntimeException('verification_subject_changed');
+            $latest=$this->pdo->prepare('SELECT id FROM verification_requests WHERE request_id=:request AND verification_type=:type ORDER BY requested_at DESC,id DESC LIMIT 1');$latest->execute([':request'=>$v['request_id'],':type'=>$v['verification_type']]);
+            if((string)$latest->fetchColumn()!==$verificationId)throw new RuntimeException('verification_superseded');
+            if($reportEvidence!==null){
+                if($v['provider']!=='ics24'||$v['verification_type']!=='credit_report'||$status!=='verified')throw new RuntimeException('credit_evidence_type_invalid');
+                $claims=$reportEvidence['proof']['claims'];$canonical=\Babanoell\Loans\Platform\CreditReportProof::canonical($reportEvidence['report']);
+                if(!hash_equals($responseHash,hash('sha256',$canonical)))throw new RuntimeException('credit_evidence_hash_invalid');
+                $insert=$this->pdo->prepare('INSERT INTO credit_report_evidence (verification_id,request_id,provider_reference,report_code,subject_fingerprint,report_sha256,canonical_json,proof_json,verified_at,valid_until) VALUES (:vid,:rid,:reference,:code,:subject,:sha,:json,:proof,:at,:until)');
+                $insert->execute([':vid'=>$verificationId,':rid'=>$v['request_id'],':reference'=>$providerReference,':code'=>$claims['report_code'],':subject'=>$fingerprint,':sha'=>$responseHash,':json'=>$canonical,':proof'=>Json::encode($reportEvidence['proof']),':at'=>gmdate('Y-m-d H:i:s',$claims['issued_at']),':until'=>gmdate('Y-m-d H:i:s',$claims['expires_at'])]);
+            }
             $u=$this->pdo->prepare('UPDATE verification_requests SET status=:status,provider_reference=:reference,response_hash=:response_hash,score=:score,risk=:risk,metadata_json=:metadata,completed_by_user_id=:actor,completed_at=NOW(6) WHERE id=:id');
             $u->execute([':status'=>$status,':reference'=>$providerReference!==''?$providerReference:null,':response_hash'=>$responseHash,':score'=>$score,':risk'=>$risk!==''?$risk:null,':metadata'=>$metadata!==[]?Json::encode($metadata):null,':actor'=>$actor,':id'=>$verificationId]);
             $requestId=(string)$v['request_id'];$type=(string)$v['verification_type'];$provider=(string)$v['provider'];
@@ -401,9 +520,10 @@ final class PdoLoanRepository
                 $r->execute([':status'=>$status,':provider'=>$provider,':reference'=>$providerReference!==''?$providerReference:null,':verified'=>$status,':vid'=>$verificationId,':request_id'=>$requestId]);
             }else{
                 $checkId=RandomId::make();$c=$this->pdo->prepare('INSERT INTO credit_checks (id,request_id,provider,external_report_id,status,score,risk,result_summary_json,response_hash,requested_by_user_id,completed_at,verification_request_id,proof_hash) VALUES (:id,:request_id,:provider,:external,:status,:score,:risk,:summary,:hash,:actor,NOW(6),:verification_id,:proof_hash)');
-                $c->execute([':id'=>$checkId,':request_id'=>$requestId,':provider'=>$provider,':external'=>$providerReference!==''?$providerReference:null,':status'=>$status,':score'=>$score,':risk'=>$risk!==''?$risk:null,':summary'=>$metadata!==[]?Json::encode($metadata):null,':hash'=>$responseHash,':actor'=>$actor,':verification_id'=>$verificationId,':proof_hash'=>$responseHash]);
+                $external=$reportEvidence['proof']['claims']['report_code']??$providerReference;
+                $c->execute([':id'=>$checkId,':request_id'=>$requestId,':provider'=>$provider,':external'=>$external!==''?$external:null,':status'=>$status,':score'=>$score,':risk'=>$risk!==''?$risk:null,':summary'=>$metadata!==[]?Json::encode($metadata):null,':hash'=>$responseHash,':actor'=>$actor,':verification_id'=>$verificationId,':proof_hash'=>$responseHash]);
                 $r=$this->pdo->prepare("UPDATE loan_requests SET credit_validation_status=:status,credit_validation_provider=:provider,credit_validation_reference=:reference,credit_validation_verified_at=CASE WHEN :verified='verified' THEN NOW(6) ELSE NULL END,credit_validation_check_id=:check_id,credit_report_external_id=:external,credit_score=:score,credit_risk=:risk,row_version=row_version+1 WHERE id=:request_id");
-                $r->execute([':status'=>$status,':provider'=>$provider,':reference'=>$providerReference!==''?$providerReference:null,':verified'=>$status,':check_id'=>$checkId,':external'=>$providerReference!==''?$providerReference:null,':score'=>$score,':risk'=>$risk!==''?$risk:null,':request_id'=>$requestId]);
+                $r->execute([':status'=>$status,':provider'=>$provider,':reference'=>$providerReference!==''?$providerReference:null,':verified'=>$status,':check_id'=>$checkId,':external'=>$external!==''?$external:null,':score'=>$score,':risk'=>$risk!==''?$risk:null,':request_id'=>$requestId]);
             }
             $this->recordEvent($requestId,'request.verification.completed',$actor,'allowed',['verification_id'=>$verificationId,'verification_type'=>$type,'provider'=>$provider,'status'=>$status,'provider_reference'=>$providerReference,'response_hash'=>$responseHash]);
             $this->pdo->commit();
@@ -648,7 +768,12 @@ final class PdoLoanRepository
 
     public function queueOutbox(string $eventType,string $aggregateType,?string $aggregateId,string $destination,array $payload): void
     {
-        $json=Json::encode($payload);$s=$this->pdo->prepare("INSERT INTO integration_outbox (id,event_type,aggregate_type,aggregate_id,destination,payload_json,payload_hash,status) VALUES (:id,:event_type,:aggregate_type,:aggregate_id,:destination,:payload,:hash,'pending')");$s->execute([':id'=>RandomId::make(),':event_type'=>$eventType,':aggregate_type'=>$aggregateType,':aggregate_id'=>$aggregateId,':destination'=>$destination,':payload'=>$json,':hash'=>hash('sha256',$json)]);
+        $id=RandomId::make();$json=Json::encode($payload);$s=$this->pdo->prepare("INSERT INTO integration_outbox (id,event_type,aggregate_type,aggregate_id,destination,payload_json,payload_hash,status) VALUES (:id,:event_type,:aggregate_type,:aggregate_id,:destination,:payload,:hash,'pending')");$s->execute([':id'=>$id,':event_type'=>$eventType,':aggregate_type'=>$aggregateType,':aggregate_id'=>$aggregateId,':destination'=>$destination,':payload'=>$json,':hash'=>hash('sha256',$json)]);
+        if($destination==='notifications'&&$aggregateType==='loan_request'&&$aggregateId!==null){
+            $loan=$this->getRequest($aggregateId);
+            if($loan!==null)(new \Babanoell\Loans\Notification\NotificationRepository($this->pdo))->queue($id,$loan,(string)($payload['to']??($eventType==='request.granted'?'granted':$loan['status'])));
+        }
+
     }
 
 
@@ -714,8 +839,8 @@ final class PdoLoanRepository
         $global=array_values(array_filter(is_array($scope['global']??null)?$scope['global']:[],static fn($v)=>is_string($v)&&$v!==''));
         if($global===[]){
             $or=[];$uid=trim((string)($scope['user_id']??''));
-            if($uid!==''){$or[]='r.created_by_user_id=:scope_user_created';$or[]='r.applicant_user_id=:scope_user_applicant';$or[]='r.acceptor_user_id=:scope_user_acceptor';$or[]='r.assigned_bank_user_id=:scope_user_bank';$or[]='r.assigned_operations_user_id=:scope_user_ops';foreach(['created','applicant','acceptor','bank','ops']as$x)$params[':scope_user_'.$x]=$uid;}
-            foreach(['organizations'=>'organization_ref','branches'=>'branch_ref','merchants'=>'merchant_id','loan_requests'=>'id']as$key=>$column){$ids=array_values(array_unique(array_filter(is_array($scope[$key]??null)?$scope[$key]:[],static fn($v)=>is_string($v)&&$v!=='')));if($ids!==[]){$ph=[];foreach($ids as$i=>$id){$p=':scope_'.$key.'_'.$i;$ph[]=$p;$params[$p]=$id;}$or[]='r.'.$column.' IN ('.implode(',',$ph).')';}}
+            if($uid!==''){$or[]='r.created_by_user_id=:scope_user_created';$or[]='r.applicant_user_id=:scope_user_applicant';$or[]="(r.acceptor_user_id=:scope_user_acceptor AND r.status<>'draft')";$or[]='r.assigned_bank_user_id=:scope_user_bank';$or[]='r.assigned_operations_user_id=:scope_user_ops';foreach(['created','applicant','acceptor','bank','ops']as$x)$params[':scope_user_'.$x]=$uid;}
+            foreach(['organizations'=>'organization_ref','branches'=>'branch_ref','merchants'=>'merchant_id','loan_requests'=>'id']as$key=>$column){$ids=array_values(array_unique(array_filter(is_array($scope[$key]??null)?$scope[$key]:[],static fn($v)=>is_string($v)&&$v!=='')));if($ids!==[]){$ph=[];foreach($ids as$i=>$id){$p=':scope_'.$key.'_'.$i;$ph[]=$p;$params[$p]=$id;}$clause='r.'.$column.' IN ('.implode(',',$ph).')';$or[]=$key==='merchants'?"(r.status<>'draft' AND ".$clause.')':$clause;}}
             $orgs=array_values(array_unique(array_filter(is_array($scope['organizations']??null)?$scope['organizations']:[],static fn($v)=>is_string($v)&&$v!=='')));if($orgs!==[]){$ph=[];foreach($orgs as$i=>$id){$p=':scope_bank_org_'.$i;$ph[]=$p;$params[$p]=$id;}$or[]='r.bank_organization_ref IN ('.implode(',',$ph).')';}
             $where[]=$or===[]?'1=0':'('.implode(' OR ',$or).')';
         }
@@ -779,7 +904,7 @@ final class PdoLoanRepository
 
     public function listMarketplace(int$page,int$perPage,string$q='',?array$marketContext=null):array
     {
-        $page=max(1,$page);$perPage=max(1,min(100,$perPage));$where=["r.request_origin='applicant'","r.acceptor_assignment_mode='open_acceptor_marketplace'","r.marketplace_status IN ('open','claimed')"];$params=[];
+        $page=max(1,$page);$perPage=max(1,min(100,$perPage));$where=["r.status<>'draft'","r.request_origin='applicant'","r.acceptor_assignment_mode='open_acceptor_marketplace'","r.marketplace_status IN ('open','claimed')"];$params=[];
         if($marketContext!==null){[$predicate,$bindings]=\Babanoell\Loans\Domain\MarketplaceEligibility::sql($marketContext);$where[]=$predicate;$params+=$bindings;}
         if($q!==''){$where[]='(r.request_no LIKE :request_no_query OR r.request_public_summary LIKE :summary_query OR p.name LIKE :plan_query)';foreach([':request_no_query',':summary_query',':plan_query'] as $key)$params[$key]='%'.$q.'%';}$w=implode(' AND ',$where);
         $c=$this->pdo->prepare('SELECT COUNT(*) FROM loan_requests r LEFT JOIN installment_plans p ON p.id=r.plan_id LEFT JOIN installment_plan_versions v ON v.plan_id=p.id AND v.version=p.current_version WHERE '.$w);$c->execute($params);$total=(int)$c->fetchColumn();

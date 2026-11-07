@@ -6,6 +6,13 @@ final class ManagementController {
  public function __construct(private readonly \Closure$authFactory,private readonly \Closure$directoryFactory,private readonly \Closure$accessFactory){}
  public function roles(Request$r):JsonResponse{$a=$this->auth($r,'identity.roles.read');if($a instanceof JsonResponse)return$a;return new JsonResponse(200,['data'=>['items'=>$this->dir()->roles()]]);}
  public function permissions(Request$r):JsonResponse{$a=$this->auth($r,'identity.roles.read');if($a instanceof JsonResponse)return$a;return new JsonResponse(200,['data'=>['items'=>$this->dir()->permissions()]]);}
+ public function notificationContact(Request $request):JsonResponse {
+  $id=$request->json()['user_id']??'';
+  if(!is_string($id)||!preg_match('/^[a-f0-9]{26}$/D',$id))return ResponseMapper::error(422,'invalid_user','شناسه کاربر معتبر نیست.');
+  $user=$this->dir()->get($id);
+  if($user===null||$user['status']!=='active'||!empty($user['disabled_at']))return ResponseMapper::error(404,'contact_unavailable','اطلاعات تماس فعال موجود نیست.');
+  return new JsonResponse(200,['data'=>['contact'=>['id'=>$id,'display_name'=>$user['display_name'],'mobile'=>$user['mobile']]]]);
+ }
  public function users(Request$r):JsonResponse{$a=$this->auth($r,'identity.users.read');if($a instanceof JsonResponse)return$a;$q=$r->queryParams();$result=$this->dir()->listUsers((int)($q['page']??1),(int)($q['per_page']??25),trim((string)($q['q']??'')));return new JsonResponse(200,['data'=>$result,'meta'=>['pagination'=>\Babanoell\Auth\Http\Pagination::fromResult($result)]]);}
  public function createUser(Request$r):JsonResponse{$a=$this->auth($r,'identity.users.manage');if($a instanceof JsonResponse)return$a;try{return new JsonResponse(201,['data'=>['user'=>$this->dir()->create($r->json(),(string)$a['user_id'])]]);}catch(RuntimeException$e){return ResponseMapper::error(422,'validation_failed',$e->getMessage());}}
  public function activatePartner(Request$r):JsonResponse{

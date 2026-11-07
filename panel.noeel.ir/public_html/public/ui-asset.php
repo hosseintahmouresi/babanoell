@@ -15,6 +15,7 @@ $allowed = [
  'favicon-pale.png'=>['image/png','favicon-pale.png'],
  'apple-touch-icon.png'=>['image/png','apple-touch-icon.png'],
  'favicon.js'=>['application/javascript; charset=UTF-8','favicon.js'],
+ 'credit.js'=>['application/javascript; charset=UTF-8','credit.js'],
  'brand-logo.png'=>['image/png','brand-logo.png'],
  'YekanBakhFaNum-Regular.woff'=>['font/woff','YekanBakhFaNum-Regular.woff'],
  'YekanBakhFaNum-SemiBold.woff'=>['font/woff','YekanBakhFaNum-SemiBold.woff'],

@@ -11,7 +11,14 @@ final class MarketplaceEligibility
   $params=[];
   $categories="COALESCE(r.requested_activity_categories_json,JSON_ARRAY())";
   $locations="CASE WHEN JSON_LENGTH(COALESCE(r.requested_location_terms_json,JSON_ARRAY()))>0 THEN r.requested_location_terms_json ELSE COALESCE(r.requested_cities_json,JSON_ARRAY()) END";
-  $where=["p.status='active'"];
+  // Reference requests enter the public acceptor market only after final submission.
+  $where=["p.status='active'", "r.status NOT IN ('draft','rejected','cancelled','archived')"];
+  $days=max(1,min(90,(int)($context['claimed_cards_visible_days']??7)));
+  $claimed="r.marketplace_claimed_at>=DATE_SUB(UTC_TIMESTAMP(6),INTERVAL ".$days." DAY)";
+  if(($context['show_claimed_cards_to_other_acceptors']??true)!==true){
+   $claimed.=' AND r.marketplace_claimed_by_user_id=:market_claim_actor';$params[':market_claim_actor']=(string)($context['actor_user_id']??'');
+  }
+  $where[]="(r.marketplace_status='open' OR (r.marketplace_status='claimed' AND ".$claimed."))";
   $where[]=(!empty($context['require_category'])?'':'JSON_LENGTH('.$categories.')=0 OR ').self::any($categories,(array)($context['category_ids']??[]),'category',$params);
   $locationMatch=(!empty($context['require_location'])?'':'JSON_LENGTH('.$locations.')=0 OR ').self::any($locations,(array)($context['location_ids']??[]),'location',$params);
   $where[]="((r.requested_service_scope IN ('selected_locations','selected_cities') AND (".$locationMatch."))".

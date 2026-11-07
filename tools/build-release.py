@@ -109,24 +109,28 @@ def archive(path: Path, entries: dict[str, bytes], stamp: dt.datetime) -> None:
             target.writestr(info, data, compresslevel=9)
 
 
-def build(output: Path, ref: str | None = None, updater_bootstrap: bool = True) -> None:
+def build(output: Path, ref: str | None = None, updater_bootstrap: bool = True, base_ref: str | None = None) -> None:
     output.mkdir(parents=True, exist_ok=True)
     stamp = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
     commit = subprocess.check_output(['git', 'rev-parse', '--verify', (ref or 'HEAD') + '^{commit}'], cwd=ROOT, text=True).strip()
     dirty = False if ref else bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT))
     snapshots = {service: select_files(service, commit if ref else None) for service in SERVICES}
+    base_commit = subprocess.check_output(['git', 'rev-parse', '--verify', base_ref + '^{commit}'], cwd=ROOT, text=True).strip() if base_ref else None
+    baseline = {service: set(git_files(service, base_commit)) for service in SERVICES} if base_commit else {}
     ui_versions = {metadata(files)['ui'] for files in snapshots.values()}
     if len(ui_versions) != 1:
         raise ValueError('All service packages must use the same UI version')
     release_id = stamp.strftime('%Y%m%d-%H%M%S') + '-ui-' + next(iter(ui_versions))
     index = {'release_id': release_id, 'created_at_utc': stamp.isoformat(), 'source_commit': commit,
              'includes_uncommitted_work': dirty, 'deployment_order': list(SERVICES), 'packages': []}
+    if base_commit:
+        index['upgrade_base_commit'] = base_commit
     bootstrap = {}
     for service in SERVICES:
         files = snapshots[service]
         meta = metadata(files)
         migrations = sorted(name for name in files if name.startswith(('database/migrations/', 'migrations/')) and name.endswith(('.php', '.sql')))
-        new_migrations = sorted(name for name in migrations if Path(name).name.startswith('20261105'))
+        new_migrations = sorted(name for name in migrations if name not in baseline.get(service, set())) if base_commit else []
         manifest = {'service': service, **meta, 'api_version': 'v1', 'release_id': release_id,
                     'source_commit': commit, 'includes_uncommitted_work': dirty,
                     'created_at_utc': stamp.isoformat(), 'database_migration_required': bool(migrations),
@@ -168,6 +172,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--ref', help='Build only the committed files at this Git ref; leave the source tree unchanged.')
+    parser.add_argument('--base-ref', help='Installed source commit used to identify new migration files in the release index.')
     parser.add_argument('--skip-updater-bootstrap', action='store_true', help='Omit the legacy UI 2.16.0 updater compatibility files.')
     args = parser.parse_args()
-    build(args.output, args.ref, not args.skip_updater_bootstrap)
+    build(args.output, args.ref, not args.skip_updater_bootstrap, args.base_ref)

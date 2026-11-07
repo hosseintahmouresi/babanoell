@@ -13,6 +13,14 @@ final class EntityAccessService
  public function assert(string$entityType,string$entityId,string$bearer,Principal$principal):array
  {
   $entityType=strtolower(trim($entityType));$entityId=trim($entityId);
+  if($entityType==='contract'){
+   if($this->partners===null)throw new ApiException(503,'partners_unavailable','سرویس قرارداد برای بررسی دسترسی تنظیم نشده است.');
+   $r=$this->partners->contract($entityId,$bearer);
+   if(!$r->ok())throw new ApiException(in_array($r->status,[401,403,404],true)?$r->status:503,'contract_access_denied','دسترسی به این نسخهٔ قرارداد قابل تأیید نیست.');
+   $contract=$r->json['data']['contract']??null;
+   if(!is_array($contract)||($contract['id']??null)!==$entityId)throw new ApiException(503,'partners_response_invalid','پاسخ نسخهٔ قرارداد معتبر نیست.');
+   return $contract;
+  }
   if($entityType==='loan_request'){
    $r=$this->loans->request($entityId,$bearer);
    if($r->status===404)throw new ApiException(404,'entity_not_found','پرونده مرتبط پیدا نشد.');

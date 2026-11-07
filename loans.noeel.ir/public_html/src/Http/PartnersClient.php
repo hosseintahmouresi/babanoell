@@ -5,6 +5,8 @@ use Babanoell\Loans\App\Config;use Babanoell\Loans\Platform\ServiceAuth;
 final class PartnersClient
 {
  public function __construct(private readonly Config$config,private readonly HttpTransportInterface$transport){}
+ public function invitationLock(string $bearer):HttpResponse{return$this->call('GET','/api/v1/me/invitation-lock',$bearer);}
+ public function assignmentContext(string $merchant,string $plan,string $bearer):HttpResponse{return$this->call('GET','/api/v1/directory/merchants/'.rawurlencode($merchant).'/assignment-context?'.http_build_query(['plan_id'=>$plan]),$bearer);}
  public function health():HttpResponse{return$this->call('GET','/health',null);}
  public function myMerchant(string$bearer):HttpResponse{return$this->call('GET','/api/v1/me/merchant',$bearer);}
  public function marketplaceContext(string$bearer):HttpResponse{return$this->call('GET','/api/v1/marketplace/context',$bearer);}

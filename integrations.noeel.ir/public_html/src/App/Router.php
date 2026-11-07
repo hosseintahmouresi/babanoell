@@ -8,7 +8,7 @@ use Babanoell\Integrations\Provider\{Sms,Shahkar,Credit,Greenpay};
 use Babanoell\Integrations\Support\{Config,Response,ProviderException,Validation};
 use Babanoell\Integrations\Platform\{RequestContext,ServiceAuth,PayloadAuth};
 final class Router {
- public function __construct(private readonly \PDO $pdo){}
+ public function __construct(private readonly \PDO $pdo,private readonly ?\Babanoell\Integrations\Http\TransportInterface $creditTransport=null){}
  public function handle(Request $r):never {
   $method=$r->method();$path=$r->path();RequestContext::initialize($r->header('X-Request-Id'),'integrations');
   if($method==='GET'&&$path==='/health')Response::ok(['service'=>'integrations','version'=>(require dirname(__DIR__,2).'/config/version.php')['version'],'status'=>'ok']);
@@ -26,6 +26,7 @@ final class Router {
    'POST /api/v1/credit/verify'=>['loans'],
    'POST /api/v1/credit/status'=>['loans'],
    'POST /api/v1/credit/report'=>['loans'],
+   'POST /api/v1/credit/finalize'=>['loans'],
    'GET /api/v1/greenpay/readiness'=>['finance'],
    'GET /api/v1/greenpay/transfer-capabilities'=>['finance'],
    'POST /api/v1/greenpay/send-otp'=>['finance'],
@@ -35,8 +36,8 @@ final class Router {
   if(!in_array($caller,$routes[$route],true))Response::fail(403,'caller_not_allowed','سرویس فراخوان مجاز نیست.');
   try {
    $b=$r->json();$http=new Transport();$ops=new Operations($this->pdo,Config::requireSecret());$key=$r->header('Idempotency-Key')??'';
-   $run=function(string $operation,string $target,callable $handler,int $limit=5)use($ops,$caller,$key,$b):array {
-    $state=$ops->claim($caller,$operation,$key,$b,$target,$limit);
+   $run=function(string $operation,string $target,callable $handler,int $limit=5,int $window=3600)use($ops,$caller,$key,$b):array {
+    $state=$ops->claim($caller,$operation,$key,$b,$target,$limit,$window);
     if($state['state']==='replay')return $state['result']+['idempotent_replay'=>true];
     try{$result=$handler();$ops->finish($state['id'],'succeeded',$result);return $result;}
     catch(ProviderException $e){$ops->finish($state['id'],in_array($e->publicCode,['provider_timeout','provider_transport_failure','sms_delivery_unconfirmed','greenpay_provider_rejected'],true)?'uncertain':'failed',[],$e->publicCode);throw $e;}
@@ -52,14 +53,34 @@ final class Router {
      Response::ok($run('shahkar.verify',$n.'|'.$m,fn()=>(new Shahkar($http))->verify($m,$n),8));
     case 'POST /api/v1/credit/request':
      $n=Validation::national($b['national_code']??'');$m=Validation::mobile($b['mobile']??'');
-     Response::ok($run('credit.request',$n.'|'.$m,fn()=>(new Credit($http))->start($n,$m),5));
+     Response::ok($run('credit.request',$n.'|'.$m,fn()=>(new Credit($this->creditTransport??$http))->start($n,$m),5,900));
     case 'POST /api/v1/credit/verify':
      $ref=Validation::opaque($b['reference']??'');$otp=Validation::otp($b['otp']??'');
-     Response::ok($run('credit.verify',$ref,fn()=>(new Credit($http))->validate($ref,$otp),8));
+     Response::ok($run('credit.verify',$ref,fn()=>(new Credit($this->creditTransport??$http))->validate($ref,$otp),8,900));
     case 'POST /api/v1/credit/status':
-     $ref=Validation::opaque($b['reference']??'');Response::ok((new Credit($http))->status($ref));
+     $ref=Validation::opaque($b['reference']??'');Response::ok((new Credit($this->creditTransport??$http))->status($ref));
     case 'POST /api/v1/credit/report':
-     $ref=Validation::opaque($b['report_code']??'');Response::ok((new Credit($http))->report($ref));
+     $ref=Validation::opaque($b['report_code']??'');Response::ok((new Credit($this->creditTransport??$http))->report($ref));
+    case 'POST /api/v1/credit/finalize':
+     $ref=Validation::opaque($b['reference']??'');
+     // The reference implementation permits 180 status polls per fifteen minutes.
+     $poll=$ops->claim($caller,'credit.poll',hash('sha256','credit-poll|'.RequestContext::id()),$b,$ref,180,900);
+     if($poll['state']!=='new')throw new ProviderException('credit_poll_already_processed',409);
+     try{
+      $credit=new Credit($this->creditTransport??$http);$result=$credit->finalize($b,Config::requireSecret());
+      if(($result['ready']??false)!==true&&in_array($result['provider_status']??'', ['ReportGenerationFailed','ReportGeneratedButDataLost','GenerateReportFailed','ReportDataLost'],true)){
+       try{
+        $regenerate=$ops->claim($caller,'credit.regenerate',hash('sha256','credit-regenerate|'.$ref.'|'.gmdate('YmdH')),['reference'=>$ref],$ref,1);
+        if($regenerate['state']==='new'){
+         try{$credit->regenerate($ref);$ops->finish($regenerate['id'],'succeeded',['accepted'=>true]);$result['regenerated']=true;}
+         catch(\Throwable $error){$ops->finish($regenerate['id'],'uncertain',[],'credit_regeneration_unconfirmed');throw $error;}
+        }
+       }catch(ProviderException $error){if(!in_array($error->publicCode,['rate_limit_exceeded','prior_operation_not_confirmed'],true))throw $error;}
+      }
+      // Persist only the status; raw reports, identities and signed evidence are never operation logs.
+      $ops->finish($poll['id'],'succeeded',['ready'=>($result['ready']??false)===true,'provider_status'=>$result['provider_status']??'']);
+     }catch(\Throwable $error){$ops->finish($poll['id'],'failed',[],'credit_poll_failed');throw $error;}
+     Response::ok($result);
     case 'GET /api/v1/greenpay/readiness':Response::ok((new Greenpay($http))->readiness());
     case 'GET /api/v1/greenpay/transfer-capabilities':
      $executionKey=trim(Config::get('INTEGRATIONS_GREENPAY_EXECUTION_KEY'));

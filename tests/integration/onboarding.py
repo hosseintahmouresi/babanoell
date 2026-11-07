@@ -292,6 +292,12 @@ class CooperationWorkflow:
             "plan_id": self.plan_id, "requested_amount": 1000000, "installment_count": 6,
             "acceptor_assignment_mode": "open_acceptor_marketplace", "requested_service_scope": "all_country",
             "requested_activity_categories": ["goods"], "request_public_summary": "ONBOARDING-OPEN-" + kind,
+            "submit": True, "full_name": "Synthetic marketplace applicant", "father_name": "Synthetic",
+            "certificate_number": "1", "national_code": "0013543318", "mobile_number": "09121234567",
+            "postal_code": "1234567890", "birth_date": "1370/01/01", "occupation": "other",
+            "residential_address": "Synthetic address", "work_address": "Synthetic work",
+            "installment_interval": 1, "first_due_date": self.stack.first_due,
+            "order_items": [{"name": "Synthetic product", "qty": 1, "price": 1000000}],
         }, role="applicant", key="onboarding-market-" + kind, expected=201)["request"]
         market = self.call("partners", "/api/v1/marketplace/requests?q=ONBOARDING-OPEN-" + kind, role=role)
         self.check(any(row["id"] == available["id"] for row in market["items"]), "Newly configured acceptor sees eligible marketplace cases")

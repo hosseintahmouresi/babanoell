@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Babanoell\Integrations\Http;
 use Babanoell\Integrations\Support\ProviderException;
 /** Fixed base URLs only; no redirects; HTTPS and hostname allowlist to avoid SSRF. */
-final class Transport {
+final class Transport implements TransportInterface {
  public function request(string $method,string $url,?array $payload=null,array $headers=[],int $timeout=18,string $encoding='json',array $hosts=[]):array {
   $parts=parse_url($url);$host=is_array($parts)?strtolower((string)($parts['host']??'')):'';
   if(!is_array($parts)||strtolower((string)($parts['scheme']??''))!=='https'||$host===''||filter_var($host,FILTER_VALIDATE_IP)||isset($parts['user'])||isset($parts['pass'])||isset($parts['fragment'])||!in_array($host,$hosts,true))throw new ProviderException('provider_endpoint_not_allowed',503);

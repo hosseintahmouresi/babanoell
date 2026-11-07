@@ -13,7 +13,7 @@ final class RequestService
 {
     public function __construct(private readonly PdoLoanRepository $repo,private readonly CalculationService $calculations,private readonly ScheduleGenerator $schedule){}
 
-    public function create(string $actor,array $input,string $idempotencyKey='',string $origin=RequestOrigin::ADMIN): array
+    public function create(string $actor,array $input,string $idempotencyKey='',string $origin=RequestOrigin::ADMIN,?array $merchantContext=null): array
     {
         if($idempotencyKey!==''&&($old=$this->repo->findRequestByIdempotency($actor,$idempotencyKey))!==null)return$old;
         $origin=RequestOrigin::normalize($origin);
@@ -24,6 +24,9 @@ final class RequestService
         if($origin===RequestOrigin::MERCHANT){$d['acceptor_user_id']=$actor;}
         $planId=trim((string)($input['plan_id']??''));if($planId==='')throw new InvalidArgumentException('انتخاب طرح تسهیلات الزامی است.');
         $plan=$this->repo->getPlan($planId);if($plan===null)throw new InvalidArgumentException('طرح تسهیلات پیدا نشد.');if($plan['status']!=='active')throw new InvalidArgumentException('این طرح در حال حاضر فعال نیست.');
+        // Like the reference form, required credit evidence precedes final submission.
+        // Save the entered information as a private draft so the OTP/report flow has a stable owner and case.
+        if(\Babanoell\Loans\Domain\CreditValidationPolicy::required(['plan_rules'=>$plan['rules']??[]]))$submitted=false;
 
         $context=trim((string)($input['plan_context']??''));
         if($origin===RequestOrigin::APPLICANT)$context='applicant_request';
@@ -35,7 +38,12 @@ final class RequestService
         $merchantId=trim((string)($input['merchant_id']??''));
         if($merchantId!==''){
             if(!preg_match('/^[a-f0-9]{26}$/',$merchantId))throw new InvalidArgumentException('شناسه پذیرنده معتبر نیست.');
-            if(!$this->repo->merchantCanUsePlan($merchantId,$plan))throw new InvalidArgumentException('این طرح برای پذیرنده انتخاب‌شده فعال نیست.');
+            if($merchantContext!==null){
+                if(($merchantContext['merchant_id']??'')!==$merchantId||($merchantContext['plan_id']??'')!==$planId)throw new InvalidArgumentException('مرجع پذیرنده با درخواست مطابقت ندارد.');
+                $permission=$merchantContext['permission']??null;$allowed=is_array($permission)?($permission['status']??'')==='active':($plan['rules']['merchant_access_mode']??'all')!=='allowlist';
+            }else $allowed=$this->repo->merchantCanUsePlan($merchantId,$plan);
+            if(!$allowed)throw new InvalidArgumentException('این طرح برای پذیرنده انتخاب‌شده فعال نیست.');
+            if($origin===RequestOrigin::APPLICANT&&$merchantContext!==null)$d['acceptor_user_id']=(string)$merchantContext['owner_user_id'];
             $d['merchant_id']=$merchantId;
         }elseif((string)($plan['rules']['merchant_access_mode']??'all')==='allowlist'&&$context==='merchant_request'){
             throw new InvalidArgumentException('برای این طرح انتخاب پذیرنده مجاز الزامی است.');

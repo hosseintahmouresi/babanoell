@@ -39,10 +39,13 @@ final class MarketplaceConfiguration
  public static function normalize(array $input):array
  {
   $out=[];
-  foreach(['enabled'=>true,'require_category'=>true,'require_location'=>true,'allow_all_country'=>true]as$key=>$default){
+  foreach(['enabled'=>true,'require_category'=>true,'require_location'=>true,'allow_all_country'=>true,'enable_acceptor_invitation_links'=>true,'allow_override_existing_invitation_lock'=>false,'show_claimed_cards_to_other_acceptors'=>true]as$key=>$default){
    $v=$input[$key]??$default;$flag=filter_var($v,FILTER_VALIDATE_BOOLEAN,FILTER_NULL_ON_FAILURE);
    if($flag===null)throw new InvalidArgumentException('تنظیم روشن/خاموش بازار معتبر نیست.');
    $out[$key]=$flag;
+  }
+  foreach(['invitation_lock_days'=>[30,365],'claimed_cards_visible_days'=>[7,90]] as $key=>[$default,$max]){
+   $value=filter_var($input[$key]??$default,FILTER_VALIDATE_INT);if($value===false||$value<1||$value>$max)throw new InvalidArgumentException('مدت اعتبار دعوت یا نمایش پرونده معتبر نیست.');$out[$key]=$value;
   }
   foreach(['categories','locations']as$kind){
    $rows=$input[$kind]??[];if(!is_array($rows)||!array_is_list($rows)||count($rows)>2500)throw new InvalidArgumentException('فهرست دسته‌ها یا موقعیت‌ها معتبر نیست.');
@@ -103,7 +106,7 @@ final class MarketplaceConfiguration
   $categories=array_column(array_filter($catalog['categories'],static fn($t)=>$t['active']),'id');
   $matching=self::matchingLocations((array)($profile['location_ids']??[]),$catalog['locations']);
   return ['enabled'=>$catalog['enabled']&&is_array($merchant)&&$merchant['status']==='active'&&$merchant['cooperation_status']==='approved'&&($profile['enabled']??true)===true,
-   'merchant_id'=>$merchant['id']??null,'require_category'=>$catalog['require_category'],'require_location'=>$catalog['require_location'],
+   'merchant_id'=>$merchant['id']??null,'show_claimed_cards_to_other_acceptors'=>$catalog['show_claimed_cards_to_other_acceptors'],'claimed_cards_visible_days'=>$catalog['claimed_cards_visible_days'],'require_category'=>$catalog['require_category'],'require_location'=>$catalog['require_location'],
    'allow_all_country'=>$catalog['allow_all_country'],'category_ids'=>array_values(array_intersect($categories,(array)($profile['category_ids']??[]))),
    'location_ids'=>$matching,'max_facility_amount'=>(float)($profile['max_facility_amount']??0),'plan_permissions'=>$permissions];
  }

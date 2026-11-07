@@ -20,8 +20,13 @@ final class DocumentService
   $type=strtolower(trim((string)($input['document_type']??'')));
   $entityType=strtolower(trim($entityType));
   $canUploadReceipt=$entityType==='settlement_cycle'&&$type==='settlement_receipt'&&$p->can('finance.receipts.manage');
-  if(!$p->can('documents.upload')&&!$canUploadReceipt)throw new ApiException(403,'permission_denied','مجوز بارگذاری مدارک برای این حساب فعال نیست.');
+  $canUploadContract=$entityType==='contract'&&$type==='signed_contract'&&($p->can('loans.requests.contract')||$p->can('partners.cooperation.manage'));
+  if(!$p->can('documents.upload')&&!$canUploadReceipt&&!$canUploadContract)throw new ApiException(403,'permission_denied','مجوز بارگذاری مدارک برای این حساب فعال نیست.');
   $entity=$this->access->assert($entityType,$entityId,$bearer,$p);
+  if($entityType==='contract'){
+   if($type!=='signed_contract'||($entity['mode']??'')!=='physical'||!in_array($entity['status']??'',['pending','sent','viewed'],true))throw new ApiException(422,'physical_contract_upload_denied','فایل امضاشده فقط به نسخهٔ فیزیکی در انتظار امضا اضافه می‌شود.');
+   if(!$p->can('documents.upload')&&!$p->can(($entity['subject_type']??'')==='cooperation_request'?'partners.cooperation.manage':'loans.requests.contract'))throw new ApiException(403,'permission_denied','بارگذاری برای این نوع قرارداد مجاز نیست.');
+  }
   $catalog=DocumentCatalog::get($type);
   $isGuarantorDocument=str_starts_with($type,'guarantor_');
   if($isGuarantorDocument&&$entityType!=='loan_guarantor')throw new ApiException(422,'guarantor_document_entity_required','مدارک ضامن باید مستقیماً به شناسه همان ضامن متصل شوند.');

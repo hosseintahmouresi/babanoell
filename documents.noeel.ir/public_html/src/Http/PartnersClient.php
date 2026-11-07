@@ -6,6 +6,7 @@ final class PartnersClient
 {
  public function __construct(private readonly Config$config,private readonly HttpTransportInterface$transport){}
  public function health():HttpResponse{return$this->call('GET','/health',null,null);}
+ public function contract(string$id,string$bearer):HttpResponse{return$this->call('GET','/api/v1/contracts/'.rawurlencode($id),$bearer,null);}
  public function cooperation(string$id,string$bearer):HttpResponse{return$this->call('GET','/api/v1/cooperation/requests/'.rawurlencode($id),$bearer,null);}
  public function merchant(string$id,string$bearer):HttpResponse{return$this->call('GET','/api/v1/merchants/'.rawurlencode($id),$bearer,null);}
  public function consumeContractArtifact(string$id,string$token,string$sha):HttpResponse{return$this->call('POST','/api/v1/contracts/'.rawurlencode($id).'/artifact-handoff/consume',null,['handoff_token'=>$token,'sha256'=>$sha]);}

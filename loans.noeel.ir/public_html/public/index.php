@@ -89,7 +89,7 @@ try{
         $bankCreditIntegration=new BankCreditService($repository);
         if($im[2]==='context'&&$method==='GET')JsonResponse::ok(['verification'=>$bankCreditIntegration->integrationContext($im[1])]);
         if($im[2]==='result'&&$method==='POST'){
-            $verification=$bankCreditIntegration->complete($im[1],'service:integrations',$request->json());
+            $payload=$request->json();$context=$repository->getVerificationRequest($im[1]);if(($context['provider']??'')==='ics24'&&($payload['status']??'')==='verified')$verification=$bankCreditIntegration->completeProviderReport($im[1],$payload,$config->serviceAuthSecret());else $verification=$bankCreditIntegration->complete($im[1],'service:integrations',$payload);
             $taskServiceIntegration=new TaskService(new TaskRepository($pdo),$repository);
             $taskServiceIntegration->syncForRequest((string)$verification['request_id'],'service:integrations','request.verification.completed');
             JsonResponse::ok(['verification'=>$verification]);
@@ -143,9 +143,10 @@ try{
     $canReadRecord=static fn(array $record):bool=>$recordPolicy->canRead($record);
     $primaryRole=(string)($roles[0]??'');
     $loadCase=static function(string $id)use($repository,$canReadRecord):array{$loan=$repository->getRequest($id);if($loan===null)JsonResponse::error(404,'request_not_found','پرونده پیدا نشد.');if(!$canReadRecord($loan))JsonResponse::error(403,'record_access_denied','دسترسی به این پرونده مجاز نیست.');return$loan;};
-    $visibleTransitions=static function(array $loan)use($workflow,$principal,$isBankExpert):array{
+    $visibleTransitions=static function(array $loan)use($workflow,$principal,$isBankExpert,$repository):array{
         if(!$principal->can('loans.requests.transition'))return[];
         $allowed=array_values(array_filter($workflow->allowed($loan),static fn(array $item):bool=>(string)($item['code']??'')!=='granted'));
+        if(in_array((string)($loan['status']??''),['draft','need_correction'],true)&&!$repository->creditSubmissionState($loan)['ready'])$allowed=array_values(array_filter($allowed,static fn(array $item):bool=>!in_array((string)($item['code']??''),['submitted','under_review'],true)));
         if(!$isBankExpert)return$allowed;
         $from=(string)($loan['status']??'');
         $bankAllowed=$from==='expert_approved'
@@ -153,6 +154,36 @@ try{
             :($from==='docs_verified'?['docs_completion','rejected']:[]);
         return array_values(array_filter($allowed,static fn(array $item):bool=>in_array((string)($item['code']??''),$bankAllowed,true)));
     };
+
+    $notificationRepository=new \Babanoell\Loans\Notification\NotificationRepository($pdo);
+    if($path==='/api/v1/notifications'&&$method==='GET')JsonResponse::ok($notificationRepository->inbox($principal->userId,(int)($request->query()['page']??1)));
+    if(preg_match('#^/api/v1/notifications/([a-f0-9]{26})/read$#',$path,$notice)&&$method==='POST'){
+        $notificationRepository->markRead($notice[1],$principal->userId);JsonResponse::ok(['read'=>true]);
+    }
+    if(str_starts_with($path,'/api/v1/admin/notifications')){
+        if(!$isPlatformAdmin)JsonResponse::error(403,'notification_admin_denied','مدیریت ارسال‌ها فقط برای مدیر سامانه مجاز است.');
+        if($path==='/api/v1/admin/notifications/settings'){
+            if($method==='GET')JsonResponse::ok($notificationRepository->settings());
+            if($method==='POST'){
+                $body=$request->json();
+                try{$saved=$notificationRepository->saveSettings((int)($body['revision']??0),(array)($body['settings']??[]),$principal->userId);}
+                catch(\DomainException $error){JsonResponse::error(409,'notification_revision_conflict',$error->getMessage());}
+                $repository->recordEvent(null,'notification.settings.updated',$principal->userId,'allowed',['revision'=>$saved['revision']]);JsonResponse::ok($saved);
+            }
+        }
+        if($path==='/api/v1/admin/notifications/deliveries'&&$method==='GET')JsonResponse::ok($notificationRepository->deliveries((int)($request->query()['page']??1)));
+        if(preg_match('#^/api/v1/admin/notifications/deliveries/([a-f0-9]{26})/retry$#',$path,$delivery)&&$method==='POST'){
+            try{$notificationRepository->retry($delivery[1],$principal->userId);}
+            catch(\DomainException $error){JsonResponse::error(409,'notification_retry_denied',$error->getMessage());}
+            JsonResponse::ok(['queued'=>true]);
+        }
+        if(preg_match('#^/api/v1/admin/notifications/deliveries/([a-f0-9]{26})/reconcile$#',$path,$delivery)&&$method==='POST'){
+            try{$notificationRepository->reconcile($delivery[1],$principal->userId,$request->json());}
+            catch(\DomainException $error){JsonResponse::error(409,'notification_reconciliation_denied',$error->getMessage());}
+            JsonResponse::ok(['reconciled'=>true]);
+        }
+        JsonResponse::error(404,'notification_route_not_found','مسیر اعلان پیدا نشد.');
+    }
 
     if($path==='/api/v1/meta/statuses'&&$method==='GET'){$require('loans.requests.read');JsonResponse::ok(['statuses'=>$statusMachine->labels()]);}
     if($path==='/api/v1/meta/plans'&&$method==='GET'){$require('loans.plans.read');JsonResponse::ok(['statuses'=>['draft','active','inactive','archived'],'occupations'=>PlanRules::OCCUPATIONS,'visibility_contexts'=>PlanRules::VISIBILITY_CONTEXTS,'required_documents'=>\Babanoell\Loans\Domain\RequiredDocumentCatalog::all(),'contract_modes'=>PlanRules::CONTRACT_MODES]);}
@@ -239,11 +270,11 @@ try{
         $q=$request->query();$global=$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global');$first=$repository->bankCases(1,100,$principal->userId,$global,$q);$total=(int)($first['total']??0);if($total>5000)JsonResponse::error(413,'bank_export_too_large','تعداد پرونده‌ها برای یک خروجی بیش از ۵۰۰۰ است. فیلترهای دقیق‌تری اعمال کنید.');$items=(array)($first['items']??[]);$pages=(int)ceil($total/100);for($page=2;$page<=$pages;$page++){$chunk=$repository->bankCases($page,100,$principal->userId,$global,$q);foreach((array)($chunk['items']??[])as$item)$items[]=$item;}JsonResponse::ok(['items'=>$items,'total'=>$total,'truncated'=>false]);
     }
 
-    $loadMarketContext=static function()use($partnersClient,$request):array{
+    $loadMarketContext=static function()use($partnersClient,$request,$principal):array{
         $response=$partnersClient->marketplaceContext((string)$request->bearer());
         $context=$response->json['data']['context']??null;
         if(!$response->ok()||!is_array($context)||!is_bool($context['enabled']??null)||!is_bool($context['can_claim']??null))JsonResponse::error(503,'partners_unavailable','قواعد بازار از سرویس شرکا قابل تأیید نیست؛ دوباره تلاش کنید.');
-        return $context;
+        $context['actor_user_id']=$principal->userId;return $context;
     };
     if($path==='/api/v1/marketplace/catalog'&&$method==='GET'){
         $response=$partnersClient->marketplaceCatalog((string)$request->bearer());
@@ -287,13 +318,28 @@ try{
             $origin=RequestOrigin::MERCHANT;$body['acceptor_user_id']=$principal->userId;$body['plan_context']='merchant_request';unset($body['applicant_user_id']);
         }
         elseif(!$isPlatformAdmin){unset($body['applicant_user_id'],$body['acceptor_user_id']);}
+        $merchantContext=null;$replay=$key!==''&&$repository->findRequestByIdempotency($principal->userId,$key)!==null;
+        if($origin===RequestOrigin::APPLICANT&&!$replay){
+            $lockResponse=$partnersClient->invitationLock((string)$request->bearer());
+            if(!$lockResponse->ok()||!array_key_exists('lock',$lockResponse->json['data']??[]))JsonResponse::error(503,'invitation_lock_unavailable','وضعیت دعوت پذیرنده قابل تأیید نیست؛ کمی بعد دوباره تلاش کنید.');
+            $lock=$lockResponse->json['data']['lock'];
+            if(is_array($lock)){
+                if(($lock['status']??'')!=='active'||($lock['cooperation_status']??'')!=='approved')JsonResponse::error(409,'invited_merchant_unavailable','پذیرندهٔ دعوت‌کننده فعلاً فعال نیست؛ با پشتیبانی تماس بگیرید.');
+                $body['merchant_id']=$lock['merchant_id'];$body['acceptor_assignment_mode']='applicant_selected_acceptor';
+            }
+        }
+        if(!$replay&&trim((string)($body['merchant_id']??''))!==''){
+            $authority=$partnersClient->assignmentContext((string)$body['merchant_id'],(string)($body['plan_id']??''),(string)$request->bearer());
+            $merchantContext=$authority->json['data']['context']??null;
+            if(!$authority->ok()||!is_array($merchantContext))JsonResponse::error(in_array($authority->status,[403,404],true)?422:503,'selected_merchant_unavailable','پذیرندهٔ انتخابی فعال یا قابل تأیید نیست.');
+        }
         if($origin===RequestOrigin::APPLICANT&&($body['acceptor_assignment_mode']??'')==='open_acceptor_marketplace'&&($key===''||$repository->findRequestByIdempotency($principal->userId,$key)===null)){
             $catalogResponse=$partnersClient->marketplaceCatalog((string)$request->bearer());$catalog=$catalogResponse->json['data']['catalog']??null;
             if(!$catalogResponse->ok()||!is_array($catalog))JsonResponse::error(503,'marketplace_catalog_unavailable','فهرست بازار برای بررسی درخواست در دسترس نیست.');
             \Babanoell\Loans\Domain\MarketplaceRequest::validate($body,$catalog);
         }
         unset($body['request_origin']);
-        JsonResponse::ok(['request'=>$requestService->create($principal->userId,$body,$key,$origin)],201);
+        JsonResponse::ok(['request'=>$requestService->create($principal->userId,$body,$key,$origin,$merchantContext)],201);
     }
 
 
@@ -363,6 +409,53 @@ try{
         }
         $updated=$workflow->transition($m[1],$principal->userId,$next,trim((string)($b['reason']??'')),array_key_exists('assigned_bank_user_id',$b)?(string)$b['assigned_bank_user_id']:null,'api');$taskService->syncForRequest($m[1],$principal->userId,'request.transition');JsonResponse::ok(['request'=>$updated]);
     }
+    // Applicant/merchant consent and reports share the same server-owned evidence as the bank desk.
+    if(preg_match('#^/api/v1/requests/([a-f0-9]{26})/credit(?:/(.*))?$#',$path,$creditRoute)){
+        $require('loans.requests.read');$loan=$loadCase($creditRoute[1]);$suffix=$creditRoute[2]??'';
+        $own=in_array($principal->userId,array_map('strval',[$loan['created_by_user_id']??'', $loan['applicant_user_id']??'', $loan['acceptor_user_id']??'']),true);
+        $bank=$principal->can('loans.requests.bank_review')||$principal->can('loans.requests.workflow_admin')||$isPlatformAdmin;
+        if(!$own&&!$bank)JsonResponse::error(403,'credit_access_denied','دسترسی به اعتبارسنجی این پرونده مجاز نیست.');
+        if(!$own&&$isBankExpert&&trim((string)($loan['assigned_bank_user_id']??''))!==$principal->userId)JsonResponse::error(403,'credit_access_denied','پرونده به کارشناس بانک دیگری ارجاع شده است.');
+        if($suffix===''&&$method==='GET')JsonResponse::ok(['request'=>$loan]+$bankCredit->snapshot($creditRoute[1]));
+        if(preg_match('#^reports/([a-f0-9]{26})$#',$suffix,$reportMatch)&&$method==='GET'){
+            $evidence=$repository->creditReportEvidence($reportMatch[1]);
+            if($evidence===null||(string)$evidence['request_id']!==$creditRoute[1])JsonResponse::error(404,'credit_report_not_found','گزارش این پرونده موجود نیست.');
+            $canonical=(string)$evidence['canonical_json'];
+            if(!hash_equals((string)$evidence['report_sha256'],hash('sha256',$canonical)))JsonResponse::error(503,'credit_report_integrity_failed','صحت فایل گزارش قابل تأیید نیست.');
+            $repository->recordEvent($creditRoute[1],'request.credit_report.viewed',$principal->userId,'allowed',['verification_id'=>$reportMatch[1],'report_sha256'=>$evidence['report_sha256']]);
+            JsonResponse::ok(['report'=>json_decode($canonical,true,64,JSON_THROW_ON_ERROR),'canonical_json'=>$canonical,
+                'report_code'=>$evidence['report_code'],'sha256'=>$evidence['report_sha256'],'verified_at'=>$evidence['verified_at'],'valid_until'=>$evidence['valid_until']]);
+        }
+        if($method!=='POST')JsonResponse::error(404,'route_not_found','مسیر اعتبارسنجی پیدا نشد.');
+        if(($own&&!$bank&&!$principal->can('loans.requests.update'))
+            ||in_array((string)$loan['status'],['granted','archived','cancelled'],true)
+            ||($own&&!$bank&&!in_array((string)$loan['status'],['draft','need_correction'],true)))JsonResponse::error(403,'credit_action_denied','اعتبارسنجی در این مرحله قابل تغییر نیست.');
+        if($suffix==='request'){
+            $key=\Babanoell\Loans\Http\IdempotencyKey::normalize($request->header('idempotency-key'));
+            $verification=$bankCredit->queue($creditRoute[1],$principal->userId,'credit_report','ics24',$key);
+            JsonResponse::ok(['verification'=>$verification],201);
+        }
+        if(preg_match('#^verifications/([a-f0-9]{26})/(dispatch|recover|otp|refresh)$#',$suffix,$creditAction)){
+            $verification=$repository->getVerificationRequest($creditAction[1]);
+            if($verification===null||(string)$verification['request_id']!==$creditRoute[1]||$verification['verification_type']!=='credit_report'||$verification['provider']!=='ics24')JsonResponse::error(404,'verification_not_found','درخواست اعتبارسنجی پیدا نشد.');
+            $provider=new \Babanoell\Loans\Service\ProviderVerificationService($repository,$bankCredit,$integrationsClient,$config->serviceAuthSecret());
+            try{
+                $result=match($creditAction[2]){
+                    'dispatch'=>$provider->dispatch($creditRoute[1],$creditAction[1],$principal->userId),
+                    'recover'=>$provider->dispatch($creditRoute[1],$creditAction[1],$principal->userId,true),
+                    'otp'=>$provider->verifyOtp($creditRoute[1],$creditAction[1],$principal->userId,(string)($request->json()['otp']??''),\Babanoell\Loans\Http\IdempotencyKey::normalize($request->header('idempotency-key'))),
+                    'refresh'=>$provider->refresh($creditRoute[1],$creditAction[1],$principal->userId),
+                };
+                $taskService->syncForRequest($creditRoute[1],$principal->userId,'request.verification.provider_updated');
+                JsonResponse::ok($result);
+            }catch(RuntimeException $error){
+                $code=$error->getMessage();$http=in_array($code,['integrations_unavailable','integrations_response_invalid'],true)?503:409;
+                JsonResponse::error($http,'verification_provider_'.$code,'اعتبارسنجی کامل نشد؛ وضعیت ذخیره شده است و ارسال دوباره به ارائه‌دهنده خودکار انجام نمی‌شود.');
+            }
+        }
+        JsonResponse::error(404,'route_not_found','مسیر اعتبارسنجی پیدا نشد.');
+    }
+
     if(preg_match('#^/api/v1/requests/([a-f0-9]{26})/credit-validation$#',$path,$m)){
         $loan=$loadCase($m[1]);
         if($method==='GET'){$require('loans.requests.read');JsonResponse::ok($creditValidation->snapshot($m[1]));}
@@ -381,7 +474,7 @@ try{
         $loan=$loadCase($bridge[1]);
         if(!$principal->can('loans.requests.bank_review')&&!$principal->can('loans.requests.workflow_admin')&&!$isPlatformAdmin)JsonResponse::error(403,'bank_credit_denied','اجازه اجرای اعتبارسنجی ندارید.');
         if($isBankExpert&&trim((string)($loan['assigned_bank_user_id']??''))!==$principal->userId)JsonResponse::error(403,'bank_credit_denied','این پرونده به کارشناس بانک دیگری ارجاع شده است.');
-        $bridgeService=new \Babanoell\Loans\Service\ProviderVerificationService($repository,$bankCredit,$integrationsClient);
+        $bridgeService=new \Babanoell\Loans\Service\ProviderVerificationService($repository,$bankCredit,$integrationsClient,$config->serviceAuthSecret());
         try {
             if($bridge[3]==='dispatch'){$out=$bridgeService->dispatch($bridge[1],$bridge[2],$principal->userId);$taskService->syncForRequest($bridge[1],$principal->userId,'request.verification.provider_updated');JsonResponse::ok($out);}
             if($bridge[3]==='otp'){
@@ -389,7 +482,7 @@ try{
                 if($key==='')JsonResponse::error(422,'idempotency_required','کلید یکتای عملیات الزامی است.');
                 $out=$bridgeService->verifyOtp($bridge[1],$bridge[2],$principal->userId,(string)($b['otp']??''),$key);JsonResponse::ok($out);
             }
-            JsonResponse::ok($bridgeService->refresh($bridge[1],$bridge[2],$principal->userId));
+            $out=$bridgeService->refresh($bridge[1],$bridge[2],$principal->userId);$taskService->syncForRequest($bridge[1],$principal->userId,'request.verification.provider_updated');JsonResponse::ok($out);
         }catch(RuntimeException $e){
             $code=$e->getMessage();$http=in_array($code,['integrations_unavailable','integrations_response_invalid'],true)?503:409;
             JsonResponse::error($http,'verification_provider_'.$code,'درخواست ارائه‌دهنده نیازمند بررسی است؛ برای جلوگیری از تکرار عملیات، ارسال مجدد خودکار انجام نمی‌شود.');
@@ -473,7 +566,7 @@ try{
     if(preg_match('#^/api/v1/requests/([a-f0-9]{26})/guarantors$#',$path,$m)){
         $loan=$repository->getRequest($m[1]);if($loan===null)JsonResponse::error(404,'request_not_found','پرونده پیدا نشد.');if(!$canReadRecord($loan))JsonResponse::error(403,'record_access_denied','دسترسی به این پرونده مجاز نیست.');
         if($method==='GET'){$require('loans.requests.read');JsonResponse::ok(['guarantors'=>$repository->guarantors($m[1])]);}
-        if(in_array($method,['PUT','POST'],true)){$require('loans.requests.update');$b=$request->json();$guarantors=InputValidator::guarantors($b['guarantors']??[]);$repository->replaceGuarantors($m[1],$guarantors,$principal->userId);JsonResponse::ok(['guarantors'=>$repository->guarantors($m[1])]);}
+        if(in_array($method,['PUT','POST'],true)){$require('loans.requests.update');if($isSelfService&&!in_array((string)$loan['status'],['draft','need_correction','docs_completion'],true))JsonResponse::error(403,'guarantor_edit_denied','ویرایش ضامن‌ها فقط در مرحلهٔ تکمیل اطلاعات یا رفع نقص مجاز است.');$b=$request->json();$guarantors=InputValidator::guarantors($b['guarantors']??[]);$repository->replaceGuarantors($m[1],$guarantors,$principal->userId);JsonResponse::ok(['guarantors'=>$repository->guarantors($m[1])]);}
     }
     JsonResponse::error(404,'route_not_found','مسیر API در این نسخه وجود ندارد.');
 }catch(AccessDeniedException $e){JsonResponse::error(403,'permission_denied',$e->getMessage());}

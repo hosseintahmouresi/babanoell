@@ -132,13 +132,16 @@ class Stack:
 
     def prepare(self):
         (self.root / "sessions").mkdir(mode=0o700)
+        (self.root / "sql-tmp").mkdir(mode=0o700)
         init = [str(self.maria / "bin/mariadb-install-db"), "--no-defaults",
                 "--basedir=" + str(self.maria), "--datadir=" + str(self.root / "data"),
+                "--tmpdir=" + str(self.root / "sql-tmp"),
                 "--auth-root-authentication-method=socket", "--skip-test-db"]
         self.command(init, "MariaDB initialization")
         db = self.spawn([str(self.maria / "sbin/mariadbd"), "--no-defaults",
                          "--basedir=" + str(self.maria), "--datadir=" + str(self.root / "data"),
                          "--socket=" + self.socket, "--pid-file=" + str(self.root / "mysql.pid"),
+                         "--tmpdir=" + str(self.root / "sql-tmp"),
                          "--plugin-dir=" + str(self.maria / "lib/mysql/plugin"),
                          "--lc-messages-dir=" + str(self.maria / "share/mariadb"),
                          "--skip-networking", "--innodb-buffer-pool-size=128M",

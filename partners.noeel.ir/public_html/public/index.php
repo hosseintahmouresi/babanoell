@@ -98,7 +98,7 @@ try{
   if($revisions===[]||(int)$c['revision']!==max(array_column($revisions,'revision'))||$c['mode']!=='digital'||!in_array($c['status'],['pending','sent','viewed'],true))JsonResponse::error(409,'contract_not_signable','این نسخه قرارداد قابل امضا نیست.');
   $issued=$contractService->issueLink($cm[1],$principal->userId);JsonResponse::ok(['public_path'=>'/contract/'.$issued['token']]);
  }
- if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/sign-physical$#',$path,$cm)&&$method==='POST'){$c=$contractRepository->contract($cm[1]);if($c===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');if(!$canManageContract($c))JsonResponse::error(403,'contract_manage_denied','ثبت امضای این قرارداد مجاز نیست.');JsonResponse::ok(['contract'=>$contractService->markPhysical($cm[1],$principal->userId,$request->clientIp(),$request->userAgent())]);}
+ if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/sign-physical$#',$path,$cm)&&$method==='POST'){$c=$contractRepository->contract($cm[1]);if($c===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');if(!$canManageContract($c))JsonResponse::error(403,'contract_manage_denied','ثبت امضای این قرارداد مجاز نیست.');JsonResponse::ok(['contract'=>$contractService->markPhysical($cm[1],$principal->userId,$request->clientIp(),$request->userAgent(),$request->json(),$bearer)]);}
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/artifact/retry$#',$path,$cm)&&$method==='POST'){$c=$contractRepository->contract($cm[1]);if($c===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');if(!$canManageContract($c))JsonResponse::error(403,'contract_manage_denied','تلاش مجدد ذخیره قرارداد مجاز نیست.');JsonResponse::ok(['contract'=>$contractService->retryArtifact($cm[1])]);}
  if($path==='/api/v1/stats'&&$method==='GET'){$require('partners.merchants.read');JsonResponse::ok($repository->stats());}
  if($path==='/api/v1/admin/import-loans-shadow'&&$method==='POST'){if(!$principal->isSuperAdmin()&&!in_array('admin',$roles,true))JsonResponse::error(403,'permission_denied','انتقال داده‌های قبلی فقط برای مدیر سامانه مجاز است.');JsonResponse::ok(['import'=>$partnerService->importLoansShadow($principal->userId,$bearer)]);}
@@ -106,6 +106,23 @@ if($path==='/api/v1/directory/merchants'&&$method==='GET'){$require('partners.di
 if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$method==='GET'){$require('partners.directory.read');$merchant=$repository->getMerchant($m[1]);if($merchant===null||(string)$merchant['status']!=='active')JsonResponse::error(404,'merchant_not_found','پذیرنده فعال پیدا نشد.');JsonResponse::ok(['merchant'=>['id'=>(string)$merchant['id'],'code'=>(string)$merchant['code'],'name'=>(string)$merchant['name'],'legal_name'=>(string)($merchant['legal_name']??''),'credit_level'=>(string)($merchant['credit_level']??'')]]);}
 
  $marketplaceConfig=new \Babanoell\Partners\Marketplace\MarketplaceConfiguration($pdo);
+ $invitationService=new \Babanoell\Partners\Marketplace\InvitationService($pdo,$marketplaceConfig);
+ if($path==='/api/v1/me/invitation'&&$method==='POST'){
+  if(!is_array($ownMerchant)||($ownMerchant['owner_user_id']??'')!==$principal->userId)JsonResponse::error(403,'invitation_owner_required','فقط مالک پذیرنده می‌تواند کد دعوت دریافت کند.');
+  JsonResponse::ok(['invitation'=>$invitationService->code($ownMerchant)]);
+ }
+ if($path==='/api/v1/me/invitation-lock'&&$method==='GET')JsonResponse::ok(['lock'=>$invitationService->current($principal->userId)]);
+ if($path==='/api/v1/invitations/apply'&&$method==='POST'){
+  if(!in_array('applicant',$roles,true))JsonResponse::error(403,'applicant_required','این کد برای ثبت درخواست شخصی متقاضی است.');
+  JsonResponse::ok(['lock'=>$invitationService->apply($principal->userId,trim((string)($request->json()['code']??'')))]);
+ }
+ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})/assignment-context$#',$path,$assignment)&&$method==='GET'){
+  $require('loans.requests.create');$merchant=$repository->getMerchant($assignment[1]);
+  if($merchant===null||$merchant['status']!=='active'||$merchant['cooperation_status']!=='approved')JsonResponse::error(404,'merchant_not_active','پذیرنده فعال و تأییدشده پیدا نشد.');
+  $permission=null;$plan=(string)($request->query()['plan_id']??'');
+  foreach($repository->planPermissions($assignment[1]) as $item)if(($item['plan_id']??'')===$plan){$permission=$item;break;}
+  JsonResponse::ok(['context'=>['merchant_id'=>$merchant['id'],'owner_user_id'=>$merchant['owner_user_id'],'plan_id'=>$plan,'permission'=>$permission]]);
+ }
  if($path==='/api/v1/marketplace/catalog'&&$method==='GET'){
   if(!$principal->can('loans.requests.create')&&!$principal->can('partners.marketplace.read')&&!$principal->can('partners.merchants.read'))JsonResponse::error(403,'permission_denied','دسترسی به فهرست بازار مجاز نیست.');
   JsonResponse::ok(['catalog'=>$marketplaceConfig->current()]);

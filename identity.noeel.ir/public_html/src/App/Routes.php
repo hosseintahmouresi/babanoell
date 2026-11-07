@@ -81,6 +81,14 @@ final class Routes
         $router->post('/api/v1/auth/logout', [$authController, 'logout']);
         $router->post('/api/v1/auth/refresh', [$authController, 'refresh']);
         $router->get('/api/v1/auth/me', [$meController, 'show']);
+        $router->post('/api/v1/services/notification-contact', static function(Request $request) use ($container,$config): JsonResponse {
+            $caller=\Babanoell\Auth\Platform\RequestContext::callerService();
+            if(!in_array($caller,['loans','partners'],true)||!\Babanoell\Auth\Platform\PayloadAuth::verify(
+                $request->header('X-Noel-Payload-Signature'),$caller,(string)$request->header('X-Noel-Timestamp'),
+                (string)$request->header('X-Request-Id'),$request->method(),$request->path(),$request->rawBody(),$config->serviceAuthSecret()))
+                return \Babanoell\Auth\Http\ResponseMapper::error(403,'service_access_denied','دسترسی سرویس مجاز نیست.');
+            return $container->managementController()->notificationContact($request);
+        });
         $router->get('/api/v1/roles', static fn (Request $request): JsonResponse => $container->managementController()->roles($request));
         $router->get('/api/v1/admin/users', static fn (Request $request): JsonResponse => $container->managementController()->users($request));
         $router->post('/api/v1/admin/users', static fn (Request $request): JsonResponse => $container->managementController()->createUser($request));

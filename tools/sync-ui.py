@@ -34,6 +34,8 @@ def build(check=False):
         for token, name in [('NAVY_PNG', 'favicon-navy.png'), ('PALE_PNG', 'favicon-pale.png')]:
             favicon_js = favicon_js.replace('{{'+token+'}}', base64.b64encode((SOURCE/'favicons'/name).read_bytes()).decode('ascii'))
         files[target / 'favicon.js'] = favicon_js.encode()
+        if service == 'panel':
+            files[target / 'credit.js'] = (SOURCE / 'src/credit.js').read_bytes()
         helper = (SOURCE / 'php/Favicon.php.in').read_text().replace('{{NAMESPACE}}', NAMESPACES[service])
         files[target.parents[1] / 'src/Platform/Favicon.php'] = helper.encode()
         files[target / 'Font-Awesome-LICENSE.txt'] = (SOURCE / 'licenses/Font-Awesome.txt').read_bytes()

@@ -118,6 +118,7 @@ final class BankModule
             .'<section class="bn-section"><div class="bn-detail-grid">'.$this->detailItem('تعداد اقساط',(string)($request['installment_count']??'—')).$this->detailItem('تاریخ اعطا',PersianDateTime::fromIso((string)($request['granted_at']??''),false)??'—').$this->detailItem('وضعیت تسویه بانک با بابانوئل',$this->bankSettlementStatus((string)($request['bank_settlement_status']??'not_recorded'))).$this->detailItem('تاریخ تسویه بانک با بابانوئل',PersianDateTime::fromIso((string)($request['bank_settled_at']??''),false)??'—').$this->detailItem('متقاضی',(string)($request['full_name']??'—')).$this->detailItem('کد ملی',(string)($request['national_code']??'—')).$this->detailItem('موبایل',(string)($request['mobile_number']??'—')).$this->detailItem('طرح',(string)($request['plan_name']??'—')).$this->detailItem('وضعیت',$this->requestStatus((string)($request['status']??''))).$this->detailItem('کارشناس بانک',(string)($request['assigned_bank_user_id']??'—')).'</div></section>'
             .'<div class="bn-stats">'.$this->stat('شاهکار',$this->verificationLabel((string)($identity['status']??'not_required')),!empty($identity['required'])?'الزامی برای این طرح':'غیرالزامی').$this->stat('اعتبارسنجی',$this->verificationLabel((string)($validation['status']??'not_required')),!empty($validation['required'])?'الزامی برای این طرح':'غیرالزامی').$this->stat('امتیاز',(string)($request['credit_score']??'—'),'آخرین امتیاز').$this->stat('ریسک',(string)($request['credit_risk']??'—'),'آخرین سطح ریسک',true).'</div>'
             .CaseJourney::render($this->client,$this->bearer,$id,$this->identity)
+            .\Babanoell\Panel\Credit\CreditModule::entry($request,'bank',$this->identity)
             .$this->verificationActions($id,$identity,$validation,$verifications)
             .'<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">سوابق اعتبارسنجی</h2></div></div><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>نوع</th><th>Provider</th><th>وضعیت</th><th>مرجع</th><th>درخواست</th><th>نتیجه</th><th>اقدام ارائه‌دهنده</th></tr></thead><tbody>'.$verificationRows.'</tbody></table></div></section>'
             .$this->reviewForm($id)
@@ -132,6 +133,7 @@ final class BankModule
         $ref=(string)($verification['provider_reference']??'');
         $id=(string)($verification['id']??'');
         if(!preg_match('/^[a-f0-9]{26}$/D',$id))return '—';
+        if($type==='credit_report'&&($verification['provider']??'')==='ics24')return '<a class="bn-btn bn-btn--secondary bn-btn--small" href="/credit/requests/'.$caseId.'?workspace=bank">پیگیری گزارش</a>';
         $url='/bank/cases/'.$caseId.'/verify/'.$id.'/';
         $csrf='<input type="hidden" name="_csrf" value="'.Renderer::e(Csrf::token()).'">';
         if($status==='queued')return '<form class="bn-inline-form" method="post" action="'.$url.'dispatch">'.$csrf.'<button class="bn-btn bn-btn--secondary bn-btn--small" type="submit">ارسال به ارائه‌دهنده</button></form>';

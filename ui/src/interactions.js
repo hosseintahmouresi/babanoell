@@ -177,13 +177,14 @@
     });
 
     document.querySelectorAll('[data-assignment-form]').forEach((form) => {
-      const mode = form.elements.namedItem('acceptor_assignment_mode');
-      const merchant = form.elements.namedItem('merchant_id');
+      const mode = form.querySelector('select[name="acceptor_assignment_mode"]');
+      const locked = form.dataset.assignmentLocked === '1';
+      const merchant = form.querySelector('select[name="merchant_id"]');
       const market = [...form.querySelectorAll('[data-marketplace-fields]')];
       const summary = form.elements.namedItem('request_public_summary');
       const sync = () => {
         const open = mode?.value === 'open_acceptor_marketplace';
-        if (merchant) { merchant.disabled = open; merchant.closest('.bn-field').hidden = open; }
+        if (merchant) { merchant.disabled = open || locked; merchant.closest('.bn-field').hidden = open; }
         if (summary) { summary.disabled = !open; summary.closest('.bn-field').hidden = !open; }
         market.forEach((group) => {
           group.hidden = !open;
@@ -199,7 +200,7 @@
       if (!link || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey
         || link.target || link.hasAttribute('download')) return;
       const url = new URL(link.href, location.href);
-      if (url.pathname === location.pathname && url.hash.startsWith('#transfer-')) {
+      if (url.pathname === location.pathname && (url.hash.startsWith('#transfer-') || url.hash.startsWith('#reconcile-'))) {
         const details = document.getElementById(url.hash.slice(1));
         if (details instanceof HTMLDetailsElement) {
           details.open = true; details.querySelector('summary')?.focus({preventScroll: true});
