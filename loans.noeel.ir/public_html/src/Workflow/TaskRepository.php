@@ -53,7 +53,7 @@ final class TaskRepository
         $requestId=trim((string)($filters['request_id']??''));if($requestId!==''){$where[]='t.request_id=:request_id';$params[':request_id']=$requestId;}
         $scope=trim((string)($filters['scope']??''));if($scope==='mine'){$where[]='t.assigned_user_id=:mine';$params[':mine']=$userId;}elseif($scope==='unassigned'){$where[]='t.assigned_user_id IS NULL';}
         if(!empty($filters['overdue']))$where[]="t.status IN ('open','in_progress') AND t.due_at IS NOT NULL AND t.due_at<NOW(6)";
-        $search=trim((string)($filters['search']??''));if($search!==''){$where[]='(r.request_no LIKE :search OR r.full_name LIKE :search OR t.title LIKE :search)';$params[':search']='%'.$search.'%';}
+        $search=trim((string)($filters['search']??''));if($search!==''){$where[]='(r.request_no LIKE :request_no_query OR r.full_name LIKE :name_query OR t.title LIKE :title_query)';foreach([':request_no_query',':name_query',':title_query']as$key)$params[$key]='%'.$search.'%';}
         if(!$global){
             $access=['t.assigned_user_id=:access_user'];$params[':access_user']=$userId;
             $allowed=array_values(array_unique(array_filter($permissions,static fn($v)=>is_string($v)&&$v!=='')));

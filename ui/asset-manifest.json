@@ -1,0 +1,26 @@
+{
+  "fonts/YekanBakhFaNum-Bold.woff": {
+    "bytes": 38532,
+    "sha256": "e884afdf84e6eaf8c3caae54eb0cc013223e57e6a9fd96d67125b4d45ad4173e"
+  },
+  "fonts/YekanBakhFaNum-Regular.woff": {
+    "bytes": 38296,
+    "sha256": "a7d0a29f0bffe9350bb9edacd75cd1f1a31045097f629eb4fe3f845a55f9583a"
+  },
+  "fonts/YekanBakhFaNum-SemiBold.woff": {
+    "bytes": 38424,
+    "sha256": "2adc04abe41f325da73c465b5d13c9e68d499aafbb28cdceeabeccb83feccc46"
+  },
+  "fonts/noeel-icons.woff2": {
+    "bytes": 5584,
+    "sha256": "f2227df019613de2245bafb65d94bd749c7e043e0cd5eec4033d53702e312aa7"
+  },
+  "pdf-fonts/YekanBakhFaNum-Bold.ttf": {
+    "bytes": 79064,
+    "sha256": "7e1871ddc1778abc7eba4ff2432f0da8165a1c6affdc5e9cf37fb070394ec2ba"
+  },
+  "pdf-fonts/YekanBakhFaNum-Regular.ttf": {
+    "bytes": 79140,
+    "sha256": "6b31b05fd83ff1cff257c34ff750df5354dd0ea987b232bc0a14f750a3eccf5e"
+  }
+}

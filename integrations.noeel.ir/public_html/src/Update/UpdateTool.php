@@ -9,7 +9,7 @@ use ZipArchive;
 final class UpdateTool
 {
     private const PROTECTED=['config/local.env.php','public/install.php','public/install.php.locked'];
-    private const EXTENSIONS=['php','css','js','png','jpg','jpeg','svg','md','txt','html','json','sql'];
+    private const EXTENSIONS=['php','css','js','png','jpg','jpeg','svg','woff','woff2','md','txt','html','json','sql'];
 
     /** @return array{files:array<int,array{entry:string,target:string,size:int}>,protected:int,total:int,version:string} */
     public function plan(string $archivePath):array

@@ -28,9 +28,10 @@ final class UiAssetsTest extends TestCase
 
         foreach (array_filter(['public/update.php', 'public/install.php'], static fn (string $relative): bool => is_file($root . '/' . $relative)) as $relative) {
             $source = (string) file_get_contents($root . '/' . $relative);
-            Assertions::contains('ui-asset.php?file=babanoell-ui.css&amp;v=1.6.0', $source);
-            Assertions::contains('ui-asset.php?file=babanoell-ui.js&amp;v=1.6.0', $source);
-            Assertions::contains('ui-asset.php?file=brand-logo.png&amp;v=1.6.0', $source);
+            Assertions::contains("Ui::version()['ui']", $source);
+            Assertions::contains('ui-asset.php?file=babanoell-ui.css&amp;v=', $source);
+            Assertions::contains('ui-asset.php?file=babanoell-ui.js&amp;v=', $source);
+            Assertions::contains('ui-asset.php?file=brand-logo.png&amp;v=', $source);
         }
     }
 

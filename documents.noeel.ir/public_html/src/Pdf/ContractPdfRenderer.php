@@ -36,17 +36,17 @@ final class ContractPdfRenderer
         $shortHash=htmlspecialchars($hash,ENT_QUOTES,'UTF-8');
         $tmp=dirname(__DIR__, 2).'/storage/pdf-temp';
         if(!is_dir($tmp) && !mkdir($tmp,0700,true) && !is_dir($tmp)) throw new RuntimeException('فضای موقت PDF در دسترس نیست.');
-        $config=['mode'=>'utf-8','format'=>'A4','default_font'=>'dejavusans','directionality'=>'rtl',
-            'margin_left'=>15,'margin_right'=>15,'margin_top'=>29,'margin_bottom'=>23,'margin_header'=>9,'margin_footer'=>8,
-            'tempDir'=>$tmp,'autoScriptToLang'=>true,'autoLangToFont'=>true];
-        $customFont=trim((string)(function_exists('babanoell_documents_env')?\babanoell_documents_env('DOCUMENTS_PDF_YEKANBAKH_FONT',''):''));
-        if($customFont!=='' && is_file($customFont) && is_readable($customFont) && strtolower(pathinfo($customFont,PATHINFO_EXTENSION))==='ttf') {
-            $defaults=(new \Mpdf\Config\FontVariables())->getDefaults();
-            $config['fontDir']=array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],[dirname($customFont)]);
-            $config['fontdata']=$defaults['fontdata'];
-            $config['fontdata']['noelyekan']=['R'=>basename($customFont),'useOTL'=>0xFF,'useKashida'=>75];
-            $config['default_font']='noelyekan';
+        $fontRoot=dirname(__DIR__,2).'/resources/fonts';
+        foreach(['Regular','Bold'] as $weight) {
+            if(!is_readable($fontRoot.'/YekanBakhFaNum-'.$weight.'.ttf')) throw new RuntimeException('فونت محلی قرارداد در بسته سامانه موجود نیست.');
         }
+        $fontDefaults=(new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontData=$fontDefaults['fontdata'];
+        $fontData['noelyekan']=['R'=>'YekanBakhFaNum-Regular.ttf','B'=>'YekanBakhFaNum-Bold.ttf','useOTL'=>0xFF,'useKashida'=>0];
+        $config=['mode'=>'utf-8','format'=>'A4','default_font'=>'noelyekan','directionality'=>'rtl',
+            'margin_left'=>15,'margin_right'=>15,'margin_top'=>29,'margin_bottom'=>23,'margin_header'=>9,'margin_footer'=>8,
+            'tempDir'=>$tmp,'autoScriptToLang'=>false,'autoLangToFont'=>false,
+            'fontDir'=>array_merge((new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir'],[$fontRoot]),'fontdata'=>$fontData];
         $pdf=new \Mpdf\Mpdf($config);
         $pdf->SetTitle('قرارداد '.$no.' - نسخه '.$revision);
         $pdf->SetAuthor('سامانه نوئل');

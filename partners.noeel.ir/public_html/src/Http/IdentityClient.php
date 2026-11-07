@@ -35,6 +35,11 @@ final class IdentityClient
         return $this->request('GET', '/api/v1/auth/me', null, $bearer, $clientIp, $userAgent);
     }
 
+    public function activateAcceptor(array $payload,string $bearer):HttpResponse
+    {
+        return $this->request('POST','/api/v1/partners/activate-acceptor',$payload,$bearer,null,null);
+    }
+
     public function logout(string $bearer, ?string $clientIp = null, ?string $userAgent = null): HttpResponse
     {
         return $this->request(

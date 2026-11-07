@@ -21,7 +21,9 @@ require$root.'/bootstrap.php';
 if(strtolower($config->environment())==='production'&&!\Babanoell\Documents\Platform\ProxyContext::secure($_SERVER)) JsonResponse::error(403,'https_required','ارتباط HTTPS لازم است.');
 $request=Request::fromGlobals();$method=$request->method();$path=$request->path();
 \Babanoell\Documents\Platform\RequestContext::initialize($request->header('X-Request-Id'),'documents');
-if(str_starts_with($path,'/api/v1/')){
+// The capability itself authenticates this one-use, short-lived file route.
+$isFileCapability=$method==='GET'&&preg_match('#^/api/v1/access/(download|preview)/[A-Za-z0-9_-]{30,120}$#',$path)===1;
+if(str_starts_with($path,'/api/v1/')&&!$isFileCapability){
 $serviceAuth=\Babanoell\Documents\Platform\ServiceAuth::verify($request->header(\Babanoell\Documents\Platform\ServiceAuth::HEADER_SERVICE),$request->header(\Babanoell\Documents\Platform\ServiceAuth::HEADER_TIMESTAMP),$request->header(\Babanoell\Documents\Platform\ServiceAuth::HEADER_SIGNATURE),$method,$path,$request->rawBody(),$config->serviceAuthSecret(),$config->serviceAuthMode());
 if(!$serviceAuth['ok']) JsonResponse::error($serviceAuth['error']==='service_auth_not_configured'?503:401,(string)$serviceAuth['error'],'احراز هویت سرویس فراخوان نامعتبر است.');
 if($serviceAuth['authenticated']===true) \Babanoell\Documents\Platform\RequestContext::setCallerService(is_string($serviceAuth['service'])?$serviceAuth['service']:null);

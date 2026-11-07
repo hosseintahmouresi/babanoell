@@ -239,11 +239,30 @@ try{
         $q=$request->query();$global=$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global');$first=$repository->bankCases(1,100,$principal->userId,$global,$q);$total=(int)($first['total']??0);if($total>5000)JsonResponse::error(413,'bank_export_too_large','تعداد پرونده‌ها برای یک خروجی بیش از ۵۰۰۰ است. فیلترهای دقیق‌تری اعمال کنید.');$items=(array)($first['items']??[]);$pages=(int)ceil($total/100);for($page=2;$page<=$pages;$page++){$chunk=$repository->bankCases($page,100,$principal->userId,$global,$q);foreach((array)($chunk['items']??[])as$item)$items[]=$item;}JsonResponse::ok(['items'=>$items,'total'=>$total,'truncated'=>false]);
     }
 
+    $loadMarketContext=static function()use($partnersClient,$request):array{
+        $response=$partnersClient->marketplaceContext((string)$request->bearer());
+        $context=$response->json['data']['context']??null;
+        if(!$response->ok()||!is_array($context)||!is_bool($context['enabled']??null)||!is_bool($context['can_claim']??null))JsonResponse::error(503,'partners_unavailable','قواعد بازار از سرویس شرکا قابل تأیید نیست؛ دوباره تلاش کنید.');
+        return $context;
+    };
+    if($path==='/api/v1/marketplace/catalog'&&$method==='GET'){
+        $response=$partnersClient->marketplaceCatalog((string)$request->bearer());
+        if(!$response->ok())JsonResponse::error($response->status===403?403:503,'marketplace_catalog_unavailable','فهرست حوزه‌های فعالیت و موقعیت‌ها دریافت نشد.');
+        JsonResponse::ok($response->json['data']??[]);
+    }
     if($path==='/api/v1/marketplace/requests'&&$method==='GET'){
-        if(!$principal->can('partners.marketplace.read')&&!$principal->can('loans.requests.marketplace'))JsonResponse::error(403,'permission_denied','اجازه مشاهده بازار پرونده‌ها را ندارید.');$q=$request->query();$r=$repository->listMarketplace((int)($q['page']??1),(int)($q['per_page']??25),trim((string)($q['q']??'')));JsonResponse::ok($r,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($r)]);
+        if(!$principal->can('partners.marketplace.read')&&!$principal->can('loans.requests.marketplace'))JsonResponse::error(403,'permission_denied','اجازه مشاهده بازار پرونده‌ها را ندارید.');
+        $context=$isPlatformAdmin?null:$loadMarketContext();$q=$request->query();
+        $r=$repository->listMarketplace((int)($q['page']??1),(int)($q['per_page']??25),trim((string)($q['q']??'')),$context);
+        JsonResponse::ok($r,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($r)]);
     }
     if(preg_match('#^/api/v1/marketplace/requests/([a-f0-9]{26})/claim$#',$path,$m)&&$method==='POST'){
-        if(!$principal->can('partners.marketplace.claim')&&!$principal->can('loans.requests.marketplace'))JsonResponse::error(403,'permission_denied','اجازه پذیرش پرونده بازار را ندارید.');if(!is_array($partnerMerchant))JsonResponse::error(409,'merchant_membership_required','حساب شما به پذیرنده فعال متصل نیست.');JsonResponse::ok(['request'=>$repository->claimMarketplace($m[1],$principal->userId,(string)$partnerMerchant['id'],$principal->userId)],201);
+        if(!$principal->can('partners.marketplace.claim')&&!$principal->can('loans.requests.marketplace'))JsonResponse::error(403,'permission_denied','اجازه پذیرش پرونده بازار را ندارید.');
+        if(!$partnerMembershipVerified)JsonResponse::error(503,'partners_unavailable','وضعیت عضویت پذیرنده قابل تأیید نیست؛ دوباره تلاش کنید.');
+        if(!is_array($partnerMerchant))JsonResponse::error(409,'merchant_membership_required','حساب شما به پذیرنده فعال متصل نیست.');
+        try{$claimed=$repository->claimMarketplace($m[1],$principal->userId,(string)$partnerMerchant['id'],$principal->userId,$loadMarketContext());}
+        catch(\DomainException $e){JsonResponse::error(409,'marketplace_claim_conflict',$e->getMessage());}
+        JsonResponse::ok(['request'=>$claimed],201);
     }
     if(preg_match('#^/api/v1/marketplace/requests/([a-f0-9]{26})/invite$#',$path,$m)&&$method==='POST'){
         if(!$principal->can('partners.marketplace.manage')&&!$isPlatformAdmin)JsonResponse::error(403,'permission_denied','اجازه دعوت پذیرنده برای پرونده را ندارید.');$b=$request->json();$merchantId=strtolower(trim((string)($b['merchant_id']??'')));$code=substr(trim((string)($b['invitation_code']??'')),0,100);if(!preg_match('/^[a-f0-9]{26}$/',$merchantId)||$code==='')JsonResponse::error(422,'validation_failed','اطلاعات دعوت پذیرنده معتبر نیست.');JsonResponse::ok(['request'=>$repository->inviteMerchantToRequest($m[1],$merchantId,$code,$principal->userId)]);
@@ -258,7 +277,7 @@ try{
         if(!$canManagePlans)unset($body['commission_override']);
         if(!$canAssignBank)unset($body['assigned_bank_user_id']);
         $origin=RequestOrigin::ADMIN;
-        if($isApplicant){$origin=RequestOrigin::APPLICANT;$body['applicant_user_id']=$principal->userId;$body['plan_context']='applicant_request';unset($body['acceptor_user_id']);}
+        if($isApplicant&&(!$isAcceptor||($body['plan_context']??'')==='applicant_request')){$origin=RequestOrigin::APPLICANT;$body['applicant_user_id']=$principal->userId;$body['plan_context']='applicant_request';unset($body['acceptor_user_id']);}
         elseif($isAcceptor){
             if(!$partnerMembershipVerified)JsonResponse::error(503,'partners_unavailable','وضعیت عضویت پذیرنده از سرویس شرکا قابل تأیید نیست؛ بعداً دوباره تلاش کنید.');
             if(!is_array($partnerMerchant)||!preg_match('/^[a-f0-9]{26}$/D',(string)($partnerMerchant['id']??'')))JsonResponse::error(409,'merchant_membership_required','حساب شما به پذیرنده فعال متصل نیست.');
@@ -268,6 +287,11 @@ try{
             $origin=RequestOrigin::MERCHANT;$body['acceptor_user_id']=$principal->userId;$body['plan_context']='merchant_request';unset($body['applicant_user_id']);
         }
         elseif(!$isPlatformAdmin){unset($body['applicant_user_id'],$body['acceptor_user_id']);}
+        if($origin===RequestOrigin::APPLICANT&&($body['acceptor_assignment_mode']??'')==='open_acceptor_marketplace'&&($key===''||$repository->findRequestByIdempotency($principal->userId,$key)===null)){
+            $catalogResponse=$partnersClient->marketplaceCatalog((string)$request->bearer());$catalog=$catalogResponse->json['data']['catalog']??null;
+            if(!$catalogResponse->ok()||!is_array($catalog))JsonResponse::error(503,'marketplace_catalog_unavailable','فهرست بازار برای بررسی درخواست در دسترس نیست.');
+            \Babanoell\Loans\Domain\MarketplaceRequest::validate($body,$catalog);
+        }
         unset($body['request_origin']);
         JsonResponse::ok(['request'=>$requestService->create($principal->userId,$body,$key,$origin)],201);
     }

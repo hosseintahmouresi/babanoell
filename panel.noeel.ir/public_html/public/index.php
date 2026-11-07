@@ -143,16 +143,16 @@ if ($path === '/login') {
         : '';
 
     $content = '<div class="bn-login-grid">'
-        . '<aside class="bn-login-aside"><div><div class="bn-eyebrow bn-eyebrow--inverse">درگاه یکپارچه مدیریت</div>'
-        . '<h2>پنل مدیریت<br>پلتفرم بابانوئل</h2>'
-        . '<p>ورود کاربران، نشست‌ها و سطح دسترسی از طریق سرویس احراز هویت مرکزی کنترل می‌شود.</p>'
+        . '<aside class="bn-login-aside"><div><div class="bn-eyebrow bn-eyebrow--inverse">همراه شما در مسیر تسهیلات</div>'
+        . '<h2>از شروع درخواست،<br>تا قدم آخر</h2>'
+        . '<p>درخواست‌ها، مدارک و قراردادهای خود را در یک فضای روشن و منظم پیگیری کنید.</p>'
         . '<div class="bn-login-points">'
-        . '<div class="bn-login-point"><i>۱</i><span>ورود یکپارچه با حساب سازمانی</span></div>'
-        . '<div class="bn-login-point"><i>۲</i><span>نگهداری امن نشست در سمت سرور</span></div>'
-        . '<div class="bn-login-point"><i>۳</i><span>نمایش منوها و امکانات بر اساس نقش کاربر</span></div>'
+        . '<div class="bn-login-point"><i>۱</i><span>یک حساب برای پیگیری همهٔ کارها</span></div>'
+        . '<div class="bn-login-point"><i>۲</i><span>حفظ امنیت اطلاعات شما</span></div>'
+        . '<div class="bn-login-point"><i>۳</i><span>دسترسی سریع به اقدام بعدی</span></div>'
         . '</div></div><div class="bn-version">Panel '.Renderer::e($releaseVersion).' · UI '.Renderer::e($uiVersion).'</div></aside>'
-        . '<div class="bn-login-form"><div class="bn-eyebrow">ورود به سامانه</div><h1>ورود به پنل مدیریت</h1>'
-        . '<p class="bn-subtitle">موبایل یا ایمیل حساب سازمانی و رمز عبور خود را وارد کنید.</p>'
+        . '<div class="bn-login-form"><div class="bn-eyebrow">ورود به سامانه</div><h1>به بابانوئل خوش آمدید</h1>'
+        . '<p class="bn-subtitle">شماره موبایل یا ایمیل حساب و رمز عبورتان را وارد کنید.</p>'
         . $alert
         . '<form method="post" action="/login" autocomplete="on" data-submit-lock="1">'
         . '<input type="hidden" name="_csrf" value="' . Renderer::e(Csrf::token()) . '">'
@@ -161,8 +161,8 @@ if ($path === '/login') {
         . '<div class="bn-field"><label class="bn-label" for="password">رمز عبور</label><div class="bn-password-wrap">'
         . '<input id="password" name="password" type="password" autocomplete="current-password" maxlength="4096" required placeholder="رمز عبور حساب کاربری">'
         . '<button class="bn-password-toggle" type="button" data-password-toggle aria-label="نمایش یا پنهان‌کردن رمز عبور">نمایش</button></div></div>'
-        . '<button class="bn-btn bn-btn--primary" type="submit">ورود به پنل</button></form>'
-        . '<div class="bn-panel-login-note"><span class="bn-panel-login-note-mark">✓</span><span>اطلاعات ورود در مرورگر ذخیره نمی‌شود. اعتبار نشست فقط در سمت سرور پنل نگهداری می‌شود.</span></div>'
+        . '<button class="bn-btn bn-btn--primary" type="submit">ورود به حساب</button></form>'
+        . '<div class="bn-panel-login-note"><span class="bn-panel-login-note-mark"><i class="bn-icon bn-icon--shield-halved" aria-hidden="true"></i></span><span>برای حفظ امنیت حساب، از دستگاه شخصی استفاده کنید.</span></div>'
         . '</div></div>';
 
     echo Renderer::page('ورود به پنل مدیریت', $content);

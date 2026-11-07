@@ -2,23 +2,34 @@
 declare(strict_types=1);
 header('X-Content-Type-Options: nosniff');
 header('Cross-Origin-Resource-Policy: same-origin');
-$assets=[
- 'babanoell-ui.css'=>['text/css; charset=UTF-8','babanoell-ui.css'],
- 'platform.css'=>['text/css; charset=UTF-8','babanoell-ui.css'],
- 'panel.css'=>['text/css; charset=UTF-8','babanoell-ui.css'],
- 'babanoell-ui.js'=>['application/javascript; charset=UTF-8','babanoell-ui.js'],
- 'platform.js'=>['application/javascript; charset=UTF-8','babanoell-ui.js'],
- 'panel.js'=>['application/javascript; charset=UTF-8','babanoell-ui.js'],
+$allowed = [
+ 'platform.css'=>['text/css; charset=UTF-8','platform.css'],
+ 'panel.css'=>['text/css; charset=UTF-8','platform.css'],
+ 'babanoell-ui.css'=>['text/css; charset=UTF-8','platform.css'],
+ 'platform.js'=>['application/javascript; charset=UTF-8','platform.js'],
+ 'panel.js'=>['application/javascript; charset=UTF-8','platform.js'],
+ 'babanoell-ui.js'=>['application/javascript; charset=UTF-8','platform.js'],
  'brand-logo.png'=>['image/png','brand-logo.json'],
+ 'YekanBakhFaNum-Regular.woff'=>['font/woff','YekanBakhFaNum-Regular.woff'],
+ 'YekanBakhFaNum-SemiBold.woff'=>['font/woff','YekanBakhFaNum-SemiBold.woff'],
+ 'YekanBakhFaNum-Bold.woff'=>['font/woff','YekanBakhFaNum-Bold.woff'],
+ 'noeel-icons.woff2'=>['font/woff2','noeel-icons.woff2'],
 ];
-$key=is_string($_GET['file']??null)?$_GET['file']:'';
-if(!isset($assets[$key])){http_response_code(404);exit;}
-[$type,$file]=$assets[$key];$path=__DIR__.'/assets/'.$file;
-if(!is_file($path)){http_response_code(404);exit;}
-$tag='"'.hash_file('sha256',$path).'"';
-header('ETag: '.$tag);header('Cache-Control: public,max-age=86400,must-revalidate');
-if(trim((string)($_SERVER['HTTP_IF_NONE_MATCH']??''))===$tag){http_response_code(304);exit;}
-$bytes=file_get_contents($path);
-if($key==='brand-logo.png'){$data=json_decode((string)$bytes,true);$bytes=base64_decode((string)($data['base64']??''),true);}
-if(!is_string($bytes)){http_response_code(500);exit;}
-header('Content-Type: '.$type);header('Content-Length: '.strlen($bytes));echo $bytes;
+$key = is_string($_GET['file'] ?? null) ? $_GET['file'] : '';
+if (!isset($allowed[$key])) { http_response_code(404); exit; }
+[$type,$name] = $allowed[$key];
+$path = __DIR__.'/assets/'.$name;
+if (!is_file($path)) { http_response_code(404); exit; }
+$bytes = file_get_contents($path);
+if ($name === 'brand-logo.json') {
+ $data = json_decode((string)$bytes,true);
+ $bytes = base64_decode((string)($data['base64'] ?? ''),true);
+}
+if (!is_string($bytes)) { http_response_code(500); exit; }
+$etag = '"'.hash('sha256',$bytes).'"';
+header('ETag: '.$etag);
+header('Cache-Control: public, max-age=86400, must-revalidate');
+if (trim((string)($_SERVER['HTTP_IF_NONE_MATCH'] ?? '')) === $etag) { http_response_code(304); exit; }
+header('Content-Type: '.$type);
+header('Content-Length: '.strlen($bytes));
+echo $bytes;

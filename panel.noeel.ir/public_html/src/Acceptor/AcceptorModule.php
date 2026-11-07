@@ -49,7 +49,7 @@ final class AcceptorModule
         if (($dashboard['error'] ?? '') !== '') {
             $notice = $this->alert('error', 'اطلاعات داشبورد کامل نیست', (string)$dashboard['error']);
         }
-        $content = $this->head('پنل پذیرنده', 'محاسبه تسهیلات، ثبت پرونده متقاضی و پیگیری پرونده‌های ثبت‌شده توسط حساب پذیرنده.')
+        $content = $this->head('فضای پذیرندگی شما', 'سفارش‌ها و پرونده‌ها را پیگیری کنید و برای مشتریان خود تسهیلات ثبت کنید.', '<a class="bn-btn bn-btn--primary" href="/acceptor/requests/new">'.Renderer::icon('plus').' ثبت پرونده جدید</a>')
             . $this->takeFlash()
             . $notice
             . $this->notificationCards($caseNotices, $generalNotices)
@@ -295,7 +295,7 @@ final class AcceptorModule
         if (is_array($result)) {
             $rows = '';
             foreach ($result as $key=>$value) $rows .= '<tr><td>'.Renderer::e($this->calcLabels()[(string)$key] ?? (string)$key).'</td><td>'.$this->formatCalculation((string)$key, $value).'</td></tr>';
-            $content .= '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">✓</span><div><h2 class="bn-sectiontitle">نتیجه محاسبه</h2><p class="bn-sectiondesc">مبالغ مالی به ریال و درصدها با علامت ٪ نمایش داده می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table bn-table--keyvalue"><tbody>'.$rows.'</tbody></table></div></section>';
+            $content .= '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step"><i class="bn-icon bn-icon--check" aria-hidden="true"></i></span><div><h2 class="bn-sectiontitle">نتیجه محاسبه</h2><p class="bn-sectiondesc">مبالغ مالی به ریال و درصدها با علامت ٪ نمایش داده می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table bn-table--keyvalue"><tbody>'.$rows.'</tbody></table></div></section>';
         }
         echo Renderer::page('محاسبه‌گر تسهیلات', $content, $this->identity, 'acceptor-calculator');
     }
@@ -510,7 +510,7 @@ final class AcceptorModule
         foreach ($history as $row) {
             if (!is_array($row)) continue;
             $from = trim((string)($row['from_status'] ?? ''));
-            $rows .= '<tr><td>'.($from !== '' ? Renderer::e($this->requestStatusLabel($from)).' ← ' : '').Renderer::e($this->requestStatusLabel((string)($row['to_status'] ?? ''))).'</td><td>'.Renderer::e(trim((string)($row['reason'] ?? '')) ?: '—').'</td><td>'.Renderer::e(PersianDateTime::fromIso((string)($row['created_at'] ?? ''), false) ?? '—').'</td></tr>';
+            $rows .= '<tr><td>'.($from !== '' ? Renderer::e($this->requestStatusLabel($from)).' <i class="bn-icon bn-icon--arrow-left" aria-hidden="true"></i> ' : '').Renderer::e($this->requestStatusLabel((string)($row['to_status'] ?? ''))).'</td><td>'.Renderer::e(trim((string)($row['reason'] ?? '')) ?: '—').'</td><td>'.Renderer::e(PersianDateTime::fromIso((string)($row['created_at'] ?? ''), false) ?? '—').'</td></tr>';
         }
         if ($rows === '') $rows = '<tr><td colspan="3"><div class="bn-empty-inline">تاریخچه‌ای ثبت نشده است.</div></td></tr>';
         return '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۴</span><div><h2 class="bn-sectiontitle">تاریخچه وضعیت</h2><p class="bn-sectiondesc">تمام تغییرات وضعیت با زمان و توضیح ثبت می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>تغییر</th><th>توضیح</th><th>زمان</th></tr></thead><tbody>'.$rows.'</tbody></table></div></section>';
@@ -598,7 +598,7 @@ final class AcceptorModule
         }
         $monthOptions = '<option value="">ماه</option>';
         foreach ($this->jalaliMonths() as $number => $label) {
-            $monthOptions .= '<option value="'.Renderer::e((string)$number).'"'.((string)$number === $month ? ' selected' : '').'>'.Renderer::e(PersianDateTime::digits((string)$number).' - '.$label).'</option>';
+            $monthOptions .= '<option value="'.Renderer::e((string)$number).'"'.((string)$number === $month ? ' selected' : '').'>'.Renderer::e($label).'</option>';
         }
         $dayOptions = '<option value="">روز</option>';
         for ($d = 1; $d <= 31; $d++) {
@@ -606,9 +606,9 @@ final class AcceptorModule
             $dayOptions .= '<option value="'.$dd.'"'.($dd === $day ? ' selected' : '').'>'.Renderer::e(PersianDateTime::digits($dd)).'</option>';
         }
         return '<div class="bn-field bn-field--birth"><label class="bn-label">تاریخ تولد شمسی <span class="bn-required">*</span></label><div class="bn-select-grid">'
-            . '<select name="birth_day" required>'.$dayOptions.'</select>'
-            . '<select name="birth_month" required>'.$monthOptions.'</select>'
-            . '<select name="birth_year" required>'.$yearOptions.'</select>'
+            . '<div class="bn-select-cell"><select aria-label="روز تولد" name="birth_day" required>'.$dayOptions.'</select></div>'
+            . '<div class="bn-select-cell"><select aria-label="ماه تولد" name="birth_month" required>'.$monthOptions.'</select></div>'
+            . '<div class="bn-select-cell"><select aria-label="سال تولد" name="birth_year" required>'.$yearOptions.'</select></div>'
             . '</div><span class="bn-helper">روز، ماه و سال تولد را جداگانه انتخاب کنید.</span></div>';
     }
 
@@ -671,8 +671,8 @@ final class AcceptorModule
             $generalItems .= '<li>'.Renderer::e($message).'</li>';
         }
         return '<div class="bn-notify-strip">'
-            . '<details class="bn-notify-card" open><summary><span class="bn-notify-icon">🔔</span><span>اعلانات پرونده</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($caseNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$caseItems.'</ul></div></details>'
-            . '<details class="bn-notify-card"><summary><span class="bn-notify-icon">📢</span><span>اعلانات عمومی</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($generalNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$generalItems.'</ul></div></details>'
+            . '<details class="bn-notify-card" open><summary><span class="bn-notify-icon"><i class="bn-icon bn-icon--bell" aria-hidden="true"></i></span><span>اعلانات پرونده</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($caseNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$caseItems.'</ul></div></details>'
+            . '<details class="bn-notify-card"><summary><span class="bn-notify-icon"><i class="bn-icon bn-icon--bullhorn" aria-hidden="true"></i></span><span>اعلانات عمومی</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($generalNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$generalItems.'</ul></div></details>'
             . '</div>';
     }
 

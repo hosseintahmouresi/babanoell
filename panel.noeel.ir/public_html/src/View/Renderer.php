@@ -46,21 +46,22 @@ final class Renderer
             . '<body class="bn-panel-body"><a class="bn-skip-link" href="#main-content">رفتن به محتوای اصلی</a><div class="bn-panel-layout">'
             . '<aside class="bn-panel-sidebar" data-panel-sidebar>'
             . '<div class="bn-panel-sidebar-brand"><span class="bn-logo"><img src="/ui-asset.php?file=brand-logo.png&amp;v=' . self::assetVersion() . '" alt="لوگوی بابانوئل" width="104" height="35"></span>'
-            . '<div><div class="bn-panel-sidebar-title">مرکز مدیریت سرویس‌ها</div><div class="bn-panel-sidebar-meta">پنل یکپارچه پلتفرم بابانوئل</div></div></div>'
+            . '<div><div class="bn-panel-sidebar-title">بابانوئل</div><div class="bn-panel-sidebar-meta">فضای کار شما</div></div></div>'
             . self::sidebar($active, $identity)
-            . '<div class="bn-panel-sidebar-foot"><span class="bn-panel-live-dot"></span><span>نشست امن سمت سرور</span></div>'
+            . '<div class="bn-panel-sidebar-foot">' . self::icon('shield-halved') . '<span>همراه شما در مسیر تسهیلات</span></div>'
             . '</aside>'
             . '<main class="bn-panel-main">'
             . '<header class="bn-panel-topbar">'
-            . '<button class="bn-panel-menu-toggle" type="button" aria-label="نمایش منوی پنل" data-menu-toggle>☰</button>'
+            . '<button class="bn-panel-menu-toggle" type="button" aria-label="نمایش منوی پنل" data-menu-toggle>' . self::icon('bars') . '</button>'
+            . '<div class="bn-topbar-context"><span class="bn-breadcrumb">فضای کار / ' . $role . '</span><span class="bn-topbar-title">' . self::e($title) . '</span></div>'
             . '<time class="bn-panel-top-meta" datetime="' . self::e($nowDate->format(DATE_ATOM)) . '">' . $now . '</time>'
             . '<div class="bn-topbar-tools">'
-            . '<form method="post" action="/logout" class="bn-inline-form bn-inline-form--logout"><input type="hidden" name="_csrf" value="' . self::e(\Babanoell\Panel\Security\Csrf::token()) . '"><button class="bn-topbar-tool" type="submit" title="خروج" aria-label="خروج"><span>⎋</span><small>خروج</small></button></form>'
+            . '<form method="post" action="/logout" class="bn-inline-form bn-inline-form--logout"><input type="hidden" name="_csrf" value="' . self::e(\Babanoell\Panel\Security\Csrf::token()) . '"><button class="bn-topbar-tool" type="submit" title="خروج از حساب" aria-label="خروج از حساب">' . self::icon('arrow-right-from-bracket') . '<small>خروج</small></button></form>'
             . '</div>'
             . '<div class="bn-panel-user"><span class="bn-panel-user-avatar">' . self::e(self::initial($rawName)) . '</span><span><span class="bn-panel-user-name">' . $name . '</span><span class="bn-panel-user-role">' . $role . '</span></span></div>'
             . '</header>'
             . '<div class="bn-panel-content" id="main-content" tabindex="-1">' . $content . self::footer('پنل یکپارچه مدیریت') . '</div>'
-            . '</main><button class="bn-chat-fab" type="button" data-goftino-open aria-label="چت آنلاین">💬<span>چت آنلاین</span></button><div class="bn-panel-overlay" data-menu-overlay></div></div>'
+            . '</main><button class="bn-chat-fab" type="button" data-goftino-open aria-label="گفت‌وگو با پشتیبانی">' . self::icon('comments') . '<span>پشتیبانی</span></button><div class="bn-panel-overlay" data-menu-overlay></div></div>'
             . self::script() . '</body></html>';
     }
 
@@ -72,7 +73,7 @@ final class Renderer
             . '<meta name="theme-color" content="#1D3559"><meta name="color-scheme" content="light">'
             . '<title>' . self::e($title) . ' | پلتفرم بابانوئل</title>'
             . '<link rel="icon" type="image/png" href="/ui-asset.php?file=brand-logo.png&amp;v=' . self::assetVersion() . '">'
-            . '<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=' . self::assetVersion() . '">'
+            . ''.\Babanoell\Panel\Platform\Ui::fonts().'<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=' . self::assetVersion() . '">'
             . '</head>';
     }
 
@@ -108,39 +109,46 @@ final class Renderer
         $canBank=$super||in_array('loans.requests.bank_review',$permissions,true)||in_array('loans.requests.workflow_admin',$permissions,true);
         $canPartners=$super||in_array('partners.merchants.read',$permissions,true)||in_array('partners.cooperation.read',$permissions,true)||in_array('partners.cooperation.create',$permissions,true)||in_array('partners.marketplace.read',$permissions,true);
         $canFinance=$super||in_array('finance.dashboard.read',$permissions,true)||in_array('finance.cycles.read',$permissions,true)||in_array('finance.bank_settlement.read',$permissions,true)||in_array('finance.merchant_settlement.read',$permissions,true);
-        $item=static fn(string$key,string$href,string$icon,string$label):string=>'<a class="bn-panel-nav-item'.($active===$key?' is-active':'').'" href="'.$href.'"><span class="bn-panel-nav-icon">'.$icon.'</span><span>'.$label.'</span></a>';
-        if($acceptor){
-            return '<nav class="bn-panel-nav"><div class="bn-panel-nav-label">پنل پذیرنده</div>'
-                .$item('acceptor','/acceptor','⌂','داشبورد پذیرنده')
-                .$item('acceptor-calculator','/acceptor/calculator','◈','محاسبه تسهیلات')
-                .$item('acceptor-requests','/acceptor/requests','▤','پرونده‌های من')
-                .$item('acceptor-new','/acceptor/requests/new','＋','ثبت پرونده جدید')
-                .($canPartners?$item('partners','/partners/marketplace','◇','بازار پرونده‌ها'):'')
+        $item=static fn(string$key,string$href,string$icon,string$label):string=>'<a class="bn-panel-nav-item'.($active===$key?' is-active':'').'"'.($active===$key?' aria-current="page"':'').' href="'.$href.'"><span class="bn-panel-nav-icon">'.self::icon($icon).'</span><span>'.$label.'</span></a>';
+        $personal=$applicant&&str_starts_with($active,'applicant');
+        $switch='';
+        if($acceptor&&$applicant){
+            $switch='<nav class="bn-workspace-switch" aria-label="انتخاب فضای کار"><a href="/acceptor"'.(!$personal?' aria-current="true"':'').'>'.self::icon('store').' پذیرندگی</a><a href="/applicant"'.($personal?' aria-current="true"':'').'>'.self::icon('user').' شخصی</a></nav>';
+        }
+        if($acceptor&&!$personal){
+            return $switch.'<nav class="bn-panel-nav" aria-label="منوی پذیرنده"><div class="bn-panel-nav-label">پذیرندگی</div>'
+                .$item('acceptor','/acceptor','house','خانه')
+                .$item('acceptor-calculator','/acceptor/calculator','calculator','محاسبه تسهیلات')
+                .$item('acceptor-requests','/acceptor/requests','folder-open','پرونده‌های من')
+                .$item('acceptor-new','/acceptor/requests/new','plus','ثبت پرونده جدید')
+                .($canPartners?$item('partners','/partners/marketplace','store','بازار پرونده‌ها'):'')
                 .'<div class="bn-panel-nav-label">دسترسی پرونده</div><span class="bn-panel-nav-note">مدارک هر پرونده از داخل همان پرونده در دسترس است.</span></nav>';
         }
         if($applicant){
-            return '<nav class="bn-panel-nav"><div class="bn-panel-nav-label">پنل متقاضی</div>'
-                .$item('applicant','/applicant','⌂','داشبورد متقاضی')
-                .$item('applicant-calculator','/applicant/calculator','◈','محاسبه تسهیلات')
-                .$item('applicant-requests','/applicant/requests','▤','پرونده‌های من')
-                .$item('applicant-new','/applicant/requests/new','＋','ثبت درخواست جدید')
-                .($canPartners?$item('partners','/partners/cooperation','◇','همکاری با بابانوئل'):'')
+            return $switch.'<nav class="bn-panel-nav" aria-label="منوی پنل متقاضی"><div class="bn-panel-nav-label">درخواست‌های شخصی</div>'
+                .$item('applicant','/applicant','house','خانه')
+                .$item('applicant-calculator','/applicant/calculator','calculator','محاسبه تسهیلات')
+                .$item('applicant-requests','/applicant/requests','folder-open','درخواست‌های من')
+                .$item('applicant-new','/applicant/requests/new','plus','درخواست تسهیلات')
+                .($canPartners?$item('partners','/partners/cooperation','handshake','همکاری با بابانوئل'):'')
                 .'<div class="bn-panel-nav-label">دسترسی پرونده</div><span class="bn-panel-nav-note">مدارک و ضامن‌های هر پرونده از داخل همان پرونده قابل مدیریت هستند.</span></nav>';
         }
-        $html='<nav class="bn-panel-nav"><div class="bn-panel-nav-label">فضای کاری</div>'.$item('dashboard','/dashboard','⌂','داشبورد');
-        if($super)$html.=$item('system','/system','⚙','وضعیت سامانه').$item('settings','/system/settings','⚒','تنظیمات سرویس‌ها').$item('updates','/system/updates','⇧','مرکز به‌روزرسانی').$item('users','/users','♙','کاربران و نقش‌ها');
-        $html.='<div class="bn-panel-nav-label">ماژول‌های سامانه</div>';
-        if($canLoans){$html.=$item('loans','/loans','◈','تسهیلات').$item('tasks','/loans/tasks?scope=mine','✓','کارتابل من');}
-        else{$html.='<span class="bn-panel-nav-item is-disabled"><span class="bn-panel-nav-icon">◈</span><span>تسهیلات</span></span>';}
-        if($canBank)$html.=$item('bank','/bank','▦','کارتابل بانک');
-        if($canDocuments){$html.=$item('documents','/documents','▣','مدارک');}
-        else{$html.='<span class="bn-panel-nav-item is-disabled"><span class="bn-panel-nav-icon">▣</span><span>مدارک</span></span>';}
-        if($canPartners)$html.=$item('partners','/partners','◇','شرکا');else$html.='<span class="bn-panel-nav-item is-disabled"><span class="bn-panel-nav-icon">◇</span><span>شرکا</span></span>';
-        if($canFinance)$html.=$item('finance','/finance','◫','مالی');else$html.='<span class="bn-panel-nav-item is-disabled"><span class="bn-panel-nav-icon">◫</span><span>مالی</span></span>';
+        $html='<nav class="bn-panel-nav" aria-label="منوی فضای کار"><div class="bn-panel-nav-label">کارهای روزانه</div>'.$item('dashboard','/dashboard','house','خانه');
+        if($canLoans){$html.=$item('tasks','/loans/tasks?scope=mine','list-check','کارتابل من').$item('loans','/loans','folder-open','تسهیلات');}
+        if($canBank)$html.=$item('bank','/bank','building-columns','کارتابل بانک');
+        if($canDocuments)$html.=$item('documents','/documents','file-circle-check','مدارک');
+        if($canPartners)$html.=$item('partners','/partners','handshake','پذیرندگان و همکاری');
+        if($canFinance)$html.=$item('finance','/finance','wallet','مالی و تسویه');
         $canReports=$super||in_array('loans.requests.read',$permissions,true)||in_array('partners.merchants.read',$permissions,true)||in_array('finance.dashboard.read',$permissions,true);
-        if($canReports)$html.=$item('reports','/reports','▤','گزارش‌های مدیریتی');
-        if($super)$html.=$item('reports-history','/reports/history','▥','گزارش تاریخی');
+        if($canReports)$html.='<div class="bn-panel-nav-label">گزارش‌ها</div>'.$item('reports','/reports','chart-column','گزارش‌های مدیریتی');
+        if($super)$html.=$item('reports-history','/reports/history','clock-rotate-left','سوابق تاریخی');
+        if($super)$html.='<div class="bn-panel-nav-label">مدیریت سامانه</div>'.$item('users','/users','users','کاربران و دسترسی‌ها').$item('settings','/system/settings','sliders','تنظیمات').$item('system','/system','gear','وضعیت سامانه').$item('updates','/system/updates','cloud-arrow-up','به‌روزرسانی');
         return$html.'</nav>';
+    }
+
+    public static function icon(string $name): string
+    {
+        return \Babanoell\Panel\Platform\Ui::icon($name);
     }
 
     /** @param mixed $roles */

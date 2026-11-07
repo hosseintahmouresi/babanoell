@@ -17,10 +17,12 @@ final class DocumentService
  public function __construct(private readonly PdoDocumentRepository$repo,private readonly PrivateStorage$storage,private readonly UploadValidator$validator,private readonly EntityAccessService$access){}
  public function upload(Principal$p,string$bearer,string$entityType,string$entityId,array$file,array$input,?string$ip,?string$ua):array
  {
-  if(!$p->can('documents.upload'))throw new ApiException(403,'permission_denied','مجوز بارگذاری مدارک برای این حساب فعال نیست.');$entity=$this->access->assert($entityType,$entityId,$bearer,$p);
   $type=strtolower(trim((string)($input['document_type']??'')));
-  $catalog=DocumentCatalog::get($type);
   $entityType=strtolower(trim($entityType));
+  $canUploadReceipt=$entityType==='settlement_cycle'&&$type==='settlement_receipt'&&$p->can('finance.receipts.manage');
+  if(!$p->can('documents.upload')&&!$canUploadReceipt)throw new ApiException(403,'permission_denied','مجوز بارگذاری مدارک برای این حساب فعال نیست.');
+  $entity=$this->access->assert($entityType,$entityId,$bearer,$p);
+  $catalog=DocumentCatalog::get($type);
   $isGuarantorDocument=str_starts_with($type,'guarantor_');
   if($isGuarantorDocument&&$entityType!=='loan_guarantor')throw new ApiException(422,'guarantor_document_entity_required','مدارک ضامن باید مستقیماً به شناسه همان ضامن متصل شوند.');
   if($entityType==='loan_guarantor'&&!$isGuarantorDocument)throw new ApiException(422,'guarantor_document_type_required','برای رکورد ضامن فقط انواع مدارک مخصوص ضامن قابل ثبت است.');

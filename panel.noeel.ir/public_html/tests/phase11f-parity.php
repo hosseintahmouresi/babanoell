@@ -16,10 +16,12 @@ try{
     $v=(string)$version['ui'];
     if(!str_contains($rendered,'platform.css&amp;v='.$v))$fail[]='asset stylesheet cache version mismatched';
     if(!str_contains($rendered,'platform.js&amp;v='.$v))$fail[]='asset JS cache version mismatched';
-    if(str_contains($rendered,'platform.css&amp;v=2.15.0'))$fail[]='legacy cache version persists';
+    preg_match_all('/platform\.(?:css|js)&amp;v=([^"<>]+)/',$rendered,$assets);
+    if(array_values(array_unique($assets[1]))!==[$v])$fail[]='mixed asset cache versions';
     echo $fail?'[FAIL] Panel asset metadata: '.implode(', ',$fail)."\n":"[PASS] Panel asset metadata follows installed UI version\n";
     $guest=\Babanoell\Panel\Platform\Ui::loginBody('<form></form>');
-    if(!str_contains($guest,'هفت سرویس'))$fail[]='login text still says four services';
-    echo str_contains($guest,'هفت سرویس')?"[PASS] Panel shows seven-service architecture\n":"[FAIL] Panel seven-service architecture copy\n";
+    if(!str_contains($guest,'همراه شما در مسیر تسهیلات'))$fail[]='login task guidance is missing';
+    if(str_contains($guest,'سرویس هماهنگ'))$fail[]='technical service topology leaks into login copy';
+    echo str_contains($guest,'همراه شما در مسیر تسهیلات')?"[PASS] Panel login uses task-focused Persian guidance\n":"[FAIL] Panel login guidance\n";
 }catch(Throwable $e){$fail[]=$e->getMessage();echo '[FAIL] '.$e->getMessage()."\n";}
 exit($fail?1:0);

@@ -43,6 +43,7 @@ final class LegacyStatusMap
             'عدم دریافت'=>'missing',
             'دریافت شده'=>'received',
             'عدم نیاز به دریافت مدارک'=>'not_required',
+            'عدم نیاز به مدارک'=>'not_required',
             'تأیید شده'=>'received',
             'تایید شده'=>'received',
         ];
@@ -56,6 +57,7 @@ final class LegacyStatusMap
             'ثبت نشده'=>'not_recorded',
             'ثبت شده'=>'recorded',
             'تسویه شده'=>'recorded',
+            'انجام شده'=>'recorded',
             'لغو شده'=>'cancelled',
             'ابطال ثبت'=>'cancelled',
         ];

@@ -12,14 +12,10 @@ function integrations_install_block(string $message, int $status = 503): void
 {
     http_response_code($status);
     header('Content-Type: text/html; charset=utf-8');
-    echo '<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8">';
-    echo '<meta name="viewport" content="width=device-width,initial-scale=1">';
-    echo '<title>پیش‌نیاز نصب نوئل</title><style>body{font-family:Tahoma,sans-serif;background:#f4f6f6;';
-    echo 'color:#20332d;min-height:100vh;display:grid;place-items:center;margin:0}main{width:min(640px,calc(100% - 40px));';
-    echo 'background:white;padding:32px;border-radius:22px;box-shadow:0 12px 50px #12352b14}h1{margin-top:0;font-size:22px}';
-    echo 'p{line-height:2.2;word-wrap:break-word}code{direction:ltr;unicode-bidi:isolate}</style>';
-    echo '<main><h1>نصب سرویس Integrations</h1><p>' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</p>';
-    echo '<p>بعد از اصلاح تنظیمات، صفحه نصب را مجدداً باز کنید.</p></main></html>';
+    echo '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">';
+    echo '<title>پیش‌نیاز نصب بابانوئل</title><link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=2.16.0"></head><body><main class="bn-shell bn-shell--narrow"><section class="bn-card bn-card--standalone">';
+    echo '<h1 class="bn-title">نصب سرویس ارتباطات</h1><p class="bn-alert bn-alert--warning">'.htmlspecialchars($message,ENT_QUOTES,'UTF-8').'</p>';
+    echo '<p class="bn-helper">بعد از اصلاح تنظیمات، صفحهٔ نصب را دوباره باز کنید.</p></section></main></body></html>';
     exit;
 }
 
@@ -138,25 +134,21 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>نصب Integrations | نوئل</title>
-<style>
-body{font-family:Tahoma,sans-serif;background:#f4f6f6;color:#20332d;min-height:100vh;display:grid;place-items:center;margin:0}
-main{width:min(520px,calc(100% - 40px));background:white;padding:36px;border-radius:24px;box-shadow:0 16px 65px #12352b15}
-h1{margin-top:0}p{line-height:2}label{display:block;margin:20px 0 8px}input,button{width:100%;box-sizing:border-box;padding:14px;border-radius:10px;border:1px solid #cedbd4;font:inherit}
-button{background:#123e31;color:white;border:0;margin-top:18px;cursor:pointer}.error{color:#ac2525}.success{color:#176e46}
-</style>
+<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=2.16.0">
+<script defer src="/ui-asset.php?file=platform.js&amp;v=2.16.0"></script>
 </head>
-<body><main>
-<h1>راه‌اندازی سرویس Integrations</h1>
+<body><main class="bn-shell bn-shell--narrow"><section class="bn-card bn-card--standalone">
+<h1 class="bn-title">راه‌اندازی سرویس ارتباطات</h1>
 <p>فایل <code>config/local.env.php</code> را با تنظیمات دیتابیس مستقل و کلیدهای سرویس تکمیل کنید.</p>
-<?php if ($error !== ''): ?><p class="error"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p><?php endif; ?>
+<?php if ($error !== ''): ?><p class="bn-alert bn-alert--error"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p><?php endif; ?>
 <?php if ($success): ?>
-<p class="success">نصب دیتابیس و سرویس انجام شد. اکنون آدرس /health را بررسی کنید. فایل install.php را از دسترس خارج کنید.</p>
+<p class="bn-alert bn-alert--success">نصب دیتابیس و سرویس انجام شد. اکنون آدرس /health را بررسی کنید. فایل install.php را از دسترس خارج کنید.</p>
 <?php else: ?>
 <form method="post">
 <input type="hidden" name="csrf" value="<?= htmlspecialchars((string) $_SESSION['csrf'], ENT_QUOTES, 'UTF-8') ?>">
 <label for="key">کلید نصب اختصاصی</label>
 <input id="key" name="install_key" type="password" autocomplete="off" required>
-<button type="submit">نصب ایمن سرویس</button>
+<button class="bn-btn bn-btn--primary" type="submit">نصب ایمن سرویس</button>
 </form>
 <?php endif; ?>
-</main></body></html>
+</section></main></body></html>

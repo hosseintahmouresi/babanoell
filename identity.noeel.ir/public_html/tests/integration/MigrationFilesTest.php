@@ -26,6 +26,6 @@ return new class extends TestCase {
             $versions[$migration->version()] = true;
         }
 
-        Assertions::same(20, count($versions));
+        Assertions::same(21, count($versions));
     }
 };

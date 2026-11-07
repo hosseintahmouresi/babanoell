@@ -44,7 +44,7 @@ final class UpdateTool
     private const ALLOWED_EXTENSIONS = [
         'php', 'htaccess', 'md', 'txt', 'json', 'yml', 'yaml', 'xml',
         'html', 'css', 'js', 'svg', 'png', 'jpg', 'jpeg', 'webp', 'gif',
-        'ico', 'gitkeep', 'example',
+        'ico', 'gitkeep', 'example', 'woff', 'woff2',
     ];
 
     /** @var list<string> */

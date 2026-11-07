@@ -79,9 +79,9 @@ final class UpdateTool
     {
         if($relative===''||str_starts_with($relative,'/')||str_contains($relative,"\0")||preg_match('#(^|/)\.\.(/|$)#',$relative)) throw new RuntimeException('مسیر ناامن در بسته شناسایی شد.');
         if(str_starts_with($relative,'storage/')||$relative==='storage'||$relative==='config/local.env.php') return;
-        $base=basename($relative);if($base==='.htaccess') return;
+        $base=basename($relative);if($base==='.htaccess'||$relative==='composer.lock') return;
         $ext=strtolower(pathinfo($relative,PATHINFO_EXTENSION));
-        if(!in_array($ext,['php','css','js','png','jpg','jpeg','svg','woff','woff2','md','txt','html','json'],true)) throw new RuntimeException('نوع فایل مجاز نیست: '.$relative);
+        if(!in_array($ext,['php','css','js','png','jpg','jpeg','svg','woff','woff2','ttf','md','txt','html','json'],true)) throw new RuntimeException('نوع فایل مجاز نیست: '.$relative);
     }
     private function protected(string $relative): bool { return str_starts_with($relative,'storage/')||$relative==='storage'||in_array($relative,self::PROTECTED,true); }
     private function removeTree(string $dir): void { if(!is_dir($dir))return;foreach(scandir($dir)?:[] as $i){if($i==='.'||$i==='..')continue;$p=$dir.'/'.$i;is_dir($p)?$this->removeTree($p):@unlink($p);}@rmdir($dir); }

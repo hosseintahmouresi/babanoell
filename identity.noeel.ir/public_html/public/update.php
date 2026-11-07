@@ -1103,7 +1103,7 @@ function render_result_box(array $result): void
         $preserved = (array) ($result['preserved'] ?? []);
         echo '<div class="bn-alert bn-alert--success"><strong>بسته با موفقیت تأیید شد.</strong> ساختار فایل امن و آماده اعمال است.</div>';
         echo '<section class="bn-section bn-section--soft">'
-            . '<div class="bn-sectionhead"><span class="bn-step">✓</span><div><h2 class="bn-sectiontitle">خلاصه بسته تأییدشده</h2><p class="bn-sectiondesc">پیش از اعمال، تعداد فایل‌ها، حجم بسته و تغییرات دیتابیس را یک‌بار مرور کنید.</p></div></div>'
+            . '<div class="bn-sectionhead"><span class="bn-step"><i class="bn-icon bn-icon--check" aria-hidden="true"></i></span><div><h2 class="bn-sectiontitle">خلاصه بسته تأییدشده</h2><p class="bn-sectiondesc">پیش از اعمال، تعداد فایل‌ها، حجم بسته و تغییرات دیتابیس را یک‌بار مرور کنید.</p></div></div>'
             . '<div class="bn-stats">'
             . '<div class="bn-stat"><div class="bn-stat-label">فایل‌های قابل اعمال</div><div class="bn-stat-value">' . fa_number(count((array) ($plan['files'] ?? []))) . '</div><div class="bn-stat-caption">فایل تأییدشده</div></div>'
             . '<div class="bn-stat"><div class="bn-stat-label">حجم استخراج‌شده</div><div class="bn-stat-value">' . human_size((int) ($plan['total_size'] ?? 0)) . '</div><div class="bn-stat-caption">پس از کنترل ساختار</div></div>'

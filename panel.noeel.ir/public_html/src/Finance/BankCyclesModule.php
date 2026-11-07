@@ -20,7 +20,7 @@ final class BankCyclesModule {
   return false;
  }
  private function page(string $title,string $description,string $content):void{
-  $head='<div class="bn-pagehead"><div class="bn-pagehead-main"><div class="bn-eyebrow">Finance Service</div><h1 class="bn-title">'.Renderer::e($title).'</h1><p class="bn-subtitle">'.Renderer::e($description).'</p></div></div>';
+  $head='<div class="bn-pagehead"><div class="bn-pagehead-main"><div class="bn-eyebrow">بخش مالی</div><h1 class="bn-title">'.Renderer::e($title).'</h1><p class="bn-subtitle">'.Renderer::e($description).'</p></div></div>';
   $flash=$_SESSION['finance_bank_flash']??null;unset($_SESSION['finance_bank_flash']);
   if(is_array($flash))$head.='<div class="bn-alert bn-alert--'.(($flash['ok']??false)?'success':'error').'">'.Renderer::e((string)$flash['text']).'</div>';
   echo Renderer::page($title,$head.$content,$this->identity,'finance');

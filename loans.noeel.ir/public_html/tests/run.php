@@ -17,7 +17,7 @@ $add('Iranian validators normalize Persian digits',function()use($assert){$asser
 $add('numeric API inputs accept Persian digits and Persian decimal separator',function()use($assert,$eq){$eq(12,InputValidator::integer('۱۲'));$assert(abs(InputValidator::decimal('۲٫۵٪')-2.5)<1e-9);$v=new PlanSettingsValidator();$s=$v->normalized(['active_installments'=>'۶،۱۲،۱۸','requires_bank_validation'=>'1']);$eq([6,12,18],$s['active_installments']);$errors=$v->validate('market',['min_amount'=>'۰','max_amount'=>'۱۰۰۰۰۰۰','active_installments'=>'۶،۱۲','fixed_monthly_rate'=>'۲٫۵','prepayment_percent'=>'۲۰']);$eq([], $errors);});
 $add('Jalali conversion roundtrip and month addition are stable',function()use($eq){$iso=PersianDate::jalaliToIso('1405/06/04');$eq('1405/06/04',PersianDate::isoToJalali($iso));$eq('1405/07/30',PersianDate::addMonths('1405/06/31',1));});
 $add('schedule preserves total payment and count',function()use($assert,$eq){$r=(new CalculatorRegistry())->calculate('market',100000000,6,1,['fixed_monthly_rate'=>3,'prepayment_percent'=>20,'supplier_costs_percent'=>1,'intermediary_deductions_percent'=>1,'babanovel_deductions_percent'=>1,'insurance_percent'=>1,'guarantee_check_percent'=>150,'acceptor_commission_percent'=>1,'additional_deductions_percent'=>1,'acceptor_deductions_amount'=>30000000,'vat_percent'=>10]);$rows=(new ScheduleGenerator())->generate('market',$r,1,'1405/07/01');$eq(6,count($rows));$eq((int)$r['totalPayment'],array_sum(array_column($rows,'amount')));$eq('1405/12/01',$rows[5]['due_date_jalali']);});
-$add('migration files expose twenty-four unique forward versions',function()use($root,$assert,$eq){require_once $root.'/src/Database/Migration.php';$files=glob($root.'/database/migrations/*.php')?:[];$seen=[];foreach($files as$f){$m=require$f;$assert($m instanceof Babanoell\Loans\Database\Migration);$assert(preg_match('/^\d{12}$/',$m->version())===1);$assert(!isset($seen[$m->version()]));$seen[$m->version()]=1;}$eq(24,count($seen));});
+$add('migration files expose unique forward versions',function()use($root,$assert,$eq){require_once $root.'/src/Database/Migration.php';$files=glob($root.'/database/migrations/*.php')?:[];$seen=[];foreach($files as$f){$m=require$f;$assert($m instanceof Babanoell\Loans\Database\Migration);$assert(preg_match('/^\d{12}$/',$m->version())===1);$assert(!isset($seen[$m->version()]));$seen[$m->version()]=1;}$eq(26,count($seen));});
 
 $add('release 1.1.1 enforces canonical plan lifecycle and archive visibility',function()use($root,$assert){
     $service=file_get_contents($root.'/src/Service/PlanService.php');
@@ -197,7 +197,30 @@ $add('phase 3 shadow export is paginated and strips active contract challenge ha
 
 $add('phase 3.0.1 backfills pre-partners acceptors into deterministic merchants',function()use($root,$assert){$m=file_get_contents($root.'/database/migrations/202609290003_backfill_legacy_acceptor_merchants.php');foreach(['legacy-acceptor:','acceptor_user_id','merchant_user_memberships','merchant_id=m.id','loan_request_acceptor_backfill'] as $n)$assert(str_contains($m,$n),'missing '.$n);});
 $add('phase 4 plan rules freeze physical digital contract policy and template codes',function()use($root,$assert){$s=file_get_contents($root.'/src/Domain/PlanRules.php');foreach(['CONTRACT_MODES','contract_mode','loan_application_contract_enabled','facility_agreement_contract_enabled','loan_application_template_code','facility_agreement_template_code']as$n)$assert(str_contains($s,$n),$n);});
-$add('phase 4 contract context is derived from frozen request plan rules',function()use($root,$assert){$s=file_get_contents($root.'/public/index.php');foreach(['/contract-context','plan_rules','contract_policy','loan_application_template_code','facility_agreement_template_code']as$n)$assert(str_contains($s,$n),$n);});
+$add('phase 4 contract context is derived from frozen request plan rules',function()use($assert,$eq){
+    $loan=['id'=>'frozen-request','plan_version'=>3,'plan_rules'=>['contract_mode'=>'digital','loan_application_contract_enabled'=>false,'facility_agreement_contract_enabled'=>true,'loan_application_template_code'=>'frozen-application','facility_agreement_template_code'=>'frozen-facility']];
+    $context=Babanoell\Loans\Domain\ContractContext::fromLoan($loan);
+    $eq(3,$context['plan_version']);$eq('digital',$context['contract_policy']['mode']);
+    $assert(!$context['contract_policy']['loan_application_enabled']);$assert($context['contract_policy']['facility_agreement_enabled']);
+    $eq('frozen-application',$context['contract_policy']['loan_application_template_code']);$eq('frozen-facility',$context['contract_policy']['facility_agreement_template_code']);
+});
+$add('marketplace request validation uses the canonical active catalogue',function()use($assert){
+    $catalog=['enabled'=>true,'allow_all_country'=>true,'require_category'=>true,'require_location'=>true,'categories'=>[['id'=>'goods','active'=>true]],'locations'=>[['id'=>'tehran','active'=>true]]];
+    $valid=['requested_service_scope'=>'selected_locations','requested_activity_categories'=>['goods'],'requested_location_terms'=>['tehran']];
+    Babanoell\Loans\Domain\MarketplaceRequest::validate($valid,$catalog);
+    foreach([
+        array_replace($valid,['requested_activity_categories'=>[]]),array_replace($valid,['requested_activity_categories'=>['unknown']]),
+        array_replace($valid,['requested_location_terms'=>[]]),array_replace($valid,['requested_location_terms'=>['unknown']]),
+        array_replace($valid,['requested_service_scope'=>'invalid']),
+    ]as$input){$denied=false;try{Babanoell\Loans\Domain\MarketplaceRequest::validate($input,$catalog);}catch(InvalidArgumentException){$denied=true;}$assert($denied);}
+    $disabled=$catalog;$disabled['enabled']=false;$denied=false;try{Babanoell\Loans\Domain\MarketplaceRequest::validate($valid,$disabled);}catch(InvalidArgumentException){$denied=true;}$assert($denied);
+    $country=$catalog;$country['allow_all_country']=false;$denied=false;try{Babanoell\Loans\Domain\MarketplaceRequest::validate(array_replace($valid,['requested_service_scope'=>'all_country']),$country);}catch(InvalidArgumentException){$denied=true;}$assert($denied);
+});
+$add('legacy bank and receipt aliases preserve completed evidence',function()use($eq,$assert){
+    $map=Babanoell\Loans\Domain\LegacyStatusMap::bankSettlementStatuses();$eq('recorded',$map['انجام شده']);
+    $receipts=Babanoell\Loans\Domain\LegacyStatusMap::documentReceiptStatuses();$eq('not_required',$receipts['عدم نیاز به مدارک']);$eq('not_required',$receipts['عدم نیاز به دریافت مدارک']);
+    $assert(!isset($map['unknown']));
+});
 $add('phase 4 keeps contract aggregate and OTP storage outside Loans database',function()use($root,$assert){foreach(glob($root.'/database/migrations/*.php')?:[]as$f){$s=file_get_contents($f);$assert(!str_contains($s,'contract_otp_challenges'));$assert(!preg_match('/CREATE TABLE IF NOT EXISTS contracts\s*\(/i',$s));}});
 
 

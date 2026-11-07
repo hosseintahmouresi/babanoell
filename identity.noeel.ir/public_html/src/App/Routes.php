@@ -84,6 +84,7 @@ final class Routes
         $router->get('/api/v1/roles', static fn (Request $request): JsonResponse => $container->managementController()->roles($request));
         $router->get('/api/v1/admin/users', static fn (Request $request): JsonResponse => $container->managementController()->users($request));
         $router->post('/api/v1/admin/users', static fn (Request $request): JsonResponse => $container->managementController()->createUser($request));
+        $router->post('/api/v1/partners/activate-acceptor', static fn (Request $request): JsonResponse => $container->managementController()->activatePartner($request));
         $router->post('/api/v1/admin/user-roles', static function (Request $request) use ($container): JsonResponse {
             $body = $request->json();
             $userId = trim((string) ($body['user_id'] ?? ''));

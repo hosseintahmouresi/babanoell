@@ -26,8 +26,15 @@ final class ContractRevisionService
    // The public renderer also sends a restrictive CSP. Do not permit active markup in newly authored revisions.
    if(preg_match('~<\s*(?:script|iframe|object|embed|form|input|button|base|meta|link|svg|math)\b|\bon[a-z]+\s*=|(?:javascript|vbscript|data)\s*:~iu',$newHtml))throw new InvalidArgumentException('متن قرارداد حاوی کد یا عناصر فعال مجازنشده است.');
   }
+  $seed=$this->contracts->contract($id);
   $this->pdo->beginTransaction();
   try {
+   $subjectHash=null;
+   if(($seed['subject_type']??'')==='cooperation_request'){
+    $q=$this->pdo->prepare('SELECT request_type,data_json FROM cooperation_requests WHERE id=:id FOR UPDATE');$q->execute(['id'=>$seed['subject_id']]);$subject=$q->fetch(PDO::FETCH_ASSOC);
+    if(!is_array($subject))throw new RuntimeException('درخواست همکاری پیدا نشد.');
+    $subjectHash=\Babanoell\Partners\Domain\CooperationFormDefinition::fingerprint($subject['request_type'],\Babanoell\Partners\Support\Json::decode($subject['data_json']));
+   }
    $s=$this->pdo->prepare('SELECT * FROM contracts WHERE id=:id FOR UPDATE');$s->execute([':id'=>$id]);$old=$s->fetch(PDO::FETCH_ASSOC);
    if(!is_array($old))throw new RuntimeException('قرارداد پیدا نشد.');
    if((int)$old['row_version']!==$expected)throw new RuntimeException('قرارداد همزمان تغییر کرده است. اطلاعات را تازه‌سازی کنید.');
@@ -44,9 +51,9 @@ final class ContractRevisionService
     $s->execute([':id'=>$id]);if($s->rowCount()!==1)throw new RuntimeException('نسخه قبلی دیگر قابل لغو نیست.');
     $this->pdo->prepare("UPDATE contract_otp_challenges SET status='superseded' WHERE contract_id=:id AND status='active'")->execute([':id'=>$id]);
    }
-   $sql='INSERT INTO contracts(id,contract_no,contract_kind,revision,subject_type,subject_id,reissued_from_id,reissue_reason,signer_user_id,signer_mobile,mode,status,template_id,template_code,template_version,template_hash,rendered_content,rendered_hash,artifact_status,created_by_user_id) VALUES(:id,:no,:kind,:revision,:stype,:subject,:from,:reason,:signer,:mobile,:mode,\'pending\',:template_id,:template_code,:template_version,:template_hash,:html,:hash,:artifact,:actor)';
+   $sql='INSERT INTO contracts(id,contract_no,contract_kind,revision,subject_type,subject_id,reissued_from_id,reissue_reason,signer_user_id,signer_mobile,mode,status,template_id,template_code,template_version,template_hash,rendered_content,rendered_hash,artifact_status,created_by_user_id,subject_snapshot_hash) VALUES(:id,:no,:kind,:revision,:stype,:subject,:from,:reason,:signer,:mobile,:mode,\'pending\',:template_id,:template_code,:template_version,:template_hash,:html,:hash,:artifact,:actor,:snapshot)';
    $s=$this->pdo->prepare($sql);
-   $s->execute([':id'=>$newId,':no'=>$number,':kind'=>$old['contract_kind'],':revision'=>$revision,':stype'=>$old['subject_type'],':subject'=>$old['subject_id'],':from'=>$old['id'],':reason'=>$reason,':signer'=>$old['signer_user_id'],':mobile'=>$old['signer_mobile'],':mode'=>$targetMode,':template_id'=>$old['template_id'],':template_code'=>$old['template_code'],':template_version'=>$old['template_version'],':template_hash'=>$old['template_hash'],':html'=>$content,':hash'=>hash('sha256',$content),':artifact'=>$targetMode==='physical'?'not_required':'pending',':actor'=>$actor]);
+   $s->execute([':id'=>$newId,':no'=>$number,':kind'=>$old['contract_kind'],':revision'=>$revision,':stype'=>$old['subject_type'],':subject'=>$old['subject_id'],':from'=>$old['id'],':reason'=>$reason,':signer'=>$old['signer_user_id'],':mobile'=>$old['signer_mobile'],':mode'=>$targetMode,':template_id'=>$old['template_id'],':template_code'=>$old['template_code'],':template_version'=>$old['template_version'],':template_hash'=>$old['template_hash'],':html'=>$content,':hash'=>hash('sha256',$content),':artifact'=>$targetMode==='physical'?'not_required':'pending',':actor'=>$actor,':snapshot'=>$subjectHash]);
    $this->contracts->event($id,'contract.reissued',$actor,'allowed',['new_contract_id'=>$newId,'revision'=>$revision,'reason'=>$reason],null,null);
    $this->contracts->event($newId,'contract.revision_created',$actor,'allowed',['previous_contract_id'=>$id,'revision'=>$revision,'reason'=>$reason],null,null);
    $this->pdo->commit();

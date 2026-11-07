@@ -47,7 +47,7 @@ final class ApplicantModule
         $caseNotices = is_array($dashboard['case_notifications'] ?? null) ? $dashboard['case_notifications'] : [];
         $generalNotices = is_array($dashboard['general_notifications'] ?? null) ? $dashboard['general_notifications'] : [];
         $notice = ($dashboard['error'] ?? '') !== '' ? $this->alert('error', 'اطلاعات داشبورد کامل نیست', (string)$dashboard['error']) : '';
-        $content = $this->head('پنل متقاضی', 'ثبت درخواست تسهیلات، تکمیل اطلاعات و مدارک و پیگیری مرحله‌به‌مرحله پرونده‌های شخصی شما.')
+        $content = $this->head('درخواست‌های شما', 'وضعیت درخواست‌ها را دنبال کنید و هر زمان لازم بود، مرحلهٔ بعد را انجام دهید.', '<a class="bn-btn bn-btn--primary" href="/applicant/requests/new">'.Renderer::icon('plus').' درخواست تسهیلات</a>')
             . $this->takeFlash() . $notice . $this->notificationCards($caseNotices, $generalNotices)
             . '<div class="bn-stats">'
             . $this->stat('کل پرونده‌ها', (string)($dashboard['total_cases'] ?? '—'), 'پرونده ثبت‌شده')
@@ -292,7 +292,7 @@ final class ApplicantModule
         if (is_array($result)) {
             $rows = '';
             foreach ($result as $key=>$value) $rows .= '<tr><td>'.Renderer::e($this->calcLabels()[(string)$key] ?? (string)$key).'</td><td>'.$this->formatCalculation((string)$key, $value).'</td></tr>';
-            $content .= '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">✓</span><div><h2 class="bn-sectiontitle">نتیجه محاسبه</h2><p class="bn-sectiondesc">مبالغ مالی به ریال و درصدها با علامت ٪ نمایش داده می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table bn-table--keyvalue"><tbody>'.$rows.'</tbody></table></div></section>';
+            $content .= '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step"><i class="bn-icon bn-icon--check" aria-hidden="true"></i></span><div><h2 class="bn-sectiontitle">نتیجه محاسبه</h2><p class="bn-sectiondesc">مبالغ مالی به ریال و درصدها با علامت ٪ نمایش داده می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table bn-table--keyvalue"><tbody>'.$rows.'</tbody></table></div></section>';
         }
         echo Renderer::page('محاسبه‌گر تسهیلات', $content, $this->identity, 'applicant-calculator');
     }
@@ -328,16 +328,18 @@ final class ApplicantModule
         $items = is_array($plans->json['data']['items'] ?? null) ? $plans->json['data']['items'] : [];
         $options = '<option value="">انتخاب کنید</option>';
         foreach ($items as $p) if (is_array($p)) $options .= '<option value="'.Renderer::e((string)$p['id']).'"'.(((string)($_POST['plan_id'] ?? '')) === (string)$p['id'] ? ' selected' : '').'>'.Renderer::e((string)$p['name']).' · '.$this->typeLabel((string)$p['type']).'</option>';
+        $directory=$this->partners->get('/api/v1/directory/merchants',$this->bearer,['per_page'=>100]);$merchants=(array)($directory->json['data']['items']??[]);
         $merchantOptions='<option value="">انتخاب پذیرنده</option>';foreach($merchants as$m)if(is_array($m))$merchantOptions.='<option value="'.Renderer::e((string)$m['id']).'"'.(((string)($_POST['merchant_id']??''))===(string)$m['id']?' selected':'').'>'.Renderer::e((string)($m['name']??$m['code']??'پذیرنده')).'</option>';
         $v = static fn(string $key, string $default=''): string => (string)($_POST[$key] ?? $default);
-        $content = $this->head('ثبت پرونده تسهیلات', 'اطلاعات متقاضی، طرح و سفارش را ثبت کنید. می‌توانید ابتدا پیش‌نویس ذخیره کنید یا پرونده را مستقیم برای بررسی ارسال کنید.')
+        $content = $this->head('درخواست تسهیلات', 'در سه مرحله اطلاعات را تکمیل کنید. پیش از ارسال، امکان ذخیره پیش‌نویس دارید.')
             . ($error !== '' ? $this->alert('error', 'ثبت انجام نشد', $error) : '')
-            . '<form method="post" action="/applicant/requests/new" data-submit-lock="1"><input type="hidden" name="_csrf" value="'.Renderer::e(Csrf::token()).'">'
-            . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۱</span><div><h2 class="bn-sectiontitle">هویت متقاضی</h2><p class="bn-sectiondesc">برای ارسال پرونده، اطلاعات هویتی و تماس باید کامل و معتبر باشند.</p></div></div><div class="bn-grid bn-grid--2">'
+            . '<form method="post" action="/applicant/requests/new" data-submit-lock="1" data-guided-form data-assignment-form data-server-error="'.($error!==''?'1':'0').'"><input type="hidden" name="_csrf" value="'.Renderer::e(Csrf::token()).'">'
+            . '<section class="bn-section" data-guided-step data-title="اطلاعات شما"><div class="bn-sectionhead"><span class="bn-step">۱</span><div><h2 class="bn-sectiontitle">اطلاعات شما</h2><p class="bn-sectiondesc">برای ارسال پرونده، اطلاعات هویتی و تماس باید کامل و معتبر باشند.</p></div></div><div class="bn-grid bn-grid--2">'
             . $this->field('نام و نام خانوادگی','full_name',$v('full_name')).$this->field('نام پدر','father_name',$v('father_name')).$this->field('شماره شناسنامه','certificate_number',$v('certificate_number')).$this->field('کد ملی','national_code',$v('national_code'),'text','numeric','۱۰ رقم').$this->field('شماره موبایل','mobile_number',$v('mobile_number'),'text','tel','با ۰۹ شروع شود').$this->field('شماره تلفن ثابت','phone_number',$v('phone_number'),'text','tel').$this->birthDateField($this->buildBirthDateFromPost()).$this->occupationField($v('occupation')).$this->field('کد پستی','postal_code',$v('postal_code'),'text','numeric','۱۰ رقم').'</div><div class="bn-grid bn-grid--2">'.$this->area('آدرس محل سکونت','residential_address',$v('residential_address')).$this->area('آدرس محل فعالیت','work_address',$v('work_address')).'</div></section>'
-            . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">روش انتخاب پذیرنده</h2><p class="bn-sectiondesc">می‌توانید پذیرنده مشخصی را انتخاب کنید یا پرونده را در بازار پذیرندگان قرار دهید.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">روش واگذاری</label><select name="acceptor_assignment_mode">'.$this->option('applicant_selected_acceptor','انتخاب پذیرنده مشخص',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).$this->option('open_acceptor_marketplace','بازار پذیرندگان',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).'</select></div><div class="bn-field"><label class="bn-label">پذیرنده انتخابی</label><select name="merchant_id">'.$merchantOptions.'</select></div></div>'.$this->area('خلاصه عمومی پرونده برای بازار','request_public_summary',$v('request_public_summary')).'</section>'
-            . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۳</span><div><h2 class="bn-sectiontitle">طرح و سفارش</h2><p class="bn-sectiondesc">مبلغ سفارش باید با مبلغ درخواست برابر باشد.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">طرح تسهیلات <span class="bn-required">*</span></label><select name="plan_id" required>'.$options.'</select></div>'.$this->field('نام محصول / خدمت','product_name',$v('product_name')).$this->moneyField('مبلغ سفارش','amount',$v('amount'),true).$this->field('تعداد اقساط','installment_count',$v('installment_count'),'number','numeric','',true).$this->field('فاصله سررسیدها (ماه)','installment_interval',$v('installment_interval','1'),'number','numeric','',true).$this->field('اولین سررسید شمسی','first_due_date',$v('first_due_date'),'text','numeric','مثال: ۱۴۰۵/۰۷/۰۱',true).'</div></section>'
-            . '<div class="bn-form-actions"><button class="bn-btn bn-btn--secondary" type="submit" name="_action" value="draft">ذخیره پیش‌نویس</button><button class="bn-btn bn-btn--primary" type="submit" name="_action" value="submit">ثبت و ارسال برای بررسی</button><a class="bn-btn bn-btn--ghost" href="/applicant/requests">انصراف</a></div></form>';
+            . '<div data-guided-step data-title="انتخاب پذیرنده"><section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">روش انتخاب پذیرنده</h2><p class="bn-sectiondesc">می‌توانید پذیرنده مشخصی را انتخاب کنید یا پرونده را در بازار پذیرندگان قرار دهید.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">روش انتخاب</label><select name="acceptor_assignment_mode">'.$this->option('applicant_selected_acceptor','انتخاب پذیرنده مشخص',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).$this->option('open_acceptor_marketplace','بازار پذیرندگان',(string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')).'</select></div><div class="bn-field"><label class="bn-label">پذیرنده انتخابی</label><select name="merchant_id">'.$merchantOptions.'</select></div></div>'.$this->area('توضیح کوتاه درخواست برای پذیرندگان','request_public_summary',$v('request_public_summary')).'</section>'
+            . $this->marketplaceRequestFields() . '</div>'
+            . '<section class="bn-section" data-guided-step data-title="طرح و سفارش"><div class="bn-sectionhead"><span class="bn-step">۳</span><div><h2 class="bn-sectiontitle">طرح و سفارش</h2><p class="bn-sectiondesc">مبلغ سفارش باید با مبلغ درخواست برابر باشد.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">طرح تسهیلات <span class="bn-required">*</span></label><select name="plan_id" required>'.$options.'</select></div>'.$this->field('نام محصول / خدمت','product_name',$v('product_name')).$this->moneyField('مبلغ سفارش','amount',$v('amount'),true).$this->field('تعداد اقساط','installment_count',$v('installment_count'),'number','numeric','',true).$this->field('فاصله سررسیدها (ماه)','installment_interval',$v('installment_interval','1'),'number','numeric','',true).$this->field('اولین سررسید شمسی','first_due_date',$v('first_due_date'),'text','numeric','مثال: ۱۴۰۵/۰۷/۰۱',true).'</div></section>'
+            . '<div class="bn-form-actions"><button class="bn-btn bn-btn--secondary" type="submit" name="_action" value="draft" formnovalidate>ذخیره پیش‌نویس</button><button class="bn-btn bn-btn--primary" type="submit" name="_action" value="submit">ثبت و ارسال برای بررسی</button><a class="bn-btn bn-btn--ghost" href="/applicant/requests">انصراف</a></div></form>';
         echo Renderer::page('ثبت پرونده', $content, $this->identity, 'applicant-new');
     }
 
@@ -362,12 +364,30 @@ final class ApplicantModule
             'acceptor_assignment_mode'=>trim((string)($_POST['acceptor_assignment_mode']??'open_acceptor_marketplace')),
             'merchant_id'=>trim((string)($_POST['merchant_id']??'')),
             'request_public_summary'=>trim((string)($_POST['request_public_summary']??'')),
+            'requested_service_scope'=>trim((string)($_POST['requested_service_scope']??'all_country')),
+            'requested_activity_categories'=>(array)($_POST['requested_activity_categories']??[]),
+            'requested_location_terms'=>(array)($_POST['requested_location_terms']??[]),
         ];
         $r = $this->client->post('/api/v1/requests', $this->bearer, $payload, 'panel-'.bin2hex(random_bytes(16)));
         if (!$r->ok()) { $this->requestForm($this->apiMessage($r)); return; }
         $id = (string)($r->json['data']['request']['id'] ?? '');
         $this->flash('success', $submit ? 'پرونده ثبت و برای بررسی ارسال شد.' : 'پیش‌نویس پرونده ذخیره شد.');
         header('Location: /applicant/requests/'.$id, true, 303); exit;
+    }
+
+    private function marketplaceRequestFields():string
+    {
+        $r=$this->partners->get('/api/v1/marketplace/catalog',$this->bearer);$c=$r->json['data']['catalog']??null;
+        if(!$r->ok()||!is_array($c))return '<div class="bn-alert bn-alert--warning">فهرست بازار در دسترس نیست؛ برای ثبت در بازار کمی بعد دوباره تلاش کنید.</div>';
+        if(empty($c['enabled']))return '<div class="bn-alert bn-alert--info">بازار پذیرندگان در حال حاضر غیرفعال است.</div>';
+        $selection=\Babanoell\Panel\Partners\MarketplaceModule::selection(...);
+        $scope=(string)($_POST['requested_service_scope']??'all_country');
+        $html='<section class="bn-section" data-marketplace-fields><h2 class="bn-sectiontitle">شرایط درخواست در بازار</h2><p>حوزه فعالیت و محدوده موردنیاز خود را انتخاب کنید. خلاصه عمومی را بدون کد ملی، شماره تماس یا اطلاعات محرمانه بنویسید.</p><div class="bn-grid bn-grid--2">';
+        $html.=$selection('requested_activity_categories','حوزه فعالیت موردنیاز',$c['categories'],(array)($_POST['requested_activity_categories']??[]));
+        $html.=$selection('requested_location_terms','موقعیت‌های خدمت',$c['locations'],(array)($_POST['requested_location_terms']??[]));
+        $html.='<div class="bn-field"><label class="bn-label" for="service-scope">محدوده خدمت</label><select id="service-scope" name="requested_service_scope">';
+        if(!empty($c['allow_all_country']))$html.='<option value="all_country"'.($scope==='all_country'?' selected':'').'>سراسر کشور</option>';
+        return $html.'<option value="selected_locations"'.($scope==='selected_locations'?' selected':'').'>موقعیت‌های انتخاب‌شده</option></select></div></div></section>';
     }
 
     private function requestEditForm(string $id, string $error = ''): void
@@ -500,7 +520,7 @@ final class ApplicantModule
         foreach ($history as $row) {
             if (!is_array($row)) continue;
             $from = trim((string)($row['from_status'] ?? ''));
-            $rows .= '<tr><td>'.($from !== '' ? Renderer::e($this->requestStatusLabel($from)).' ← ' : '').Renderer::e($this->requestStatusLabel((string)($row['to_status'] ?? ''))).'</td><td>'.Renderer::e(trim((string)($row['reason'] ?? '')) ?: '—').'</td><td>'.Renderer::e(PersianDateTime::fromIso((string)($row['created_at'] ?? ''), false) ?? '—').'</td></tr>';
+            $rows .= '<tr><td>'.($from !== '' ? Renderer::e($this->requestStatusLabel($from)).' <i class="bn-icon bn-icon--arrow-left" aria-hidden="true"></i> ' : '').Renderer::e($this->requestStatusLabel((string)($row['to_status'] ?? ''))).'</td><td>'.Renderer::e(trim((string)($row['reason'] ?? '')) ?: '—').'</td><td>'.Renderer::e(PersianDateTime::fromIso((string)($row['created_at'] ?? ''), false) ?? '—').'</td></tr>';
         }
         if ($rows === '') $rows = '<tr><td colspan="3"><div class="bn-empty-inline">تاریخچه‌ای ثبت نشده است.</div></td></tr>';
         return '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۴</span><div><h2 class="bn-sectiontitle">تاریخچه وضعیت</h2><p class="bn-sectiondesc">تمام تغییرات وضعیت با زمان و توضیح ثبت می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>تغییر</th><th>توضیح</th><th>زمان</th></tr></thead><tbody>'.$rows.'</tbody></table></div></section>';
@@ -588,7 +608,7 @@ final class ApplicantModule
         }
         $monthOptions = '<option value="">ماه</option>';
         foreach ($this->jalaliMonths() as $number => $label) {
-            $monthOptions .= '<option value="'.Renderer::e((string)$number).'"'.((string)$number === $month ? ' selected' : '').'>'.Renderer::e(PersianDateTime::digits((string)$number).' - '.$label).'</option>';
+            $monthOptions .= '<option value="'.Renderer::e((string)$number).'"'.((string)$number === $month ? ' selected' : '').'>'.Renderer::e($label).'</option>';
         }
         $dayOptions = '<option value="">روز</option>';
         for ($d = 1; $d <= 31; $d++) {
@@ -596,9 +616,9 @@ final class ApplicantModule
             $dayOptions .= '<option value="'.$dd.'"'.($dd === $day ? ' selected' : '').'>'.Renderer::e(PersianDateTime::digits($dd)).'</option>';
         }
         return '<div class="bn-field bn-field--birth"><label class="bn-label">تاریخ تولد شمسی <span class="bn-required">*</span></label><div class="bn-select-grid">'
-            . '<select name="birth_day" required>'.$dayOptions.'</select>'
-            . '<select name="birth_month" required>'.$monthOptions.'</select>'
-            . '<select name="birth_year" required>'.$yearOptions.'</select>'
+            . '<div class="bn-select-cell"><select aria-label="روز تولد" name="birth_day" required>'.$dayOptions.'</select></div>'
+            . '<div class="bn-select-cell"><select aria-label="ماه تولد" name="birth_month" required>'.$monthOptions.'</select></div>'
+            . '<div class="bn-select-cell"><select aria-label="سال تولد" name="birth_year" required>'.$yearOptions.'</select></div>'
             . '</div><span class="bn-helper">روز، ماه و سال تولد را جداگانه انتخاب کنید.</span></div>';
     }
 
@@ -661,8 +681,8 @@ final class ApplicantModule
             $generalItems .= '<li>'.Renderer::e($message).'</li>';
         }
         return '<div class="bn-notify-strip">'
-            . '<details class="bn-notify-card" open><summary><span class="bn-notify-icon">🔔</span><span>اعلانات پرونده</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($caseNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$caseItems.'</ul></div></details>'
-            . '<details class="bn-notify-card"><summary><span class="bn-notify-icon">📢</span><span>اعلانات عمومی</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($generalNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$generalItems.'</ul></div></details>'
+            . '<details class="bn-notify-card" open><summary><span class="bn-notify-icon"><i class="bn-icon bn-icon--bell" aria-hidden="true"></i></span><span>اعلانات پرونده</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($caseNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$caseItems.'</ul></div></details>'
+            . '<details class="bn-notify-card"><summary><span class="bn-notify-icon"><i class="bn-icon bn-icon--bullhorn" aria-hidden="true"></i></span><span>اعلانات عمومی</span><strong>'.Renderer::e(PersianDateTime::digits((string)count($generalNotifications))).'</strong></summary><div class="bn-notify-body"><ul>'.$generalItems.'</ul></div></details>'
             . '</div>';
     }
 

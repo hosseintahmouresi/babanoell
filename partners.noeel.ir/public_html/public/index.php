@@ -18,10 +18,24 @@ try{
  if(preg_match('#^/contract/([A-Za-z0-9_-]{30,120})(/print)?$#',$path,$cm)&&$method==='GET'){
   \Babanoell\Partners\Contract\ContractPrintView::headers();
   try{$contract=$contractService->publicView($cm[1],$request->clientIp(),$request->userAgent());echo \Babanoell\Partners\Contract\ContractPrintView::render($contract,isset($cm[2])&&$cm[2]==='/print',$cm[1],(!$config->isProduction()||((int)\babanoell_partners_env('PARTNERS_SMS_CONTRACT_BODY_ID','0')>0&&strlen($config->serviceAuthSecret())>=32)));exit;}
-  catch(Throwable $e){http_response_code(404);echo '<div dir="rtl">لینک قرارداد معتبر نیست یا منقضی شده است.</div>';exit;}
+  catch(Throwable $e){http_response_code(404);echo \Babanoell\Partners\Contract\ContractPrintView::notice('لینک قرارداد در دسترس نیست','لینک معتبر نیست یا مهلت آن به پایان رسیده است. لینک تازه را از صفحهٔ قرارداد دریافت کنید.');exit;}
  }
- if(preg_match('#^/contract/([A-Za-z0-9_-]{30,120})/otp/request$#',$path,$cm)&&$method==='POST'){try{$r=$contractService->requestOtp($cm[1],$request->clientIp(),$request->userAgent());header('Content-Type:text/html;charset=utf-8');echo '<div dir="rtl" style="font-family:Tahoma;padding:30px">درخواست رمز ثبت شد.'.(!$config->isProduction()&&is_string($r['test_otp']??null)?' رمز آزمایشی: <strong>'.htmlspecialchars((string)$r['test_otp']).'</strong>':'').' <a href="/contract/'.$cm[1].'">بازگشت</a></div>';exit;}catch(Throwable$e){http_response_code(409);header('Content-Type:text/html;charset=utf-8');echo '<div dir="rtl">'.htmlspecialchars($e->getMessage()).' <a href="/contract/'.$cm[1].'">بازگشت</a></div>';exit;}}
- if(preg_match('#^/contract/([A-Za-z0-9_-]{30,120})/otp/verify$#',$path,$cm)&&$method==='POST'){try{$otp=(string)($_POST['otp']??'');$contractService->verifyOtp($cm[1],$otp,$request->clientIp(),$request->userAgent());header('Location:/contract/'.$cm[1],true,303);exit;}catch(Throwable$e){http_response_code(409);header('Content-Type:text/html;charset=utf-8');echo '<div dir="rtl">'.htmlspecialchars($e->getMessage()).' <a href="/contract/'.$cm[1].'">بازگشت</a></div>';exit;}}
+ if(preg_match('#^/contract/([A-Za-z0-9_-]{30,120})/otp/request$#',$path,$cm)&&$method==='POST'){
+  \Babanoell\Partners\Contract\ContractPrintView::headers();
+  try{
+   $r=$contractService->requestOtp($cm[1],$request->clientIp(),$request->userAgent());
+   $testOtp=!$config->isProduction()&&is_string($r['test_otp']??null)?$r['test_otp']:null;
+   echo \Babanoell\Partners\Contract\ContractPrintView::notice('درخواست رمز ثبت شد','کد تأیید را در صفحهٔ قرارداد وارد کنید.',$cm[1],$testOtp);exit;
+  }catch(Throwable$e){
+   http_response_code(409);$message=preg_match('/[آ-ی]/u',$e->getMessage())?$e->getMessage():'درخواست رمز انجام نشد. اعتبار لینک و فاصلهٔ ارسال مجدد را بررسی کنید.';
+   echo \Babanoell\Partners\Contract\ContractPrintView::notice('رمز ارسال نشد',$message,$cm[1]);exit;
+  }
+ }
+ if(preg_match('#^/contract/([A-Za-z0-9_-]{30,120})/otp/verify$#',$path,$cm)&&$method==='POST'){
+  \Babanoell\Partners\Contract\ContractPrintView::headers();
+  try{$otp=(string)($_POST['otp']??'');$contractService->verifyOtp($cm[1],$otp,$request->clientIp(),$request->userAgent());header('Location:/contract/'.$cm[1],true,303);exit;}
+  catch(Throwable$e){http_response_code(409);$message=preg_match('/[آ-ی]/u',$e->getMessage())?$e->getMessage():'کد تأیید معتبر نیست یا مهلت آن به پایان رسیده است.';echo \Babanoell\Partners\Contract\ContractPrintView::notice('امضا ثبت نشد',$message,$cm[1]);exit;}
+ }
  if(!str_starts_with($path,'/api/v1/'))JsonResponse::error(404,'route_not_found','مسیر درخواستی وجود ندارد.');
  if($path==='/api/v1/meta/platform-contract'&&$method==='GET')JsonResponse::ok(['contract'=>\Babanoell\Partners\Platform\ServiceBoundary::describe(),'service_auth'=>['mode'=>$config->serviceAuthMode(),'configured'=>$config->serviceAuthSecret()!=='']]);
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/artifact-handoff/consume$#',$path,$cm)&&$method==='POST'){
@@ -76,12 +90,43 @@ try{
   $new=$contractRevisionService->reissue($cm[1],$principal->userId,$request->json());JsonResponse::ok(['contract'=>$new],201);
  }
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/issue-link$#',$path,$cm)&&$method==='POST'){$c=$contractRepository->contract($cm[1]);if($c===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');if(!$canManageContract($c))JsonResponse::error(403,'contract_manage_denied','مدیریت این قرارداد مجاز نیست.');$r=$contractService->issueLink($cm[1],$principal->userId);JsonResponse::ok(['contract'=>$r['contract'],'public_path'=>'/contract/'.$r['token'],'expires_at'=>$r['expires_at']]);}
+ if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/signing-link$#',$path,$cm)&&$method==='POST'){
+  $c=$contractRepository->contract($cm[1]);
+  if(!is_array($c)||$c['subject_type']!=='cooperation_request'||$c['signer_user_id']!==$principal->userId||!$canReadContract($c))JsonResponse::error(403,'contract_signer_denied','امضای این قرارداد فقط برای صاحب آن مجاز است.');
+  $latest=$contractRepository->bySubject('cooperation_request',$c['subject_id']);
+  $revisions=array_filter($latest,static fn($row)=>$row['contract_kind']==='cooperation_agreement');
+  if($revisions===[]||(int)$c['revision']!==max(array_column($revisions,'revision'))||$c['mode']!=='digital'||!in_array($c['status'],['pending','sent','viewed'],true))JsonResponse::error(409,'contract_not_signable','این نسخه قرارداد قابل امضا نیست.');
+  $issued=$contractService->issueLink($cm[1],$principal->userId);JsonResponse::ok(['public_path'=>'/contract/'.$issued['token']]);
+ }
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/sign-physical$#',$path,$cm)&&$method==='POST'){$c=$contractRepository->contract($cm[1]);if($c===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');if(!$canManageContract($c))JsonResponse::error(403,'contract_manage_denied','ثبت امضای این قرارداد مجاز نیست.');JsonResponse::ok(['contract'=>$contractService->markPhysical($cm[1],$principal->userId,$request->clientIp(),$request->userAgent())]);}
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/artifact/retry$#',$path,$cm)&&$method==='POST'){$c=$contractRepository->contract($cm[1]);if($c===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');if(!$canManageContract($c))JsonResponse::error(403,'contract_manage_denied','تلاش مجدد ذخیره قرارداد مجاز نیست.');JsonResponse::ok(['contract'=>$contractService->retryArtifact($cm[1])]);}
  if($path==='/api/v1/stats'&&$method==='GET'){$require('partners.merchants.read');JsonResponse::ok($repository->stats());}
  if($path==='/api/v1/admin/import-loans-shadow'&&$method==='POST'){if(!$principal->isSuperAdmin()&&!in_array('admin',$roles,true))JsonResponse::error(403,'permission_denied','انتقال داده‌های قبلی فقط برای مدیر سامانه مجاز است.');JsonResponse::ok(['import'=>$partnerService->importLoansShadow($principal->userId,$bearer)]);}
 if($path==='/api/v1/directory/merchants'&&$method==='GET'){$require('partners.directory.read');$q=$request->query();$r=$repository->listMerchants((int)($q['page']??1),(int)($q['per_page']??25),trim((string)($q['q']??'')),'active');$r['items']=array_map(static fn(array$m):array=>['id'=>(string)$m['id'],'code'=>(string)$m['code'],'name'=>(string)$m['name'],'legal_name'=>(string)($m['legal_name']??''),'credit_level'=>(string)($m['credit_level']??'')],$r['items']);JsonResponse::ok($r,200,['pagination'=>Pagination::fromResult($r)]);}
 if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$method==='GET'){$require('partners.directory.read');$merchant=$repository->getMerchant($m[1]);if($merchant===null||(string)$merchant['status']!=='active')JsonResponse::error(404,'merchant_not_found','پذیرنده فعال پیدا نشد.');JsonResponse::ok(['merchant'=>['id'=>(string)$merchant['id'],'code'=>(string)$merchant['code'],'name'=>(string)$merchant['name'],'legal_name'=>(string)($merchant['legal_name']??''),'credit_level'=>(string)($merchant['credit_level']??'')]]);}
+
+ $marketplaceConfig=new \Babanoell\Partners\Marketplace\MarketplaceConfiguration($pdo);
+ if($path==='/api/v1/marketplace/catalog'&&$method==='GET'){
+  if(!$principal->can('loans.requests.create')&&!$principal->can('partners.marketplace.read')&&!$principal->can('partners.merchants.read'))JsonResponse::error(403,'permission_denied','دسترسی به فهرست بازار مجاز نیست.');
+  JsonResponse::ok(['catalog'=>$marketplaceConfig->current()]);
+ }
+ if($path==='/api/v1/marketplace/configuration'&&$method==='PUT'){
+  if(!$principal->isSuperAdmin()&&!in_array('admin',$roles,true))JsonResponse::error(403,'permission_denied','مدیریت تنظیمات بازار فقط برای مدیر سامانه مجاز است.');
+  JsonResponse::ok(['catalog'=>$marketplaceConfig->save($request->json(),$principal->userId)]);
+ }
+ if($path==='/api/v1/marketplace/context'&&$method==='GET'){
+  $require('partners.marketplace.read');
+  $context=$marketplaceConfig->context($ownMerchant,$ownMerchant!==null?$repository->planPermissions($ownMerchant['id']):[]);
+  $context['can_claim']=$ownMerchant!==null&&in_array($ownMerchant['membership_role']??'',['owner','manager','operator'],true)&&$principal->can('partners.marketplace.claim');
+  JsonResponse::ok(['context'=>$context]);
+ }
+ if(preg_match('#^/api/v1/merchants/([a-f0-9]{26})/marketplace$#',$path,$market)&&$method==='PUT'){
+  $require('partners.merchants.manage');$merchant=$repository->getMerchant($market[1]);
+  if($merchant===null)JsonResponse::error(404,'merchant_not_found','پذیرنده پیدا نشد.');
+  if(!$canMerchant($market[1]))JsonResponse::error(403,'merchant_access_denied','دسترسی به پذیرنده مجاز نیست.');
+  $b=$request->json();$metadata=$merchant['metadata'];$metadata['marketplace']=\Babanoell\Partners\Marketplace\MarketplaceConfiguration::profile($b,$marketplaceConfig->current());
+  JsonResponse::ok($partnerService->updateMerchant($market[1],$principal->userId,['metadata'=>$metadata,'row_version'=>$b['row_version']??0],$bearer));
+ }
  if($path==='/api/v1/me/merchant'&&$method==='GET'){JsonResponse::ok(['merchant'=>$ownMerchant]);}
  if($path==='/api/v1/merchants'){
   if($method==='GET'){$require('partners.merchants.read');if(!$staff&&!$principal->isSuperAdmin()){JsonResponse::ok(['items'=>$ownMerchant!==null?[$ownMerchant]:[],'page'=>1,'per_page'=>1,'total'=>$ownMerchant!==null?1:0,'pages'=>1]);}$q=$request->query();$r=$repository->listMerchants((int)($q['page']??1),(int)($q['per_page']??25),trim((string)($q['q']??'')),strtolower(trim((string)($q['status']??''))));JsonResponse::ok($r,200,['pagination'=>Pagination::fromResult($r)]);}
@@ -116,11 +161,27 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
   if($method==='GET'){$require('partners.cooperation.read');$q=$request->query();$applicant=$principal->can('partners.cooperation.manage')?null:$principal->userId;$r=$repository->listCooperation((int)($q['page']??1),(int)($q['per_page']??25),strtolower(trim((string)($q['status']??''))),strtolower(trim((string)($q['request_type']??''))),trim((string)($q['q']??'')),$applicant);JsonResponse::ok($r,200,['pagination'=>Pagination::fromResult($r)]);}
   if($method==='POST'){$require('partners.cooperation.create');$key=IdempotencyKey::normalize($request->header('Idempotency-Key'));$body=$request->json();if(!$principal->isSuperAdmin()&&!in_array('admin',$roles,true))$body['applicant_user_id']=$principal->userId;JsonResponse::ok(['request'=>$partnerService->createCooperation($principal->userId,$body,$key)],201);}
  }
- if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})$#',$path,$m)&&$method==='GET'){$require('partners.cooperation.read');$c=$repository->getCooperation($m[1]);if($c===null)JsonResponse::error(404,'cooperation_not_found','درخواست همکاری پیدا نشد.');if(!$canCooperation($c))JsonResponse::error(403,'cooperation_access_denied','دسترسی به درخواست همکاری مجاز نیست.');JsonResponse::ok(['request'=>$c,'events'=>$principal->can('partners.audit')?$repository->events('cooperation_request',$m[1]):[]]);}
- if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})/transition$#',$path,$m)&&$method==='POST'){$require('partners.cooperation.manage');JsonResponse::ok($partnerService->transitionCooperation($m[1],$principal->userId,$request->json(),$bearer));}
+ if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})$#',$path,$m)&&$method==='GET'){$require('partners.cooperation.read');$c=$repository->getCooperation($m[1]);if($c===null)JsonResponse::error(404,'cooperation_not_found','درخواست همکاری پیدا نشد.');if(!$canCooperation($c))JsonResponse::error(403,'cooperation_access_denied','دسترسی به درخواست همکاری مجاز نیست.');JsonResponse::ok(['request'=>$c,'activation'=>$partnerService->activationService()->state($m[1]),'events'=>$principal->can('partners.audit')?$repository->events('cooperation_request',$m[1]):[]]);}
+ if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})$#',$path,$m)&&$method==='PATCH'){
+  $c=$repository->getCooperation($m[1]);if($c===null)JsonResponse::error(404,'cooperation_not_found','درخواست همکاری پیدا نشد.');
+  if(!$canCooperation($c))JsonResponse::error(403,'cooperation_access_denied','دسترسی به درخواست همکاری مجاز نیست.');
+  JsonResponse::ok(['request'=>$partnerService->updateCooperation($m[1],$principal->userId,$request->json())]);
+ }
+ if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})/activation/retry$#',$path,$m)&&$method==='POST'){
+  $require('partners.cooperation.manage');JsonResponse::ok($partnerService->retryCooperationActivation($m[1],$principal->userId,$bearer));
+ }
+ if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})/transition$#',$path,$m)&&$method==='POST'){
+  $body=$request->json();
+  if(!$principal->can('partners.cooperation.manage')){
+   $c=$repository->getCooperation($m[1]);
+   if(!is_array($c)||$c['applicant_user_id']!==$principal->userId||$c['status']!=='need_correction'||($body['status']??'')!=='submitted')JsonResponse::error(403,'permission_denied','فقط ارسال دوباره درخواست شخصی پس از رفع نقص مجاز است.');
+   unset($body['assigned_user_id']);
+  }
+  JsonResponse::ok($partnerService->transitionCooperation($m[1],$principal->userId,$body,$bearer));
+ }
  if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})/documents$#',$path,$m)&&$method==='POST'){$c=$repository->getCooperation($m[1]);if($c===null)JsonResponse::error(404,'cooperation_not_found','درخواست همکاری پیدا نشد.');if(!$canCooperation($c))JsonResponse::error(403,'cooperation_access_denied','دسترسی به درخواست همکاری مجاز نیست.');$b=$request->json();$document=PartnerRules::id((string)($b['document_id']??''),'شناسه مدرک');$relation=trim((string)($b['relation_code']??'attachment'));if($relation===''||mb_strlen($relation)>64)JsonResponse::error(422,'validation_failed','نوع ارتباط مدرک معتبر نیست.');JsonResponse::ok(['link'=>$repository->attachCooperationDocument($m[1],$document,$relation,$principal->userId)],201);}
  if($path==='/api/v1/marketplace/requests'&&$method==='GET'){$require('partners.marketplace.read');JsonResponse::ok($partnerService->marketplace($bearer,$request->query()));}
  if(preg_match('#^/api/v1/marketplace/requests/([a-f0-9]{26})/claim$#',$path,$m)&&$method==='POST'){$require('partners.marketplace.claim');JsonResponse::ok($partnerService->claimMarketplace($m[1],$principal->userId,$bearer),201);}
  if(preg_match('#^/api/v1/merchants/([a-f0-9]{26})/events$#',$path,$m)&&$method==='GET'){$require('partners.audit');if(!$canMerchant($m[1]))JsonResponse::error(403,'merchant_access_denied','دسترسی به این پذیرنده مجاز نیست.');JsonResponse::ok(['items'=>$repository->events('merchant',$m[1])]);}
  JsonResponse::error(404,'route_not_found','مسیر API در این نسخه وجود ندارد.');
-}catch(\Babanoell\Partners\Domain\CooperationFormValidationException$e){JsonResponse::error(422,'validation_failed',$e->getMessage(),['fields'=>$e->errors]);}catch(InvalidArgumentException$e){JsonResponse::error(422,'validation_failed',$e->getMessage());}catch(PDOException$e){error_log('[partners] database error: '.$e->getMessage());JsonResponse::error(503,'database_error','عملیات پایگاه داده کامل نشد. گزارش فنی ثبت شده است.');}catch(RuntimeException$e){$known=['form_revision_conflict'=>[409,'نسخه تنظیمات تغییر کرده است؛ صفحه را تازه‌سازی و ورودی‌ها را دوباره بررسی کنید.'],'cooperation_idempotency_conflict'=>[409,'این شناسه عملیات قبلاً با اطلاعات دیگری استفاده شده است.'],'cooperation_documents_unavailable'=>[503,'وضعیت مدارک همکاری قابل تأیید نیست؛ پس از برقراری ارتباط دوباره تلاش کنید.'],'cooperation_definition_invalid'=>[503,'تعریف فرم همکاری قابل تأیید نیست.']];$code=$e->getMessage();if(isset($known[$code]))JsonResponse::error($known[$code][0],$code,$known[$code][1]);error_log('[partners] runtime error: '.$e->getMessage());JsonResponse::error(409,'operation_failed','عملیات کامل نشد. وضعیت رکورد را تازه‌سازی کنید و دوباره تلاش کنید.');}catch(Throwable$e){error_log('[partners] unexpected error: '.get_class($e).': '.$e->getMessage());JsonResponse::error(500,'internal_error','خطای غیرمنتظره‌ای رخ داد. دوباره تلاش کنید.');}
+}catch(\Babanoell\Partners\Domain\CooperationFormValidationException$e){JsonResponse::error(422,'validation_failed',$e->getMessage(),['fields'=>$e->errors]);}catch(InvalidArgumentException$e){JsonResponse::error(422,'validation_failed',$e->getMessage());}catch(PDOException$e){error_log('[partners] database error: '.$e->getMessage());JsonResponse::error(503,'database_error','عملیات پایگاه داده کامل نشد. گزارش فنی ثبت شده است.');}catch(RuntimeException$e){$known=['cooperation_activation_pending'=>[409,'پذیرنده باید از مسیر فعال‌سازی همکاری آماده شود؛ از گزینه تلاش مجدد استفاده کنید.'],'cooperation_edit_locked'=>[409,'ویرایش درخواست در این مرحله مجاز نیست.'],'cooperation_contract_locked'=>[409,'برای این درخواست قرارداد صادر شده است؛ اصلاح اطلاعات باید توسط کارشناس و با بازصدور قرارداد انجام شود.'],'cooperation_contract_incomplete'=>[409,'قرارداد همکاری باید امضا و فایل نهایی آن ذخیره شده باشد.'],'cooperation_contract_changed'=>[409,'قرارداد همکاری تغییر کرده است؛ پس از بررسی و امضای نسخه جدید، همکاری را دوباره تأیید کنید.'],'cooperation_revision_conflict'=>[409,'اطلاعات درخواست تغییر کرده است؛ صفحه را تازه‌سازی کنید.'],'cooperation_activation_missing'=>[409,'درخواست برای فعال‌سازی آماده نیست.'],'cooperation_activation_not_configured'=>[503,'ارتباط فعال‌سازی حساب تنظیم نشده است.'],'marketplace_revision_conflict'=>[409,'تنظیمات بازار هم‌زمان تغییر کرده است؛ صفحه را تازه‌سازی کنید.'],'marketplace_claim_conflict'=>[409,'پرونده با شرایط فعلی پذیرنده قابل پذیرش نیست یا قبلاً پذیرفته شده است؛ فهرست بازار را تازه‌سازی کنید.'],'form_revision_conflict'=>[409,'نسخه تنظیمات تغییر کرده است؛ صفحه را تازه‌سازی و ورودی‌ها را دوباره بررسی کنید.'],'cooperation_idempotency_conflict'=>[409,'این شناسه عملیات قبلاً با اطلاعات دیگری استفاده شده است.'],'cooperation_documents_unavailable'=>[503,'وضعیت مدارک همکاری قابل تأیید نیست؛ پس از برقراری ارتباط دوباره تلاش کنید.'],'cooperation_definition_invalid'=>[503,'تعریف فرم همکاری قابل تأیید نیست.']];$code=$e->getMessage();if(isset($known[$code]))JsonResponse::error($known[$code][0],$code,$known[$code][1]);error_log('[partners] runtime error: '.$e->getMessage());JsonResponse::error(409,'operation_failed','عملیات کامل نشد. وضعیت رکورد را تازه‌سازی کنید و دوباره تلاش کنید.');}catch(Throwable$e){error_log('[partners] unexpected error: '.get_class($e).': '.$e->getMessage());JsonResponse::error(500,'internal_error','خطای غیرمنتظره‌ای رخ داد. دوباره تلاش کنید.');}

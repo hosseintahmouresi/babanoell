@@ -186,7 +186,28 @@ SQL;
         return $row === false ? null : $this->normalizeUserRow($row);
     }
 
-    /** @param array<int,string> $roles @return array<string,string> */
+    /** An idempotent, narrow grant for the canonical Partners activation workflow. */
+    public function activatePartner(array $input,string $actor):array
+    {
+        foreach(['cooperation_id','merchant_id','user_id']as$key)if(!is_string($input[$key]??null)||!preg_match('/^[a-f0-9]{26}$/D',$input[$key]))throw new RuntimeException('شناسه فعال‌سازی پذیرنده معتبر نیست.');
+        $userId=$input['user_id'];$this->assertTargetManageable($actor,$userId);
+        $this->pdo->beginTransaction();
+        try{
+            $s=$this->pdo->prepare('SELECT status,disabled_at FROM users WHERE id=:id FOR UPDATE');$s->execute(['id'=>$userId]);$user=$s->fetch(PDO::FETCH_ASSOC);
+            if(!is_array($user)||$user['status']!=='active'||$user['disabled_at']!==null)throw new RuntimeException('partner_account_inactive');
+            $role=$this->roleMap(['acceptor'])['acceptor'];
+            $s=$this->pdo->prepare('INSERT INTO partner_role_activations(cooperation_id,merchant_id,user_id,actor_user_id) VALUES(:cooperation,:merchant,:user,:actor) ON DUPLICATE KEY UPDATE cooperation_id=VALUES(cooperation_id)');
+            $s->execute(['cooperation'=>$input['cooperation_id'],'merchant'=>$input['merchant_id'],'user'=>$userId,'actor'=>$actor]);
+            $s=$this->pdo->prepare('SELECT merchant_id,user_id FROM partner_role_activations WHERE cooperation_id=:id FOR UPDATE');$s->execute(['id'=>$input['cooperation_id']]);$previous=$s->fetch(PDO::FETCH_ASSOC);
+            if($previous['merchant_id']!==$input['merchant_id']||$previous['user_id']!==$userId)throw new RuntimeException('partner_activation_conflict');
+            // Add only the acceptor role. Preserve every existing role and scope grant.
+            $s=$this->pdo->prepare('INSERT INTO user_roles(user_id,role_id,created_by_user_id) VALUES(:user,:role,:actor) ON DUPLICATE KEY UPDATE expires_at=NULL');
+            $s->execute(['user'=>$userId,'role'=>$role,'actor'=>$actor]);
+            $this->pdo->commit();
+        }catch(Throwable $e){if($this->pdo->inTransaction())$this->pdo->rollBack();throw $e;}
+        return ['cooperation_id'=>$input['cooperation_id'],'merchant_id'=>$input['merchant_id'],'user_id'=>$userId,'role'=>'acceptor'];
+    }
+
     private function roleMap(array $roles): array
     {
         $placeholders = implode(',', array_fill(0, count($roles), '?'));

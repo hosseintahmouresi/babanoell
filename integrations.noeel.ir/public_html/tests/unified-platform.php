@@ -6,7 +6,7 @@ $root=dirname(__DIR__);
 $success=0;
 $assert=function(bool $ok,string $name)use(&$success):void{if(!$ok)throw new RuntimeException($name);echo "[PASS] $name\n";$success++;};
 $v=require $root.'/config/version.php';
-$assert(($v['version']??null)==='1.2.0'&&($v['service']??null)==='integrations','unified version');
+$assert(version_compare((string)($v['version']??'0'),'1.2.0','>=')&&($v['service']??null)==='integrations','unified version');
 $ui=\Babanoell\Integrations\View\Renderer::page('تست یکپارچگی','<div class="bn-section">ok</div>');
 foreach(['bn-brandbar','bn-card','ui-asset.php','brand-logo.png','bn-section','lang="fa"','dir="rtl"'] as $needle)
  $assert(str_contains($ui,$needle),'UI: '.$needle);

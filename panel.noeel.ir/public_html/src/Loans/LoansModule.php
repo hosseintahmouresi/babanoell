@@ -471,7 +471,7 @@ final class LoansModule
         if (is_array($result)) {
             $rows = '';
             foreach ($result as $key=>$value) $rows .= '<tr><td>'.Renderer::e($this->calcLabels()[(string)$key] ?? (string)$key).'</td><td>'.$this->formatCalculation((string)$key, $value).'</td></tr>';
-            $content .= '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">✓</span><div><h2 class="bn-sectiontitle">نتیجه محاسبه</h2><p class="bn-sectiondesc">مبالغ مالی به ریال و درصدها با علامت ٪ نمایش داده می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table bn-table--keyvalue"><tbody>'.$rows.'</tbody></table></div></section>';
+            $content .= '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step"><i class="bn-icon bn-icon--check" aria-hidden="true"></i></span><div><h2 class="bn-sectiontitle">نتیجه محاسبه</h2><p class="bn-sectiondesc">مبالغ مالی به ریال و درصدها با علامت ٪ نمایش داده می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table bn-table--keyvalue"><tbody>'.$rows.'</tbody></table></div></section>';
         }
         echo Renderer::page('محاسبه‌گر تسهیلات', $content, $this->identity, 'loans');
     }
@@ -516,7 +516,7 @@ final class LoansModule
             . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۱</span><div><h2 class="bn-sectiontitle">هویت متقاضی</h2><p class="bn-sectiondesc">برای ارسال پرونده، اطلاعات هویتی و تماس باید کامل و معتبر باشند.</p></div></div><div class="bn-grid bn-grid--2">'
             . $this->field('نام و نام خانوادگی','full_name',$v('full_name')).$this->field('نام پدر','father_name',$v('father_name')).$this->field('شماره شناسنامه','certificate_number',$v('certificate_number')).$this->field('کد ملی','national_code',$v('national_code'),'text','numeric','۱۰ رقم').$this->field('شماره موبایل','mobile_number',$v('mobile_number'),'text','tel','با ۰۹ شروع شود').$this->field('شماره تلفن ثابت','phone_number',$v('phone_number'),'text','tel').$this->birthDateField($v('birth_date')).$this->occupationField($v('occupation')).$this->field('کد پستی','postal_code',$v('postal_code'),'text','numeric','۱۰ رقم').'</div><div class="bn-grid bn-grid--2">'.$this->area('آدرس محل سکونت','residential_address',$v('residential_address')).$this->area('آدرس محل فعالیت','work_address',$v('work_address')).'</div></section>'
             . '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۲</span><div><h2 class="bn-sectiontitle">طرح و سفارش</h2><p class="bn-sectiondesc">مبلغ سفارش باید با مبلغ درخواست برابر باشد.</p></div></div><div class="bn-grid bn-grid--2"><div class="bn-field"><label class="bn-label">طرح تسهیلات <span class="bn-required">*</span></label><select name="plan_id" required>'.$options.'</select></div>'.$this->field('نام محصول / خدمت','product_name',$v('product_name')).$this->moneyField('مبلغ سفارش','amount',$v('amount'),true).$this->field('تعداد اقساط','installment_count',$v('installment_count'),'number','numeric','',true).$this->field('فاصله سررسیدها (ماه)','installment_interval',$v('installment_interval','1'),'number','numeric','',true).$this->field('اولین سررسید شمسی','first_due_date',$v('first_due_date'),'text','numeric','مثال: ۱۴۰۵/۰۷/۰۱',true).$this->field('شناسه پذیرنده','merchant_ref',$v('merchant_ref'),'text','text','اختیاری؛ تا زمان اتصال سرویس شرکا').'</div></section>'
-            . '<div class="bn-form-actions"><button class="bn-btn bn-btn--secondary" type="submit" name="_action" value="draft">ذخیره پیش‌نویس</button><button class="bn-btn bn-btn--primary" type="submit" name="_action" value="submit">ثبت و ارسال برای بررسی</button><a class="bn-btn bn-btn--ghost" href="/loans/requests">انصراف</a></div></form>';
+            . '<div class="bn-form-actions"><button class="bn-btn bn-btn--secondary" type="submit" name="_action" value="draft" formnovalidate>ذخیره پیش‌نویس</button><button class="bn-btn bn-btn--primary" type="submit" name="_action" value="submit">ثبت و ارسال برای بررسی</button><a class="bn-btn bn-btn--ghost" href="/loans/requests">انصراف</a></div></form>';
         echo Renderer::page('ثبت پرونده', $content, $this->identity, 'loans');
     }
 
@@ -662,7 +662,7 @@ final class LoansModule
         foreach ($history as $row) {
             if (!is_array($row)) continue;
             $from = trim((string)($row['from_status'] ?? ''));
-            $rows .= '<tr><td>'.($from !== '' ? Renderer::e($this->requestStatusLabel($from)).' ← ' : '').Renderer::e($this->requestStatusLabel((string)($row['to_status'] ?? ''))).'</td><td>'.Renderer::e(trim((string)($row['reason'] ?? '')) ?: '—').'</td><td>'.Renderer::e(PersianDateTime::fromIso((string)($row['created_at'] ?? ''), false) ?? '—').'</td></tr>';
+            $rows .= '<tr><td>'.($from !== '' ? Renderer::e($this->requestStatusLabel($from)).' <i class="bn-icon bn-icon--arrow-left" aria-hidden="true"></i> ' : '').Renderer::e($this->requestStatusLabel((string)($row['to_status'] ?? ''))).'</td><td>'.Renderer::e(trim((string)($row['reason'] ?? '')) ?: '—').'</td><td>'.Renderer::e(PersianDateTime::fromIso((string)($row['created_at'] ?? ''), false) ?? '—').'</td></tr>';
         }
         if ($rows === '') $rows = '<tr><td colspan="3"><div class="bn-empty-inline">تاریخچه‌ای ثبت نشده است.</div></td></tr>';
         return '<section class="bn-section"><div class="bn-sectionhead"><span class="bn-step">۴</span><div><h2 class="bn-sectiontitle">تاریخچه وضعیت</h2><p class="bn-sectiondesc">تمام تغییرات وضعیت با زمان و توضیح ثبت می‌شوند.</p></div></div><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>تغییر</th><th>توضیح</th><th>زمان</th></tr></thead><tbody>'.$rows.'</tbody></table></div></section>';
@@ -935,7 +935,7 @@ final class LoansModule
         }
         $monthOptions = '<option value="">ماه</option>';
         foreach ($this->jalaliMonths() as $number => $label) {
-            $monthOptions .= '<option value="'.Renderer::e((string)$number).'"'.((string)$number === $month ? ' selected' : '').'>'.Renderer::e(PersianDateTime::digits((string)$number).' - '.$label).'</option>';
+            $monthOptions .= '<option value="'.Renderer::e((string)$number).'"'.((string)$number === $month ? ' selected' : '').'>'.Renderer::e($label).'</option>';
         }
         $dayOptions = '<option value="">روز</option>';
         for ($d = 1; $d <= 31; $d++) {
@@ -943,9 +943,9 @@ final class LoansModule
             $dayOptions .= '<option value="'.$dd.'"'.($dd === $day ? ' selected' : '').'>'.Renderer::e(PersianDateTime::digits($dd)).'</option>';
         }
         return '<div class="bn-field bn-field--birth"><label class="bn-label">تاریخ تولد شمسی <span class="bn-required">*</span></label><div class="bn-select-grid">'
-            . '<select name="birth_day" required>'.$dayOptions.'</select>'
-            . '<select name="birth_month" required>'.$monthOptions.'</select>'
-            . '<select name="birth_year" required>'.$yearOptions.'</select>'
+            . '<div class="bn-select-cell"><select aria-label="روز تولد" name="birth_day" required>'.$dayOptions.'</select></div>'
+            . '<div class="bn-select-cell"><select aria-label="ماه تولد" name="birth_month" required>'.$monthOptions.'</select></div>'
+            . '<div class="bn-select-cell"><select aria-label="سال تولد" name="birth_year" required>'.$yearOptions.'</select></div>'
             . '</div><span class="bn-helper">روز، ماه و سال تولد را جداگانه انتخاب کنید.</span></div>';
     }
 

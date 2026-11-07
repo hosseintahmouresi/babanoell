@@ -27,7 +27,8 @@ final class ProviderVerificationService {
   $type=(string)$v['verification_type'];if(!in_array($type,['identity_match','credit_report'],true))throw new InvalidArgumentException('نوع اعتبارسنجی پشتیبانی نمی‌شود.');
   $v=$this->existing($requestId,$vid,$type);
   if($v['status']!=='queued')throw new RuntimeException('verification_already_dispatched');
-  if(!empty($v['expires_at'])&&strtotime((string)$v['expires_at'])<time())throw new RuntimeException('verification_expired');
+  // Verification deadlines are UTC, including when the web runtime uses Tehran time.
+  if(!empty($v['expires_at'])&&strtotime((string)$v['expires_at'].' UTC')<time())throw new RuntimeException('verification_expired');
   $national=(string)($v['national_code']??'');$mobile=(string)($v['mobile_number']??'');
   if(!preg_match('/^[0-9]{10}$/D',$national)||!preg_match('/^09[0-9]{9}$/D',$mobile))throw new InvalidArgumentException('کد ملی یا موبایل پرونده معتبر نیست.');
   // Durable claim happens BEFORE network call: unknown provider results must not trigger an automatic duplicate request.

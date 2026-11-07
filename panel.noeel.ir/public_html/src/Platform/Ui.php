@@ -6,10 +6,19 @@ final class Ui
 {
     public static function version(): array {return require dirname(__DIR__,2).'/config/version.php';}
     public static function e(string $value): string {return htmlspecialchars($value,ENT_QUOTES,'UTF-8');}
+    public static function fonts(): string
+    {
+        return '<link rel="preload" href="/ui-asset.php?file=YekanBakhFaNum-Regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/ui-asset.php?file=YekanBakhFaNum-SemiBold.woff" as="font" type="font/woff" crossorigin>';
+    }
+    public static function icon(string $name): string
+    {
+        if (!preg_match('/^[a-z][a-z0-9-]*$/D', $name)) return '';
+        return '<i class="bn-icon bn-icon--'.$name.'" aria-hidden="true"></i>';
+    }
     public static function head(string $title,string $tag): string
     {
         $v=self::e(self::version()['ui']);
-        return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#1D3559"><meta name="color-scheme" content="light"><title>'.self::e($title).' | پلتفرم بابانوئل</title><link rel="icon" href="/ui-asset.php?file=brand-logo.png&amp;v='.$v.'"><link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v='.$v.'"></head><body><a class="bn-skip-link" href="#main-content">رفتن به محتوای اصلی</a><main class="bn-shell"><header class="bn-brandbar"><div class="bn-lockup"><span class="bn-logo"><img src="/ui-asset.php?file=brand-logo.png&amp;v='.$v.'" alt="بابانوئل" width="118" height="40"></span><div class="bn-brandtext"><div class="bn-brandtitle">پلتفرم بابانوئل</div><div class="bn-brandmeta">سامانه یکپارچه مدیریت تسهیلات</div></div></div><div class="bn-brandtag"><span class="bn-brandtag-dot"></span><span>'.self::e($tag).'</span><span class="bn-version">نسخه '.$v.'</span></div></header><section class="bn-card" id="main-content" tabindex="-1">';
+        return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#1D3559"><meta name="color-scheme" content="light"><title>'.self::e($title).' | پلتفرم بابانوئل</title><link rel="icon" href="/ui-asset.php?file=brand-logo.png&amp;v='.$v.'">'.self::fonts().'<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v='.$v.'"></head><body><a class="bn-skip-link" href="#main-content">رفتن به محتوای اصلی</a><main class="bn-shell"><header class="bn-brandbar"><div class="bn-lockup"><span class="bn-logo"><img src="/ui-asset.php?file=brand-logo.png&amp;v='.$v.'" alt="بابانوئل" width="118" height="40"></span><div class="bn-brandtext"><div class="bn-brandtitle">پلتفرم بابانوئل</div><div class="bn-brandmeta">سامانه یکپارچه مدیریت تسهیلات</div></div></div><div class="bn-brandtag"><span class="bn-brandtag-dot"></span><span>'.self::e($tag).'</span><span class="bn-version">نسخه '.$v.'</span></div></header><section class="bn-card" id="main-content" tabindex="-1">';
     }
     public static function footer(): string
     {
@@ -22,7 +31,7 @@ final class Ui
     }
     public static function loginBody(string $form): string
     {
-        return '<div class="bn-login-grid"><aside class="bn-login-aside"><div><div class="bn-eyebrow bn-eyebrow--inverse">یک حساب، هفت سرویس هماهنگ</div><h2>مدیریت یکپارچه،<br>با اطمینان و آرامش</h2><p>دسترسی به ابزارهای مدیریت و نگهداری پلتفرم، با حساب مجاز سامانه.</p><div class="bn-login-points"><div class="bn-login-point"><i>۱</i><span>ورود امن و دسترسی کنترل‌شده</span></div><div class="bn-login-point"><i>۲</i><span>بررسی نسخه پیش از نصب</span></div><div class="bn-login-point"><i>۳</i><span>نگهداری سابقه و نسخهٔ پشتیبان</span></div></div></div><span class="bn-version">Noeel '.self::e(self::version()['version']).'</span></aside><div class="bn-login-form">'.$form.'</div></div>';
+        return '<div class="bn-login-grid"><aside class="bn-login-aside"><div><div class="bn-eyebrow bn-eyebrow--inverse">همراه شما در مسیر تسهیلات</div><h2>همهٔ کارها،<br>در یک فضای روشن</h2><p>اطلاعات، درخواست‌ها و کارهای خود را با حساب مجاز سامانه پیگیری کنید.</p><div class="bn-login-points"><div class="bn-login-point"><i>۱</i><span>ورود امن و دسترسی کنترل‌شده</span></div><div class="bn-login-point"><i>۲</i><span>پیگیری روشن وضعیت کارها</span></div><div class="bn-login-point"><i>۳</i><span>دسترسی به سوابق و مدارک</span></div></div></div><span class="bn-version">Noeel '.self::e(self::version()['version']).'</span></aside><div class="bn-login-form">'.$form.'</div></div>';
     }
     public static function recoveryForm(string $csrfName,string $csrfValue,string $actionName,string $actionValue): string
     {
