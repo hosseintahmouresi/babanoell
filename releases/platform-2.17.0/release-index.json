@@ -1,0 +1,124 @@
+{
+  "release_id": "20261107-210359-ui-2.17.0",
+  "created_at_utc": "2026-11-07T21:03:59+00:00",
+  "source_commit": "6276920536aca5dfa17073442b911ec51e4ed508",
+  "includes_uncommitted_work": false,
+  "deployment_order": [
+    "identity",
+    "documents",
+    "integrations",
+    "partners",
+    "loans",
+    "finance",
+    "panel"
+  ],
+  "packages": [
+    {
+      "service": "identity",
+      "version": "1.14.0",
+      "ui": "2.17.0",
+      "phase": "platform-completion-20261107",
+      "file": "babanoell-identity-1.14.0-ui-2.17.0.zip",
+      "bytes": 594026,
+      "sha256": "9236d0ad13cf60f69dc7b936c5bdb6929baca6d434f9aa76331e1f30cf5dcf4a",
+      "uncompressed_bytes": 1327302,
+      "files": 210,
+      "migrations": 21,
+      "new_migrations": [],
+      "source_fingerprint": "28375cbb3df1017b2b0445044e6d2631bcb7a10ae23ddb8d5e3e920708c6128b"
+    },
+    {
+      "service": "documents",
+      "version": "1.22.0",
+      "ui": "2.17.0",
+      "phase": "platform-completion-20261107",
+      "file": "babanoell-documents-1.22.0-ui-2.17.0.zip",
+      "bytes": 626675,
+      "sha256": "4de4a9fa6bbc17c906aa42a4ea43da201d229b3ba233f9cfdb93eb76e147c899",
+      "uncompressed_bytes": 1422518,
+      "files": 98,
+      "migrations": 8,
+      "new_migrations": [],
+      "source_fingerprint": "7043dcb901b8bdff67aa58ba4d8262095c446c0d2f82bd35c775c3be5004dbe5"
+    },
+    {
+      "service": "integrations",
+      "version": "1.6.0",
+      "ui": "2.17.0",
+      "phase": "platform-completion-20261107",
+      "file": "babanoell-integrations-1.6.0-ui-2.17.0.zip",
+      "bytes": 359091,
+      "sha256": "29152820462c56ac4352fad8709d131c8c892d47e756cf2bf70e567000497ff0",
+      "uncompressed_bytes": 874152,
+      "files": 59,
+      "migrations": 1,
+      "new_migrations": [],
+      "source_fingerprint": "058dd19289bd76b19fb812d924b6af49f7fdc055bfdda9431fb42a73d1be1a79"
+    },
+    {
+      "service": "partners",
+      "version": "1.11.0",
+      "ui": "2.17.0",
+      "phase": "platform-completion-20261107",
+      "file": "babanoell-partners-1.11.0-ui-2.17.0.zip",
+      "bytes": 531494,
+      "sha256": "94cbbd60bcaa5353828e1a32610b3edd7f8b1c936b6718118541e7b9b2c5d3f6",
+      "uncompressed_bytes": 1200964,
+      "files": 92,
+      "migrations": 12,
+      "new_migrations": [
+        "database/migrations/202611070001_physical_contract_evidence.php",
+        "database/migrations/202611070002_applicant_referrals.php"
+      ],
+      "source_fingerprint": "b14f6c6f2b5fae57ec26b32fe8f86a1ac252bacd36780f0d51e6f0af229990d9"
+    },
+    {
+      "service": "loans",
+      "version": "2.17.0",
+      "ui": "2.17.0",
+      "phase": "platform-completion-20261107",
+      "file": "babanoell-loans-2.17.0-ui-2.17.0.zip",
+      "bytes": 615006,
+      "sha256": "139d84c01fb80dfa6b47a7b6fcf0d2a3d45727ec4274ee316171651bd7e634ef",
+      "uncompressed_bytes": 1494951,
+      "files": 145,
+      "migrations": 28,
+      "new_migrations": [
+        "database/migrations/202611070001_credit_report_evidence.php",
+        "database/migrations/202611070002_notification_delivery.php"
+      ],
+      "source_fingerprint": "455e2888b34fc580ff6b1bf31259d915ceca2cea89cf6c891f21318b5740edde"
+    },
+    {
+      "service": "finance",
+      "version": "1.9.0",
+      "ui": "2.17.0",
+      "phase": "platform-completion-20261107",
+      "file": "babanoell-finance-1.9.0-ui-2.17.0.zip",
+      "bytes": 509550,
+      "sha256": "a9ab60d154c69b2615f13b5cea82bacd539c80128a26ba3573073e4d138fd626",
+      "uncompressed_bytes": 1137310,
+      "files": 86,
+      "migrations": 7,
+      "new_migrations": [
+        "database/migrations/202611070001_bank_cycle_amount_basis.php"
+      ],
+      "source_fingerprint": "1a3ac37b7889895ecf0f17ea849f97b92abd5a55a748bf37ac754481e20825e0"
+    },
+    {
+      "service": "panel",
+      "version": "2.25.0",
+      "ui": "2.17.0",
+      "phase": "platform-completion-20261107",
+      "file": "babanoell-panel-2.25.0-ui-2.17.0.zip",
+      "bytes": 645628,
+      "sha256": "60804d2f76182360725dfaedc96934af0c8a2474ae78fe0c5baff4a2e949415f",
+      "uncompressed_bytes": 1757625,
+      "files": 90,
+      "migrations": 0,
+      "new_migrations": [],
+      "source_fingerprint": "8575c1ea346286bdb46336b2272d4bde8e35feb70239c1d5f973bf46deb8fd31"
+    }
+  ],
+  "upgrade_base_commit": "40c18da66206bad50e45a7ffe331d21b4f3cd41f"
+}

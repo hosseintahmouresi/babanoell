@@ -1,0 +1,55 @@
+{
+  "complete": true,
+  "source_commit": "6276920536aca5dfa17073442b911ec51e4ed508",
+  "packages": [
+    {
+      "service": "identity",
+      "files": 210,
+      "checksums_match": true,
+      "private_runtime_excluded": true,
+      "tested_workspace_matches_pinned_source": true
+    },
+    {
+      "service": "documents",
+      "files": 98,
+      "checksums_match": true,
+      "private_runtime_excluded": true,
+      "tested_workspace_matches_pinned_source": true
+    },
+    {
+      "service": "integrations",
+      "files": 59,
+      "checksums_match": true,
+      "private_runtime_excluded": true,
+      "tested_workspace_matches_pinned_source": true
+    },
+    {
+      "service": "partners",
+      "files": 92,
+      "checksums_match": true,
+      "private_runtime_excluded": true,
+      "tested_workspace_matches_pinned_source": true
+    },
+    {
+      "service": "loans",
+      "files": 145,
+      "checksums_match": true,
+      "private_runtime_excluded": true,
+      "tested_workspace_matches_pinned_source": true
+    },
+    {
+      "service": "finance",
+      "files": 86,
+      "checksums_match": true,
+      "private_runtime_excluded": true,
+      "tested_workspace_matches_pinned_source": true
+    },
+    {
+      "service": "panel",
+      "files": 90,
+      "checksums_match": true,
+      "private_runtime_excluded": true,
+      "tested_workspace_matches_pinned_source": true
+    }
+  ]
+}

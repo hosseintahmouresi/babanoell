@@ -1,0 +1,46 @@
+{
+  "release": "platform-2.17.0",
+  "source_commit": "6276920536aca5dfa17073442b911ec51e4ed508",
+  "installed_baseline": "40c18da66206bad50e45a7ffe331d21b4f3cd41f",
+  "complete_for_listed_scope": true,
+  "production_deployed": false,
+  "service_suites": 45,
+  "native_database_regressions": 11,
+  "http_checks": 693,
+  "migrations": {
+    "identity": 21,
+    "loans": 28,
+    "documents": 8,
+    "partners": 12,
+    "finance": 7,
+    "integrations": 1
+  },
+  "skipped_runners": 0,
+  "chromium": {
+    "role_page_viewport_states": 223,
+    "role_checks": 81,
+    "feature_checks": 64,
+    "feature_accessibility_states": 7,
+    "js_or_layout_errors": 0,
+    "reported_wcag_violations": 0
+  },
+  "native_upgrade": {
+    "services": 7,
+    "new_migrations": 5,
+    "post_upgrade_http_checks": 693,
+    "restored_synthetic_databases": 6,
+    "historical_evidence": {
+      "historical_amount_unchanged": true,
+      "old_amount_basis_labeled": true,
+      "historical_sms_not_replayed": true,
+      "private_notification_preserved": true
+    }
+  },
+  "external_provider_calls": "Synthetic ICS24 and SMS only; no real message or money movement.",
+  "open_items": [
+    "Exact registration and account-recovery parity requires the missing reference login implementation.",
+    "Cooperation-status SMS templates and dispatch are a separate extension; existing contract OTP is retained.",
+    "Final legal templates and plan-specific variables require business configuration.",
+    "Actual hosting, provider and real-device acceptance remain operational work."
+  ]
+}
