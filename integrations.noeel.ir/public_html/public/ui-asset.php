@@ -9,6 +9,12 @@ $allowed = [
  'platform.js'=>['application/javascript; charset=UTF-8','platform.js'],
  'panel.js'=>['application/javascript; charset=UTF-8','platform.js'],
  'babanoell-ui.js'=>['application/javascript; charset=UTF-8','platform.js'],
+ 'favicon.ico'=>['image/x-icon','favicon.ico.json'],
+ 'favicon.gif'=>['image/gif','favicon.gif.json'],
+ 'favicon-navy.png'=>['image/png','favicon-navy.png'],
+ 'favicon-pale.png'=>['image/png','favicon-pale.png'],
+ 'apple-touch-icon.png'=>['image/png','apple-touch-icon.png'],
+ 'favicon.js'=>['application/javascript; charset=UTF-8','favicon.js'],
  'brand-logo.png'=>['image/png','brand-logo.json'],
  'YekanBakhFaNum-Regular.woff'=>['font/woff','YekanBakhFaNum-Regular.woff'],
  'YekanBakhFaNum-SemiBold.woff'=>['font/woff','YekanBakhFaNum-SemiBold.woff'],
@@ -21,7 +27,7 @@ if (!isset($allowed[$key])) { http_response_code(404); exit; }
 $path = __DIR__.'/assets/'.$name;
 if (!is_file($path)) { http_response_code(404); exit; }
 $bytes = file_get_contents($path);
-if ($name === 'brand-logo.json') {
+if (in_array($name, ['brand-logo.json', 'favicon.ico.json', 'favicon.gif.json'], true)) {
  $data = json_decode((string)$bytes,true);
  $bytes = base64_decode((string)($data['base64'] ?? ''),true);
 }

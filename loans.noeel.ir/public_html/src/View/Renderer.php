@@ -25,8 +25,7 @@ final class Renderer
             . '<meta name="robots" content="noindex, nofollow, noarchive">'
             . '<meta name="theme-color" content="#1D3559"><meta name="color-scheme" content="light">'
             . '<title>' . self::e($title) . ' | پلتفرم بابانوئل</title>'
-            . '<link rel="icon" type="image/png" href="/ui-asset.php?file=brand-logo.png&amp;v=' . $appVersion . '">'
-            . ''.\Babanoell\Loans\Platform\Ui::fonts().'<link rel="stylesheet" href="/ui-asset.php?file=babanoell-ui.css&amp;v=' . $appVersion . '">'
+            . ''.\Babanoell\Loans\Platform\Ui::favicons().\Babanoell\Loans\Platform\Ui::fonts().'<link rel="stylesheet" href="/ui-asset.php?file=babanoell-ui.css&amp;v=' . $appVersion . '">'
             . '</head><body><main class="bn-shell bn-shell--narrow">'
             . self::brand($tag,$appVersion)
             . '<section class="bn-card">' . $content . '</section>'

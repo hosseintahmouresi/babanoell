@@ -109,17 +109,21 @@ def archive(path: Path, entries: dict[str, bytes], stamp: dt.datetime) -> None:
             target.writestr(info, data, compresslevel=9)
 
 
-def build(output: Path, ref: str | None = None) -> None:
+def build(output: Path, ref: str | None = None, updater_bootstrap: bool = True) -> None:
     output.mkdir(parents=True, exist_ok=True)
     stamp = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
-    release_id = stamp.strftime('%Y%m%d-%H%M%S') + '-ui-2.16.0'
     commit = subprocess.check_output(['git', 'rev-parse', '--verify', (ref or 'HEAD') + '^{commit}'], cwd=ROOT, text=True).strip()
     dirty = False if ref else bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT))
+    snapshots = {service: select_files(service, commit if ref else None) for service in SERVICES}
+    ui_versions = {metadata(files)['ui'] for files in snapshots.values()}
+    if len(ui_versions) != 1:
+        raise ValueError('All service packages must use the same UI version')
+    release_id = stamp.strftime('%Y%m%d-%H%M%S') + '-ui-' + next(iter(ui_versions))
     index = {'release_id': release_id, 'created_at_utc': stamp.isoformat(), 'source_commit': commit,
              'includes_uncommitted_work': dirty, 'deployment_order': list(SERVICES), 'packages': []}
     bootstrap = {}
     for service in SERVICES:
-        files = select_files(service, commit if ref else None)
+        files = snapshots[service]
         meta = metadata(files)
         migrations = sorted(name for name in files if name.startswith(('database/migrations/', 'migrations/')) and name.endswith(('.php', '.sql')))
         new_migrations = sorted(name for name in migrations if Path(name).name.startswith('20261105'))
@@ -141,17 +145,19 @@ def build(output: Path, ref: str | None = None) -> None:
                                   'sha256': digest(path.read_bytes()), 'uncompressed_bytes': sum(map(len, files.values())),
                                   'files': len(files), 'migrations': len(migrations), 'new_migrations': new_migrations,
                                   'source_fingerprint': source_fingerprint})
-        if service in BOOTSTRAP_SERVICES:
+        if updater_bootstrap and service in BOOTSTRAP_SERVICES:
             for relative in ('src/Update/UpdateTool.php', 'src/Update/PackageIntegrity.php'):
                 bootstrap[f'{service}/{relative}'] = files[relative]
-    bootstrap_path = output / 'bootstrap-updaters.zip'
-    archive(bootstrap_path, bootstrap, stamp)
-    index['updater_bootstrap'] = {'file': bootstrap_path.name, 'bytes': bootstrap_path.stat().st_size,
-                                 'sha256': digest(bootstrap_path.read_bytes()),
-                                 'files': {key: digest(value) for key, value in bootstrap.items()}}
+    if updater_bootstrap:
+        bootstrap_path = output / 'bootstrap-updaters.zip'
+        archive(bootstrap_path, bootstrap, stamp)
+        index['updater_bootstrap'] = {'file': bootstrap_path.name, 'bytes': bootstrap_path.stat().st_size,
+                                     'sha256': digest(bootstrap_path.read_bytes()),
+                                     'files': {key: digest(value) for key, value in bootstrap.items()}}
     (output / 'release-index.json').write_text(json.dumps(index, ensure_ascii=False, indent=2) + '\n')
     sums = [f'{package["sha256"]}  {package["file"]}' for package in index['packages']]
-    sums += [f'{index["updater_bootstrap"]["sha256"]}  {bootstrap_path.name}']
+    if updater_bootstrap:
+        sums += [f'{index["updater_bootstrap"]["sha256"]}  {bootstrap_path.name}']
     (output / 'SHA256SUMS.txt').write_text('\n'.join(sums) + '\n')
     for package in index['packages']:
         print(f'{package["service"]}: {package["files"]} files, {package["bytes"]:,} bytes, UI {package["ui"]}')
@@ -162,5 +168,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--ref', help='Build only the committed files at this Git ref; leave the source tree unchanged.')
+    parser.add_argument('--skip-updater-bootstrap', action='store_true', help='Omit the legacy UI 2.16.0 updater compatibility files.')
     args = parser.parse_args()
-    build(args.output, args.ref)
+    build(args.output, args.ref, not args.skip_updater_bootstrap)

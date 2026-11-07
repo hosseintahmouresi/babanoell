@@ -1,6 +1,12 @@
 <?php
 declare(strict_types=1);
 
+if ((parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/') === '/favicon.ico') {
+    $_GET['file'] = 'favicon.ico';
+    require __DIR__.'/public/ui-asset.php';
+    return true;
+}
+
 /** Local PHP development router; production continues to use the existing web-server rules. */
 $path=parse_url($_SERVER['REQUEST_URI']??'/',PHP_URL_PATH)?:'/';
 if(preg_match('#^/(config|storage|database|src|bin|tests|docs)(/|$)#',$path)){

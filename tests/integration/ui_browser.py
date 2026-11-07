@@ -51,13 +51,13 @@ for service,url in state['urls'].items():
  except urllib.error.HTTPError as error:check(error.code==404,service+': gateway rejects traversal')
 
 def login(page,role,email=None):
- page.goto(base+'/login',wait_until='networkidle')
+ page.goto(base+'/login',wait_until='load')
  page.locator('[name=identifier]').fill(email or state['accounts'][role]['email']);page.locator('[name=password]').fill(state['password']);
- with page.expect_navigation(wait_until='networkidle'):page.locator('[name=password]').press('Enter')
+ with page.expect_navigation(wait_until='load'):page.locator('[name=password]').press('Enter')
  if page.url.endswith('/login'):raise RuntimeError('Login failed: '+role)
 def visit(page,role,path,viewport,axe=False,shot=False):
  page.set_viewport_size(viewport)
- response=page.goto(base+path,wait_until='networkidle');page.evaluate('document.fonts.ready')
+ response=page.goto(base+path,wait_until='load');page.evaluate('document.fonts.ready')
  data=page.evaluate('''() => ({width:innerWidth,body:document.body.scrollWidth,font:getComputedStyle(document.body).fontFamily,title:document.title,emoji:/[\\u{1F300}-\\u{1FAFF}]/u.test(document.body.innerText),overflows:[...document.querySelectorAll('input:not([type=hidden]),select,textarea')].filter(e=>e.getClientRects().length&&(!e.closest('[inert]'))).filter(e=>{const r=e.getBoundingClientRect();return r.left < -2 || r.right > innerWidth+2}).map(e=>e.name||e.tagName)})''')
  entry={'role':role,'path':re.sub(r'/contract/[A-Za-z0-9_-]{30,}','/contract/<token>',path),'viewport':viewport,'status':response.status,'metrics':data}
  if data['body']>data['width']+2:report['errors'].append(f'Body overflow {role} {path} {viewport["width"]}: {data["body"]}')
@@ -75,7 +75,7 @@ def visit(page,role,path,viewport,axe=False,shot=False):
  report['pages'].append(entry)
  return entry
 def focused_checks(browser):
-  c=browser.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');page=c.new_page();login(page,'super_admin');page.goto(base+'/finance/greenpay',wait_until='networkidle');page.locator('a[href^="#transfer-"]').first.click()
+  c=browser.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');page=c.new_page();login(page,'super_admin');page.goto(base+'/finance/greenpay',wait_until='load');page.locator('a[href^="#transfer-"]').first.click()
   check(page.locator('.bn-transfer[open]').count()==1,'Transfer action opens from its table link')
   fields=page.locator('.bn-transfer[open] input:not([type=hidden]),.bn-transfer[open] select,.bn-transfer[open] textarea').evaluate_all('(nodes)=>nodes.map(e=>({name:e.name,left:e.getBoundingClientRect().left,right:e.getBoundingClientRect().right}))')
   check(all(x['left']>=0 and x['right']<=390 for x in fields),'Opened transfer inputs fit the mobile viewport')
@@ -83,7 +83,7 @@ def focused_checks(browser):
   page.screenshot(path=str(work/'greenpay-mobile.png'),full_page=True);c.close()
   c=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='no-preference');page=c.new_page();login(page,'applicant',email='new_cooperation_individual@example.test')
   check(page.locator('.bn-workspace-switch a').count()==2,'Dual-role account has two explicit workspaces')
-  page.locator('.bn-workspace-switch a[href="/applicant"]').click();page.wait_for_load_state('networkidle')
+  page.locator('.bn-workspace-switch a[href="/applicant"]').click();page.wait_for_load_state('load')
   check(page.locator('.bn-workspace-switch a[aria-current]').get_attribute('href')=='/applicant','Personal workspace stays selected for dual-role accounts')
   check(page.locator('a[href="/applicant/requests/new"]').count()>0,'Personal request entry is reachable after workspace switch')
   page.goto(base+'/applicant',wait_until='domcontentloaded');page.evaluate('document.fonts.ready');page.wait_for_timeout(650)
@@ -95,8 +95,8 @@ def focused_checks(browser):
   page.screenshot(path=str(work/'dual-role-desktop.png'),full_page=True);c.close()
   c=browser.new_context(java_script_enabled=False,reduced_motion='reduce',viewport={'width':390,'height':844});page=c.new_page();login(page,'applicant');page.goto(base+'/applicant/requests/new');check(page.locator('[data-guided-step]:visible').count()==3,'Applicant form keeps all stages available without JavaScript');check(page.locator('button[value=draft]').get_attribute('formnovalidate') is not None,'Draft save does not require final identity fields without JavaScript');c.close()
   c=browser.new_context(viewport={'width':390,'height':844},reduced_motion='reduce');page=c.new_page();fake='Z'*43
-  response=page.goto(state['urls']['partners']+'/contract/'+fake,wait_until='networkidle');check(response.status==404,'Expired contract link has the expected status');check('Yekan Bakh FaNum' in page.evaluate('getComputedStyle(document.body).fontFamily'),'Expired contract view uses the local product font')
-  with page.expect_navigation(wait_until='networkidle') as nav:
+  response=page.goto(state['urls']['partners']+'/contract/'+fake,wait_until='load');check(response.status==404,'Expired contract link has the expected status');check('Yekan Bakh FaNum' in page.evaluate('getComputedStyle(document.body).fontFamily'),'Expired contract view uses the local product font')
+  with page.expect_navigation(wait_until='load') as nav:
    page.evaluate('(action)=>{const f=document.createElement("form");f.method="POST";f.action=action;document.body.append(f);f.submit()}',state['urls']['partners']+'/contract/'+fake+'/otp/request')
   check(nav.value.status==409,'Invalid public OTP request has the expected status');check('Yekan Bakh FaNum' in page.evaluate('getComputedStyle(document.body).fontFamily'),'OTP error view uses the same local font');page.screenshot(path=str(work/'contract-error-mobile.png'),full_page=True);c.close()
 
@@ -146,7 +146,7 @@ with sync_playwright() as p:
  context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce');page=context.new_page()
  for service,url in state['urls'].items():
   for route in (['/login'] if service=='panel' else ['/update.php']):
-   response=page.goto(url+route,wait_until='networkidle');page.evaluate('document.fonts.ready')
+   response=page.goto(url+route,wait_until='load');page.evaluate('document.fonts.ready')
    report['pages'].append({'service':service,'path':route,'status':response.status,'font':page.evaluate('getComputedStyle(document.body).fontFamily')})
    page.screenshot(path=str(shots/(service+'-entry-desktop.png')),full_page=True)
  context.close();focused_checks(browser);browser.close()

@@ -1,6 +1,12 @@
 <?php
 declare(strict_types=1);
 
+if ((parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/') === '/favicon.ico') {
+    $_GET['file'] = 'favicon.ico';
+    require __DIR__.'/public/ui-asset.php';
+    return true;
+}
+
 /**
  * Router for PHP's built-in server (local development without Docker):
  *

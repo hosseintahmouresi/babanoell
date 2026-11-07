@@ -1,5 +1,11 @@
 <?php
 declare(strict_types=1);
+
+if ((parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/') === '/favicon.ico') {
+    $_GET['file'] = 'favicon.ico';
+    require __DIR__.'/public/ui-asset.php';
+    return true;
+}
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $public = __DIR__ . '/public';
 $file = $public . $uri;

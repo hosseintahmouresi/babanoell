@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once dirname(__DIR__).'/Platform/Favicon.php';
 /** First-party portal handoff; does not grant direct access to any business API. */
 final class NoelUserPortal
 {
@@ -134,6 +135,7 @@ final class NoelUserPortal
     {
         echo '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
            .'<meta name="robots" content="noindex,nofollow"><title>'.self::esc($title).' | نوئل</title>'
+           .\Babanoell\Auth\Platform\Favicon::head()
            .'<link rel="stylesheet" href="/assets/babanoell-ui.css"></head><body class="bn-body"><main class="bn-container">'
            .'<section class="bn-section"><div class="bn-pagehead"><h1 class="bn-title">'.self::esc($title).'</h1></div>'.$content.'</section></main></body></html>';
         exit;
@@ -142,7 +144,7 @@ final class NoelUserPortal
     {
         header('Cache-Control: no-store, private');header('Referrer-Policy: no-referrer');
         header('X-Frame-Options: DENY');header('X-Content-Type-Options: nosniff');
-        header('Content-Security-Policy: default-src \'self\'; style-src \'self\'; form-action \'self\'; frame-ancestors \'none\'; base-uri \'none\'');
+        header('Content-Security-Policy: default-src \'self\'; img-src \'self\' data:; style-src \'self\'; form-action \'self\'; frame-ancestors \'none\'; base-uri \'none\'');
         if (!in_array($service,self::SUPPORTED,true) || !self::secure($root)) { http_response_code(403);exit('HTTPS required.'); }
         if (!is_file($root.'/storage/installed.lock') || strlen(self::secret($root))<32) { http_response_code(503);exit('Portal configuration unavailable.'); }
         try { self::session($service,$root); } catch (Throwable) { http_response_code(503);exit('Portal sessions unavailable.'); }

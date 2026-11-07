@@ -2,6 +2,9 @@ Options -Indexes
 DirectoryIndex index.php
 <IfModule mod_rewrite.c>
 RewriteEngine On
+
+# Browser icon fallback, also available before application login/install.
+RewriteRule ^favicon\.ico$ ui-asset.php?file=favicon.ico [L]
 RewriteRule ^install\.php\.locked$ - [F,L,NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

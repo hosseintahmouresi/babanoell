@@ -72,7 +72,7 @@ final class Renderer
             . '<meta name="robots" content="noindex, nofollow, noarchive">'
             . '<meta name="theme-color" content="#1D3559"><meta name="color-scheme" content="light">'
             . '<title>' . self::e($title) . ' | پلتفرم بابانوئل</title>'
-            . '<link rel="icon" type="image/png" href="/ui-asset.php?file=brand-logo.png&amp;v=' . self::assetVersion() . '">'
+            . \Babanoell\Panel\Platform\Ui::favicons()
             . ''.\Babanoell\Panel\Platform\Ui::fonts().'<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=' . self::assetVersion() . '">'
             . '</head>';
     }

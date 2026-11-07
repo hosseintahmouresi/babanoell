@@ -22,5 +22,25 @@
   "pdf-fonts/YekanBakhFaNum-Regular.ttf": {
     "bytes": 79140,
     "sha256": "6b31b05fd83ff1cff257c34ff750df5354dd0ea987b232bc0a14f750a3eccf5e"
+  },
+  "favicons/apple-touch-icon.png": {
+    "bytes": 17499,
+    "sha256": "9a07c0b277e0d5d0ba6ac41517a1d9b36c193ab3caffc6009368c592b7fde1f6"
+  },
+  "favicons/favicon-navy.png": {
+    "bytes": 1749,
+    "sha256": "d4a61daf450ac1a01f4b671e4625a54dddf125b3a9685c3770ac0452a25685d4"
+  },
+  "favicons/favicon-pale.png": {
+    "bytes": 2094,
+    "sha256": "5b9ec61040e9af3a6a10429fa707e5825465d66db2afdadf0c80ca83760b4d96"
+  },
+  "favicons/favicon.gif": {
+    "bytes": 2253,
+    "sha256": "32b79b3b7b92e5f86f054a9e5392c9c9946f72c54b6cc7e5dd8017e29f38c16d"
+  },
+  "favicons/favicon.ico": {
+    "bytes": 14510,
+    "sha256": "df65900c112529796593ae5bf744f05af8cbb9276ec09e827d870ba0cbb3eae7"
   }
 }

@@ -923,6 +923,7 @@ function render_head(string $title): string
         . '<meta name="theme-color" content="#1D3559">'
         . '<meta name="color-scheme" content="light">'
         . '<title>' . e($title) . '</title>'
+        . Ui::favicons()
         . '<link rel="stylesheet" href="ui-asset.php?file=babanoell-ui.css&amp;v=' . e((string) Ui::version()['ui']) . '">'
         . '<script defer src="ui-asset.php?file=babanoell-ui.js&amp;v=' . e((string) Ui::version()['ui']) . '"></script>'
         . '</head><body><main class="bn-shell">'

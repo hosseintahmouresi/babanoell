@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
+require_once $root.'/src/Platform/Favicon.php';
 header('Cache-Control: no-store');
 header('X-Frame-Options: DENY');
 header('Referrer-Policy: no-referrer');
@@ -13,7 +14,7 @@ function integrations_install_block(string $message, int $status = 503): void
     http_response_code($status);
     header('Content-Type: text/html; charset=utf-8');
     echo '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">';
-    echo '<title>پیش‌نیاز نصب بابانوئل</title><link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=2.16.0"></head><body><main class="bn-shell bn-shell--narrow"><section class="bn-card bn-card--standalone">';
+    echo \Babanoell\Integrations\Platform\Favicon::head().'<title>پیش‌نیاز نصب بابانوئل</title><link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=2.16.1"></head><body><main class="bn-shell bn-shell--narrow"><section class="bn-card bn-card--standalone">';
     echo '<h1 class="bn-title">نصب سرویس ارتباطات</h1><p class="bn-alert bn-alert--warning">'.htmlspecialchars($message,ENT_QUOTES,'UTF-8').'</p>';
     echo '<p class="bn-helper">بعد از اصلاح تنظیمات، صفحهٔ نصب را دوباره باز کنید.</p></section></main></body></html>';
     exit;
@@ -134,8 +135,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>نصب Integrations | نوئل</title>
-<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=2.16.0">
-<script defer src="/ui-asset.php?file=platform.js&amp;v=2.16.0"></script>
+<?= \Babanoell\Integrations\Platform\Favicon::head() ?>
+<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=2.16.1">
+<script defer src="/ui-asset.php?file=platform.js&amp;v=2.16.1"></script>
 </head>
 <body><main class="bn-shell bn-shell--narrow"><section class="bn-card bn-card--standalone">
 <h1 class="bn-title">راه‌اندازی سرویس ارتباطات</h1>

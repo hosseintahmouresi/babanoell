@@ -1,5 +1,8 @@
 Options -Indexes
 RewriteEngine On
+
+# Browser icon fallback, also available before application login/install.
+RewriteRule ^favicon\.ico$ ui-asset.php?file=favicon.ico [L]
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
