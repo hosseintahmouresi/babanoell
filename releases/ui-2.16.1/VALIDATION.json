@@ -1,0 +1,1140 @@
+{
+  "release_id": "20261107-105316-ui-2.16.1",
+  "source_commit": "6cc6e46583ac71f79f1da9cbada14a035465aae5",
+  "complete": true,
+  "scope": "Disposable upgrade rehearsal with synthetic data; no production host or live providers involved.",
+  "package_validation": [
+    {
+      "service": "identity",
+      "native_validator": true,
+      "files": 209,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "documents",
+      "native_validator": true,
+      "files": 98,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "integrations",
+      "native_validator": true,
+      "files": 57,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "partners",
+      "native_validator": true,
+      "files": 89,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "loans",
+      "native_validator": true,
+      "files": 138,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "finance",
+      "native_validator": true,
+      "files": 85,
+      "archive_sha256_matches": true
+    },
+    {
+      "service": "panel",
+      "native_validator": true,
+      "files": 85,
+      "archive_sha256_matches": true
+    },
+    {
+      "negative_case": "corrupt-composer.zip",
+      "rejected": true
+    },
+    {
+      "negative_case": "unknown-lock.zip",
+      "rejected": true
+    },
+    {
+      "negative_case": "private-config.zip",
+      "rejected": true
+    }
+  ],
+  "baseline_commit": "f1a2180a6ad08bee3ee6ee4e329d09e01a70f042",
+  "initial_migrations": {
+    "identity": 21,
+    "loans": 26,
+    "documents": 8,
+    "partners": 10,
+    "finance": 6,
+    "integrations": 1
+  },
+  "initial_migrations_total": 72,
+  "applied_migrations": 0,
+  "final_migrations_total": 72,
+  "updates": [
+    {
+      "service": "identity",
+      "copied": 209,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "documents",
+      "copied": 98,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "integrations",
+      "copied": 57,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "partners",
+      "copied": 89,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "loans",
+      "copied": 138,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "finance",
+      "copied": 85,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "panel",
+      "copied": 85,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    }
+  ],
+  "post_upgrade_http_checks": 474,
+  "post_upgrade_http_checks_passed": true,
+  "favicon": {
+    "complete": true,
+    "checks": [
+      {
+        "check": "identity: exact local bytes and MIME favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "identity: content ETag favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "identity: cache favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "identity: conditional 304 favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "identity: exact local bytes and MIME favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "identity: content ETag favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "identity: cache favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "identity: conditional 304 favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "identity: exact local bytes and MIME favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "identity: content ETag favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "identity: cache favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "identity: conditional 304 favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "identity: exact local bytes and MIME favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "identity: content ETag favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "identity: cache favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "identity: conditional 304 favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "identity: exact local bytes and MIME apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "identity: content ETag apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "identity: cache apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "identity: conditional 304 apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "identity: exact local bytes and MIME favicon.js",
+        "passed": true
+      },
+      {
+        "check": "identity: content ETag favicon.js",
+        "passed": true
+      },
+      {
+        "check": "identity: cache favicon.js",
+        "passed": true
+      },
+      {
+        "check": "identity: conditional 304 favicon.js",
+        "passed": true
+      },
+      {
+        "check": "identity: root icon without authentication",
+        "passed": true
+      },
+      {
+        "check": "identity: rejects unlisted/private ../config/local.env.php",
+        "passed": true
+      },
+      {
+        "check": "identity: rejects unlisted/private favicon.ico.json",
+        "passed": true
+      },
+      {
+        "check": "identity: rejects unlisted/private arbitrary.png",
+        "passed": true
+      },
+      {
+        "check": "loans: exact local bytes and MIME favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "loans: content ETag favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "loans: cache favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "loans: conditional 304 favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "loans: exact local bytes and MIME favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "loans: content ETag favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "loans: cache favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "loans: conditional 304 favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "loans: exact local bytes and MIME favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "loans: content ETag favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "loans: cache favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "loans: conditional 304 favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "loans: exact local bytes and MIME favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "loans: content ETag favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "loans: cache favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "loans: conditional 304 favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "loans: exact local bytes and MIME apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "loans: content ETag apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "loans: cache apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "loans: conditional 304 apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "loans: exact local bytes and MIME favicon.js",
+        "passed": true
+      },
+      {
+        "check": "loans: content ETag favicon.js",
+        "passed": true
+      },
+      {
+        "check": "loans: cache favicon.js",
+        "passed": true
+      },
+      {
+        "check": "loans: conditional 304 favicon.js",
+        "passed": true
+      },
+      {
+        "check": "loans: root icon without authentication",
+        "passed": true
+      },
+      {
+        "check": "loans: rejects unlisted/private ../config/local.env.php",
+        "passed": true
+      },
+      {
+        "check": "loans: rejects unlisted/private favicon.ico.json",
+        "passed": true
+      },
+      {
+        "check": "loans: rejects unlisted/private arbitrary.png",
+        "passed": true
+      },
+      {
+        "check": "documents: exact local bytes and MIME favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "documents: content ETag favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "documents: cache favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "documents: conditional 304 favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "documents: exact local bytes and MIME favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "documents: content ETag favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "documents: cache favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "documents: conditional 304 favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "documents: exact local bytes and MIME favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "documents: content ETag favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "documents: cache favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "documents: conditional 304 favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "documents: exact local bytes and MIME favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "documents: content ETag favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "documents: cache favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "documents: conditional 304 favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "documents: exact local bytes and MIME apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "documents: content ETag apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "documents: cache apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "documents: conditional 304 apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "documents: exact local bytes and MIME favicon.js",
+        "passed": true
+      },
+      {
+        "check": "documents: content ETag favicon.js",
+        "passed": true
+      },
+      {
+        "check": "documents: cache favicon.js",
+        "passed": true
+      },
+      {
+        "check": "documents: conditional 304 favicon.js",
+        "passed": true
+      },
+      {
+        "check": "documents: root icon without authentication",
+        "passed": true
+      },
+      {
+        "check": "documents: rejects unlisted/private ../config/local.env.php",
+        "passed": true
+      },
+      {
+        "check": "documents: rejects unlisted/private favicon.ico.json",
+        "passed": true
+      },
+      {
+        "check": "documents: rejects unlisted/private arbitrary.png",
+        "passed": true
+      },
+      {
+        "check": "partners: exact local bytes and MIME favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "partners: content ETag favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "partners: cache favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "partners: conditional 304 favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "partners: exact local bytes and MIME favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "partners: content ETag favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "partners: cache favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "partners: conditional 304 favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "partners: exact local bytes and MIME favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "partners: content ETag favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "partners: cache favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "partners: conditional 304 favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "partners: exact local bytes and MIME favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "partners: content ETag favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "partners: cache favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "partners: conditional 304 favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "partners: exact local bytes and MIME apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "partners: content ETag apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "partners: cache apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "partners: conditional 304 apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "partners: exact local bytes and MIME favicon.js",
+        "passed": true
+      },
+      {
+        "check": "partners: content ETag favicon.js",
+        "passed": true
+      },
+      {
+        "check": "partners: cache favicon.js",
+        "passed": true
+      },
+      {
+        "check": "partners: conditional 304 favicon.js",
+        "passed": true
+      },
+      {
+        "check": "partners: root icon without authentication",
+        "passed": true
+      },
+      {
+        "check": "partners: rejects unlisted/private ../config/local.env.php",
+        "passed": true
+      },
+      {
+        "check": "partners: rejects unlisted/private favicon.ico.json",
+        "passed": true
+      },
+      {
+        "check": "partners: rejects unlisted/private arbitrary.png",
+        "passed": true
+      },
+      {
+        "check": "finance: exact local bytes and MIME favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "finance: content ETag favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "finance: cache favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "finance: conditional 304 favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "finance: exact local bytes and MIME favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "finance: content ETag favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "finance: cache favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "finance: conditional 304 favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "finance: exact local bytes and MIME favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "finance: content ETag favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "finance: cache favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "finance: conditional 304 favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "finance: exact local bytes and MIME favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "finance: content ETag favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "finance: cache favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "finance: conditional 304 favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "finance: exact local bytes and MIME apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "finance: content ETag apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "finance: cache apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "finance: conditional 304 apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "finance: exact local bytes and MIME favicon.js",
+        "passed": true
+      },
+      {
+        "check": "finance: content ETag favicon.js",
+        "passed": true
+      },
+      {
+        "check": "finance: cache favicon.js",
+        "passed": true
+      },
+      {
+        "check": "finance: conditional 304 favicon.js",
+        "passed": true
+      },
+      {
+        "check": "finance: root icon without authentication",
+        "passed": true
+      },
+      {
+        "check": "finance: rejects unlisted/private ../config/local.env.php",
+        "passed": true
+      },
+      {
+        "check": "finance: rejects unlisted/private favicon.ico.json",
+        "passed": true
+      },
+      {
+        "check": "finance: rejects unlisted/private arbitrary.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: exact local bytes and MIME favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "integrations: content ETag favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "integrations: cache favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "integrations: conditional 304 favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "integrations: exact local bytes and MIME favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "integrations: content ETag favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "integrations: cache favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "integrations: conditional 304 favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "integrations: exact local bytes and MIME favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: content ETag favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: cache favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: conditional 304 favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: exact local bytes and MIME favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: content ETag favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: cache favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: conditional 304 favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: exact local bytes and MIME apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: content ETag apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: cache apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: conditional 304 apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "integrations: exact local bytes and MIME favicon.js",
+        "passed": true
+      },
+      {
+        "check": "integrations: content ETag favicon.js",
+        "passed": true
+      },
+      {
+        "check": "integrations: cache favicon.js",
+        "passed": true
+      },
+      {
+        "check": "integrations: conditional 304 favicon.js",
+        "passed": true
+      },
+      {
+        "check": "integrations: root icon without authentication",
+        "passed": true
+      },
+      {
+        "check": "integrations: rejects unlisted/private ../config/local.env.php",
+        "passed": true
+      },
+      {
+        "check": "integrations: rejects unlisted/private favicon.ico.json",
+        "passed": true
+      },
+      {
+        "check": "integrations: rejects unlisted/private arbitrary.png",
+        "passed": true
+      },
+      {
+        "check": "panel: exact local bytes and MIME favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "panel: content ETag favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "panel: cache favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "panel: conditional 304 favicon.ico",
+        "passed": true
+      },
+      {
+        "check": "panel: exact local bytes and MIME favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "panel: content ETag favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "panel: cache favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "panel: conditional 304 favicon.gif",
+        "passed": true
+      },
+      {
+        "check": "panel: exact local bytes and MIME favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "panel: content ETag favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "panel: cache favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "panel: conditional 304 favicon-navy.png",
+        "passed": true
+      },
+      {
+        "check": "panel: exact local bytes and MIME favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "panel: content ETag favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "panel: cache favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "panel: conditional 304 favicon-pale.png",
+        "passed": true
+      },
+      {
+        "check": "panel: exact local bytes and MIME apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "panel: content ETag apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "panel: cache apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "panel: conditional 304 apple-touch-icon.png",
+        "passed": true
+      },
+      {
+        "check": "panel: exact local bytes and MIME favicon.js",
+        "passed": true
+      },
+      {
+        "check": "panel: content ETag favicon.js",
+        "passed": true
+      },
+      {
+        "check": "panel: cache favicon.js",
+        "passed": true
+      },
+      {
+        "check": "panel: conditional 304 favicon.js",
+        "passed": true
+      },
+      {
+        "check": "panel: root icon without authentication",
+        "passed": true
+      },
+      {
+        "check": "panel: rejects unlisted/private ../config/local.env.php",
+        "passed": true
+      },
+      {
+        "check": "panel: rejects unlisted/private favicon.ico.json",
+        "passed": true
+      },
+      {
+        "check": "panel: rejects unlisted/private arbitrary.png",
+        "passed": true
+      },
+      {
+        "check": "identity: HTML entry is healthy",
+        "passed": true
+      },
+      {
+        "check": "identity: one animated icon in the head",
+        "passed": true
+      },
+      {
+        "check": "identity: server HTML contains GIF, PNG and ICO fallbacks",
+        "passed": true
+      },
+      {
+        "check": "identity: touch icon",
+        "passed": true
+      },
+      {
+        "check": "identity: static candidates cannot override the active animated icon",
+        "passed": true
+      },
+      {
+        "check": "identity: PNG animation initializes under the page CSP",
+        "passed": true
+      },
+      {
+        "check": "loans: HTML entry is healthy",
+        "passed": true
+      },
+      {
+        "check": "loans: one animated icon in the head",
+        "passed": true
+      },
+      {
+        "check": "loans: server HTML contains GIF, PNG and ICO fallbacks",
+        "passed": true
+      },
+      {
+        "check": "loans: touch icon",
+        "passed": true
+      },
+      {
+        "check": "loans: static candidates cannot override the active animated icon",
+        "passed": true
+      },
+      {
+        "check": "loans: PNG animation initializes under the page CSP",
+        "passed": true
+      },
+      {
+        "check": "documents: HTML entry is healthy",
+        "passed": true
+      },
+      {
+        "check": "documents: one animated icon in the head",
+        "passed": true
+      },
+      {
+        "check": "documents: server HTML contains GIF, PNG and ICO fallbacks",
+        "passed": true
+      },
+      {
+        "check": "documents: touch icon",
+        "passed": true
+      },
+      {
+        "check": "documents: static candidates cannot override the active animated icon",
+        "passed": true
+      },
+      {
+        "check": "documents: PNG animation initializes under the page CSP",
+        "passed": true
+      },
+      {
+        "check": "partners: HTML entry is healthy",
+        "passed": true
+      },
+      {
+        "check": "partners: one animated icon in the head",
+        "passed": true
+      },
+      {
+        "check": "partners: server HTML contains GIF, PNG and ICO fallbacks",
+        "passed": true
+      },
+      {
+        "check": "partners: touch icon",
+        "passed": true
+      },
+      {
+        "check": "partners: static candidates cannot override the active animated icon",
+        "passed": true
+      },
+      {
+        "check": "partners: PNG animation initializes under the page CSP",
+        "passed": true
+      },
+      {
+        "check": "finance: HTML entry is healthy",
+        "passed": true
+      },
+      {
+        "check": "finance: one animated icon in the head",
+        "passed": true
+      },
+      {
+        "check": "finance: server HTML contains GIF, PNG and ICO fallbacks",
+        "passed": true
+      },
+      {
+        "check": "finance: touch icon",
+        "passed": true
+      },
+      {
+        "check": "finance: static candidates cannot override the active animated icon",
+        "passed": true
+      },
+      {
+        "check": "finance: PNG animation initializes under the page CSP",
+        "passed": true
+      },
+      {
+        "check": "integrations: HTML entry is healthy",
+        "passed": true
+      },
+      {
+        "check": "integrations: one animated icon in the head",
+        "passed": true
+      },
+      {
+        "check": "integrations: server HTML contains GIF, PNG and ICO fallbacks",
+        "passed": true
+      },
+      {
+        "check": "integrations: touch icon",
+        "passed": true
+      },
+      {
+        "check": "integrations: static candidates cannot override the active animated icon",
+        "passed": true
+      },
+      {
+        "check": "integrations: PNG animation initializes under the page CSP",
+        "passed": true
+      },
+      {
+        "check": "panel: HTML entry is healthy",
+        "passed": true
+      },
+      {
+        "check": "panel: one animated icon in the head",
+        "passed": true
+      },
+      {
+        "check": "panel: server HTML contains GIF, PNG and ICO fallbacks",
+        "passed": true
+      },
+      {
+        "check": "panel: touch icon",
+        "passed": true
+      },
+      {
+        "check": "panel: static candidates cannot override the active animated icon",
+        "passed": true
+      },
+      {
+        "check": "panel: PNG animation initializes under the page CSP",
+        "passed": true
+      },
+      {
+        "check": "PNG frames alternate repeatedly",
+        "passed": true
+      },
+      {
+        "check": "Animation reuses only the two original PNG payloads",
+        "passed": true
+      },
+      {
+        "check": "Animation does not create recurring network requests after image preload",
+        "passed": true
+      },
+      {
+        "check": "Reduced motion freezes the navy frame",
+        "passed": true
+      },
+      {
+        "check": "pagehide stops the timer",
+        "passed": true
+      },
+      {
+        "check": "pageshow resumes animation",
+        "passed": true
+      },
+      {
+        "check": "Authenticated panel shell includes the same favicon",
+        "passed": true
+      },
+      {
+        "check": "All inspected pages have no JavaScript exceptions",
+        "passed": true
+      },
+      {
+        "check": "Without JavaScript, native GIF and static ICO remain available",
+        "passed": true
+      },
+      {
+        "check": "Failed PNG preload preserves the native GIF fallback",
+        "passed": true
+      }
+    ]
+  },
+  "manual_bootstrap": false,
+  "browser_scope": "Chromium HTML/assets/lifecycle; not browser-tab-chrome or real Safari acceptance."
+}
