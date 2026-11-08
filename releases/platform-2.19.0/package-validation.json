@@ -1,0 +1,50 @@
+{
+    "complete": true,
+    "source_commit": "dde6b462c496d254645a6dc402a1e25213d0a2f0",
+    "checks": [
+        {
+            "service": "identity",
+            "native_validator": true,
+            "files": 214,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "identity",
+            "negative_case": "actual_payload_hash_mismatch",
+            "rejected": true
+        },
+        {
+            "service": "partners",
+            "native_validator": true,
+            "files": 111,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "partners",
+            "negative_case": "actual_payload_hash_mismatch",
+            "rejected": true
+        },
+        {
+            "service": "loans",
+            "native_validator": true,
+            "files": 151,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "loans",
+            "negative_case": "actual_payload_hash_mismatch",
+            "rejected": true
+        },
+        {
+            "service": "panel",
+            "native_validator": true,
+            "files": 102,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "panel",
+            "negative_case": "actual_payload_hash_mismatch",
+            "rejected": true
+        }
+    ]
+}

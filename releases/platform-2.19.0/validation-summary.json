@@ -1,0 +1,65 @@
+{
+  "release": "platform-2.19.0",
+  "source_commit": "dde6b462c496d254645a6dc402a1e25213d0a2f0",
+  "installed_baseline": "693e1611bed1fcdb25e16df52a238154084bd2c0",
+  "complete_for_listed_scope": true,
+  "production_deployed": false,
+  "deployment_order": [
+    "identity",
+    "partners",
+    "loans",
+    "panel"
+  ],
+  "service_suites": 49,
+  "native_database_regressions": 11,
+  "http_checks": 1185,
+  "migrations": {
+    "identity": 22,
+    "loans": 30,
+    "documents": 9,
+    "partners": 18,
+    "finance": 8,
+    "integrations": 1
+  },
+  "skipped_runners": 0,
+  "chromium": {
+    "role_page_viewport_states": 262,
+    "role_checks": 81,
+    "smart_auth_checks": 62,
+    "report_evidence_checks": 49,
+    "focused_accessibility_states": 23,
+    "js_or_layout_errors": 0,
+    "reported_wcag_violations": 0,
+    "scope": "General role views plus focused registration, report and evidence states; responsive report refinements were rechecked in the focused run."
+  },
+  "native_upgrade": {
+    "services": 4,
+    "new_migrations": 2,
+    "post_upgrade_http_checks": 1185,
+    "restored_synthetic_databases": 6,
+    "historical_evidence": {
+      "historical_amount_unchanged": true,
+      "reference_amount_unchanged": true,
+      "old_amount_basis_labeled": true,
+      "historical_sms_not_replayed": true,
+      "private_notification_preserved": true,
+      "business_number_unchanged": true,
+      "calculation_snapshot_unchanged": true,
+      "signed_artifact_bytes_unchanged": true,
+      "no_historical_signature_tokens_manufactured": true
+    },
+    "database_defaults": {
+      "identity": "latin1_swedish_ci",
+      "partners": "utf8mb4_general_ci"
+    },
+    "manual_bootstrap": false
+  },
+  "package_checks": 8,
+  "external_provider_calls": "Scripted local SMS, ICS24 and GreenPay only; no actual SMS, identity lookup or money movement.",
+  "open_items": [
+    "Configure one approved single-code SMS pattern and the existing Integrations SMS credentials on the installed host.",
+    "Accept actual hosting, providers, coordinated real backups and target devices/browsers with authorized operational access.",
+    "Confirm real plan parameters, legal templates and approved business messages in the installed configuration.",
+    "Paired scenarios for every production plan require access to both deployed systems; the MihanPanel source is absent. Smart login follows the explicitly confirmed user flow, and public password recovery remains disabled."
+  ]
+}

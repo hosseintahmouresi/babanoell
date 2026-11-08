@@ -1,0 +1,75 @@
+{
+  "release_id": "20261108-130737-ui-2.18.0",
+  "created_at_utc": "2026-11-08T13:07:37+00:00",
+  "source_commit": "dde6b462c496d254645a6dc402a1e25213d0a2f0",
+  "includes_uncommitted_work": false,
+  "deployment_order": [
+    "identity",
+    "partners",
+    "loans",
+    "panel"
+  ],
+  "packages": [
+    {
+      "service": "identity",
+      "version": "1.15.0",
+      "ui": "2.18.0",
+      "phase": "smart-login-report-parity-20261108",
+      "file": "babanoell-identity-1.15.0-ui-2.18.0.zip",
+      "bytes": 603628,
+      "sha256": "ca8299fd78afc8b3f298b1f643ee2feae03955da26a8b4229c3143a71880b142",
+      "uncompressed_bytes": 1355456,
+      "files": 214,
+      "migrations": 22,
+      "new_migrations": [
+        "database/migrations/202611080007_smart_phone_auth.php"
+      ],
+      "source_fingerprint": "aec16795285a9d277819e95cae07e8df09e31bdc3b77548e06c6c7acda2288e3"
+    },
+    {
+      "service": "partners",
+      "version": "1.13.0",
+      "ui": "2.18.0",
+      "phase": "smart-login-report-parity-20261108",
+      "file": "babanoell-partners-1.13.0-ui-2.18.0.zip",
+      "bytes": 638048,
+      "sha256": "5e77b5d8f0418c052f84c239c2c64564ff805eb098628d942fb3c0de52c0c482",
+      "uncompressed_bytes": 1414881,
+      "files": 111,
+      "migrations": 18,
+      "new_migrations": [
+        "database/migrations/202611080006_user_plan_exclusions.php"
+      ],
+      "source_fingerprint": "48d3f1bcbfc19207f8de6b8ad40aba9f25a8d6b0798bc00aa7b610ffdb6b138d"
+    },
+    {
+      "service": "loans",
+      "version": "2.19.0",
+      "ui": "2.18.0",
+      "phase": "smart-login-report-parity-20261108",
+      "file": "babanoell-loans-2.19.0-ui-2.18.0.zip",
+      "bytes": 626335,
+      "sha256": "5f52f00be4c3d88e062fc180c743ff9de7757834ccb8555920d01bf78f64f6e2",
+      "uncompressed_bytes": 1528259,
+      "files": 151,
+      "migrations": 30,
+      "new_migrations": [],
+      "source_fingerprint": "e4ba035d6ea6d5414b294cc263fac9c1a13768b7315ed2448b58c4e0325b249b"
+    },
+    {
+      "service": "panel",
+      "version": "2.27.0",
+      "ui": "2.18.0",
+      "phase": "smart-login-report-parity-20261108",
+      "file": "babanoell-panel-2.27.0-ui-2.18.0.zip",
+      "bytes": 677864,
+      "sha256": "dcfd77a2d92238d2fa620be461a71c99102de9f414b064caf283ad4a686f7ff5",
+      "uncompressed_bytes": 1845245,
+      "files": 102,
+      "migrations": 0,
+      "new_migrations": [],
+      "source_fingerprint": "c59b28b37d310d0ca54ce4cbc0bdfe3c107158e28a9e456f05ee2be20badf184"
+    }
+  ],
+  "upgrade_base_commit": "693e1611bed1fcdb25e16df52a238154084bd2c0"
+}

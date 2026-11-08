@@ -1,0 +1,101 @@
+{
+  "complete": true,
+  "baseline_commit": "693e1611bed1fcdb25e16df52a238154084bd2c0",
+  "source_commit": "dde6b462c496d254645a6dc402a1e25213d0a2f0",
+  "manual_bootstrap": false,
+  "initial_migrations": {
+    "identity": 21,
+    "loans": 30,
+    "documents": 9,
+    "partners": 17,
+    "finance": 8,
+    "integrations": 1
+  },
+  "database_defaults": {
+    "identity": "latin1_swedish_ci",
+    "partners": "utf8mb4_general_ci"
+  },
+  "updates": [
+    {
+      "service": "identity",
+      "copied": 214,
+      "migrations_applied": 1,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "partners",
+      "copied": 111,
+      "migrations_applied": 1,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "loans",
+      "copied": 151,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "panel",
+      "copied": 102,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    }
+  ],
+  "preserved_history": {
+    "historical_amount_unchanged": true,
+    "reference_amount_unchanged": true,
+    "old_amount_basis_labeled": true,
+    "historical_sms_not_replayed": true,
+    "private_notification_preserved": true,
+    "business_number_unchanged": true,
+    "calculation_snapshot_unchanged": true,
+    "signed_artifact_bytes_unchanged": true,
+    "no_historical_signature_tokens_manufactured": true
+  },
+  "http_checks": 1185,
+  "all_http_passed": true,
+  "restored_databases": [
+    {
+      "service": "identity",
+      "tables": 16,
+      "row_counts_match": true
+    },
+    {
+      "service": "loans",
+      "tables": 41,
+      "row_counts_match": true
+    },
+    {
+      "service": "documents",
+      "tables": 11,
+      "row_counts_match": true
+    },
+    {
+      "service": "partners",
+      "tables": 24,
+      "row_counts_match": true
+    },
+    {
+      "service": "finance",
+      "tables": 20,
+      "row_counts_match": true
+    },
+    {
+      "service": "integrations",
+      "tables": 3,
+      "row_counts_match": true
+    }
+  ]
+}
