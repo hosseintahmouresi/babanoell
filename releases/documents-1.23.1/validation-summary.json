@@ -1,0 +1,48 @@
+{
+  "release": "documents-1.23.1",
+  "source_commit": "d7da8a5393b2d5c31e757b49eece0687a6799e1b",
+  "complete_for_listed_scope": true,
+  "service_suites": 47,
+  "recovery_checks": 63,
+  "scenarios": [
+    {
+      "database_collation": "latin1_swedish_ci",
+      "recovered_failed_2_18": true,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "utf8mb4_general_ci",
+      "recovered_failed_2_18": true,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "latin1_swedish_ci",
+      "recovered_failed_2_18": false,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "utf8mb4_general_ci",
+      "recovered_failed_2_18": false,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "utf8mb4_unicode_ci",
+      "recovered_failed_2_18": false,
+      "version": "1.23.1",
+      "migrations": 9
+    }
+  ],
+  "post_recovery_http_checks": 948,
+  "production_deployed": false,
+  "ui_version": "2.18.0",
+  "other_services_unchanged": true,
+  "new_migration_ids": 0,
+  "final_documents_migrations": 9,
+  "known_pending_migration_completed": "202611080001",
+  "customer_database_or_files_deleted": false,
+  "real_sms_or_money_operations": false
+}

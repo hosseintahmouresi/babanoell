@@ -1,0 +1,26 @@
+{
+  "release_id": "20261108-104117-ui-2.18.0",
+  "created_at_utc": "2026-11-08T10:41:17+00:00",
+  "source_commit": "d7da8a5393b2d5c31e757b49eece0687a6799e1b",
+  "includes_uncommitted_work": false,
+  "deployment_order": [
+    "documents"
+  ],
+  "packages": [
+    {
+      "service": "documents",
+      "version": "1.23.1",
+      "ui": "2.18.0",
+      "phase": "resumable-upload-collation-hotfix-20261108",
+      "file": "babanoell-documents-1.23.1-ui-2.18.0.zip",
+      "bytes": 638054,
+      "sha256": "b7e87bbe8dd3c04aec6a88e25f5419138a70aa36bfa277ffcf4c55d7d1ff06b2",
+      "uncompressed_bytes": 1454170,
+      "files": 103,
+      "migrations": 9,
+      "new_migrations": [],
+      "source_fingerprint": "4181bb977c2ba7a4550e7904cc28fdec954967fad946231aef475a9e48ecb8eb"
+    }
+  ],
+  "upgrade_base_commit": "6ec929e1ca198560c4ee15bba766aa7202977721"
+}

@@ -1,0 +1,291 @@
+{
+  "complete": true,
+  "source_commit": "d7da8a5393b2d5c31e757b49eece0687a6799e1b",
+  "checks": [
+    {
+      "name": "latin1_swedish_ci: original archive reproduces the exact FK failure",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: original update leaves two tables and a recovery journal",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: failed migration is not marked applied",
+      "passed": true
+    },
+    {
+      "name": "Rescue archive contains exactly the three reviewed files",
+      "passed": true
+    },
+    {
+      "name": "Anonymous visitor cannot invoke migration completion",
+      "passed": true
+    },
+    {
+      "name": "A non-administrator cannot invoke updater recovery",
+      "passed": true
+    },
+    {
+      "name": "Authenticated updater recognizes the exact recoverable migration",
+      "passed": true
+    },
+    {
+      "name": "Invalid CSRF cannot complete the migration",
+      "passed": true
+    },
+    {
+      "name": "Changed deployed source blocks the dedicated recovery",
+      "passed": true
+    },
+    {
+      "name": "Concurrent updater lock prevents overlapping repair",
+      "passed": true
+    },
+    {
+      "name": "Forward recovery completes the additive migration without database restoration",
+      "passed": true
+    },
+    {
+      "name": "Repeated recovery cannot change a completed release",
+      "passed": true
+    },
+    {
+      "name": "Existing updater validates the corrective Documents archive",
+      "passed": true
+    },
+    {
+      "name": "Existing updater installs Documents 1.23.1 after the repair",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: all nine migrations are applied",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: parent and child use the same explicit collation",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: existing document metadata and exact original bytes are preserved",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: private configuration and file bytes remain unchanged",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: foreign key, cascading delete and migration replay are correct",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: Documents health and service connectivity recover",
+      "passed": true
+    },
+    {
+      "name": "Full seven-service workflow passes after recovering the latin1 installation",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: original archive reproduces the exact FK failure",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: original update leaves two tables and a recovery journal",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: failed migration is not marked applied",
+      "passed": true
+    },
+    {
+      "name": "Rescue archive contains exactly the three reviewed files",
+      "passed": true
+    },
+    {
+      "name": "Anonymous visitor cannot invoke migration completion",
+      "passed": true
+    },
+    {
+      "name": "A non-administrator cannot invoke updater recovery",
+      "passed": true
+    },
+    {
+      "name": "Authenticated updater recognizes the exact recoverable migration",
+      "passed": true
+    },
+    {
+      "name": "Invalid CSRF cannot complete the migration",
+      "passed": true
+    },
+    {
+      "name": "Changed deployed source blocks the dedicated recovery",
+      "passed": true
+    },
+    {
+      "name": "Concurrent updater lock prevents overlapping repair",
+      "passed": true
+    },
+    {
+      "name": "Interrupted repair is rehearsed after SQL commit and before release completion",
+      "passed": true
+    },
+    {
+      "name": "Forward recovery completes the additive migration without database restoration",
+      "passed": true
+    },
+    {
+      "name": "Repeated recovery cannot change a completed release",
+      "passed": true
+    },
+    {
+      "name": "Existing updater validates the corrective Documents archive",
+      "passed": true
+    },
+    {
+      "name": "Existing updater installs Documents 1.23.1 after the repair",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: all nine migrations are applied",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: parent and child use the same explicit collation",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: existing document metadata and exact original bytes are preserved",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: private configuration and file bytes remain unchanged",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: foreign key, cascading delete and migration replay are correct",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: Documents health and service connectivity recover",
+      "passed": true
+    },
+    {
+      "name": "Corrective archive upgrades the standard installation directly",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: all nine migrations are applied",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: parent and child use the same explicit collation",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: existing document metadata and exact original bytes are preserved",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: private configuration and file bytes remain unchanged",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: foreign key, cascading delete and migration replay are correct",
+      "passed": true
+    },
+    {
+      "name": "latin1_swedish_ci: Documents health and service connectivity recover",
+      "passed": true
+    },
+    {
+      "name": "Corrective archive upgrades the standard installation directly",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: all nine migrations are applied",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: parent and child use the same explicit collation",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: existing document metadata and exact original bytes are preserved",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: private configuration and file bytes remain unchanged",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: foreign key, cascading delete and migration replay are correct",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_general_ci: Documents health and service connectivity recover",
+      "passed": true
+    },
+    {
+      "name": "Corrective archive upgrades the standard installation directly",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_unicode_ci: all nine migrations are applied",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_unicode_ci: parent and child use the same explicit collation",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_unicode_ci: existing document metadata and exact original bytes are preserved",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_unicode_ci: private configuration and file bytes remain unchanged",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_unicode_ci: foreign key, cascading delete and migration replay are correct",
+      "passed": true
+    },
+    {
+      "name": "utf8mb4_unicode_ci: Documents health and service connectivity recover",
+      "passed": true
+    }
+  ],
+  "cases": [
+    {
+      "database_collation": "latin1_swedish_ci",
+      "recovered_failed_2_18": true,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "utf8mb4_general_ci",
+      "recovered_failed_2_18": true,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "latin1_swedish_ci",
+      "recovered_failed_2_18": false,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "utf8mb4_general_ci",
+      "recovered_failed_2_18": false,
+      "version": "1.23.1",
+      "migrations": 9
+    },
+    {
+      "database_collation": "utf8mb4_unicode_ci",
+      "recovered_failed_2_18": false,
+      "version": "1.23.1",
+      "migrations": 9
+    }
+  ],
+  "post_recovery_http_checks": 948
+}
