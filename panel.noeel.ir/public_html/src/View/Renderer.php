@@ -74,6 +74,7 @@ final class Renderer
             . '<title>' . self::e($title) . ' | پلتفرم بابانوئل</title>'
             . \Babanoell\Panel\Platform\Ui::favicons()
             . ''.\Babanoell\Panel\Platform\Ui::fonts().'<link rel="stylesheet" href="/ui-asset.php?file=platform.css&amp;v=' . self::assetVersion() . '">'
+            . '<link rel="stylesheet" href="/ui-asset.php?file=panel-features.css&amp;v=' . rawurlencode((string)(\Babanoell\Panel\Platform\Ui::version()['version']??'2.27.0')) . '">'
             . '</head>';
     }
 
@@ -119,7 +120,7 @@ final class Renderer
             return $switch.'<nav class="bn-panel-nav" aria-label="منوی پذیرنده"><div class="bn-panel-nav-label">پذیرندگی</div>'
                 .$item('acceptor','/acceptor','house','خانه')
                 .$item('acceptor-calculator','/acceptor/calculator','calculator','محاسبه تسهیلات')
-                .$item('acceptor-requests','/acceptor/requests','folder-open','پرونده‌های من')
+                .$item('acceptor-requests','/acceptor/requests','folder-open','پرونده‌های من').$item('request-reports','/reports/requests','chart-column','گزارش پرونده‌ها')
                 .$item('acceptor-new','/acceptor/requests/new','plus','ثبت پرونده جدید').$item('acceptor-invitation','/acceptor/invitation','handshake','دعوت متقاضی').$item('notifications','/notifications','comments','اعلان‌ها')
                 .($canPartners?$item('partners','/partners/marketplace','store','بازار پرونده‌ها'):'')
                 .'<div class="bn-panel-nav-label">دسترسی پرونده</div><span class="bn-panel-nav-note">مدارک هر پرونده از داخل همان پرونده در دسترس است.</span></nav>';
@@ -128,7 +129,7 @@ final class Renderer
             return $switch.'<nav class="bn-panel-nav" aria-label="منوی پنل متقاضی"><div class="bn-panel-nav-label">درخواست‌های شخصی</div>'
                 .$item('applicant','/applicant','house','خانه')
                 .$item('applicant-calculator','/applicant/calculator','calculator','محاسبه تسهیلات')
-                .$item('applicant-requests','/applicant/requests','folder-open','درخواست‌های من')
+                .$item('applicant-requests','/applicant/requests','folder-open','درخواست‌های من').$item('request-reports','/reports/requests','chart-column','گزارش پرونده‌ها')
                 .$item('applicant-new','/applicant/requests/new','plus','درخواست تسهیلات').$item('applicant-invitation','/applicant/invitation','handshake','دعوت پذیرنده').$item('notifications','/notifications','comments','اعلان‌ها')
                 .($canPartners?$item('partners','/partners/cooperation','handshake','همکاری با بابانوئل'):'')
                 .'<div class="bn-panel-nav-label">دسترسی پرونده</div><span class="bn-panel-nav-note">مدارک و ضامن‌های هر پرونده از داخل همان پرونده قابل مدیریت هستند.</span></nav>';
@@ -145,8 +146,9 @@ final class Renderer
         if($canFinance)$html.=$item('finance','/finance','wallet','مالی و تسویه');
         $canReports=$super||in_array('loans.requests.read',$permissions,true)||in_array('partners.merchants.read',$permissions,true)||in_array('finance.dashboard.read',$permissions,true);
         if($canReports)$html.='<div class="bn-panel-nav-label">گزارش‌ها</div>'.$item('reports','/reports','chart-column','گزارش‌های مدیریتی');
+        if($canLoans)$html.=$item('request-reports','/reports/requests','chart-column','گزارش پرونده‌ها');
         if($super)$html.=$item('reports-history','/reports/history','clock-rotate-left','سوابق تاریخی');
-        if($super)$html.='<div class="bn-panel-nav-label">مدیریت سامانه</div>'.$item('users','/users','users','کاربران و دسترسی‌ها').$item('settings','/system/settings','sliders','تنظیمات').$item('system','/system','gear','وضعیت سامانه').$item('updates','/system/updates','cloud-arrow-up','به‌روزرسانی');
+        if($super)$html.='<div class="bn-panel-nav-label">مدیریت سامانه</div>'.$item('users','/users','users','کاربران و دسترسی‌ها').$item('settings','/system/settings','sliders','تنظیمات').$item('auth-settings','/system/auth-settings','shield-halved','ورود و ثبت‌نام').$item('system','/system','gear','وضعیت سامانه').$item('updates','/system/updates','cloud-arrow-up','به‌روزرسانی');
         return$html.'</nav>';
     }
 

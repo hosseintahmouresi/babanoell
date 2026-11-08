@@ -41,11 +41,11 @@ final class PlanService
         $requestedType=strtolower(trim((string)($input['type']??$old['type'])));
         if($requestedType!==(string)$old['type'])throw new InvalidArgumentException('نوع طرح بعد از ایجاد قابل تغییر نیست. برای نوع محاسبه متفاوت، یک طرح جدید بسازید.');
         $type=(string)$old['type'];
-        $settings=$this->validator->normalized(is_array($input['settings']??null)?$input['settings']:$old['settings']);
+        $settings=$this->validator->normalized(is_array($input['settings']??null)?array_replace($old['settings'],$input['settings']):$old['settings']);
         $errors=$this->validator->validate($type,$settings);if($name==='')$errors[]='نام طرح الزامی است.';
         $ruleInput=$input;
-        if(!isset($ruleInput['rules'])&&is_array($old['rules']??null))$ruleInput['rules']=$old['rules'];
-        if(!isset($ruleInput['eligibility'])&&is_array($old['eligibility']??null))$ruleInput['eligibility']=$old['eligibility'];
+        $ruleInput['rules']=array_replace(is_array($old['rules']??null)?$old['rules']:[],is_array($input['rules']??null)?$input['rules']:[]);
+        if(!isset($ruleInput['eligibility'])&&is_array($old['eligibility']??null))$ruleInput['eligibility']=is_array($input['rules']['eligibility']??null)?$input['rules']['eligibility']:$old['eligibility'];
         $rules=PlanRules::normalize($ruleInput,$settings);$errors=array_merge($errors,PlanRules::validate($rules));
         if($errors!==[])throw new InvalidArgumentException(implode(' ',array_unique($errors)));
         $documents=RequiredDocumentCatalog::normalize(is_array($input['required_documents']??null)?$input['required_documents']:(is_array($old['required_documents']??null)?$old['required_documents']:[]));

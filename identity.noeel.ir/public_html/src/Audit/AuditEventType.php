@@ -5,6 +5,8 @@ namespace Babanoell\Auth\Audit;
 
 enum AuditEventType: string
 {
+    case ApplicantRegistered = 'auth.applicant.registered';
+    case SmartSettingsChanged = 'auth.smart_settings.changed';
     case LoginAttempt = 'auth.login.attempt';
     case LoginSucceeded = 'auth.login.succeeded';
     case LoginFailed = 'auth.login.failed';

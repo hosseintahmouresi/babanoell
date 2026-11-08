@@ -37,7 +37,9 @@ def main():
                 c=browser.new_context(viewport={'width':width,'height':960},reduced_motion='reduce');
                 if args.axe_script:c.add_init_script(path=str(args.axe_script))
                 page=c.new_page();page.on('pageerror',lambda e:report['errors'].append(str(e)))
-                page.goto(base+'/login');page.locator('[name=identifier]').fill(stack.accounts[role]['email']);page.locator('[name=password]').fill(stack.password)
+                page.goto(base+'/login');page.locator('[name=identifier]').fill(stack.accounts[role]['email'])
+                with page.expect_navigation():page.get_by_role('button',name='ادامه',exact=True).click()
+                page.locator('[name=password]').fill(stack.password)
                 with page.expect_navigation():page.locator('[name=password]').press('Enter')
                 return c,page
             admin,page=context('super_admin')

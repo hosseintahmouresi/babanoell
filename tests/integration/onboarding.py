@@ -68,7 +68,7 @@ class CooperationWorkflow:
             "code": "ONBOARDING-PLAN", "name": "Synthetic onboarding plan", "type": "market",
             "settings": {"min_amount": 1, "max_amount": 100000000, "active_installments": [6],
                          "fixed_monthly_rate": 2, "prepayment_percent": 20},
-            "rules": {"merchant_access_mode": "allowlist"},
+            "rules": {"visibility_contexts":["merchant_request","applicant_request","calculator"],"merchant_access_mode": "allowlist"},
         }, expected=201)["plan"]
         self.plan_id = plan["id"]
         self.call("loans", f'/api/v1/plans/{self.plan_id}/status', "POST", {"status": "active"})

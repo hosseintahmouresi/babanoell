@@ -126,7 +126,14 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
   if($merchant===null||$merchant['status']!=='active'||$merchant['cooperation_status']!=='approved')JsonResponse::error(404,'merchant_not_active','پذیرنده فعال و تأییدشده پیدا نشد.');
   $permission=null;$plan=(string)($request->query()['plan_id']??'');
   foreach($repository->planPermissions($assignment[1]) as $item)if(($item['plan_id']??'')===$plan){$permission=$item;break;}
-  JsonResponse::ok(['context'=>['merchant_id'=>$merchant['id'],'owner_user_id'=>$merchant['owner_user_id'],'plan_id'=>$plan,'permission'=>$permission,'actor_commission_percent'=>(new \Babanoell\Partners\Repository\UserCommissionRepository($pdo))->get($principal->userId)['commission_percent']]]);
+  $ownerPlanExcluded=false;
+  $ownerExcluded=(new \Babanoell\Partners\Repository\UserPlanAccessRepository($pdo))->get((string)$merchant['owner_user_id'])['disabled_plan_ids'];
+  if(in_array($plan,$ownerExcluded,true)){
+   $response=$identityClient->planPolicy((string)$merchant['owner_user_id']);$policy=$response->json['data']['policy']??null;
+   if(!$response->ok()||!is_array($policy)||($policy['user_id']??'')!==$merchant['owner_user_id']||!is_bool($policy['plan_exclusions_apply']??null))JsonResponse::error(503,'owner_plan_policy_unavailable','محدودیت طرح مالک پذیرنده قابل تأیید نیست.');
+   $ownerPlanExcluded=$policy['plan_exclusions_apply'];
+  }
+  JsonResponse::ok(['context'=>['merchant_id'=>$merchant['id'],'owner_user_id'=>$merchant['owner_user_id'],'plan_id'=>$plan,'permission'=>$permission,'owner_plan_excluded'=>$ownerPlanExcluded,'actor_commission_percent'=>(new \Babanoell\Partners\Repository\UserCommissionRepository($pdo))->get($principal->userId)['commission_percent']]]);
  }
  if($path==='/api/v1/marketplace/catalog'&&$method==='GET'){
   if(!$principal->can('loans.requests.create')&&!$principal->can('partners.marketplace.read')&&!$principal->can('partners.merchants.read'))JsonResponse::error(403,'permission_denied','دسترسی به فهرست بازار مجاز نیست.');
@@ -138,7 +145,9 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
  }
  if($path==='/api/v1/marketplace/context'&&$method==='GET'){
   $require('partners.marketplace.read');
-  $context=$marketplaceConfig->context($ownMerchant,$ownMerchant!==null?$repository->planPermissions($ownMerchant['id']):[]);
+  $permissions=$ownMerchant!==null?$repository->planPermissions($ownMerchant['id']):[];
+  if(\Babanoell\Partners\Repository\UserPlanAccessRepository::appliesTo($roles))foreach((new \Babanoell\Partners\Repository\UserPlanAccessRepository($pdo))->get($principal->userId)['disabled_plan_ids'] as $id){$permissions=array_values(array_filter($permissions,static fn(array $p):bool=>$p['plan_id']!==$id));$permissions[]=['plan_id'=>$id,'status'=>'inactive','limits'=>[]];}
+  $context=$marketplaceConfig->context($ownMerchant,$permissions);
   $context['can_claim']=$ownMerchant!==null&&in_array($ownMerchant['membership_role']??'',['owner','manager','operator'],true)&&$principal->can('partners.marketplace.claim');
   JsonResponse::ok(['context'=>$context]);
  }
@@ -149,6 +158,18 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
   $b=$request->json();$metadata=$merchant['metadata'];$metadata['marketplace']=\Babanoell\Partners\Marketplace\MarketplaceConfiguration::profile($b,$marketplaceConfig->current());
   JsonResponse::ok($partnerService->updateMerchant($market[1],$principal->userId,['metadata'=>$metadata,'row_version'=>$b['row_version']??0],$bearer));
  }
+ if(preg_match('#^/api/v1/admin/users/([a-f0-9]{26})/plan-exclusions$#',$path,$planUser)){
+  if(!$principal->isSuperAdmin()&&!in_array('admin',$roles,true))JsonResponse::error(403,'plan_access_admin_denied','تنظیم طرح‌های حساب فقط برای مدیر سامانه مجاز است.');
+  $target=$identityClient->userAccess($planUser[1],$bearer);$user=$target->json['data']['user']??null;
+  if(!$target->ok()||!is_array($user)||($user['id']??'')!==$planUser[1])JsonResponse::error(503,'plan_access_user_unavailable','حساب از سرویس هویت قابل تأیید نیست.');
+  $access=new \Babanoell\Partners\Repository\UserPlanAccessRepository($pdo);
+  if($method==='GET')JsonResponse::ok(['user'=>array_intersect_key($user,array_flip(['id','display_name'])),'access'=>$access->get($planUser[1])]);
+  if($method==='POST'){
+   $b=$request->json();$ids=\Babanoell\Partners\Repository\UserPlanAccessRepository::ids($b['disabled_plan_ids']??null);$valid=$loansClient->validatePlanIds($ids,$bearer);
+   if(!$valid->ok())JsonResponse::error($valid->status===422?422:503,'plan_selection_unverified','طرح‌های انتخاب‌شده از سرویس تسهیلات تأیید نشدند.');
+   try{$saved=$access->save($planUser[1],$principal->userId,(int)($b['revision']??0),$ids);}catch(\DomainException $e){JsonResponse::error(409,'plan_access_revision_conflict',$e->getMessage());}JsonResponse::ok(['access'=>$saved]);
+  }
+ }
  if(preg_match('#^/api/v1/admin/users/([a-f0-9]{26})/commission$#',$path,$commissionUser)){
   if(!$principal->isSuperAdmin()&&!in_array('admin',$roles,true))JsonResponse::error(403,'commission_admin_denied','تنظیم کمیسیون فقط برای مدیر سامانه مجاز است.');
   $target=$identityClient->userAccess($commissionUser[1],$bearer);$user=$target->json['data']['user']??null;
@@ -157,7 +178,7 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
   if($method==='GET')JsonResponse::ok(['user'=>array_intersect_key($user,array_flip(['id','display_name'])),'commission'=>$commissions->get($commissionUser[1])]);
   if($method==='POST'){$body=$request->json();try{$saved=$commissions->save($commissionUser[1],$principal->userId,(int)($body['revision']??0),$body['commission_percent']??null);}catch(\DomainException $e){JsonResponse::error(409,'commission_revision_conflict',$e->getMessage());}JsonResponse::ok(['commission'=>$saved]);}
  }
- if($path==='/api/v1/me/merchant'&&$method==='GET'){JsonResponse::ok(['merchant'=>$ownMerchant,'commission_percent'=>(new \Babanoell\Partners\Repository\UserCommissionRepository($pdo))->get($principal->userId)['commission_percent']]);}
+ if($path==='/api/v1/me/merchant'&&$method==='GET'){JsonResponse::ok(['merchant'=>$ownMerchant,'commission_percent'=>(new \Babanoell\Partners\Repository\UserCommissionRepository($pdo))->get($principal->userId)['commission_percent'],'plan_permissions'=>$ownMerchant!==null?array_map(static fn(array $x):array=>array_intersect_key($x,array_flip(['plan_id','status'])),$repository->planPermissions($ownMerchant['id'])):[],'disabled_plan_ids'=>\Babanoell\Partners\Repository\UserPlanAccessRepository::appliesTo($roles)?(new \Babanoell\Partners\Repository\UserPlanAccessRepository($pdo))->get($principal->userId)['disabled_plan_ids']:[]]);}
  if($path==='/api/v1/merchants'){
   if($method==='GET'){$require('partners.merchants.read');if(!$staff&&!$principal->isSuperAdmin()){JsonResponse::ok(['items'=>$ownMerchant!==null?[$ownMerchant]:[],'page'=>1,'per_page'=>1,'total'=>$ownMerchant!==null?1:0,'pages'=>1]);}$q=$request->query();$r=$repository->listMerchants((int)($q['page']??1),(int)($q['per_page']??25),trim((string)($q['q']??'')),strtolower(trim((string)($q['status']??''))));JsonResponse::ok($r,200,['pagination'=>Pagination::fromResult($r)]);}
   if($method==='POST'){$require('partners.merchants.manage');JsonResponse::ok($partnerService->createMerchant($principal->userId,$request->json(),$bearer),201);}

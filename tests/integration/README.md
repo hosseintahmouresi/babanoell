@@ -8,7 +8,7 @@ python3 tests/integration/run.py --report /tmp/babanoell-acceptance.json
 
 The default `all` scenario runs the existing service suites, native PDO regressions,
 and a synthetic loan through real HTTP connections among all seven services.
-Use `--scenario suites`, `regressions`, `onboarding`, or `workflow` to run a group.
+Use `--scenario suites`, `regressions`, `onboarding`, `auth`, or `workflow` to run a group.
 `workflow` also runs fresh individual/legal cooperation onboarding before the final
 canonical-service outage checks.
 
@@ -83,3 +83,25 @@ python3 tests/integration/ui_browser.py --artifacts work/ui-review --chromium /u
 
 The optional JSON report contains synthetic identifiers and test results, never
 session credentials, OTPs, generated passwords or service secrets.
+
+The 2.19 checks add native smart mobile/username identification, verified applicant
+signup, optional passwords and passwordless-only SMS login. The durable OTP budget,
+rolling resend cooldown, concurrency, expiry, configuration revisions, disabled and
+locked accounts, and account/role preservation are exercised over real loopback HTTP.
+`SmartAuthFixture` replaces only the disposable Identity copy's Integrations URL with
+a signed local receiver; no provider call or actual SMS is made.
+
+Reports now share exact DECIMAL totals, ownership/deny predicates and Tehran calendar
+filters across lists and exports, including a real 5,001-row export guard. Per-user
+merchant plan exclusions apply to browsing, calculations, creation, assignment and
+marketplace matching. Completion-stage invoice/check evidence is frozen for new
+cases; historical case snapshots keep their previous requirements.
+
+```bash
+python3 tests/integration/run.py --scenario auth --report /tmp/babanoell-auth.json
+python3 tests/integration/smart_auth_browser.py --artifacts /tmp/babanoell-auth-browser --axe-script /path/to/axe.min.js
+```
+
+See [the 2.19 completion record](COMPLETION-2.19.fa.md),
+[installation guide](INSTALL-UPDATE-2.19.fa.md) and
+[reference evidence matrix](REFERENCE-PARITY-2.19.fa.md).

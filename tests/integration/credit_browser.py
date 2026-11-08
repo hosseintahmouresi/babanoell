@@ -12,7 +12,7 @@ def run(stack, report, output, axe_script=None):
     w=Workflow(stack);w.initialize();w.credit_fixture.mode('ready')
     plan=w.call('loans','/api/v1/plans','POST',{'code':'CREDIT-BROWSER','name':'Synthetic credit browser',
         'type':'market','settings':{'min_amount':1,'max_amount':100000000,'active_installments':[6],
-        'fixed_monthly_rate':2,'prepayment_percent':20},'rules':{'requires_bank_validation':True}},expected=201)['plan']
+        'fixed_monthly_rate':2,'prepayment_percent':20},'rules':{'visibility_contexts':['merchant_request','applicant_request','calculator'],'requires_bank_validation':True}},expected=201)['plan']
     w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})
     def create():
         return w.call('loans','/api/v1/requests','POST',{'plan_id':plan['id'],'submit':True,
@@ -37,6 +37,7 @@ def run(stack, report, output, axe_script=None):
             check(not violations,'WCAG A/AA checks: '+name)
     def login(page,role):
         page.goto(base+'/login');page.locator('[name=identifier]').fill(stack.accounts[role]['email'])
+        with page.expect_navigation():page.get_by_role('button',name='ادامه',exact=True).click()
         page.locator('[name=password]').fill(stack.password)
         with page.expect_navigation():page.locator('[name=password]').press('Enter')
     def submit(page,action):
@@ -129,7 +130,9 @@ def run(stack, report, output, axe_script=None):
         invitation=w.call('partners','/api/v1/me/invitation','POST',{},role='acceptor')['invitation']
         context=browser.new_context(viewport={'width':390,'height':844});page=context.new_page();page.on('pageerror',lambda e:report['errors'].append(str(e)))
         page.goto(base+invitation['path']);check(page.url.endswith('/login'),'Guest invitation enters the internal login flow')
-        page.locator('[name=identifier]').fill(stack.accounts['applicant']['email']);page.locator('[name=password]').fill(stack.password)
+        page.locator('[name=identifier]').fill(stack.accounts['applicant']['email'])
+        with page.expect_navigation():page.get_by_role('button',name='ادامه',exact=True).click()
+        page.locator('[name=password]').fill(stack.password)
         with page.expect_navigation():page.locator('[name=password]').press('Enter')
         check(page.url.endswith('/applicant/invitation') and page.locator('[name=code]').input_value()==invitation['code'],'Login preserves the intended invitation code')
         with page.expect_navigation():page.get_by_role('button',name='ثبت دعوت و ادامهٔ درخواست',exact=True).click()

@@ -26,6 +26,13 @@ final class PanelSession
         $response = $this->identity->login($identifier, $password, $ip, $userAgent);
         if (!$response->ok()) return $this->mappedError($response);
 
+        return $this->completeLogin($response,$ip,$userAgent);
+    }
+
+    /** Accept only a trusted Identity response; credentials never enter browser markup. */
+    public function completeLogin(HttpResponse $response,?string $ip,?string $userAgent):array
+    {
+        if(!$response->ok())return $this->mappedError($response);
         $session = $response->json['data']['session'] ?? null;
         if (!is_array($session) || !is_string($session['session_credential'] ?? null) || ($session['session_credential'] ?? '') === '') {
             return $this->fail('پاسخ سرویس احراز هویت کامل نبود. دوباره تلاش کنید.', 'invalid_identity_response');
@@ -193,7 +200,7 @@ final class PanelSession
     {
         if ($response->status === 0) return $this->fail('ارتباط با سرویس احراز هویت برقرار نشد. چند لحظه دیگر دوباره تلاش کنید.', 'identity_unreachable');
         return match ($response->errorCode()) {
-            'invalid_credentials' => $this->fail('موبایل/ایمیل یا رمز عبور صحیح نیست.', 'invalid_credentials'),
+            'invalid_credentials' => $this->fail('موبایل، نام کاربری یا رمز عبور صحیح نیست.', 'invalid_credentials'),
             'rate_limited' => $this->fail('تعداد تلاش‌های ورود زیاد بوده است. کمی بعد دوباره تلاش کنید.', 'rate_limited'),
             'not_implemented', 'authentication_inactive' => $this->fail('ورود مرکزی هنوز برای این محیط فعال نشده است.', 'auth_inactive'),
             'auth_unavailable' => $this->fail('سرویس احراز هویت موقتاً در دسترس نیست.', 'auth_unavailable'),

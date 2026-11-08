@@ -73,7 +73,7 @@ $pdo=$connect('loans');$repo=new Babanoell\Loans\Repository\PdoLoanRepository($p
 $actor=substr(hash('sha256','integration:user:applicant'),0,26);
 $acceptor=substr(hash('sha256','integration:user:acceptor'),0,26);
 $plans=new Babanoell\Loans\Service\PlanService($repo,new Babanoell\Loans\Domain\PlanSettingsValidator());
-$plan=$plans->create($actor,['code'=>'NATIVE-PDO','name'=>'Native PDO regression plan','type'=>'market','settings'=>['min_amount'=>1,'max_amount'=>100000000,'active_installments'=>[6],'fixed_monthly_rate'=>2,'prepayment_percent'=>20]]);
+$plan=$plans->create($actor,['rules'=>['visibility_contexts'=>['merchant_request','applicant_request','calculator']],'code'=>'NATIVE-PDO','name'=>'Native PDO regression plan','type'=>'market','settings'=>['min_amount'=>1,'max_amount'=>100000000,'active_installments'=>[6],'fixed_monthly_rate'=>2,'prepayment_percent'=>20]]);
 $plan=$plans->status($plan['id'],'active');
 $calc=new Babanoell\Loans\Service\CalculationService($repo,new Babanoell\Loans\Calculation\CalculatorRegistry());
 $requests=new Babanoell\Loans\Service\RequestService($repo,$calc,new Babanoell\Loans\Domain\ScheduleGenerator());

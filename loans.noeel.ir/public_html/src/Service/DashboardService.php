@@ -27,7 +27,7 @@ final class DashboardService
             if (is_string($id) && preg_match('/^[a-f0-9]{26}$/D', $id)) $scope['merchants'][] = $id;
         }
         $scope['merchants'] = array_values(array_unique($scope['merchants']));
-        if ($principal->can('loans.requests.global') || in_array('admin', $principal->roles, true)) {
+        if ($principal->can('loans.requests.global')) {
             // Global allow must still pass through explicit deny rules.
             $scope['global'][] = '*';
         }

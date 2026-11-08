@@ -109,24 +109,27 @@ def archive(path: Path, entries: dict[str, bytes], stamp: dt.datetime) -> None:
             target.writestr(info, data, compresslevel=9)
 
 
-def build(output: Path, ref: str | None = None, updater_bootstrap: bool = True, base_ref: str | None = None) -> None:
+def build(output: Path, ref: str | None = None, updater_bootstrap: bool = True, base_ref: str | None = None, services: tuple[str, ...] | None = None) -> None:
+    selected = tuple(service for service in SERVICES if service in (services or SERVICES))
+    if services is not None and (not services or len(set(services)) != len(services) or set(services) - set(SERVICES)):
+        raise ValueError('Choose unique, known service names')
     output.mkdir(parents=True, exist_ok=True)
     stamp = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
     commit = subprocess.check_output(['git', 'rev-parse', '--verify', (ref or 'HEAD') + '^{commit}'], cwd=ROOT, text=True).strip()
     dirty = False if ref else bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT))
-    snapshots = {service: select_files(service, commit if ref else None) for service in SERVICES}
+    snapshots = {service: select_files(service, commit if ref else None) for service in selected}
     base_commit = subprocess.check_output(['git', 'rev-parse', '--verify', base_ref + '^{commit}'], cwd=ROOT, text=True).strip() if base_ref else None
-    baseline = {service: set(git_files(service, base_commit)) for service in SERVICES} if base_commit else {}
+    baseline = {service: set(git_files(service, base_commit)) for service in selected} if base_commit else {}
     ui_versions = {metadata(files)['ui'] for files in snapshots.values()}
     if len(ui_versions) != 1:
         raise ValueError('All service packages must use the same UI version')
     release_id = stamp.strftime('%Y%m%d-%H%M%S') + '-ui-' + next(iter(ui_versions))
     index = {'release_id': release_id, 'created_at_utc': stamp.isoformat(), 'source_commit': commit,
-             'includes_uncommitted_work': dirty, 'deployment_order': list(SERVICES), 'packages': []}
+             'includes_uncommitted_work': dirty, 'deployment_order': list(selected), 'packages': []}
     if base_commit:
         index['upgrade_base_commit'] = base_commit
     bootstrap = {}
-    for service in SERVICES:
+    for service in selected:
         files = snapshots[service]
         meta = metadata(files)
         migrations = sorted(name for name in files if name.startswith(('database/migrations/', 'migrations/')) and name.endswith(('.php', '.sql')))
@@ -174,5 +177,6 @@ if __name__ == '__main__':
     parser.add_argument('--ref', help='Build only the committed files at this Git ref; leave the source tree unchanged.')
     parser.add_argument('--base-ref', help='Installed source commit used to identify new migration files in the release index.')
     parser.add_argument('--skip-updater-bootstrap', action='store_true', help='Omit the legacy UI 2.16.0 updater compatibility files.')
+    parser.add_argument('--services', nargs='+', choices=SERVICES, help='Build only these services, in the canonical deployment order.')
     args = parser.parse_args()
-    build(args.output, args.ref, not args.skip_updater_bootstrap, args.base_ref)
+    build(args.output, args.ref, not args.skip_updater_bootstrap, args.base_ref, tuple(args.services) if args.services is not None else None)

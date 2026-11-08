@@ -32,10 +32,12 @@ final class Connection
             $charset
         );
 
-        return new PDO($dsn, (string) $config['username'], (string) ($config['password'] ?? ''), [
+        $pdo = new PDO($dsn, (string) $config['username'], (string) ($config['password'] ?? ''), [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
         ]);
+        $pdo->exec("SET SESSION time_zone='+00:00'");
+        return $pdo;
     }
 }

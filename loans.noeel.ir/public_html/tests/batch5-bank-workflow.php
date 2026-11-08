@@ -12,7 +12,7 @@ $tests=[
  },
  'bank_restricts_uncapped_export'=>static function()use($root):bool{
      $s=file_get_contents($root.'/public/index.php');
-     return str_contains($s,"bank_export_too_large") && str_contains($s,'$total>5000') && str_contains($s,"'truncated'=>false");
+     return str_contains($s,"bank_export_too_large") && str_contains(file_get_contents($root.'/src/Repository/PdoLoanRepository.php'),'count($items)>5000') && str_contains($s,"'truncated'=>false");
  },
  'bank_exports_grant_and_installments'=>static function()use($root):bool{
      $s=file_get_contents($root.'/src/Repository/PdoLoanRepository.php');

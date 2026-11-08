@@ -19,6 +19,10 @@ from notifications import notification_acceptance
 from leasing import leasing_acceptance
 from referrals import referral_acceptance
 from commissions import commission_acceptance
+from report_parity import report_acceptance
+from plan_access import plan_access_acceptance
+from plan_documents import plan_document_acceptance
+from smart_auth import smart_auth_acceptance
 from greenpay_requests import greenpay_request_acceptance
 from numbering import numbering_acceptance
 from chunks import chunk_acceptance
@@ -30,6 +34,16 @@ class Workflow:
         self.stack = stack
         self.tokens = {}
         self.checks = []
+
+    def ensure_completion_documents(self,request_id,role='applicant'):
+        requirements=self.call('loans',f'/api/v1/requests/{request_id}/document-requirements',role=role)
+        completion=self.call('documents',f'/api/v1/entities/loan_request/{request_id}/completion',role=role)
+        approved={x['document_type'] for x in completion['items'] if x['review_status']=='approved'}
+        png=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=')
+        for code in ['signed_invoice_files','completed_check_files']:
+            if code not in requirements['required_documents'] or code in approved:continue
+            document=self.call('documents',f'/api/v1/entities/loan_request/{request_id}/documents','POST',{'document_type':code},role=role,files=[('file','synthetic-'+code+'.png','image/png',png)],expected=201)['document']
+            self.call('documents',f"/api/v1/files/{document['id']}/review",'POST',{'status':'approved'},role='operations_expert')
 
     @property
     def credit_fixture(self):
@@ -137,7 +151,7 @@ class Workflow:
             "settings": {"min_amount": 1, "max_amount": 100000000, "active_installments": [6],
                          "fixed_monthly_rate": 2, "prepayment_percent": 20},
             "required_documents": ["national_card_front"],
-            "rules": {"contract_mode": "digital", "requires_identity_verification": True,
+            "rules": {"visibility_contexts":["merchant_request","applicant_request","calculator"], "contract_mode": "digital", "requires_identity_verification": True,
                       "requires_bank_validation": True, "merchant_access_mode": "allowlist"},
         }, expected=201)["plan"]
         self.call("loans", f'/api/v1/plans/{plan["id"]}/status', "POST", {"status": "active"})
@@ -258,6 +272,7 @@ class Workflow:
                              files=[("file", "synthetic.png", "image/png", png)], expected=201)["document"]
         self.call("documents", f'/api/v1/files/{document["id"]}/review', "POST", {"status": "approved"}, role="applicant", expected=403)
         self.call("documents", f'/api/v1/files/{document["id"]}/review', "POST", {"status": "approved"}, role="operations_expert")
+        self.ensure_completion_documents(request_id)
         completion = self.call("documents", f"/api/v1/entities/loan_request/{request_id}/completion", role="applicant")
         self.check(completion["complete"], "Reviewed required document completes the owner checklist")
         self.call("loans", prefix + "/transition", "POST", {"status": "docs_verified"}, role="operations_expert")
@@ -362,7 +377,11 @@ class Workflow:
         numbering_acceptance(self)
         commission_acceptance(self)
         greenpay_request_acceptance(self)
+        plan_document_acceptance(self)
+        plan_access_acceptance(self)
+        report_acceptance(self)
         referral_acceptance(self)
+        smart_auth_acceptance(self)
         self.stack.stop("partners")
         self.call("loans", "/api/v1/marketplace/requests", role="acceptor", expected=503)
         self.call("loans", claim_path, "POST", {}, role="acceptor", expected=503)
@@ -371,7 +390,7 @@ class Workflow:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--scenario", choices=("regressions", "workflow", "onboarding", "suites", "all"), default="all")
+    parser.add_argument("--scenario", choices=("regressions", "workflow", "onboarding", "suites", "auth", "all"), default="all")
     parser.add_argument("--report", type=Path, help="Write sanitized results; ephemeral credentials are never included")
     args = parser.parse_args()
     stack = Stack(Path(__file__).resolve().parents[2])
@@ -390,6 +409,10 @@ def main():
         if args.scenario in ("workflow", "all"):
             stack.start()
             workflow.run()
+        if args.scenario == "auth":
+            stack.start()
+            workflow.initialize()
+            smart_auth_acceptance(workflow)
         if args.scenario == "onboarding":
             stack.start()
             workflow.initialize()

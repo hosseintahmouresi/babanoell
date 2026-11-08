@@ -93,7 +93,7 @@ final class PersianDateTime
         }
 
         try {
-            $dateTime = new DateTimeImmutable($value);
+            $dateTime = new DateTimeImmutable($value, new DateTimeZone('UTC'));
 
             return $full ? self::full($dateTime) : self::compact($dateTime);
         } catch (Throwable) {

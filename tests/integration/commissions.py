@@ -12,7 +12,7 @@ def commission_acceptance(w):
     w.call('partners',path,'POST',{'revision':saved['revision'],'commission_percent':'100.1'},expected=422)
     cases=json.loads((Path(__file__).resolve().parents[2]/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
     settings=dict(next(x['settings'] for x in cases if x['type']=='leasing'),acceptor_commission_percent=3)
-    plan=w.call('loans','/api/v1/plans','POST',{'code':'REFERENCE-USER-COMMISSION','name':'Synthetic reference commission','type':'leasing','settings':settings,'required_documents':[]},expected=201)['plan']
+    plan=w.call('loans','/api/v1/plans','POST',{'code':'REFERENCE-USER-COMMISSION','name':'Synthetic reference commission','type':'leasing','rules':{'visibility_contexts':['merchant_request','applicant_request','calculator']},'settings':settings,'required_documents':[]},expected=201)['plan']
     w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})
     payload={'plan_id':plan['id'],'amount':100000000,'installment_count':12,'installment_interval':1,'commission_override':99,'plan_context':'merchant_request'}
     result=w.call('loans','/api/v1/calculations','POST',payload,role='acceptor',expected=201)['result']

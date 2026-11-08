@@ -58,7 +58,7 @@ def credit_acceptance(workflow):
         'code': 'CREDIT-ACCEPTANCE', 'name': 'Credit acceptance plan', 'type': 'market',
         'settings': {'min_amount': 1, 'max_amount': 100000000, 'active_installments': [6],
                      'fixed_monthly_rate': 2, 'prepayment_percent': 20},
-        'rules': {'requires_bank_validation': True},
+        'rules': {'visibility_contexts':['merchant_request','applicant_request','calculator'],'requires_bank_validation': True},
     }, expected=201)['plan']
     w.call('loans', '/api/v1/plans/'+plan['id']+'/status', 'POST', {'status': 'active'})
     sequence = 0

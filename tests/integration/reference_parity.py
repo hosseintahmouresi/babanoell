@@ -9,7 +9,7 @@ def reference_contract_acceptance(w):
     settings=dict(next(x['settings'] for x in cases if x['type']=='leasing'),interest_rate=26)
     for code in ('hami_plus_reference','hami_retirees_reference'):
         plan=w.call('loans','/api/v1/plans','POST',{'code':code.upper(),'name':'Synthetic reference contract','type':'leasing','settings':settings,'required_documents':[],
-            'rules':{'contract_mode':'digital','facility_agreement_template_code':code,'contract_first_due_rule':'jalali_month_end_half'}},expected=201)['plan']
+            'rules':{'visibility_contexts':['merchant_request','applicant_request','calculator'],'contract_mode':'digital','facility_agreement_template_code':code,'contract_first_due_rule':'jalali_month_end_half'}},expected=201)['plan']
         w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})
         body={'plan_id':plan['id'],'submit':False,'applicant_user_id':w.stack.accounts['applicant']['id'],'full_name':'Synthetic <buyer>',
             'father_name':'Synthetic father','certificate_number':'123','national_code':'0013543318','mobile_number':'09121234567','phone_number':'02112345678','birth_date':'1370/01/01',

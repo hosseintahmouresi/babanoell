@@ -77,6 +77,21 @@ final class Routes
         $authController = $container->authController();
         $meController = $container->meController();
 
+        foreach(['discover','register','resend','verify'] as $action){
+            $router->post('/api/v1/auth/smart/'.$action,static function(Request $request)use($container,$config,$action):JsonResponse{
+                $caller=\Babanoell\Auth\Platform\RequestContext::callerService();
+                if(strlen($config->serviceAuthSecret())<32||$caller!=='panel'||!\Babanoell\Auth\Platform\PayloadAuth::verify($request->header('X-Noel-Payload-Signature'),'panel',(string)$request->header('X-Noel-Timestamp'),(string)$request->header('X-Request-Id'),$request->method(),$request->path(),$request->rawBody(),$config->serviceAuthSecret()))return JsonResponse::error(403,'service_access_denied','دسترسی سرویس مجاز نیست.');
+                try{$body=$request->json();$service=$container->smartAuth();$context=new \Babanoell\Auth\UseCases\Login\LoginSecurityContext(is_string($body['client_ip']??null)?$body['client_ip']:null,$request->header('User-Agent'),$request->header('X-Request-Id'));$result=$action==='verify'?$service->verify($body,$context):$service->$action($body);return JsonResponse::ok($result);}
+                catch(\Babanoell\Auth\SmartAuth\AuthFailure $e){return new JsonResponse($e->status,['error'=>['code'=>$e->publicCode,'message'=>$e->getMessage(),'retry_after'=>$e->retryAfter]],$e->retryAfter>0?['Retry-After'=>(string)$e->retryAfter]:[]);}
+                catch(\InvalidArgumentException){return JsonResponse::error(422,'validation_failed','اطلاعات فرم معتبر نیست.');}
+                catch(Throwable){return JsonResponse::error(503,'auth_unavailable','سرویس ورود موقتاً در دسترس نیست.');}
+            });
+        }
+        foreach(['GET','POST'] as $method)$router->add($method,'/api/v1/admin/auth-settings',static function(Request $request)use($container):JsonResponse{
+            try{$auth=$container->adminAuthorization()->requireSuperAdmin($request);if(!$auth['ok'])return JsonResponse::error($auth['status'],$auth['code'],$auth['message']);$service=$container->smartAuth();return JsonResponse::ok(['settings'=>$request->method()==='POST'?$service->saveSettings($request->json(),$auth['user_id']):$service->settings()]);}
+            catch(\Babanoell\Auth\SmartAuth\AuthFailure $e){return JsonResponse::error($e->status,$e->publicCode,$e->getMessage());}catch(Throwable){return JsonResponse::error(503,'auth_unavailable','تنظیمات ورود دریافت نشد.');}
+        });
+
         $router->post('/api/v1/auth/login', [$authController, 'login']);
         $router->post('/api/v1/auth/logout', [$authController, 'logout']);
         $router->post('/api/v1/auth/refresh', [$authController, 'refresh']);
@@ -88,6 +103,11 @@ final class Routes
                 (string)$request->header('X-Request-Id'),$request->method(),$request->path(),$request->rawBody(),$config->serviceAuthSecret()))
                 return \Babanoell\Auth\Http\ResponseMapper::error(403,'service_access_denied','دسترسی سرویس مجاز نیست.');
             return $container->managementController()->notificationContact($request);
+        });
+        $router->post('/api/v1/services/plan-policy',static function(Request $request)use($container,$config):JsonResponse{
+            $caller=\Babanoell\Auth\Platform\RequestContext::callerService();
+            if($caller!=='partners'||!\Babanoell\Auth\Platform\PayloadAuth::verify($request->header('X-Noel-Payload-Signature'),$caller,(string)$request->header('X-Noel-Timestamp'),(string)$request->header('X-Request-Id'),$request->method(),$request->path(),$request->rawBody(),$config->serviceAuthSecret()))return \Babanoell\Auth\Http\ResponseMapper::error(403,'service_access_denied','دسترسی سرویس مجاز نیست.');
+            return $container->managementController()->planPolicy($request);
         });
         $router->get('/api/v1/roles', static fn (Request $request): JsonResponse => $container->managementController()->roles($request));
         $router->get('/api/v1/admin/users', static fn (Request $request): JsonResponse => $container->managementController()->users($request));

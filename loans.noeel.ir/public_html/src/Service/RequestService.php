@@ -40,6 +40,7 @@ final class RequestService
             if(!preg_match('/^[a-f0-9]{26}$/',$merchantId))throw new InvalidArgumentException('شناسه پذیرنده معتبر نیست.');
             if($merchantContext!==null){
                 if(($merchantContext['merchant_id']??'')!==$merchantId||($merchantContext['plan_id']??'')!==$planId)throw new InvalidArgumentException('مرجع پذیرنده با درخواست مطابقت ندارد.');
+                if($origin===RequestOrigin::APPLICANT&&!empty($merchantContext['owner_plan_excluded']))throw new InvalidArgumentException('این طرح برای پذیرندهٔ انتخاب‌شده غیرفعال است.');
                 $permission=$merchantContext['permission']??null;$allowed=is_array($permission)?($permission['status']??'')==='active':($plan['rules']['merchant_access_mode']??'all')!=='allowlist';
             }else $allowed=$this->repo->merchantCanUsePlan($merchantId,$plan);
             if(!$allowed)throw new InvalidArgumentException('این طرح برای پذیرنده انتخاب‌شده فعال نیست.');

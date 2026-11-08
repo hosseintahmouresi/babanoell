@@ -1,0 +1,148 @@
+{
+    "reference_functions_sha256": {
+        "mlr_get_installment_plan_visibility_contexts": "4965cebb93acb433417209a0c9e7ad3dcd0a3496a73b939ed5b5319ca1d8e91d",
+        "mlr_get_plan_settings_array": "b446f7fd665c6efd5fe7f7701e53b43b6b16e3e014830d030862c1b1339ca731",
+        "mlr_get_plan_visibility_contexts": "ae9be175e412a56b1efaa46f23f53dcf1c75a396f195ff75b23aca202c846320"
+    },
+    "cases": [
+        {
+            "settings": [],
+            "expected": [
+                "merchant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "applicant_visible": false
+            },
+            "expected": [
+                "merchant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "applicant_visible": true
+            },
+            "expected": [
+                "merchant_request",
+                "applicant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "applicant_visible": "1"
+            },
+            "expected": [
+                "merchant_request",
+                "applicant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "applicant_visible": "0"
+            },
+            "expected": [
+                "merchant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "visibility_contexts": []
+            },
+            "expected": []
+        },
+        {
+            "settings": {
+                "visibility_contexts": null
+            },
+            "expected": []
+        },
+        {
+            "settings": {
+                "visibility_contexts": ""
+            },
+            "expected": []
+        },
+        {
+            "settings": {
+                "visibility_contexts": [
+                    "unknown"
+                ]
+            },
+            "expected": []
+        },
+        {
+            "settings": {
+                "visibility_contexts": [
+                    "mlr_loan_request_form"
+                ]
+            },
+            "expected": [
+                "merchant_request"
+            ]
+        },
+        {
+            "settings": {
+                "visibility_contexts": [
+                    "mlr_applicant_loan_request_form"
+                ]
+            },
+            "expected": [
+                "applicant_request"
+            ]
+        },
+        {
+            "settings": {
+                "visibility_contexts": [
+                    "mlr_loan_calculator"
+                ]
+            },
+            "expected": [
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "visibility_contexts": [
+                    "mlr_loan_calculator",
+                    "mlr_loan_request_form",
+                    "mlr_loan_request_form"
+                ]
+            },
+            "expected": [
+                "merchant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "visibility_contexts": "[\"mlr_applicant_loan_request_form\",\"mlr_loan_calculator\"]"
+            },
+            "expected": [
+                "applicant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "visibility_contexts": "mlr_loan_request_form,mlr_loan_calculator"
+            },
+            "expected": [
+                "merchant_request",
+                "calculator"
+            ]
+        },
+        {
+            "settings": {
+                "visibility_contexts": [],
+                "applicant_visible": true
+            },
+            "expected": []
+        }
+    ]
+}

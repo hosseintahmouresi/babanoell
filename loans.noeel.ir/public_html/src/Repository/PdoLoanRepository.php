@@ -5,6 +5,7 @@ namespace Babanoell\Loans\Repository;
 use Babanoell\Loans\Support\Json;
 use Babanoell\Loans\Support\RandomId;
 use Babanoell\Loans\Domain\PlanRules;
+use Babanoell\Loans\Domain\RequestFilters;
 use Babanoell\Loans\Domain\CreditValidationPolicy;
 use PDO;
 use RuntimeException;
@@ -33,19 +34,19 @@ final class PdoLoanRepository
         if($type!==null&&$type!==''){$where[]='p.type = :type';$params[':type']=$type;}
         $w=$where?(' WHERE '.implode(' AND ',$where)):'';
         $count=$this->pdo->prepare('SELECT COUNT(*) FROM installment_plans p'.$w);$count->execute($params);$total=(int)$count->fetchColumn();
-        $sql='SELECT p.*,v.settings_json,v.display_fields_json,v.required_documents_json,v.rules_json,v.eligibility_json AS version_eligibility_json,v.configuration_hash,v.published_at AS version_published_at,v.conditions_text,v.id AS current_version_id,v.created_at AS version_created_at FROM installment_plans p JOIN installment_plan_versions v ON v.plan_id=p.id AND v.version=p.current_version'.$w.' ORDER BY p.display_order ASC,p.updated_at DESC LIMIT :limit OFFSET :offset';
+        $sql='SELECT p.*,v.settings_json,v.display_fields_json,v.required_documents_json,v.rules_json,v.eligibility_json AS version_eligibility_json,v.configuration_hash,v.published_at AS version_published_at,v.conditions_text,v.id AS current_version_id,v.created_at AS version_created_at FROM installment_plans p JOIN installment_plan_versions v ON v.plan_id=p.id AND v.version=p.current_version'.$w.' ORDER BY p.display_order ASC,p.created_at DESC,p.id DESC LIMIT :limit OFFSET :offset';
         $s=$this->pdo->prepare($sql);foreach($params as$k=>$v)$s->bindValue($k,$v);$s->bindValue(':limit',$perPage,PDO::PARAM_INT);$s->bindValue(':offset',($page-1)*$perPage,PDO::PARAM_INT);$s->execute();
         return['items'=>array_map([$this,'decodePlan'],$s->fetchAll()),'page'=>$page,'per_page'=>$perPage,'total'=>$total];
     }
 
     /** @return array{items:array<int,array<string,mixed>>,page:int,per_page:int,total:int} */
-    public function listPlansForContext(int $page,int $perPage,string $context,?string $type=null): array
+    public function listPlansForContext(int $page,int $perPage,string $context,?string $type=null,?array $merchantPolicy=null): array
     {
         if(!isset(PlanRules::VISIBILITY_CONTEXTS[$context]))throw new \InvalidArgumentException('محل استفاده از طرح معتبر نیست.');
         $page=max(1,$page);$perPage=max(1,min(100,$perPage));$where=["p.status='active'"];$params=[];
         if($type!==null&&trim($type)!==''){$where[]='p.type=:type';$params[':type']=trim($type);}
-        $sql='SELECT p.*,v.settings_json,v.display_fields_json,v.required_documents_json,v.rules_json,v.eligibility_json AS version_eligibility_json,v.configuration_hash,v.published_at AS version_published_at,v.conditions_text,v.id AS current_version_id,v.created_at AS version_created_at FROM installment_plans p JOIN installment_plan_versions v ON v.plan_id=p.id AND v.version=p.current_version WHERE '.implode(' AND ',$where).' ORDER BY p.display_order ASC,p.updated_at DESC';
-        $s=$this->pdo->prepare($sql);$s->execute($params);$visible=[];foreach($s->fetchAll()as$row){$plan=$this->decodePlan($row);if(PlanRules::visibleIn($plan,$context))$visible[]=$plan;}
+        $sql='SELECT p.*,v.settings_json,v.display_fields_json,v.required_documents_json,v.rules_json,v.eligibility_json AS version_eligibility_json,v.configuration_hash,v.published_at AS version_published_at,v.conditions_text,v.id AS current_version_id,v.created_at AS version_created_at FROM installment_plans p JOIN installment_plan_versions v ON v.plan_id=p.id AND v.version=p.current_version WHERE '.implode(' AND ',$where).' ORDER BY p.display_order ASC,p.created_at DESC,p.id DESC';
+        $s=$this->pdo->prepare($sql);$s->execute($params);$visible=[];foreach($s->fetchAll()as$row){$plan=$this->decodePlan($row);if(PlanRules::visibleIn($plan,$context)&&($merchantPolicy===null||PlanRules::availableToMerchant($plan,$merchantPolicy)))$visible[]=$plan;}
         $total=count($visible);return['items'=>array_slice($visible,($page-1)*$perPage,$perPage),'page'=>$page,'per_page'=>$perPage,'total'=>$total];
     }
 
@@ -172,14 +173,13 @@ final class PdoLoanRepository
     }
 
     /** @return array{items:array<int,array<string,mixed>>,page:int,per_page:int,total:int} */
-    public function listRequests(int $page=1,int $perPage=25,?string $status=null,string $search='',?string $principalUserId=null,?array $accessScope=null): array
+    public function listRequests(int $page=1,int $perPage=25,?string $status=null,string $search='',?string $principalUserId=null,?array $accessScope=null,array $filters=[]): array
     {
         $page=max(1,$page);
         $perPage=max(1,min(100,$perPage));
         $where=[];
         $params=[];
-        if($status!==null&&$status!==''){$where[]='r.status=:status';$params[':status']=$status;}
-        if($search!==''){$where[]='(r.request_no LIKE :q1 OR r.full_name LIKE :q2 OR r.national_code LIKE :q3 OR r.mobile_number LIKE :q4)';$like='%'.$search.'%';$params[':q1']=$like;$params[':q2']=$like;$params[':q3']=$like;$params[':q4']=$like;}
+        RequestFilters::append($where,$params,array_replace($filters,['status'=>$status??'','q'=>$search]));
         if($accessScope!==null){$this->appendVisibility($where,$params,$accessScope);}elseif($principalUserId!==null&&$principalUserId!==''){
             $where[]='(r.created_by_user_id=:principal_created OR r.applicant_user_id=:principal_applicant OR r.acceptor_user_id=:principal_acceptor OR r.assigned_bank_user_id=:principal_bank OR r.assigned_operations_user_id=:principal_ops)';
             foreach(['created','applicant','acceptor','bank','ops'] as $x)$params[':principal_'.$x]=$principalUserId;
@@ -188,13 +188,40 @@ final class PdoLoanRepository
         $c=$this->pdo->prepare('SELECT COUNT(*) FROM loan_requests r'.$w);
         $c->execute($params);
         $total=(int)$c->fetchColumn();
-        $sql='SELECT r.*,p.name AS plan_name,v.type AS plan_type,v.version AS plan_version FROM loan_requests r JOIN installment_plans p ON p.id=r.plan_id JOIN installment_plan_versions v ON v.id=r.plan_version_id'.$w.' ORDER BY r.updated_at DESC LIMIT :limit OFFSET :offset';
+        $sql='SELECT r.*,p.name AS plan_name,v.type AS plan_type,v.version AS plan_version FROM loan_requests r JOIN installment_plans p ON p.id=r.plan_id JOIN installment_plan_versions v ON v.id=r.plan_version_id'.$w.' ORDER BY r.created_at DESC,r.id DESC LIMIT :limit OFFSET :offset';
         $s=$this->pdo->prepare($sql);
         foreach($params as$k=>$v)$s->bindValue($k,$v);
         $s->bindValue(':limit',$perPage,PDO::PARAM_INT);
         $s->bindValue(':offset',($page-1)*$perPage,PDO::PARAM_INT);
         $s->execute();
         return['items'=>array_map([$this,'decodeRequest'],$s->fetchAll()),'page'=>$page,'per_page'=>$perPage,'total'=>$total];
+    }
+
+    public function requestReport(array $filters,?array $accessScope,bool $export=false):array
+    {
+        $where=[];$params=[];RequestFilters::append($where,$params,$filters);
+        if($accessScope!==null)$this->appendVisibility($where,$params,$accessScope);
+        $w=$where?' WHERE '.implode(' AND ',$where):'';
+        $select='SELECT r.id,r.request_no,r.full_name,r.national_code,r.mobile_number,r.requested_amount,r.order_total,r.facility_amount,r.installment_count,r.installment_amount,r.total_payment,r.wallet_charge,r.acceptor_payment_amount,r.status,r.settlement_status,r.settlement_date,r.bank_settlement_status,r.financier_payment_status,r.created_at,p.name AS plan_name,v.type AS plan_type FROM loan_requests r JOIN installment_plans p ON p.id=r.plan_id JOIN installment_plan_versions v ON v.id=r.plan_version_id'.$w.' ORDER BY r.created_at DESC,r.id DESC';
+        if($export){
+            $q=$this->pdo->prepare($select.' LIMIT 5001');$q->execute($params);$items=$q->fetchAll(PDO::FETCH_ASSOC);
+            if(count($items)>5000)throw new \LengthException('خروجی بیش از ۵۰۰۰ پرونده است. فیلتر دقیق‌تری انتخاب کنید.');
+            return ['items'=>$items,'total'=>count($items),'truncated'=>false,'filters'=>RequestFilters::normalize($filters),'timezone'=>'Asia/Tehran'];
+        }
+        $own=!$this->pdo->inTransaction();
+        if($own){if($this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME)==='mysql')$this->pdo->exec('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ');$this->pdo->beginTransaction();}
+        try{
+            $q=$this->pdo->prepare('SELECT COUNT(*) AS total,COALESCE(SUM(r.requested_amount),0) AS requested_amount,COALESCE(SUM(r.order_total),0) AS order_total,COALESCE(SUM(r.facility_amount),0) AS facility_amount,COALESCE(SUM(CASE WHEN r.facility_amount IS NULL THEN 1 ELSE 0 END),0) AS missing_facility_count,COALESCE(SUM(r.wallet_charge),0) AS wallet_charge,COALESCE(SUM(r.acceptor_payment_amount),0) AS acceptor_payment_amount FROM loan_requests r'.$w);$q->execute($params);$totals=$q->fetch(PDO::FETCH_ASSOC);
+            foreach(['total','missing_facility_count'] as $key)$totals[$key]=(int)$totals[$key];
+            $q=$this->pdo->prepare('SELECT r.status,COUNT(*) AS count,COALESCE(SUM(r.requested_amount),0) AS requested_amount FROM loan_requests r'.$w.' GROUP BY r.status ORDER BY r.status');$q->execute($params);$statuses=$q->fetchAll(PDO::FETCH_ASSOC);foreach($statuses as &$row)$row['count']=(int)$row['count'];unset($row);
+            foreach(['page','per_page'] as $key)if(isset($filters[$key])&&!is_scalar($filters[$key]))throw new \InvalidArgumentException('شمارهٔ صفحه معتبر نیست.');
+            $page=max(1,(int)($filters['page']??1));$per=max(1,min(100,(int)($filters['per_page']??25)));
+            $q=$this->pdo->prepare($select.' LIMIT :report_limit OFFSET :report_offset');foreach($params as $key=>$value)$q->bindValue($key,$value);$q->bindValue(':report_limit',$per,PDO::PARAM_INT);$q->bindValue(':report_offset',($page-1)*$per,PDO::PARAM_INT);$q->execute();$items=$q->fetchAll(PDO::FETCH_ASSOC);
+            $planWhere=[];$planParams=[];if($accessScope!==null)$this->appendVisibility($planWhere,$planParams,$accessScope);
+            $q=$this->pdo->prepare('SELECT DISTINCT r.plan_id AS id,p.name FROM loan_requests r JOIN installment_plans p ON p.id=r.plan_id'.($planWhere?' WHERE '.implode(' AND ',$planWhere):'').' ORDER BY p.name,r.plan_id LIMIT 500');$q->execute($planParams);$plans=$q->fetchAll(PDO::FETCH_ASSOC);
+            if($own)$this->pdo->commit();
+            return ['plans'=>$plans,'items'=>$items,'page'=>$page,'per_page'=>$per,'total'=>$totals['total'],'totals'=>$totals,'statuses'=>$statuses,'filters'=>RequestFilters::normalize($filters),'timezone'=>'Asia/Tehran'];
+        }catch(Throwable $e){if($own&&$this->pdo->inTransaction())$this->pdo->rollBack();throw $e;}
     }
 
     public function getRequest(string $id): ?array
@@ -534,24 +561,28 @@ final class PdoLoanRepository
     }
 
     /** @return array{items:array<int,array<string,mixed>>,page:int,per_page:int,total:int} */
-    public function bankCases(int $page,int $perPage,?string $bankUserId,bool $global,array $filters=[]): array
+    public function bankCases(int $page,int $perPage,?string $bankUserId,bool $global,array $filters=[],?array $accessScope=null,bool $export=false): array
     {
-        $page=max(1,$page);$perPage=max(1,min(100,$perPage));$where=[];$params=[];
+        $page=max(1,$page);$perPage=$export?5001:max(1,min(100,$perPage));$where=[];$params=[];
         if(!$global){if($bankUserId===null||$bankUserId==='')return['items'=>[],'page'=>$page,'per_page'=>$perPage,'total'=>0];$where[]='r.assigned_bank_user_id=:bank_user';$params[':bank_user']=$bankUserId;}
         elseif(($filters['scope']??'')==='unassigned')$where[]="(r.assigned_bank_user_id IS NULL OR r.assigned_bank_user_id='')";
-        $status=trim((string)($filters['status']??''));if($status!==''){$where[]='r.status=:status';$params[':status']=$status;}
+        if($accessScope!==null)$this->appendVisibility($where,$params,$accessScope);
+        RequestFilters::append($where,$params,$filters);
         $credit=trim((string)($filters['credit_status']??''));if($credit!==''){$where[]='r.credit_validation_status=:credit_status';$params[':credit_status']=$credit;}
         $identity=trim((string)($filters['identity_status']??''));if($identity!==''){$where[]='r.identity_verification_status=:identity_status';$params[':identity_status']=$identity;}
-        $search=trim((string)($filters['q']??''));if($search!==''){$where[]='(r.request_no LIKE :request_no_query OR r.full_name LIKE :name_query OR r.national_code LIKE :national_query OR r.mobile_number LIKE :mobile_query)';foreach([':request_no_query',':name_query',':national_query',':mobile_query']as$key)$params[$key]='%'.$search.'%';}
         $where[]="r.status NOT IN ('draft','cancelled','archived')";$w=' WHERE '.implode(' AND ',$where);
-        $c=$this->pdo->prepare('SELECT COUNT(*) FROM loan_requests r'.$w);$c->execute($params);$total=(int)$c->fetchColumn();
-        $sql='SELECT r.id,r.request_no,r.full_name,r.national_code,r.mobile_number,r.status,r.assigned_bank_user_id,r.credit_validation_status,r.credit_validation_provider,r.credit_score,r.credit_risk,r.identity_verification_status,r.identity_verification_provider,r.installment_count,r.granted_at,r.bank_settlement_status,r.bank_settled_at,r.updated_at,r.last_transition_at,p.name AS plan_name FROM loan_requests r JOIN installment_plans p ON p.id=r.plan_id'.$w.' ORDER BY CASE WHEN r.credit_validation_status IN (\'failed\',\'expired\') OR r.identity_verification_status IN (\'failed\',\'expired\') THEN 0 WHEN r.credit_validation_status IN (\'pending\',\'queued\') OR r.identity_verification_status IN (\'pending\',\'queued\') THEN 1 ELSE 2 END,r.updated_at ASC LIMIT :limit OFFSET :offset';
-        $s=$this->pdo->prepare($sql);foreach($params as$k=>$v)$s->bindValue($k,$v);$s->bindValue(':limit',$perPage,PDO::PARAM_INT);$s->bindValue(':offset',($page-1)*$perPage,PDO::PARAM_INT);$s->execute();return['items'=>$s->fetchAll(),'page'=>$page,'per_page'=>$perPage,'total'=>$total];
+        $total=0;if(!$export){$c=$this->pdo->prepare('SELECT COUNT(*) FROM loan_requests r'.$w);$c->execute($params);$total=(int)$c->fetchColumn();}
+        $sql='SELECT r.id,r.request_no,r.full_name,r.national_code,r.mobile_number,r.status,r.assigned_bank_user_id,r.credit_validation_status,r.credit_validation_provider,r.credit_score,r.credit_risk,r.identity_verification_status,r.identity_verification_provider,r.installment_count,r.granted_at,r.bank_settlement_status,r.bank_settled_at,r.updated_at,r.last_transition_at,p.name AS plan_name FROM loan_requests r JOIN installment_plans p ON p.id=r.plan_id'.$w.' ORDER BY CASE WHEN r.credit_validation_status IN (\'failed\',\'expired\') OR r.identity_verification_status IN (\'failed\',\'expired\') THEN 0 WHEN r.credit_validation_status IN (\'pending\',\'queued\') OR r.identity_verification_status IN (\'pending\',\'queued\') THEN 1 ELSE 2 END,r.updated_at ASC,r.id ASC LIMIT :limit OFFSET :offset';
+        $s=$this->pdo->prepare($sql);foreach($params as$k=>$v)$s->bindValue($k,$v);$s->bindValue(':limit',$perPage,PDO::PARAM_INT);$s->bindValue(':offset',($page-1)*$perPage,PDO::PARAM_INT);$s->execute();$items=$s->fetchAll();if($export&&count($items)>5000)throw new \LengthException('تعداد پرونده‌ها برای یک خروجی بیش از ۵۰۰۰ است. فیلتر دقیق‌تری اعمال کنید.');return['items'=>$items,'page'=>$page,'per_page'=>$perPage,'total'=>$export?count($items):$total];
     }
 
-    public function bankSummary(?string $bankUserId,bool $global): array
+    public function bankSummary(?string $bankUserId,bool $global,?array $accessScope=null): array
     {
-        $where=$global?'1=1':'assigned_bank_user_id=:bank_user';$params=$global?[]:[':bank_user'=>$bankUserId];$s=$this->pdo->prepare("SELECT COUNT(*) total,SUM(status='under_review') under_review,SUM(credit_validation_status IN ('pending','queued')) credit_pending,SUM(identity_verification_status IN ('pending','queued')) identity_pending,SUM(credit_validation_status IN ('failed','expired') OR identity_verification_status IN ('failed','expired')) attention,SUM(status='expert_approved') approved FROM loan_requests WHERE {$where} AND status NOT IN ('draft','cancelled','archived')");$s->execute($params);$row=$s->fetch();return is_array($row)?array_map(static fn($v)=>(int)$v,$row):['total'=>0,'under_review'=>0,'credit_pending'=>0,'identity_pending'=>0,'attention'=>0,'approved'=>0];
+        $where=["r.status NOT IN ('draft','cancelled','archived')"];$params=[];
+        if(!$global){$where[]='r.assigned_bank_user_id=:bank_user';$params[':bank_user']=$bankUserId;}
+        if($accessScope!==null)$this->appendVisibility($where,$params,$accessScope);
+        $w=implode(' AND ',$where);
+        $s=$this->pdo->prepare("SELECT COUNT(*) total,SUM(r.status='under_review') under_review,SUM(r.credit_validation_status IN ('pending','queued')) credit_pending,SUM(r.identity_verification_status IN ('pending','queued')) identity_pending,SUM(r.credit_validation_status IN ('failed','expired') OR r.identity_verification_status IN ('failed','expired')) attention,SUM(r.status='expert_approved') approved FROM loan_requests r WHERE ".$w);$s->execute($params);$row=$s->fetch();return is_array($row)?array_map(static fn($v)=>(int)$v,$row):['total'=>0,'under_review'=>0,'credit_pending'=>0,'identity_pending'=>0,'attention'=>0,'approved'=>0];
     }
 
     public function messages(string $requestId,bool $includeInternal=false): array
@@ -805,8 +836,8 @@ final class PdoLoanRepository
             COALESCE(SUM(CASE WHEN r.status IN (' . $inProgress . ') THEN 1 ELSE 0 END),0) AS in_progress,
             COALESCE(SUM(CASE WHEN r.status=\'need_correction\' THEN 1 ELSE 0 END),0) AS need_correction,
             COALESCE(SUM(CASE WHEN r.status=\'granted\' THEN 1 ELSE 0 END),0) AS granted,
-            COALESCE(SUM(r.order_total),0) AS total_order_amount,
-            COALESCE(SUM(CASE WHEN r.created_at>=:month_from AND r.created_at<:month_to THEN COALESCE(r.order_total,0) ELSE 0 END),0) AS month_order_amount,
+            COALESCE(SUM(r.requested_amount),0) AS total_order_amount,
+            COALESCE(SUM(CASE WHEN r.created_at>=:month_from AND r.created_at<:month_to THEN COALESCE(r.requested_amount,0) ELSE 0 END),0) AS month_order_amount,
             COALESCE(SUM(CASE WHEN r.status IN (' . $inProgress . ') THEN COALESCE(r.requested_amount,0) ELSE 0 END),0) AS open_requested_amount
             FROM loan_requests r' . $filter);
         $statement->execute($params + [':month_from'=>$fromUtc, ':month_to'=>$toUtc]);
@@ -852,7 +883,7 @@ final class PdoLoanRepository
     }
 
     private function decodePlan(array $r): array {
-        $r['settings']=Json::decode((string)($r['settings_json']??''));$r['display_fields']=Json::decode((string)($r['display_fields_json']??''));$r['required_documents']=Json::decode((string)($r['required_documents_json']??''));$r['rules']=Json::decode((string)($r['rules_json']??''));$r['eligibility']=Json::decode((string)($r['version_eligibility_json']??$r['eligibility_json']??''));unset($r['settings_json'],$r['display_fields_json'],$r['required_documents_json'],$r['rules_json'],$r['version_eligibility_json'],$r['eligibility_json']);return$r;
+        $r['settings']=Json::decode((string)($r['settings_json']??''));$r['display_fields']=Json::decode((string)($r['display_fields_json']??''));$r['required_documents']=Json::decode((string)($r['required_documents_json']??''));$r['rules']=Json::decode((string)($r['rules_json']??''));$r['eligibility']=Json::decode((string)($r['version_eligibility_json']??$r['eligibility_json']??''));unset($r['settings_json'],$r['display_fields_json'],$r['required_documents_json'],$r['rules_json'],$r['version_eligibility_json'],$r['eligibility_json']);$documentRules=PlanRules::normalize(['rules'=>$r['rules']],$r['settings']);foreach(['completion_documents_required','completed_check_files_enabled','required_document_descriptions'] as $key)$r['rules'][$key]=$documentRules[$key];return$r;
     }
     private function decodeVersion(array $r): array { return$this->decodePlan($r); }
 

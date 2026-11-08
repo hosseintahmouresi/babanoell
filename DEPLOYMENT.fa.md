@@ -1,5 +1,7 @@
 # انتشار بابانوئل
 
+راهنمای جاری نصب موجود: [ارتقای ۲.۱۹](tests/integration/INSTALL-UPDATE-2.19.fa.md)، [تغییرات](tests/integration/COMPLETION-2.19.fa.md) و [شواهد تطبیق](tests/integration/REFERENCE-PARITY-2.19.fa.md). این مرحله فقط چهار سرویس Identity، Partners، Loans و Panel را به‌روزرسانی می‌کند.
+
 **اصلاح Documents 1.23.1:** خطای کلید خارجی مهاجرت آپلود در دیتابیس‌های با collation پیش‌فرض متفاوت اصلاح شد. برای نصب نیمه‌تمام 1.23.0، [راهنمای تکمیل امن آپدیت](tests/integration/DOCUMENTS-1.23.1-RECOVERY.fa.md) را اجرا کنید. این اصلاح فقط Documents است؛ شش سرویس دیگر و نسخهٔ UI تغییر نمی‌کنند.
 
 انتشار جاری **۲.۱۸** برای ارتقای نصب موجود ۲.۱۷ است. [راهنمای نصب](tests/integration/INSTALL-UPDATE-2.18.fa.md) و [شرح تغییرات و موارد باز](tests/integration/COMPLETION-2.18.fa.md) مرجع این انتشارند. بستهٔ آماده و گزارش آزمون‌ها در `releases/platform-2.18.0` قرار می‌گیرند. ترتیب نصب هفت سرویس مانند قبل است؛ ۹ مهاجرت تازه، رابط 2.18.0 و بدون bootstrap دستی آپدیتر. تنظیمات خصوصی و کلیدهای موجود حفظ می‌شوند.

@@ -12,7 +12,7 @@ def referral_acceptance(w):
     locked=w.call('partners','/api/v1/invitations/apply','POST',{'code':a['code']},role='applicant')['lock']
     kept=w.call('partners','/api/v1/invitations/apply','POST',{'code':b['code']},role='applicant')['lock']
     w.check(kept['merchant_id']==a['merchant_id'] and kept['expires_at']==locked['expires_at'],'A new invitation does not replace or extend an existing active lock by default')
-    plan=w.call('loans','/api/v1/plans','POST',{'code':'REFERRAL-ACCEPTANCE','name':'Synthetic referral acceptance','type':'market',
+    plan=w.call('loans','/api/v1/plans','POST',{'code':'REFERRAL-ACCEPTANCE','name':'Synthetic referral acceptance','type':'market','rules':{'visibility_contexts':['merchant_request','applicant_request','calculator']},
         'settings':{'min_amount':1,'max_amount':100000000,'active_installments':[6],'fixed_monthly_rate':2,'prepayment_percent':20}},expected=201)['plan']
     w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})
     body={'plan_id':plan['id'],'plan_context':'applicant_request','submit':True,'full_name':'Synthetic referral applicant','father_name':'Synthetic',

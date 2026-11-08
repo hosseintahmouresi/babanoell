@@ -13,6 +13,8 @@ final class IdentityClient
         private readonly HttpTransportInterface $transport
     ) {}
 
+    public function planPolicy(string $id):HttpResponse{if(strlen($this->config->serviceAuthSecret())<32)return new HttpResponse(503,null,'','service_auth_not_configured');return $this->request('POST','/api/v1/services/plan-policy',['user_id'=>$id],null,null,null);}
+
     public function userAccess(string $id,string $bearer):HttpResponse{return $this->request('GET','/api/v1/admin/user-access?user_id='.rawurlencode($id),null,$bearer,null,null);}
 
     public function health(): HttpResponse
@@ -84,6 +86,8 @@ final class IdentityClient
                 $this->config->serviceAuthSecret()
             )
         );
+
+        if($path==='/api/v1/services/plan-policy')$headers['X-Noel-Payload-Signature']=\Babanoell\Partners\Platform\PayloadAuth::sign('partners',$headers['X-Noel-Timestamp'],$headers['X-Request-Id'],$method,$path,$body??'',$this->config->serviceAuthSecret());
 
         if ($bearer !== null && $bearer !== '') {
             $headers['Authorization'] = 'Bearer ' . $bearer;

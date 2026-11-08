@@ -128,14 +128,21 @@ try{
     $isApplicant=in_array('applicant',$roles,true)&&!$isPlatformAdmin;
     $isSelfService=$isAcceptor||$isApplicant;
     $isBankExpert=in_array('bank_expert',$roles,true)&&!$isPlatformAdmin;
-    $hasGlobalRequestAccess=$isPlatformAdmin||$principal->can('loans.requests.global');
+    $hasGlobalRequestAccess=$principal->isSuperAdmin();
     $canAssignBank=$isPlatformAdmin||$principal->can('loans.requests.assign_bank');
     $canManagePlans=$isPlatformAdmin||$principal->can('loans.plans.manage');
-    $partnerMerchantIds=[];$partnerMerchant=null;$partnerMembershipVerified=false;$partnerCommission=null;
+    $partnerMerchantIds=[];$partnerMerchant=null;$partnerMembershipVerified=false;$partnerCommission=null;$partnerPlanPolicy=null;
     if($isAcceptor){
         $pm=$partnersClient->myMerchant((string)($request->bearer()??''));
         if($pm->ok()&&is_array($pm->json['data']??null)){
             $pd=$pm->json['data'];
+            if(is_array($pd['disabled_plan_ids']??null)&&is_array($pd['plan_permissions']??null)){
+                $disabled=$pd['disabled_plan_ids'];$permissions=[];$valid=count($disabled)<=1000;
+                foreach($disabled as $id)if(!is_string($id)||!preg_match('/^[a-f0-9]{26}$/D',$id))$valid=false;
+                foreach($pd['plan_permissions'] as $item){if(!is_array($item)||!is_string($item['plan_id']??null)||!preg_match('/^[a-f0-9]{26}$/D',$item['plan_id'])||!in_array($item['status']??null,['active','inactive'],true)){$valid=false;continue;}$permissions[$item['plan_id']]=$item['status'];}
+                if($valid)$partnerPlanPolicy=['disabled_plan_ids'=>$disabled,'permissions'=>$permissions];
+            }
+
             if(array_key_exists('merchant',$pd)&&$pd['merchant']===null)$partnerMembershipVerified=true;
             elseif(is_array($pd['merchant']??null)&&is_string($pd['merchant']['id']??null)&&preg_match('/^[a-f0-9]{26}$/D',$pd['merchant']['id'])&&($pd['merchant']['status']??null)==='active'){
                 $partnerMembershipVerified=true;$partnerMerchant=$pd['merchant'];$partnerMerchantIds[]=$partnerMerchant['id'];$partnerCommission=$pd['commission_percent']??null;if($partnerCommission!==null&&(!is_numeric($partnerCommission)||(float)$partnerCommission<0||(float)$partnerCommission>100))JsonResponse::error(503,'merchant_commission_invalid','کمیسیون پذیرنده از مرجع قابل تأیید نیست.');
@@ -143,6 +150,7 @@ try{
         }
     }
     $visibilityScope=$principal->visibilityScope();if($partnerMerchantIds!==[])$visibilityScope['merchants']=array_values(array_unique(array_merge(is_array($visibilityScope['merchants']??null)?$visibilityScope['merchants']:[],$partnerMerchantIds)));
+    if($principal->can('loans.requests.global'))$visibilityScope['global'][]='*';
     $recordPolicy=new RequestAccessPolicy($principal,$partnerMerchantIds);
     $canReadRecord=static fn(array $record):bool=>$recordPolicy->canRead($record);
     $primaryRole=(string)($roles[0]??'');
@@ -221,7 +229,19 @@ try{
         $status=$canManagePlans?(isset($q['status'])?(string)$q['status']:null):'active';
         $context=trim((string)($q['context']??''));
         if(!$canManagePlans&&$context==='')$context=$isApplicant?'applicant_request':($isAcceptor?'merchant_request':'');
-        $result=$context!==''?$repository->listPlansForContext((int)($q['page']??1),(int)($q['per_page']??25),$context,isset($q['type'])?(string)$q['type']:null):$repository->listPlans((int)($q['page']??1),(int)($q['per_page']??25),$status,isset($q['type'])?(string)$q['type']:null);JsonResponse::ok($result,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($result)]);
+        $policy=null;if($isAcceptor&&in_array($context,['merchant_request','calculator'],true)){
+            if(!$partnerMembershipVerified||$partnerPlanPolicy===null)JsonResponse::error(503,'merchant_plan_policy_unavailable','محدودیت طرح‌های پذیرنده از سرویس شرکا قابل تأیید نیست.');$policy=$partnerPlanPolicy;
+        }
+        $result=$context!==''?$repository->listPlansForContext((int)($q['page']??1),(int)($q['per_page']??25),$context,isset($q['type'])?(string)$q['type']:null,$policy):$repository->listPlans((int)($q['page']??1),(int)($q['per_page']??25),$status,isset($q['type'])?(string)$q['type']:null);JsonResponse::ok($result,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($result)]);
+    }
+    if($path==='/api/v1/plans/validate-selection'&&$method==='POST'){
+        $require('loans.plans.manage');$ids=$request->json()['plan_ids']??null;
+        if(!is_array($ids)||count($ids)>1000)throw new \InvalidArgumentException('فهرست طرح‌ها معتبر نیست.');
+        foreach($ids as $id)if(!is_string($id)||!preg_match('/^[a-f0-9]{26}$/D',$id))throw new \InvalidArgumentException('شناسهٔ طرح معتبر نیست.');
+        $ids=array_values(array_unique($ids));$found=[];
+        if($ids!==[]){$q=$pdo->prepare('SELECT id FROM installment_plans WHERE id IN ('.implode(',',array_fill(0,count($ids),'?')).')');$q->execute($ids);$found=$q->fetchAll(PDO::FETCH_COLUMN);}
+        if(count($found)!==count($ids))JsonResponse::error(422,'invalid_plan_selection','یک یا چند طرح انتخاب‌شده موجود نیست.');
+        JsonResponse::ok(['valid_ids'=>$found]);
     }
     if($path==='/api/v1/plans'&&$method==='POST'){$require('loans.plans.manage');JsonResponse::ok(['plan'=>$planService->create($principal->userId,$request->json())],201);}
     if(preg_match('#^/api/v1/plans/([a-f0-9]{26})$#',$path,$m)){
@@ -239,7 +259,7 @@ try{
     if(preg_match('#^/api/v1/plans/([a-f0-9]{26})/duplicate$#',$path,$m)&&$method==='POST'){$require('loans.plans.manage');JsonResponse::ok(['plan'=>$planService->duplicate($m[1],$principal->userId,$request->json())],201);}
     if(preg_match('#^/api/v1/plans/([a-f0-9]{26})/order$#',$path,$m)&&$method==='POST'){$require('loans.plans.manage');$body=$request->json();JsonResponse::ok(['plan'=>$planService->order($m[1],(int)($body['display_order']??0))]);}
     if(preg_match('#^/api/v1/plans/([a-f0-9]{26})/merchant-access$#',$path,$m)&&$method==='POST'){$require('loans.plans.manage');JsonResponse::ok(['permission'=>$planService->merchantAccess($m[1],$principal->userId,$request->json())]);}
-    if(preg_match('#^/api/v1/plans/([a-f0-9]{26})/documents$#',$path,$m)&&$method==='GET'){$require('loans.plans.read');$plan=$repository->getPlan($m[1]);if($plan===null)JsonResponse::error(404,'plan_not_found','طرح پیدا نشد.');$q=$request->query();JsonResponse::ok(['plan_id'=>$m[1],'occupation'=>(string)($q['occupation']??''),'required_documents'=>PlanRules::requiredDocuments($plan,(string)($q['occupation']??''))]);}
+    if(preg_match('#^/api/v1/plans/([a-f0-9]{26})/documents$#',$path,$m)&&$method==='GET'){$require('loans.plans.read');$plan=$repository->getPlan($m[1]);if($plan===null)JsonResponse::error(404,'plan_not_found','طرح پیدا نشد.');$q=$request->query();JsonResponse::ok(['plan_id'=>$m[1],'occupation'=>(string)($q['occupation']??''),'required_documents'=>PlanRules::requiredDocuments($plan,(string)($q['occupation']??'')),'required_document_descriptions'=>$plan['rules']['required_document_descriptions']??[]]);}
 
     if($path==='/api/v1/calculations/preview'&&$method==='POST'){
         $require('loans.plans.manage');$b=$request->json();$commission=isset($b['commission_override'])&&trim((string)$b['commission_override'])!==''?InputValidator::decimal($b['commission_override']):null;
@@ -248,6 +268,14 @@ try{
 
     if($path==='/api/v1/calculations'&&$method==='POST'){
         $require('loans.calculate');$b=$request->json();
+        $context=$b['plan_context']??($isApplicant&&!$isAcceptor?'applicant_request':($isAcceptor?'merchant_request':'calculator'));
+        if(!is_string($context)||!isset(PlanRules::VISIBILITY_CONTEXTS[$context])||(!$canManagePlans&&$context==='merchant_request'&&!$isAcceptor)||(!$canManagePlans&&$context==='applicant_request'&&!$isApplicant))JsonResponse::error(422,'invalid_plan_context','مسیر محاسبه معتبر نیست.');
+        $plan=$repository->getPlan((string)($b['plan_id']??''));
+        if($plan===null||!PlanRules::visibleIn($plan,$context))JsonResponse::error(422,'plan_not_available','طرح در این مسیر قابل استفاده نیست.');
+        if($isAcceptor&&in_array($context,['merchant_request','calculator'],true)){
+            if(!$partnerMembershipVerified||$partnerPlanPolicy===null)JsonResponse::error(503,'merchant_plan_policy_unavailable','محدودیت طرح‌های پذیرنده قابل تأیید نیست.');
+            if(!PlanRules::availableToMerchant($plan,$partnerPlanPolicy))JsonResponse::error(403,'plan_access_denied','این طرح برای حساب پذیرنده غیرفعال است.');
+        }
         $commission=$canManagePlans&&isset($b['commission_override'])&&trim((string)$b['commission_override'])!==''?InputValidator::decimal($b['commission_override']):null;
         if($isAcceptor&&(!$isApplicant||($b['plan_context']??'merchant_request')==='merchant_request')){if(!$partnerMembershipVerified||$partnerMerchant===null)JsonResponse::error(503,'merchant_commission_unavailable','پذیرنده و کمیسیون از سرویس شرکا قابل تأیید نیست.');$commission=$partnerCommission===null?null:(float)$partnerCommission;}
         JsonResponse::ok($calcService->calculate($principal->userId,(string)($b['plan_id']??''),InputValidator::money($b['amount']??0),InputValidator::integer($b['installment_count']??0),max(1,InputValidator::integer($b['installment_interval']??1)),$commission,true),201);
@@ -271,16 +299,18 @@ try{
     }
     if($path==='/api/v1/bank/summary'&&$method==='GET'){
         if(!$principal->can('loans.requests.bank_review')&&!$principal->can('loans.requests.workflow_admin')&&!$isPlatformAdmin)JsonResponse::error(403,'permission_denied','اجازه مشاهده کارتابل بانک را ندارید.');
-        JsonResponse::ok($repository->bankSummary($principal->userId,$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global')));
+        JsonResponse::ok($repository->bankSummary($principal->userId,$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global'),$principal->isSuperAdmin()?null:$visibilityScope));
     }
     if($path==='/api/v1/bank/cases'&&$method==='GET'){
         if(!$principal->can('loans.requests.bank_review')&&!$principal->can('loans.requests.workflow_admin')&&!$isPlatformAdmin)JsonResponse::error(403,'permission_denied','اجازه مشاهده کارتابل بانک را ندارید.');
-        $q=$request->query();$result=$repository->bankCases((int)($q['page']??1),(int)($q['per_page']??25),$principal->userId,$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global'),$q);JsonResponse::ok($result,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($result)]);
+        $q=$request->query();$result=$repository->bankCases((int)($q['page']??1),(int)($q['per_page']??25),$principal->userId,$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global'),$q,$principal->isSuperAdmin()?null:$visibilityScope);JsonResponse::ok($result,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($result)]);
     }
 
     if($path==='/api/v1/bank/export'&&$method==='GET'){
         if(!$principal->can('loans.requests.bank_review')&&!$principal->can('loans.requests.workflow_admin')&&!$isPlatformAdmin)JsonResponse::error(403,'permission_denied','اجازه خروجی کارتابل بانک را ندارید.');
-        $q=$request->query();$global=$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global');$first=$repository->bankCases(1,100,$principal->userId,$global,$q);$total=(int)($first['total']??0);if($total>5000)JsonResponse::error(413,'bank_export_too_large','تعداد پرونده‌ها برای یک خروجی بیش از ۵۰۰۰ است. فیلترهای دقیق‌تری اعمال کنید.');$items=(array)($first['items']??[]);$pages=(int)ceil($total/100);for($page=2;$page<=$pages;$page++){$chunk=$repository->bankCases($page,100,$principal->userId,$global,$q);foreach((array)($chunk['items']??[])as$item)$items[]=$item;}JsonResponse::ok(['items'=>$items,'total'=>$total,'truncated'=>false]);
+        $q=$request->query();$global=$isPlatformAdmin||$principal->can('loans.requests.workflow_admin')||$principal->can('loans.requests.global');
+        try{$r=$repository->bankCases(1,100,$principal->userId,$global,$q,$principal->isSuperAdmin()?null:$visibilityScope,true);}catch(\LengthException $e){JsonResponse::error(413,'bank_export_too_large',$e->getMessage());}
+        JsonResponse::ok(['items'=>$r['items'],'total'=>$r['total'],'truncated'=>false]);
     }
 
     $loadMarketContext=static function()use($partnersClient,$request,$principal):array{
@@ -312,9 +342,15 @@ try{
         if(!$principal->can('partners.marketplace.manage')&&!$isPlatformAdmin)JsonResponse::error(403,'permission_denied','اجازه دعوت پذیرنده برای پرونده را ندارید.');$b=$request->json();$merchantId=strtolower(trim((string)($b['merchant_id']??'')));$code=substr(trim((string)($b['invitation_code']??'')),0,100);if(!preg_match('/^[a-f0-9]{26}$/',$merchantId)||$code==='')JsonResponse::error(422,'validation_failed','اطلاعات دعوت پذیرنده معتبر نیست.');JsonResponse::ok(['request'=>$repository->inviteMerchantToRequest($m[1],$merchantId,$code,$principal->userId)]);
     }
 
+    if(in_array($path,['/api/v1/reports/requests','/api/v1/reports/requests/export'],true)&&$method==='GET'){
+        $require('loans.requests.read');
+        try{$r=$repository->requestReport($request->query(),$hasGlobalRequestAccess?null:$visibilityScope,str_ends_with($path,'/export'));}
+        catch(\LengthException $e){JsonResponse::error(413,'request_export_too_large',$e->getMessage());}
+        JsonResponse::ok($r);
+    }
     if($path==='/api/v1/requests'&&$method==='GET'){
         $require('loans.requests.read');$q=$request->query();
-        $result=$repository->listRequests((int)($q['page']??1),(int)($q['per_page']??25),isset($q['status'])?(string)$q['status']:null,trim((string)($q['q']??'')),null,$hasGlobalRequestAccess?null:$visibilityScope);JsonResponse::ok($result,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($result)]);
+        $filters=\Babanoell\Loans\Domain\RequestFilters::normalize($q);$result=$repository->listRequests((int)($q['page']??1),(int)($q['per_page']??25),$filters['status']??null,$filters['q']??'',null,$hasGlobalRequestAccess?null:$visibilityScope,$filters);JsonResponse::ok($result,200,['pagination'=>\Babanoell\Loans\Http\Pagination::fromResult($result)]);
     }
     if($path==='/api/v1/requests'&&$method==='POST'){
         $require('loans.requests.create');$key=\Babanoell\Loans\Http\IdempotencyKey::normalize($request->header('idempotency-key'));$body=$request->json();
@@ -332,6 +368,10 @@ try{
         }
         elseif(!$isPlatformAdmin){unset($body['applicant_user_id'],$body['acceptor_user_id']);}
         $merchantContext=null;$replay=$key!==''&&$repository->findRequestByIdempotency($principal->userId,$key)!==null;
+        if($origin===RequestOrigin::MERCHANT&&!$replay){
+            if($partnerPlanPolicy===null)JsonResponse::error(503,'merchant_plan_policy_unavailable','محدودیت طرح‌های پذیرنده قابل تأیید نیست.');
+            $selected=$repository->getPlan((string)($body['plan_id']??''));if($selected!==null&&!PlanRules::availableToMerchant($selected,$partnerPlanPolicy))JsonResponse::error(403,'plan_access_denied','این طرح برای حساب پذیرنده غیرفعال است.');
+        }
         if($origin===RequestOrigin::APPLICANT&&!$replay){
             $lockResponse=$partnersClient->invitationLock((string)$request->bearer());
             if(!$lockResponse->ok()||!array_key_exists('lock',$lockResponse->json['data']??[]))JsonResponse::error(503,'invitation_lock_unavailable','وضعیت دعوت پذیرنده قابل تأیید نیست؛ کمی بعد دوباره تلاش کنید.');
@@ -399,8 +439,8 @@ try{
     }
     if(preg_match('#^/api/v1/requests/([a-f0-9]{26})/document-requirements$#',$path,$m)&&$method==='GET'){
         $require('loans.requests.read');$loan=$repository->getRequest($m[1]);if($loan===null)JsonResponse::error(404,'request_not_found','پرونده پیدا نشد.');if(!$canReadRecord($loan))JsonResponse::error(403,'record_access_denied','دسترسی به این پرونده مجاز نیست.');
-        $required=is_array($loan['required_documents']??null)?$loan['required_documents']:[];
-        JsonResponse::ok(['request_id'=>$m[1],'plan_id'=>(string)$loan['plan_id'],'plan_version_id'=>(string)$loan['plan_version_id'],'plan_name'=>(string)($loan['plan_name']??''),'plan_version'=>(int)($loan['plan_version']??0),'required_documents'=>$required,'guarantors'=>$repository->guarantors($m[1]),'credit_validation'=>CreditValidationPolicy::summary($loan)]);
+        $required=PlanRules::caseDocumentRequirements($loan);
+        JsonResponse::ok(['request_id'=>$m[1],'plan_id'=>(string)$loan['plan_id'],'plan_version_id'=>(string)$loan['plan_version_id'],'plan_name'=>(string)($loan['plan_name']??''),'plan_version'=>(int)($loan['plan_version']??0),'required_documents'=>$required,'required_document_descriptions'=>$loan['plan_rules']['required_document_descriptions']??[],'completed_check_files_enabled'=>$loan['plan_rules']['completed_check_files_enabled']??true,'completion_documents_required'=>$loan['plan_rules']['completion_documents_required']??false,'guarantors'=>$repository->guarantors($m[1]),'credit_validation'=>CreditValidationPolicy::summary($loan)]);
     }
 
     if(preg_match('#^/api/v1/requests/([a-f0-9]{26})/submit$#',$path,$m)&&$method==='POST'){

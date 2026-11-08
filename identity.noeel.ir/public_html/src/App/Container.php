@@ -110,6 +110,19 @@ final class Container
         );
     }
 
+    public function smartAuth(): \Babanoell\Auth\SmartAuth\SmartAuthService
+    {
+        if(!$this->config->httpLoginActivationAllowed()||!$this->config->sessionIssuingEnabled()||strlen($this->config->tokenPepper())<32)
+            throw new \Babanoell\Auth\SmartAuth\AuthFailure(503,'authentication_inactive','ورود مرکزی برای این محیط فعال نیست.');
+        $base=(string)(function_exists('babanoell_auth_env')?\babanoell_auth_env('INTEGRATIONS_BASE_URL','https://integrations.noeel.ir'):'https://integrations.noeel.ir');
+        $sms=new \Babanoell\Auth\SmartAuth\SmsSender(rtrim($base,'/'),$this->config->serviceAuthSecret(),$this->config->environment());
+        return new \Babanoell\Auth\SmartAuth\SmartAuthService($this->pdo(),$this->passwordHasher(),$this->sessionIssuer(),$this->auditWriter(),$this->config->tokenPepper(),$sms->send(...));
+    }
+    public function adminAuthorization(): AdminAuthorization
+    {
+        return new AdminAuthorization($this->sessionRepository(),$this->userRepository(),$this->roleRepository(),$this->permissionRepository(),$this->tokenHasher());
+    }
+
     private function loginUseCase(): LoginUseCaseInterface
     {
         if (!$this->config->httpLoginActivationAllowed()) {

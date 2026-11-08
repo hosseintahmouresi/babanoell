@@ -29,9 +29,9 @@ else:
  state={'urls':owned_stack.urls,'accounts':owned_stack.accounts,'password':owned_stack.password,'root':str(owned_stack.root)}
 base=state['urls']['panel'];report={'pages':[],'interactions':[],'errors':[]};shots=work/'screenshots';shots.mkdir(exist_ok=True)
 roles={
- 'super_admin':['/users/'+state['accounts']['acceptor']['id']+'/commission','/cooperation-notifications/settings','/cooperation-notifications/deliveries','/loans/request-numbering','/finance/greenpay/requests','/dashboard','/loans','/loans/plans','/loans/plans/new','/loans/calculator','/loans/requests','/loans/requests/new','/loans/tasks','/loans/tasks/report','/loans/tasks/settings','/documents','/partners','/partners/merchants','/partners/merchants/new','/partners/cooperation','/partners/cooperation/new','/partners/cooperation/form-settings','/partners/marketplace','/partners/marketplace/settings','/finance','/finance/bank-cycles','/finance/cycles','/finance/receipts','/finance/reconciliation','/finance/greenpay','/users','/users/new','/reports','/reports/history','/system/health','/system/settings','/system/updates','/bank'],
- 'applicant':['/applicant','/applicant/calculator','/applicant/requests','/applicant/requests/new','/partners/cooperation','/partners/cooperation/new'],
- 'acceptor':['/acceptor','/acceptor/calculator','/acceptor/requests','/acceptor/requests/new','/partners/marketplace'],
+ 'super_admin':['/system/auth-settings','/reports/requests','/users/'+state['accounts']['acceptor']['id']+'/plans','/users/'+state['accounts']['acceptor']['id']+'/commission','/cooperation-notifications/settings','/cooperation-notifications/deliveries','/loans/request-numbering','/finance/greenpay/requests','/dashboard','/loans','/loans/plans','/loans/plans/new','/loans/calculator','/loans/requests','/loans/requests/new','/loans/tasks','/loans/tasks/report','/loans/tasks/settings','/documents','/partners','/partners/merchants','/partners/merchants/new','/partners/cooperation','/partners/cooperation/new','/partners/cooperation/form-settings','/partners/marketplace','/partners/marketplace/settings','/finance','/finance/bank-cycles','/finance/cycles','/finance/receipts','/finance/reconciliation','/finance/greenpay','/users','/users/new','/reports','/reports/history','/system/health','/system/settings','/system/updates','/bank'],
+ 'applicant':['/reports/requests','/applicant','/applicant/calculator','/applicant/requests','/applicant/requests/new','/partners/cooperation','/partners/cooperation/new'],
+ 'acceptor':['/reports/requests','/acceptor','/acceptor/calculator','/acceptor/requests','/acceptor/requests/new','/partners/marketplace'],
  'operations_expert':['/dashboard','/loans/tasks','/loans/requests','/partners/cooperation','/documents'],
  'bank_expert':['/bank','/loans/tasks'],
  'finance_expert':['/finance','/finance/bank-cycles','/finance/cycles','/finance/receipts','/finance/reconciliation','/documents'],
@@ -54,7 +54,9 @@ for service,url in state['urls'].items():
 
 def login(page,role,email=None):
  page.goto(base+'/login',wait_until='load')
- page.locator('[name=identifier]').fill(email or state['accounts'][role]['email']);page.locator('[name=password]').fill(state['password']);
+ page.locator('[name=identifier]').fill(email or state['accounts'][role]['email'])
+ with page.expect_navigation(wait_until='load'):page.get_by_role('button',name='ادامه',exact=True).click()
+ page.locator('[name=password]').fill(state['password']);
  with page.expect_navigation(wait_until='load'):page.locator('[name=password]').press('Enter')
  if page.url.endswith('/login'):raise RuntimeError('Login failed: '+role)
 def visit(page,role,path,viewport,axe=False,shot=False):

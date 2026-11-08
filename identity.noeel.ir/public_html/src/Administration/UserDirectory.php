@@ -27,9 +27,9 @@ final class UserDirectory
         $where = '';
         $params = [];
         if ($query !== '') {
-            $where = ' WHERE u.display_name LIKE :q_name OR u.mobile LIKE :q_mobile OR u.email LIKE :q_email';
+            $where = ' WHERE u.display_name LIKE :q_name OR u.mobile LIKE :q_mobile OR u.email LIKE :q_email OR u.username LIKE :q_username';
             $like = '%' . $query . '%';
-            $params = [':q_name' => $like, ':q_mobile' => $like, ':q_email' => $like];
+            $params = [':q_name' => $like, ':q_mobile' => $like, ':q_email' => $like, ':q_username'=>$like];
         }
 
         $count = $this->pdo->prepare('SELECT COUNT(*) FROM users u' . $where);
@@ -38,7 +38,7 @@ final class UserDirectory
 
         $sql = <<<'SQL'
 SELECT
-    u.id,u.mobile,u.email,u.display_name,u.status,u.disabled_at,u.last_login_at,u.created_at,
+    u.id,u.mobile,u.email,u.username,u.display_name,u.status,u.disabled_at,u.last_login_at,u.created_at,
     (SELECT GROUP_CONCAT(r.name ORDER BY r.name SEPARATOR ',')
        FROM user_roles ur JOIN roles r ON r.id=ur.role_id
       WHERE ur.user_id=u.id AND (ur.expires_at IS NULL OR ur.expires_at>UTC_TIMESTAMP(6))) AS role_names,
@@ -91,6 +91,9 @@ SQL;
     public function create(array $input, string $actor): array
     {
         $display = trim((string) ($input['display_name'] ?? ''));
+        if(isset($input['username'])&&!is_string($input['username']))throw new RuntimeException('نام کاربری معتبر نیست.');
+        $username=strtolower(trim((string)($input['username']??'')));
+        if($username!==''&&!\Babanoell\Auth\SmartAuth\SmartAuthService::validUsername($username))throw new RuntimeException('نام کاربری معتبر نیست.');
         $mobile = $this->normalizeMobile((string) ($input['mobile'] ?? ''));
         $email = strtolower(trim((string) ($input['email'] ?? '')));
         $password = (string) ($input['password'] ?? '');
@@ -109,12 +112,13 @@ SQL;
         $hash = $this->hasher->hash($password);
         $this->pdo->beginTransaction();
         try {
-            $stmt = $this->pdo->prepare("INSERT INTO users (id,mobile,email,display_name,status,password_hash,password_changed_at) VALUES (:id,:mobile,:email,:display_name,'active',:password_hash,UTC_TIMESTAMP(6))");
+            $stmt = $this->pdo->prepare("INSERT INTO users (id,mobile,email,username,display_name,status,password_hash,password_changed_at) VALUES (:id,:mobile,:email,:username,:display_name,'active',:password_hash,UTC_TIMESTAMP(6))");
             $stmt->execute([
                 ':id' => $id,
                 ':mobile' => $mobile !== '' ? $mobile : null,
                 ':email' => $email !== '' ? $email : null,
                 ':display_name' => $display,
+                ':username' => $username?:null,
                 ':password_hash' => $hash,
             ]);
             $this->replaceRolesInternal($id, $roles, $roleMap, $actor);
@@ -171,7 +175,7 @@ SQL;
     {
         $sql = <<<'SQL'
 SELECT
-    u.id,u.mobile,u.email,u.display_name,u.status,u.disabled_at,u.last_login_at,u.created_at,
+    u.id,u.mobile,u.email,u.username,u.display_name,u.status,u.disabled_at,u.last_login_at,u.created_at,
     (SELECT GROUP_CONCAT(r.name ORDER BY r.name SEPARATOR ',')
        FROM user_roles ur JOIN roles r ON r.id=ur.role_id
       WHERE ur.user_id=u.id AND (ur.expires_at IS NULL OR ur.expires_at>UTC_TIMESTAMP(6))) AS role_names,

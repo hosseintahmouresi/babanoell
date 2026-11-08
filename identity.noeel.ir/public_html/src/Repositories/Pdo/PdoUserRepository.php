@@ -26,11 +26,12 @@ final class PdoUserRepository implements UserRepositoryInterface
     public function findByLoginIdentifier(string $identifier): ?User
     {
         $statement = $this->pdo->prepare(
-            'SELECT * FROM users WHERE email = :email_identifier OR mobile = :mobile_identifier LIMIT 1'
+            'SELECT * FROM users WHERE email = :email_identifier OR mobile = :mobile_identifier OR username = :username_identifier LIMIT 1'
         );
         $statement->execute([
             'email_identifier' => $identifier,
             'mobile_identifier' => $identifier,
+            'username_identifier' => $identifier,
         ]);
 
         $row = $statement->fetch(PDO::FETCH_ASSOC);

@@ -7,7 +7,7 @@ def greenpay_request_acceptance(w):
     cases=json.loads((Path(__file__).resolve().parents[2]/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
     settings=dict(next(x['settings'] for x in cases if x['type']=='leasing'),credit_share_percent=70)
     plan=w.call('loans','/api/v1/plans','POST',{'code':'GREENPAY-REFERENCE','name':'Synthetic per-case GreenPay','type':'leasing','settings':settings,'required_documents':[],
-        'rules':{'loan_application_contract_enabled':False,'facility_agreement_contract_enabled':False}},expected=201)['plan']
+        'rules':{'visibility_contexts':['merchant_request','applicant_request','calculator'],'loan_application_contract_enabled':False,'facility_agreement_contract_enabled':False}},expected=201)['plan']
     w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})
     loan=greenpay_case(w,plan)
     w.call('finance','/api/v1/greenpay/requests',role='applicant',expected=403)
@@ -46,5 +46,6 @@ def greenpay_case(w,plan):
     w.call('loans',prefix+'/bank-review','POST',{'status':'approved'},role='bank_expert',expected=201)
     w.call('loans',prefix+'/transition','POST',{'status':'expert_approved'},role='operations_expert')
     w.call('loans',prefix+'/transition','POST',{'status':'docs_completion'},role='bank_expert')
+    w.ensure_completion_documents(loan['id'])
     w.call('loans',prefix+'/transition','POST',{'status':'docs_verified'},role='operations_expert')
     return loan

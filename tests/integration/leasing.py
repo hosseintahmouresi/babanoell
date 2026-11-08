@@ -8,7 +8,7 @@ def leasing_acceptance(w):
     settings=dict(reference['settings']);settings['active_installments']=[reference['installments']]
     plan=w.call('loans','/api/v1/plans','POST',{'code':'LEASING-ACCEPTANCE','name':'Synthetic leasing acceptance',
         'type':'leasing','settings':settings,'required_documents':['national_card_front','guarantor_identity'],
-        'rules':{'contract_mode':'physical'}},expected=201)['plan']
+        'rules':{'visibility_contexts':['merchant_request','applicant_request','calculator'],'contract_mode':'physical'}},expected=201)['plan']
     w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})
     loan=w.call('loans','/api/v1/requests','POST',{'plan_id':plan['id'],'submit':True,
         'applicant_user_id':w.stack.accounts['applicant']['id'],'full_name':'Synthetic leasing applicant','father_name':'Synthetic',
@@ -27,6 +27,7 @@ def leasing_acceptance(w):
     w.call('loans',prefix+'/bank-review','POST',{'status':'approved'},role='bank_expert',expected=201)
     w.call('loans',prefix+'/transition','POST',{'status':'expert_approved'},role='operations_expert')
     w.call('loans',prefix+'/transition','POST',{'status':'docs_completion'},role='bank_expert')
+    w.ensure_completion_documents(loan['id'])
     png=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=')
     def upload(entity,eid,kind,role='applicant'):
         return w.call('documents',f'/api/v1/entities/{entity}/{eid}/documents','POST',{'document_type':kind},role=role,files=[('file','synthetic-signed-scan.png','image/png',png)],expected=201)['document']

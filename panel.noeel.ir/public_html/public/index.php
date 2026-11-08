@@ -111,62 +111,7 @@ if (in_array($path, ['/sso/authorize', '/sso/exchange', '/sso/check',
 }
 
 if ($path === '/login') {
-    $existing = $panelSession->identity($ip, $ua);
-    if ($method === 'GET' && $existing !== null) {
-        header('Location: /dashboard', true, 302);
-        exit;
-    }
-
-    $error = '';
-    if ($method === 'POST') {
-        if (!Csrf::valid(isset($_POST['_csrf']) ? (string) $_POST['_csrf'] : null)) {
-            $error = 'اعتبار فرم ورود منقضی شده است. صفحه را تازه‌سازی کنید و دوباره تلاش کنید.';
-        } else {
-            $result = $panelSession->login(
-                (string) ($_POST['identifier'] ?? ''),
-                (string) ($_POST['password'] ?? ''),
-                $ip,
-                $ua,
-            );
-            if ($result['ok']) {
-                $continue = $_SESSION['panel_sso_continue'] ?? null;
-                unset($_SESSION['panel_sso_continue']);
-                $destination = (is_string($continue) && (str_starts_with($continue, '/sso/authorize?') || str_starts_with($continue, '/sso/user/authorize?')) && strlen($continue)<500) ? $continue : (!empty($_SESSION['pending_referral_code'])?'/applicant/invitation':'/dashboard');
-                header('Location: '.$destination, true, 303);
-                exit;
-            }
-            $error = (string) $result['message'];
-        }
-    }
-
-    $alert = $error !== ''
-        ? '<div class="bn-alert bn-alert--error"><strong>ورود انجام نشد</strong><br>' . Renderer::e($error) . '</div>'
-        : '';
-
-    $content = '<div class="bn-login-grid">'
-        . '<aside class="bn-login-aside"><div><div class="bn-eyebrow bn-eyebrow--inverse">همراه شما در مسیر تسهیلات</div>'
-        . '<h2>از شروع درخواست،<br>تا قدم آخر</h2>'
-        . '<p>درخواست‌ها، مدارک و قراردادهای خود را در یک فضای روشن و منظم پیگیری کنید.</p>'
-        . '<div class="bn-login-points">'
-        . '<div class="bn-login-point"><i>۱</i><span>یک حساب برای پیگیری همهٔ کارها</span></div>'
-        . '<div class="bn-login-point"><i>۲</i><span>حفظ امنیت اطلاعات شما</span></div>'
-        . '<div class="bn-login-point"><i>۳</i><span>دسترسی سریع به اقدام بعدی</span></div>'
-        . '</div></div><div class="bn-version">Panel '.Renderer::e($releaseVersion).' · UI '.Renderer::e($uiVersion).'</div></aside>'
-        . '<div class="bn-login-form"><div class="bn-eyebrow">ورود به سامانه</div><h1>به بابانوئل خوش آمدید</h1>'
-        . '<p class="bn-subtitle">شماره موبایل یا ایمیل حساب و رمز عبورتان را وارد کنید.</p>'
-        . $alert
-        . '<form method="post" action="/login" autocomplete="on" data-submit-lock="1">'
-        . '<input type="hidden" name="_csrf" value="' . Renderer::e(Csrf::token()) . '">'
-        . '<div class="bn-field"><label class="bn-label" for="identifier">موبایل یا ایمیل</label>'
-        . '<input id="identifier" name="identifier" type="text" inputmode="text" autocomplete="username" maxlength="255" required placeholder="مثلاً 09121234567"></div>'
-        . '<div class="bn-field"><label class="bn-label" for="password">رمز عبور</label><div class="bn-password-wrap">'
-        . '<input id="password" name="password" type="password" autocomplete="current-password" maxlength="4096" required placeholder="رمز عبور حساب کاربری">'
-        . '<button class="bn-password-toggle" type="button" data-password-toggle aria-label="نمایش یا پنهان‌کردن رمز عبور">نمایش</button></div></div>'
-        . '<button class="bn-btn bn-btn--primary" type="submit">ورود به حساب</button></form>'
-        . '<div class="bn-panel-login-note"><span class="bn-panel-login-note-mark"><i class="bn-icon bn-icon--shield-halved" aria-hidden="true"></i></span><span>برای حفظ امنیت حساب، از دستگاه شخصی استفاده کنید.</span></div>'
-        . '</div></div>';
-
-    echo Renderer::page('ورود به پنل مدیریت', $content);
+    (new \Babanoell\Panel\Auth\SmartLoginModule($identityClient,$panelSession,$ip,$ua,$releaseVersion,$uiVersion))->handle($method);
     exit;
 }
 
@@ -224,8 +169,13 @@ if ($documentsModule->handle($path, $method)) {
     exit;
 }
 
+$userPlanAccessModule = new \Babanoell\Panel\Users\UserPlanAccessModule($partnersClient,$loansClient,$serviceCredential,$identity);
+if($userPlanAccessModule->handle($path,$method))exit;
 $userCommissionModule = new \Babanoell\Panel\Users\UserCommissionModule($partnersClient, $serviceCredential, $identity);
 if ($userCommissionModule->handle($path, $method)) { exit; }
+
+$authSettingsModule=new \Babanoell\Panel\Auth\AuthSettingsModule($identityClient,$serviceCredential,$identity);
+if($authSettingsModule->handle($path,$method))exit;
 
 $usersModule = new UsersModule($identityClient, $serviceCredential, $identity);
 if ($usersModule->handle($path, $method)) {
@@ -282,6 +232,8 @@ if ($financeModule->handle($path, $method)) {
 }
 
 $operationalPreferences = new OperationalPreferences($root);
+$requestReportModule = new \Babanoell\Panel\Reports\RequestReportModule($loansClient,$serviceCredential,$identity);
+if($requestReportModule->handle($path,$method))exit;
 $historyModule = new HistoricalReportsModule($loansClient,$partnersClient,$financeClient,$serviceCredential,$identity,$operationalPreferences);
 if ($historyModule->handle($path, $method)) { exit; }
 $reportsModule = new ReportsModule($loansClient, $partnersClient, $financeClient, $integrationsClient, $config, $serviceCredential, $identity, null, $operationalPreferences);

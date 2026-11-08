@@ -3,6 +3,7 @@ declare(strict_types=1);
 header('X-Content-Type-Options: nosniff');
 header('Cross-Origin-Resource-Policy: same-origin');
 $allowed = [
+ 'panel-features.css'=>['text/css; charset=UTF-8','panel-features.css'],
  'platform.css'=>['text/css; charset=UTF-8','platform.css'],
  'panel.css'=>['text/css; charset=UTF-8','platform.css'],
  'babanoell-ui.css'=>['text/css; charset=UTF-8','platform.css'],

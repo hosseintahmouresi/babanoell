@@ -221,7 +221,7 @@ class Stack:
                 raise RuntimeError(f"{service} readiness timed out")
 
     def request(self, service, path, method="GET", data=None, token=None, key=None,
-                form=False, files=None, signed=True):
+                form=False, files=None, signed=True, body_auth=False):
         headers = {}
         body = None
         if files is not None:
@@ -243,6 +243,9 @@ class Stack:
             headers.update({"X-Noel-Service": "panel", "X-Noel-Timestamp": stamp,
                             "X-Request-Id": rid, "X-Noel-Signature": "v1=" + hmac.new(
                                 self.secret.encode(), canonical.encode(), hashlib.sha256).hexdigest()})
+        if signed and body_auth:
+            payload_canonical="\n".join(("v1","panel",stamp,rid,method,urllib.parse.urlsplit(path).path,hashlib.sha256(body or b"").hexdigest()))
+            headers["X-Noel-Payload-Signature"]="v1="+hmac.new(self.secret.encode(),payload_canonical.encode(),hashlib.sha256).hexdigest()
         if token:
             headers["Authorization"] = "Bearer " + token
         if key:

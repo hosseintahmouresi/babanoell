@@ -10,7 +10,7 @@ def notification_acceptance(w):
     body={'revision':settings['revision'],'settings':{'loan_statuses':{'under_review':rule}}}
     w.call('loans','/api/v1/admin/notifications/settings','POST',body)
     w.call('loans','/api/v1/admin/notifications/settings','POST',body,expected=409)
-    plan=w.call('loans','/api/v1/plans','POST',{'code':'NOTIFICATION-TEST','name':'Synthetic notification plan','type':'market',
+    plan=w.call('loans','/api/v1/plans','POST',{'code':'NOTIFICATION-TEST','name':'Synthetic notification plan','type':'market','rules':{'visibility_contexts':['merchant_request','applicant_request','calculator']},
         'settings':{'min_amount':1,'max_amount':100000000,'active_installments':[6],'fixed_monthly_rate':2,'prepayment_percent':20}},expected=201)['plan']
     w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})
     loan=w.call('loans','/api/v1/requests','POST',{'plan_id':plan['id'],'submit':True,

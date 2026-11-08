@@ -35,6 +35,7 @@ def build(check=False):
             favicon_js = favicon_js.replace('{{'+token+'}}', base64.b64encode((SOURCE/'favicons'/name).read_bytes()).decode('ascii'))
         files[target / 'favicon.js'] = favicon_js.encode()
         if service == 'panel':
+            files[target / 'panel-features.css'] = (SOURCE / 'src/panel-features.css').read_bytes()
             files[target / 'credit.js'] = (SOURCE / 'src/credit.js').read_bytes()
             files[target / 'uploads.js'] = (SOURCE / 'src/uploads.js').read_bytes()
         helper = (SOURCE / 'php/Favicon.php.in').read_text().replace('{{NAMESPACE}}', NAMESPACES[service])

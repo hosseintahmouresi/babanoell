@@ -8,6 +8,7 @@ from run import Workflow
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--packages',type=Path,required=True);parser.add_argument('--baseline',required=True);parser.add_argument('--artifacts',type=Path,required=True)
+    parser.add_argument('--mixed-collations',action='store_true',help='Use legacy database defaults while retaining existing table collations.')
     args=parser.parse_args();args.artifacts.mkdir(parents=True,exist_ok=True)
     repo=Path(__file__).resolve().parents[2];spec=importlib.util.spec_from_file_location('builder',repo/'tools/build-release.py');builder=importlib.util.module_from_spec(spec);spec.loader.exec_module(builder)
     index=json.loads((args.packages/'release-index.json').read_text());report={'complete':False,'baseline_commit':args.baseline,'source_commit':index['source_commit'],'manual_bootstrap':False}
@@ -23,6 +24,9 @@ def main():
         try:
             stack.prepare();report['initial_migrations']=stack.migrations
             stack.command(stack.php_command()+[str(fixture_script),str(stack.root/'fixture.json'),'seed'],'Synthetic upgrade history')
+            if args.mixed_collations:
+                subprocess.run(stack.client()+['-e',"ALTER DATABASE test_identity CHARACTER SET latin1 COLLATE latin1_swedish_ci; ALTER DATABASE test_partners CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"],env=stack.env,check=True,capture_output=True,timeout=20)
+                report['database_defaults']={'identity':'latin1_swedish_ci','partners':'utf8mb4_general_ci'}
             backups={};original_counts={}
             dump=stack.maria/'bin/mariadb-dump'
             for service in SERVICES:
@@ -40,7 +44,7 @@ def main():
             expected=sum(len(row['new_migrations']) for row in index['packages']);actual=sum(row['migrations_applied'] for row in report['updates'])
             if actual!=expected:raise AssertionError('Unexpected number of upgrade migrations')
             report['preserved_history']=json.loads(stack.command(stack.php_command()+[str(fixture_script),str(stack.root/'fixture.json'),'verify'],'Verify historical evidence'))
-            print('PASS seven native updaters; new migrations:',actual,flush=True)
+            print('PASS native updaters:',len(report['updates']),'; new migrations:',actual,flush=True)
             stack.start()
             with (args.artifacts/'post-upgrade-workflow.log').open('w') as log,contextlib.redirect_stdout(log):
                 workflow=Workflow(stack);workflow.run()

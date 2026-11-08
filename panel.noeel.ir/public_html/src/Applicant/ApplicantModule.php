@@ -303,7 +303,8 @@ final class ApplicantModule
         $page = max(1, (int)($_GET['page'] ?? 1));
         $status = trim((string)($_GET['status'] ?? ''));
         $search = trim((string)($_GET['q'] ?? ''));
-        $r = $this->client->get('/api/v1/requests', $this->bearer, ['page'=>$page,'per_page'=>20,'status'=>$status,'q'=>$search]);
+        $filters=\Babanoell\Panel\Reports\RequestReportModule::filters($_GET);
+        $r = $this->client->get('/api/v1/requests', $this->bearer, $filters+['page'=>$page,'per_page'=>20]);
         if (!$r->ok()) { $this->errorPage('پرونده‌های تسهیلات', $r); return; }
         $data = is_array($r->json['data'] ?? null) ? $r->json['data'] : [];
         $items = is_array($data['items'] ?? null) ? $data['items'] : [];
@@ -317,8 +318,8 @@ final class ApplicantModule
         foreach ($this->requestLabels() as $code=>$label) $statusOptions .= $this->option($code, $label, $status);
         $content = $this->head('پرونده‌های تسهیلات', 'پرونده‌ها را بر اساس شماره، نام، کد ملی، موبایل یا وضعیت پیدا و پیگیری کنید.', '<a class="bn-btn bn-btn--primary" href="/applicant/requests/new">ثبت پرونده جدید</a>')
             . $this->takeFlash()
-            . '<section class="bn-section"><form class="bn-filterbar" method="get" action="/applicant/requests"><div class="bn-field bn-filter-search"><label class="bn-label">جستجو</label><input type="search" name="q" value="'.Renderer::e($search).'" placeholder="شماره پرونده، نام، کد ملی یا موبایل"></div><div class="bn-field"><label class="bn-label">وضعیت</label><select name="status">'.$statusOptions.'</select></div><div class="bn-filter-actions"><button class="bn-btn bn-btn--primary" type="submit">جستجو</button><a class="bn-btn bn-btn--secondary" href="/applicant/requests">پاک‌کردن</a></div></form></section>'
-            . '<section class="bn-section"><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>پرونده</th><th>کد ملی</th><th>مبلغ درخواست</th><th>وضعیت</th><th>آخرین تغییر</th></tr></thead><tbody>'.$rows.'</tbody></table></div>'.$this->pagination('/applicant/requests', (int)($data['page'] ?? $page), (int)($data['per_page'] ?? 20), (int)($data['total'] ?? count($items)), ['status'=>$status,'q'=>$search]).'</section>';
+            . \Babanoell\Panel\Reports\RequestReportModule::filterForm('/applicant/requests',$filters,false)
+            . '<section class="bn-section"><div class="bn-table-wrap"><table class="bn-table"><thead><tr><th>پرونده</th><th>کد ملی</th><th>مبلغ درخواست</th><th>وضعیت</th><th>آخرین تغییر</th></tr></thead><tbody>'.$rows.'</tbody></table></div>'.$this->pagination('/applicant/requests', (int)($data['page'] ?? $page), (int)($data['per_page'] ?? 20), (int)($data['total'] ?? count($items)), $filters).'</section>';
         echo Renderer::page('پرونده‌های تسهیلات', $content, $this->identity, 'applicant-requests');
     }
 

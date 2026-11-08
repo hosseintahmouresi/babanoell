@@ -5,6 +5,7 @@ use Babanoell\Partners\App\Config;use Babanoell\Partners\Platform\ServiceAuth;
 final class LoansClient
 {
  public function __construct(private readonly Config$config,private readonly HttpTransportInterface$transport){}
+ public function validatePlanIds(array $ids,string $bearer):HttpResponse{return $this->call('POST','/api/v1/plans/validate-selection',$bearer,['plan_ids'=>$ids]);}
  public function health():HttpResponse{return$this->call('GET','/health',null,null);}
  public function exportPartnerShadow(string$entity,int$page,int$perPage,string$bearer):HttpResponse{return$this->call('GET','/api/v1/compat/partners/export?'.http_build_query(['entity'=>$entity,'page'=>$page,'per_page'=>$perPage]),$bearer,null);}
  public function syncMerchant(array$merchant,string$bearer):HttpResponse{return$this->call('POST','/api/v1/compat/partners/merchant',$bearer,$merchant);}

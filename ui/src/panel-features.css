@@ -1,0 +1,13 @@
+/* Panel 2.27: detailed reports, isolated from the shared service shell. */
+.bn-report-stats{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.bn-report-stats .bn-stat{container-type:inline-size;padding:20px;min-height:110px}
+.bn-report-stats .bn-stat-value{white-space:nowrap;overflow-wrap:normal;overflow-x:auto;direction:ltr;text-align:right;letter-spacing:-.25px;max-width:100%}
+.bn-report-stats .bn-stat-value--compact{font-size:18px;font-size:clamp(15px,5.8cqi,23px)}
+.bn-report-table{min-width:1120px}
+.bn-report-table td:nth-child(1){min-width:120px;white-space:nowrap}
+.bn-report-table td:nth-child(2),.bn-report-table td:nth-child(3){min-width:170px}
+.bn-report-table td:nth-child(n+6){white-space:nowrap}
+.bn-report-advanced{flex:1 1 100%;width:100%;min-width:0;border-top:1px solid var(--bn-border);padding-top:8px}
+.bn-report-advanced summary{cursor:pointer;min-height:44px;align-content:center;font-weight:600;color:var(--bn-primary);font-size:12px}
+.bn-report-advanced .bn-grid{margin-top:12px;min-width:0}
+@media(max-width:480px){.bn-report-stats{grid-template-columns:1fr}.bn-report-stats .bn-stat{padding:18px}}
