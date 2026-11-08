@@ -1,0 +1,15 @@
+e4de815b47b1990fce04be7a8fc619d11272643bf925fd15e37e8f8843b51651  CHANGELOG.fa.md
+35fca338c84373068fe1bd6cd199f35d2272cd292f4af24cbb291a2ded2d5896  INSTALL-UPDATE.fa.md
+7945d601e55df1bf709f5ee24d8d19b2122336a7ea7a7f95b0a5c60682a6d28f  INSTALL-UPDATE.fa.pdf
+ffe5df7eda56c3bab644fe6c3b024579aff320558b344a8fd44dbd3ba8b9c59e  README.fa.md
+53b56ae36a38d12cf3aea1cc635fefabd62d4dc836bf2e30a123f94fd3cec410  babanoell-documents-1.23.0-ui-2.18.0.zip
+d492ecf3949f8f276d85505d23a14da4da4bfc393dd7a10c9db9b62dfac57d6c  babanoell-finance-1.10.0-ui-2.18.0.zip
+eda1da0284efa412b8c4859fc27857092d7f94a34679e11655a6fb4d75102df5  babanoell-identity-1.14.1-ui-2.18.0.zip
+af8c53e2f96965a9bd0b5a62bee9df67c88a648e8888635336be35ad0d2824fa  babanoell-integrations-1.7.0-ui-2.18.0.zip
+8837b05bf5a694e2d399376dd7a2538f31931ad66f72112d154fef7ea569702f  babanoell-loans-2.18.0-ui-2.18.0.zip
+01e918da3e7736f03690d77a6dd31f3af9edb8e2ad8e7b8724f3a024d5b2726d  babanoell-panel-2.26.0-ui-2.18.0.zip
+5a87d7bbfd4137f836bee69714b77caab5350a5be8dca656f794bfa9e35bd857  babanoell-partners-1.12.0-ui-2.18.0.zip
+69e385fefca4675ac0cdcd5717c145f04fd41ad2024b6a39849a9daff9cf93aa  deployment-rehearsal.json
+6066d4e58a8da24a87f4c40c0d833d9c1cb78e1a1cb77fe07b73588174423f7a  package-validation.json
+419c05e9f6f60ff9942e8b93340d2fed02ef387237ab71096f8d7a3ff97a92cf  release-index.json
+822abec22798cb38c0bfe55019d4846bcbe240e5d6f046041a0458f65e6d57da  validation-summary.json

@@ -1,0 +1,51 @@
+{
+  "release": "platform-2.18.0",
+  "source_commit": "763f23d5f6ab14170f6de631a7e2bfa12a06f1c0",
+  "installed_baseline": "5673b0bb69ddc3c710fa0e32bee8191d2c82d236",
+  "complete_for_listed_scope": true,
+  "production_deployed": false,
+  "service_suites": 47,
+  "native_database_regressions": 11,
+  "http_checks": 948,
+  "migrations": {
+    "identity": 21,
+    "loans": 30,
+    "documents": 9,
+    "partners": 17,
+    "finance": 8,
+    "integrations": 1
+  },
+  "skipped_runners": 0,
+  "chromium": {
+    "role_page_viewport_states": 242,
+    "role_checks": 81,
+    "feature_checks": 75,
+    "feature_accessibility_states": 19,
+    "js_or_layout_errors": 0,
+    "reported_wcag_violations": 0
+  },
+  "native_upgrade": {
+    "services": 7,
+    "new_migrations": 9,
+    "post_upgrade_http_checks": 948,
+    "restored_synthetic_databases": 6,
+    "historical_evidence": {
+      "historical_amount_unchanged": true,
+      "reference_amount_unchanged": true,
+      "old_amount_basis_labeled": true,
+      "historical_sms_not_replayed": true,
+      "private_notification_preserved": true,
+      "business_number_unchanged": true,
+      "calculation_snapshot_unchanged": true,
+      "signed_artifact_bytes_unchanged": true,
+      "no_historical_signature_tokens_manufactured": true
+    }
+  },
+  "external_provider_calls": "Scripted local ICS24, SMS and GreenPay; no real SMS or money movement.",
+  "open_items": [
+    "Exact login, registration and account-recovery parity requires the missing reference implementation or login URL.",
+    "Actual hosting, provider and real-device acceptance remain operational work.",
+    "Real plan configuration, legal-template selection and approved SMS patterns require business configuration.",
+    "Exhaustive parity for every production plan requires paired scenarios against the reference deployment."
+  ]
+}

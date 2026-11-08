@@ -1,0 +1,124 @@
+{
+  "complete": true,
+  "baseline_commit": "5673b0bb69ddc3c710fa0e32bee8191d2c82d236",
+  "source_commit": "763f23d5f6ab14170f6de631a7e2bfa12a06f1c0",
+  "manual_bootstrap": false,
+  "initial_migrations": {
+    "identity": 21,
+    "loans": 28,
+    "documents": 8,
+    "partners": 12,
+    "finance": 7,
+    "integrations": 1
+  },
+  "updates": [
+    {
+      "service": "identity",
+      "copied": 210,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "documents",
+      "copied": 102,
+      "migrations_applied": 1,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "integrations",
+      "copied": 59,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "partners",
+      "copied": 108,
+      "migrations_applied": 5,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "loans",
+      "copied": 150,
+      "migrations_applied": 2,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "finance",
+      "copied": 92,
+      "migrations_applied": 1,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    },
+    {
+      "service": "panel",
+      "copied": 96,
+      "migrations_applied": 0,
+      "rerun_migrations": 0,
+      "protected_files_unchanged": 3,
+      "exact_manifest_bytes": true,
+      "complete": true
+    }
+  ],
+  "preserved_history": {
+    "historical_amount_unchanged": true,
+    "reference_amount_unchanged": true,
+    "old_amount_basis_labeled": true,
+    "historical_sms_not_replayed": true,
+    "private_notification_preserved": true,
+    "business_number_unchanged": true,
+    "calculation_snapshot_unchanged": true,
+    "signed_artifact_bytes_unchanged": true,
+    "no_historical_signature_tokens_manufactured": true
+  },
+  "http_checks": 948,
+  "all_http_passed": true,
+  "restored_databases": [
+    {
+      "service": "identity",
+      "tables": 16,
+      "row_counts_match": true
+    },
+    {
+      "service": "loans",
+      "tables": 40,
+      "row_counts_match": true
+    },
+    {
+      "service": "documents",
+      "tables": 8,
+      "row_counts_match": true
+    },
+    {
+      "service": "partners",
+      "tables": 20,
+      "row_counts_match": true
+    },
+    {
+      "service": "finance",
+      "tables": 18,
+      "row_counts_match": true
+    },
+    {
+      "service": "integrations",
+      "tables": 3,
+      "row_counts_match": true
+    }
+  ]
+}

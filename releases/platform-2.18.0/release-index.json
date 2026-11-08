@@ -1,0 +1,129 @@
+{
+  "release_id": "20261108-075127-ui-2.18.0",
+  "created_at_utc": "2026-11-08T07:51:27+00:00",
+  "source_commit": "763f23d5f6ab14170f6de631a7e2bfa12a06f1c0",
+  "includes_uncommitted_work": false,
+  "deployment_order": [
+    "identity",
+    "documents",
+    "integrations",
+    "partners",
+    "loans",
+    "finance",
+    "panel"
+  ],
+  "packages": [
+    {
+      "service": "identity",
+      "version": "1.14.1",
+      "ui": "2.18.0",
+      "phase": "reference-parity-20261108",
+      "file": "babanoell-identity-1.14.1-ui-2.18.0.zip",
+      "bytes": 594026,
+      "sha256": "eda1da0284efa412b8c4859fc27857092d7f94a34679e11655a6fb4d75102df5",
+      "uncompressed_bytes": 1327296,
+      "files": 210,
+      "migrations": 21,
+      "new_migrations": [],
+      "source_fingerprint": "c09adbe6972483e26b2ac7debe3d5e1a0a5d61ef66598ae4328b00a779540443"
+    },
+    {
+      "service": "documents",
+      "version": "1.23.0",
+      "ui": "2.18.0",
+      "phase": "reference-parity-20261108",
+      "file": "babanoell-documents-1.23.0-ui-2.18.0.zip",
+      "bytes": 634399,
+      "sha256": "53b56ae36a38d12cf3aea1cc635fefabd62d4dc836bf2e30a123f94fd3cec410",
+      "uncompressed_bytes": 1443998,
+      "files": 102,
+      "migrations": 9,
+      "new_migrations": [
+        "database/migrations/202611080001_resumable_uploads.php"
+      ],
+      "source_fingerprint": "284a5fd61e4b371322c8e72d71e5aa37d7a0d9ee0b5b47192773b198f22211d6"
+    },
+    {
+      "service": "integrations",
+      "version": "1.7.0",
+      "ui": "2.18.0",
+      "phase": "reference-parity-20261108",
+      "file": "babanoell-integrations-1.7.0-ui-2.18.0.zip",
+      "bytes": 360710,
+      "sha256": "af8c53e2f96965a9bd0b5a62bee9df67c88a648e8888635336be35ad0d2824fa",
+      "uncompressed_bytes": 880206,
+      "files": 59,
+      "migrations": 1,
+      "new_migrations": [],
+      "source_fingerprint": "1f172a9126e0d19ad9c627971ba56ae2bc9b93c66c060a865f197aac38dc4e98"
+    },
+    {
+      "service": "partners",
+      "version": "1.12.0",
+      "ui": "2.18.0",
+      "phase": "reference-parity-20261108",
+      "file": "babanoell-partners-1.12.0-ui-2.18.0.zip",
+      "bytes": 634598,
+      "sha256": "5a87d7bbfd4137f836bee69714b77caab5350a5be8dca656f794bfa9e35bd857",
+      "uncompressed_bytes": 1406757,
+      "files": 108,
+      "migrations": 17,
+      "new_migrations": [
+        "database/migrations/202611080001_reference_contract_templates.php",
+        "database/migrations/202611080002_cooperation_reference_stages.php",
+        "database/migrations/202611080003_cooperation_notification_delivery.php",
+        "database/migrations/202611080004_reference_signature_tokens.php",
+        "database/migrations/202611080005_user_commissions.php"
+      ],
+      "source_fingerprint": "17eaa160b3963bd9bfa896c70ca2bb9211d22ffc5b76570c1622d9722502b22d"
+    },
+    {
+      "service": "loans",
+      "version": "2.18.0",
+      "ui": "2.18.0",
+      "phase": "reference-parity-20261108",
+      "file": "babanoell-loans-2.18.0-ui-2.18.0.zip",
+      "bytes": 621955,
+      "sha256": "8837b05bf5a694e2d399376dd7a2538f31931ad66f72112d154fef7ea569702f",
+      "uncompressed_bytes": 1512066,
+      "files": 150,
+      "migrations": 30,
+      "new_migrations": [
+        "database/migrations/202611080001_reference_contract_fields.php",
+        "database/migrations/202611080002_request_number_sequence.php"
+      ],
+      "source_fingerprint": "f255567b340584f662082aca648121d341f8c3d1fa69fa27658922b9f6c11aa5"
+    },
+    {
+      "service": "finance",
+      "version": "1.10.0",
+      "ui": "2.18.0",
+      "phase": "reference-parity-20261108",
+      "file": "babanoell-finance-1.10.0-ui-2.18.0.zip",
+      "bytes": 520148,
+      "sha256": "d492ecf3949f8f276d85505d23a14da4da4bfc393dd7a10c9db9b62dfac57d6c",
+      "uncompressed_bytes": 1169448,
+      "files": 92,
+      "migrations": 8,
+      "new_migrations": [
+        "database/migrations/202611080001_greenpay_request_debits.php"
+      ],
+      "source_fingerprint": "051d8ea37787bc9f29bca945d1edf3313745f25f48b052ab762a760f5d6a7d74"
+    },
+    {
+      "service": "panel",
+      "version": "2.26.0",
+      "ui": "2.18.0",
+      "phase": "reference-parity-20261108",
+      "file": "babanoell-panel-2.26.0-ui-2.18.0.zip",
+      "bytes": 663992,
+      "sha256": "01e918da3e7736f03690d77a6dd31f3af9edb8e2ad8e7b8724f3a024d5b2726d",
+      "uncompressed_bytes": 1809861,
+      "files": 96,
+      "migrations": 0,
+      "new_migrations": [],
+      "source_fingerprint": "09d6c8a60b55783a5893fbc97c57b63376730f385c44672c698a12655592b815"
+    }
+  ],
+  "upgrade_base_commit": "5673b0bb69ddc3c710fa0e32bee8191d2c82d236"
+}

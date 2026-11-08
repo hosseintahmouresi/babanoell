@@ -1,0 +1,60 @@
+{
+    "complete": true,
+    "source_commit": "763f23d5f6ab14170f6de631a7e2bfa12a06f1c0",
+    "checks": [
+        {
+            "service": "identity",
+            "native_validator": true,
+            "files": 210,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "documents",
+            "native_validator": true,
+            "files": 102,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "integrations",
+            "native_validator": true,
+            "files": 59,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "partners",
+            "native_validator": true,
+            "files": 108,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "loans",
+            "native_validator": true,
+            "files": 150,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "finance",
+            "native_validator": true,
+            "files": 92,
+            "archive_sha256_matches": true
+        },
+        {
+            "service": "panel",
+            "native_validator": true,
+            "files": 96,
+            "archive_sha256_matches": true
+        },
+        {
+            "negative_case": "corrupt-composer.zip",
+            "rejected": true
+        },
+        {
+            "negative_case": "unknown-lock.zip",
+            "rejected": true
+        },
+        {
+            "negative_case": "private-config.zip",
+            "rejected": true
+        }
+    ]
+}
