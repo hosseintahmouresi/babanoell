@@ -5,7 +5,7 @@ from pathlib import Path
 
 def reference_contract_acceptance(w):
     w.reference_loans=[]
-    cases=json.loads((w.stack.repository/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
+    cases=json.loads((Path(__file__).resolve().parents[2]/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
     settings=dict(next(x['settings'] for x in cases if x['type']=='leasing'),interest_rate=26)
     for code in ('hami_plus_reference','hami_retirees_reference'):
         plan=w.call('loans','/api/v1/plans','POST',{'code':code.upper(),'name':'Synthetic reference contract','type':'leasing','settings':settings,'required_documents':[],

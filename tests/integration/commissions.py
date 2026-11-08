@@ -9,7 +9,7 @@ def commission_acceptance(w):
     saved=w.call('partners',path,'POST',{'revision':initial['revision'],'commission_percent':'۲٫۵'})['commission']
     w.call('partners',path,'POST',{'revision':initial['revision'],'commission_percent':'1'},expected=409)
     w.call('partners',path,'POST',{'revision':saved['revision'],'commission_percent':'100.1'},expected=422)
-    cases=json.loads((w.stack.repository/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
+    cases=json.loads((Path(__file__).resolve().parents[2]/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
     settings=dict(next(x['settings'] for x in cases if x['type']=='leasing'),acceptor_commission_percent=3)
     plan=w.call('loans','/api/v1/plans','POST',{'code':'REFERENCE-USER-COMMISSION','name':'Synthetic reference commission','type':'leasing','settings':settings,'required_documents':[]},expected=201)['plan']
     w.call('loans','/api/v1/plans/'+plan['id']+'/status','POST',{'status':'active'})

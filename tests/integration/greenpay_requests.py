@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def greenpay_request_acceptance(w):
-    cases=json.loads((w.stack.repository/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
+    cases=json.loads((Path(__file__).resolve().parents[2]/'loans.noeel.ir/public_html/tests/fixtures/golden-calculations.json').read_text())
     settings=dict(next(x['settings'] for x in cases if x['type']=='leasing'),credit_share_percent=70)
     plan=w.call('loans','/api/v1/plans','POST',{'code':'GREENPAY-REFERENCE','name':'Synthetic per-case GreenPay','type':'leasing','settings':settings,'required_documents':[],
         'rules':{'loan_application_contract_enabled':False,'facility_agreement_contract_enabled':False}},expected=201)['plan']
