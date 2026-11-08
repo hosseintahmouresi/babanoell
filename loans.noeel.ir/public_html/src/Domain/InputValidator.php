@@ -88,7 +88,8 @@ final class InputValidator
     public static function request(array $input, bool $submitted): array
     {
         $out=$input;
-        foreach (['full_name','father_name','certificate_number','national_code','mobile_number','phone_number','occupation','residential_address','postal_code','work_address','product_name','merchant_ref','assigned_bank_user_id','acceptor_user_id','applicant_user_id'] as $key) {
+        foreach (['full_name','father_name','certificate_number','certificate_city','retirement_code','retirement_organization','national_code','mobile_number','phone_number','occupation','residential_address','postal_code','work_address','product_name','merchant_ref','assigned_bank_user_id','acceptor_user_id','applicant_user_id'] as $key) {
+            if(isset($input[$key])&&!is_scalar($input[$key]))throw new InvalidArgumentException('مقدار یکی از فیلدهای اطلاعات پرونده معتبر نیست.');
             $out[$key] = trim((string)($input[$key] ?? ''));
         }
         foreach(['acceptor_user_id','applicant_user_id','assigned_bank_user_id'] as $idField){
@@ -109,6 +110,8 @@ final class InputValidator
             $out['product_name'] = implode('، ', array_values(array_filter(array_map(static fn(array $x): string => (string)($x['name']??''),$cleanItems['items']))));
         }
         $birth = trim((string)($input['birth_date'] ?? ''));
+        $out['delivery_date'] = self::contractDate((string)($input['delivery_date']??''));
+        foreach(['certificate_city'=>180,'retirement_code'=>120,'retirement_organization'=>255] as $key=>$limit)if(mb_strlen($out[$key])>$limit)throw new InvalidArgumentException('اطلاعات تکمیلی قرارداد بیش از حد مجاز است.');
         $out['birth_date_jalali'] = $birth;
         $out['birth_date'] = $birth !== '' ? self::birthDateIso($birth) : null;
         $firstDue = trim((string)($input['first_due_date'] ?? ''));
@@ -146,11 +149,13 @@ final class InputValidator
     /** @return array<string,mixed> */
     public static function draftFields(array $input): array
     {
-        $allowed = ['full_name','father_name','certificate_number','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address','product_name','merchant_ref','assigned_bank_user_id'];
+        $allowed = ['full_name','father_name','certificate_number','certificate_city','retirement_code','retirement_organization','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address','product_name','merchant_ref','assigned_bank_user_id','delivery_date'];
         $out = [];
         foreach ($allowed as $key) {
             if (!array_key_exists($key, $input)) continue;
+            if(!is_scalar($input[$key])&&$input[$key]!==null)throw new InvalidArgumentException('مقدار فیلد اصلاح پرونده معتبر نیست.');
             $value = trim((string)$input[$key]);
+            $limits=['certificate_city'=>180,'retirement_code'=>120,'retirement_organization'=>255];if(isset($limits[$key])&&mb_strlen($value)>$limits[$key])throw new InvalidArgumentException('اطلاعات تکمیلی قرارداد بیش از حد مجاز است.');
             if ($key === 'national_code') {
                 $value = self::normalizeDigits($value);
                 if ($value !== '' && !self::validNationalCode($value)) throw new InvalidArgumentException('کد ملی واردشده معتبر نیست.');
@@ -160,6 +165,8 @@ final class InputValidator
             } elseif ($key === 'postal_code') {
                 $value = self::normalizeDigits($value);
                 if ($value !== '' && preg_match('/^\d{10}$/', $value) !== 1) throw new InvalidArgumentException('کد پستی باید ۱۰ رقم باشد.');
+            } elseif ($key === 'delivery_date') {
+                $value = self::contractDate($value);
             } elseif ($key === 'birth_date') {
                 $value = $value !== '' ? self::birthDateIso($value) : '';
             }
@@ -212,6 +219,13 @@ final class InputValidator
             ];
         }
         return $out;
+    }
+
+    public static function contractDate(string $value): ?string
+    {
+        $value=self::normalizeDigits($value);if($value==='')return null;
+        if(preg_match('/^(\d{4})-(\d{2})-(\d{2})$/',$value,$m)&&((int)$m[1]>=1900)){if(!checkdate((int)$m[2],(int)$m[3],(int)$m[1]))throw new InvalidArgumentException('تاریخ تحویل معتبر نیست.');return $value;}
+        $iso=PersianDate::jalaliToIso($value);if(strlen($iso)!==10)throw new InvalidArgumentException('تاریخ تحویل معتبر نیست.');return $iso;
     }
 
     /** @param array<string,mixed> $request */

@@ -5,11 +5,14 @@ use InvalidArgumentException;
 final class PartnerRules
 {
  public const MERCHANT_STATUSES=['active','inactive','suspended','archived'];
- public const COOPERATION_STATUSES=['submitted','under_review','need_correction','approved','rejected','cancelled','archived'];
+ public const COOPERATION_STATUSES=['submitted','under_review','need_correction','docs_completion','docs_verified','contracting','approved','rejected','cancelled','archived'];
  public const COOPERATION_TRANSITIONS=[
   'submitted'=>['under_review','need_correction','rejected','cancelled'],
-  'under_review'=>['need_correction','approved','rejected','cancelled'],
-  'need_correction'=>['submitted','cancelled'],
+  'under_review'=>['need_correction','docs_completion','docs_verified','approved','rejected','cancelled'],
+  'need_correction'=>['submitted','docs_completion','cancelled'],
+  'docs_completion'=>['under_review','need_correction','docs_verified','rejected','cancelled'],
+  'docs_verified'=>['contracting','approved','need_correction','rejected','cancelled'],
+  'contracting'=>['approved','need_correction','rejected','cancelled'],
   'approved'=>['archived'],
   'rejected'=>['archived'],
   'cancelled'=>['archived'],

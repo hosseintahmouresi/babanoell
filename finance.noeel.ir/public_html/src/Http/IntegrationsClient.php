@@ -6,7 +6,7 @@ use Babanoell\Finance\Platform\PayloadAuth;
 use Babanoell\Finance\Platform\RequestContext;
 use Babanoell\Finance\Platform\ServiceAuth;
 /** Server-side only; no browser-supplied URL, token, or caller identity. */
-final class IntegrationsClient {
+final class IntegrationsClient implements GreenpayGateway {
  public function __construct(private readonly Config $config, private readonly HttpTransportInterface $transport) {}
  public function shahkar(string $national,string $mobile,string $key):HttpResponse {return $this->call('POST','/api/v1/shahkar/verify',['national_code'=>$national,'mobile'=>$mobile],$key);}
  public function creditStart(string $national,string $mobile,string $key):HttpResponse {return $this->call('POST','/api/v1/credit/request',['national_code'=>$national,'mobile'=>$mobile],$key);}
@@ -14,10 +14,16 @@ final class IntegrationsClient {
  public function creditStatus(string $reference):HttpResponse {return $this->call('POST','/api/v1/credit/status',['reference'=>$reference]);}
  public function greenpayReadiness():HttpResponse {return $this->call('GET','/api/v1/greenpay/readiness');}
  public function greenpayOtp(string $pocket,int $amount,string $key):HttpResponse {return $this->call('POST','/api/v1/greenpay/send-otp',['pocket_number'=>$pocket,'amount_rial'=>$amount],$key);}
+ public function greenpayConfiguration():HttpResponse {return $this->call('GET','/api/v1/greenpay/configuration');}
  public function greenpayCapabilities():HttpResponse {
   $secret=trim((string)\babanoell_finance_env('FINANCE_GREENPAY_EXECUTION_KEY',''));
   if(strlen($secret)<32)return new HttpResponse(0,null,'','transfer_execution_key_missing');
   return $this->call('GET','/api/v1/greenpay/transfer-capabilities',null,null,$secret);
+ }
+ public function greenpayRequestDebit(array $payload,string $key):HttpResponse {
+  $secret=trim((string)\babanoell_finance_env('FINANCE_GREENPAY_EXECUTION_KEY',''));
+  if(strlen($secret)<32)return new HttpResponse(0,null,'','transfer_execution_key_missing');
+  return $this->call('POST','/api/v1/greenpay/request-debit',$payload,$key,$secret);
  }
  public function greenpayTransfer(array $payload,string $key):HttpResponse {
   $secret=trim((string)\babanoell_finance_env('FINANCE_GREENPAY_EXECUTION_KEY',''));
@@ -28,7 +34,7 @@ final class IntegrationsClient {
   // Production calls fail closed if shared credentials or base URL are unsafe.
   $secret=$this->config->serviceAuthSecret();
   $base=$this->config->integrationsBaseUrl();
-  if(strlen($secret)<32 || !preg_match('~^https://integrations\.noeel\.ir$~i',$base))return new HttpResponse(0,null,'','integrations_configuration_invalid');
+  if(strlen($secret)<32 || !(preg_match('~^https://integrations\.noeel\.ir$~i',$base)||($this->config->environment()==='local'&&preg_match('~^http://127\.0\.0\.1:[0-9]{1,5}$~D',$base))))return new HttpResponse(0,null,'','integrations_configuration_invalid');
   try {$body=$payload===null?'':json_encode($payload,JSON_THROW_ON_ERROR|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);}
   catch(\JsonException){return new HttpResponse(0,null,'','integrations_json_failed');}
   $headers=ServiceAuth::outbound('finance',$method,$path,$body,$secret);

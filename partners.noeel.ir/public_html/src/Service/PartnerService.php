@@ -41,13 +41,13 @@ final class PartnerService
  }
  private function assertCooperationEvidence(array$request,string$target,string$bearer):array
  {
-  if(!in_array($target,['submitted','under_review','approved'],true))return [];
+  if(!in_array($target,['submitted','under_review','docs_verified','contracting','approved'],true))return [];
   if(isset($request['data']['_form']))\Babanoell\Partners\Domain\CooperationFormDefinition::validate((string)$request['request_type'],$request['data'],$request['data']['_form']);
   $required=array_values(array_filter(\Babanoell\Partners\Domain\CooperationFormDefinition::documentPolicy($request),static fn(array$f):bool=>$f['required']));if($required===[])return ['complete'=>true,'required_count'=>0,'items'=>[],'definition_revision'=>$request['data']['_form']['revision']??null];
   if($this->documents===null)throw new RuntimeException('cooperation_documents_unavailable');
   $r=$this->documents->cooperationCompletion((string)$request['id'],$bearer);if(!$r->ok())throw new RuntimeException('cooperation_documents_unavailable');
   $data=$r->json['data']??null;if(!is_array($data)||!is_bool($data['complete']??null)||!is_array($data['missing']??null))throw new RuntimeException('cooperation_documents_unavailable');
-  if($data['missing']!==[]||($target==='approved'&&!$data['complete']))throw new InvalidArgumentException($target==='approved'?'همه مدارک الزامی باید تأیید شوند.':'ابتدا مدارک الزامی فرم را بارگذاری کنید.');
+  if($data['missing']!==[]||(in_array($target,['docs_verified','contracting','approved'],true)&&!$data['complete']))throw new InvalidArgumentException(in_array($target,['docs_verified','contracting','approved'],true)?'همه مدارک الزامی باید تأیید شوند.':'ابتدا مدارک الزامی فرم را بارگذاری کنید.');
   return $data;
  }
  public function activationService():CooperationActivationService

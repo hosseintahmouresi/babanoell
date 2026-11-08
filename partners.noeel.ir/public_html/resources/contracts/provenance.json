@@ -1,0 +1,12 @@
+{
+  "hami-plus-digital-loan-contract.html": {
+    "reference_sha256": "5754768f343b007c95f217caf2c673d2596ceddce0601c09418e9b6e7cd45427",
+    "bundled_sha256": "5754768f343b007c95f217caf2c673d2596ceddce0601c09418e9b6e7cd45427",
+    "change": "Local embedded reference logo; legal text unchanged."
+  },
+  "hami-retirees-final-loan-contract.html": {
+    "reference_sha256": "ec27e99d5ab327eccc7cc3823f1dbbd1b1af97cb38e5f84ff06cf03310660893",
+    "bundled_sha256": "cb7134d153387a39f993a62948d6557bc6181390ab77d5561524b46770d34d21",
+    "change": "Local embedded reference logo; legal text unchanged."
+  }
+}

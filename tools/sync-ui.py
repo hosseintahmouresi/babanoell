@@ -36,6 +36,7 @@ def build(check=False):
         files[target / 'favicon.js'] = favicon_js.encode()
         if service == 'panel':
             files[target / 'credit.js'] = (SOURCE / 'src/credit.js').read_bytes()
+            files[target / 'uploads.js'] = (SOURCE / 'src/uploads.js').read_bytes()
         helper = (SOURCE / 'php/Favicon.php.in').read_text().replace('{{NAMESPACE}}', NAMESPACES[service])
         files[target.parents[1] / 'src/Platform/Favicon.php'] = helper.encode()
         files[target / 'Font-Awesome-LICENSE.txt'] = (SOURCE / 'licenses/Font-Awesome.txt').read_bytes()

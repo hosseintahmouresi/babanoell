@@ -1,11 +1,11 @@
 {
   "service": "identity",
-  "version": "1.14.0",
-  "ui": "2.17.0",
-  "phase": "platform-completion-20261107",
+  "version": "1.14.1",
+  "ui": "2.18.0",
+  "phase": "reference-parity-20261108",
   "api_version": "v1",
-  "release_id": "20261107-platform-ui-2.17.0",
-  "created_at_utc": "2026-11-07T20:59:40.925550+00:00",
+  "release_id": "20261108-platform-ui-2.18.0",
+  "created_at_utc": "2026-11-08T07:47:36.046234+00:00",
   "database_migration_required": false,
   "excluded_runtime": [
     "config/local.env.php",
@@ -26,7 +26,7 @@
     "config/env.php": "5ef96a443fd998d593e7f1b46627657d756a3709539dcbf93700599df0b85df2",
     "config/local.env.example.php": "f3d3a9608f09665e29bdf432a0f47df95b0c656a0e9ad052a5f5a97906d9a2f7",
     "config/security.php": "c84e977bce4a5ee4c44631ded509e4b18728ca5cda0732b9f4355c0f224b7d90",
-    "config/version.php": "1376de208b680ea4c94644adb2eb91954be831013beb89c17f79cac182138bb4",
+    "config/version.php": "32cef396d3461a540a6b897e5e29522b7d92622ffce48b0d8437c19ca91bde25",
     "database/README.md": "9639825ae157957b17f8801699ee62c49608a5f454d979911d5f485c73193984",
     "database/migrations/202606130001_create_users_table.php": "331fc1353a04eca2a87fb902b6d82c0fe7f37eaf840e9ebb60a22e6a1ebb20ff",
     "database/migrations/202606130002_create_roles_table.php": "913fac3616bb266b9f6a2db9bb38e59f4de4002a09a4fff0cf1c8a739e2b1fc5",
@@ -227,5 +227,5 @@
     "src/Validation/ValidationResult.php": "5f2cef7296a4af780225a23294227e0fcad6c57d79dbf94f7970ca10e3249e64",
     "src/Validation/ValidatorInterface.php": "25a226712aefbff2585710ea70c7a623fe373ffbd7dbd813cc2044ff904c4b5c"
   },
-  "source_fingerprint": "28375cbb3df1017b2b0445044e6d2631bcb7a10ae23ddb8d5e3e920708c6128b"
+  "source_fingerprint": "c09adbe6972483e26b2ac7debe3d5e1a0a5d61ef66598ae4328b00a779540443"
 }

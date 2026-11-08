@@ -224,6 +224,9 @@ if ($documentsModule->handle($path, $method)) {
     exit;
 }
 
+$userCommissionModule = new \Babanoell\Panel\Users\UserCommissionModule($partnersClient, $serviceCredential, $identity);
+if ($userCommissionModule->handle($path, $method)) { exit; }
+
 $usersModule = new UsersModule($identityClient, $serviceCredential, $identity);
 if ($usersModule->handle($path, $method)) {
     exit;
@@ -232,6 +235,15 @@ if ($usersModule->handle($path, $method)) {
 $contractsModule = new ContractsModule($partnersClient, $serviceCredential, $identity, $documentsClient);
 if ($contractsModule->handle($path, $method)) { exit; }
 
+$greenpayRequestModule = new \Babanoell\Panel\Finance\GreenpayRequestModule($financeClient, $serviceCredential, $identity);
+if ($greenpayRequestModule->handle($path, $method)) { exit; }
+
+$chunkUploadModule = new \Babanoell\Panel\Documents\ChunkUploadModule($documentsClient, $serviceCredential);
+if ($chunkUploadModule->handle($path, $method)) { exit; }
+
+$requestNumberModule = new \Babanoell\Panel\Loans\RequestNumberModule($loansClient, $serviceCredential, $identity);
+if ($requestNumberModule->handle($path, $method)) { exit; }
+
 $partnersModule = new PartnersModule($partnersClient, $documentsClient, $loansClient, $serviceCredential, $identity);
 if ($partnersModule->handle($path, $method)) {
     exit;
@@ -239,6 +251,9 @@ if ($partnersModule->handle($path, $method)) {
 
 $referralModule = new \Babanoell\Panel\Partners\ReferralModule($partnersClient, $serviceCredential, $identity);
 if ($referralModule->handle($path, $method)) { exit; }
+
+$cooperationNotificationModule = new \Babanoell\Panel\Notification\CooperationNotificationModule($partnersClient, $serviceCredential, $identity);
+if ($cooperationNotificationModule->handle($path, $method)) { exit; }
 
 $notificationModule = new \Babanoell\Panel\Notification\NotificationModule($loansClient, $serviceCredential, $identity);
 if ($notificationModule->handle($path, $method)) { exit; }

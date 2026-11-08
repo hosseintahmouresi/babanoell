@@ -29,6 +29,25 @@ try{
   if(!$admin)JsonResponse::error(403,'permission_denied','این عملیات فقط برای مدیر مجاز است.');
   JsonResponse::ok(['shadow_sync'=>$financeService->retryMerchantSettlementShadowSync($m[1],$bearer,$principal->userId,$request->json())]);
  }
+ if($path==='/api/v1/greenpay/requests'&&$method==='GET'){
+  if(!$admin)JsonResponse::error(403,'permission_denied','مدیریت کسری GreenPay فقط برای مدیر سامانه مجاز است.');
+  JsonResponse::ok(['debits'=>$requestDebitService->listing((int)($request->query()['page']??1)),'enabled'=>(string)\babanoell_finance_env('FINANCE_GREENPAY_REQUEST_DEBITS_ENABLED','0')==='1']);
+ }
+ if(preg_match('#^/api/v1/greenpay/requests/([a-f0-9]{26})(?:/(enrollment|send-otp|execute|reconcile))?$#',$path,$debit)){
+  if(!$admin)JsonResponse::error(403,'permission_denied','مدیریت کسری GreenPay فقط برای مدیر سامانه مجاز است.');
+  $action=$debit[2]??'';
+  if($method==='GET'&&$action==='')JsonResponse::ok(['debit'=>$requestDebitService->get($debit[1])]);
+  if($method==='POST'){
+   $body=$request->json();$version=(int)($body['row_version']??0);
+   if($action==='enrollment')JsonResponse::ok(['debit'=>$requestDebitService->enroll($debit[1],$principal->userId,$body)]);
+   if($action==='send-otp'){
+    if(!$config->greenpayOtpEnabled())JsonResponse::error(503,'greenpay_otp_disabled','ارسال رمز مالی در تنظیمات غیرفعال است.');
+    JsonResponse::ok(['debit'=>$requestDebitService->sendOtp($debit[1],$principal->userId,$version)]);
+   }
+   if($action==='execute')JsonResponse::ok(['debit'=>$requestDebitService->execute($debit[1],$principal->userId,$version,(string)($body['otp']??''))]);
+   if($action==='reconcile')JsonResponse::ok(['debit'=>$requestDebitService->reconcile($debit[1],$principal->userId,$version,$body)]);
+  }
+ }
  if($path==='/api/v1/greenpay/readiness'&&$method==='GET'){
   if(!$admin&&!$principal->can('finance.reconciliation.read'))JsonResponse::error(403,'permission_denied','اجازه مشاهده وضعیت اتصال مالی ندارید.');
   $gp=new \Babanoell\Finance\Service\GreenpayBridgeService($pdo,$integrationsClient,$repository,$config->serviceAuthSecret());
@@ -145,4 +164,4 @@ try{
  if($path==='/api/v1/reconciliation'&&$method==='GET'){$require('finance.reconciliation.read');JsonResponse::ok(['items'=>$repository->listReconciliation((string)($request->query()['status']??'open'))]);}
  if(preg_match('#^/api/v1/reconciliation/([a-f0-9]{26})/resolve$#',$path,$m)&&$method==='POST'){$require('finance.reconciliation.manage');$b=$request->json();JsonResponse::ok(['item'=>$repository->resolveReconciliation($m[1],(string)($b['note']??''),$principal->userId)]);}
  JsonResponse::error(404,'route_not_found','مسیر API در این نسخه وجود ندارد.');
-}catch(InvalidArgumentException$e){JsonResponse::error(422,'validation_failed',$e->getMessage());}catch(RuntimeException$e){$m=$e->getMessage();if($m==='record_access_denied')JsonResponse::error(403,'record_access_denied','دسترسی به پرونده مجاز نیست.');if(in_array($m,['greenpay_encryption_not_configured','greenpay_transfer_disabled','greenpay_execution_key_not_configured','greenpay_provider_not_ready','greenpay_provider_execution_not_authorized'],true))JsonResponse::error(503,$m,'اجرای انتقال وجه هنوز در تنظیمات امن فعال نشده است.');if(in_array($m,['greenpay_otp_unconfirmed','greenpay_auth_unavailable'],true))JsonResponse::error(503,$m,'وضعیت ارسال OTP نامشخص است؛ بدون بررسی مجدد درخواست را تکرار نکنید.');if(in_array($m,['greenpay_idempotency_conflict','greenpay_idempotency_in_progress','greenpay_cycle_already_has_transfer','greenpay_transfer_already_handled','idempotency_conflict','bank_case_already_recorded','bank_case_already_in_cycle'],true))JsonResponse::error(409,$m,'عملیات با این کلید قبلاً ثبت شده است.');if(in_array($m,['loans_unavailable','loans_response_invalid','loan_case_unavailable_or_denied','loan_case_invalid'],true))JsonResponse::error(503,$m,'سرویس تسهیلات برای بررسی عملیات مالی در دسترس نیست.');JsonResponse::error(409,'finance_operation_failed',$m);}catch(PDOException$e){error_log('[finance] db: '.$e->getMessage());JsonResponse::error(503,'database_error','عملیات پایگاه داده کامل نشد.');}catch(Throwable$e){error_log('[finance] unexpected '.get_class($e).': '.$e->getMessage());JsonResponse::error(500,'internal_error','خطای غیرمنتظره رخ داد.');}
+}catch(\Babanoell\Finance\Service\RequestDebitException $e){JsonResponse::error($e->httpStatus,$e->publicCode,$e->getMessage());}catch(InvalidArgumentException$e){JsonResponse::error(422,'validation_failed',$e->getMessage());}catch(RuntimeException$e){$m=$e->getMessage();if($m==='record_access_denied')JsonResponse::error(403,'record_access_denied','دسترسی به پرونده مجاز نیست.');if(in_array($m,['greenpay_encryption_not_configured','greenpay_transfer_disabled','greenpay_execution_key_not_configured','greenpay_provider_not_ready','greenpay_provider_execution_not_authorized'],true))JsonResponse::error(503,$m,'اجرای انتقال وجه هنوز در تنظیمات امن فعال نشده است.');if(in_array($m,['greenpay_otp_unconfirmed','greenpay_auth_unavailable'],true))JsonResponse::error(503,$m,'وضعیت ارسال OTP نامشخص است؛ بدون بررسی مجدد درخواست را تکرار نکنید.');if(in_array($m,['greenpay_idempotency_conflict','greenpay_idempotency_in_progress','greenpay_cycle_already_has_transfer','greenpay_transfer_already_handled','idempotency_conflict','bank_case_already_recorded','bank_case_already_in_cycle'],true))JsonResponse::error(409,$m,'عملیات با این کلید قبلاً ثبت شده است.');if(in_array($m,['loans_unavailable','loans_response_invalid','loan_case_unavailable_or_denied','loan_case_invalid'],true))JsonResponse::error(503,$m,'سرویس تسهیلات برای بررسی عملیات مالی در دسترس نیست.');JsonResponse::error(409,'finance_operation_failed',$m);}catch(PDOException$e){error_log('[finance] db: '.$e->getMessage());JsonResponse::error(503,'database_error','عملیات پایگاه داده کامل نشد.');}catch(Throwable$e){error_log('[finance] unexpected '.get_class($e).': '.$e->getMessage());JsonResponse::error(500,'internal_error','خطای غیرمنتظره رخ داد.');}

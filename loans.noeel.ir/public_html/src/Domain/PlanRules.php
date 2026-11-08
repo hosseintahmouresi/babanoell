@@ -57,6 +57,9 @@ final class PlanRules
         $rules['loan_application_template_code']=trim((string)($rules['loan_application_template_code']??'loan_application_default'))?:'loan_application_default';
         $rules['facility_agreement_template_code']=trim((string)($rules['facility_agreement_template_code']??'facility_agreement_default'))?:'facility_agreement_default';
 
+        $rules['contract_first_due_rule']=(string)($rules['contract_first_due_rule']??($legacySettings['contract_first_due_rule']??'interval'));
+        $rules['contract_marketing_development_amount']=InputValidator::money($rules['contract_marketing_development_amount']??($legacySettings['contract_marketing_development_amount']??0));
+
         $map=[];
         $rawMap=$rules['required_documents_by_occupation']??[];
         if(is_array($rawMap)){
@@ -77,6 +80,8 @@ final class PlanRules
     public static function validate(array $rules): array
     {
         $errors=[];
+        if(!in_array((string)($rules['contract_first_due_rule']??'interval'),['interval','jalali_month_end_half'],true))$errors[]='قاعده اولین سررسید قرارداد معتبر نیست.';
+        if((float)($rules['contract_marketing_development_amount']??0)<0)$errors[]='مبلغ توسعه بازار قرارداد منفی نیست.';
         if(!in_array((string)($rules['merchant_access_mode']??''),['all','allowlist'],true))$errors[]='حالت دسترسی پذیرنده معتبر نیست.';
         if(!isset(self::CONTRACT_MODES[(string)($rules['contract_mode']??'')]))$errors[]='نوع قرارداد طرح معتبر نیست.';
         foreach(['loan_application_template_code','facility_agreement_template_code'] as $key){$v=(string)($rules[$key]??'');if($v===''||!preg_match('/^[a-z0-9_\-]{3,80}$/',$v))$errors[]='کد قالب قرارداد معتبر نیست.';}

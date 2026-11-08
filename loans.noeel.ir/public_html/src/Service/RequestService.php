@@ -56,6 +56,7 @@ final class RequestService
         }
         $this->validateEligibility($plan,$d);
         $this->calculations->validateInput($plan,$d['requested_amount'],$d['installment_count'],$d['installment_interval']);
+        if($origin===RequestOrigin::MERCHANT&&$merchantContext!==null){$trusted=$merchantContext['actor_commission_percent']??null;if($trusted!==null&&(!is_numeric($trusted)||(float)$trusted<0||(float)$trusted>100))throw new InvalidArgumentException('کمیسیون پذیرنده از مرجع قابل تأیید نیست.');$d['commission_override']=$trusted===null?null:(float)$trusted;}
         $calculated=$this->calculations->calculate($actor,$planId,$d['requested_amount'],$d['installment_count'],$d['installment_interval'],$d['commission_override'],true);
         $schedule=[];if($d['first_due_date_jalali']!=='')$schedule=$this->schedule->generate((string)$plan['type'],$calculated['result'],$d['installment_interval'],$d['first_due_date_jalali']);
         $created=$this->repo->insertRequest($actor,$d,$plan,$calculated['calculation'],$schedule,$submitted,substr($idempotencyKey,0,128));

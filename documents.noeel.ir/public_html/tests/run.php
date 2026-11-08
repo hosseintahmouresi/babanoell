@@ -131,7 +131,7 @@ $add('entity access delegates loan ownership to Loans API',function()use($assert
 });
 
 $add('migration files expose seven unique forward versions',function()use($root,$assert,$eq){
-    require_once $root.'/src/Database/Migration.php';$files=glob($root.'/database/migrations/*.php')?:[];sort($files,SORT_STRING);$seen=[];foreach($files as$f){$m=require$f;$assert($m instanceof Babanoell\Documents\Database\Migration);$assert(preg_match('/^\d{12}$/',$m->version())===1);$assert(!isset($seen[$m->version()]));$seen[$m->version()]=true;}$eq(8,count($seen));
+    require_once $root.'/src/Database/Migration.php';$files=glob($root.'/database/migrations/*.php')?:[];sort($files,SORT_STRING);$seen=[];foreach($files as$f){$m=require$f;$assert($m instanceof Babanoell\Documents\Database\Migration);$assert(preg_match('/^\d{12}$/',$m->version())===1);$assert(!isset($seen[$m->version()]));$seen[$m->version()]=true;}$eq(9,count($seen));
 });
 
 $add('documents schema keeps owner required and all file FKs type-compatible',function()use($root,$assert){
@@ -272,7 +272,7 @@ $add('phase 2B completion evaluates guarantor requirements per stable guarantor 
 });
 $add('phase 2B upload capability contract documents authorization-before-IO and chunk readiness',function()use($root,$assert){
     $index=file_get_contents($root.'/public/index.php');$service=file_get_contents($root.'/src/Service/DocumentService.php');
-    $assert(str_contains($index,'authorization_before_file_io'));$assert(str_contains($index,"'chunked_upload'=>false"));
+    $assert(str_contains($index,'authorization_before_file_io'));$assert(str_contains($index,"'chunked_upload'=>true"));
     $assert(strpos($service,'$this->access->assert')<strpos($service,'$this->validator->validate'));
 });
 $add('phase 2B Documents client version and core completion contract are updated',function()use($root,$assert){

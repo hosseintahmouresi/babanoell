@@ -28,7 +28,9 @@ final class ContractPdfRenderer
         $autoload=dirname(__DIR__, 2).'/vendor/autoload.php';
         if(!class_exists(\Mpdf\Mpdf::class) && is_file($autoload)) require_once $autoload;
         if(!class_exists(\Mpdf\Mpdf::class)) throw new RuntimeException('موتور mPDF در Documents نصب نشده است؛ ابتدا Composer dependencies را نصب کنید.');
-        $safe=self::safeMarkup($body);
+        $reference=in_array((string)($contract['template_code']??''),['hami_plus_reference','hami_retirees_reference'],true);
+        $safe=self::safeMarkup($body,$reference);
+        if($reference)$safe.=\Babanoell\Documents\Contract\SignatureCertificate::render($contract);
         $no=htmlspecialchars((string)($contract['contract_no']??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');
         $revision=(int)($contract['revision']??1);
         $signAt=htmlspecialchars((string)($contract['signed_at']??''),ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');
@@ -60,6 +62,7 @@ final class ContractPdfRenderer
         $pdf->SetHTMLHeader($header,'O');$pdf->SetHTMLHeader($header,'E');
         $pdf->SetHTMLFooter($footer,'O');$pdf->SetHTMLFooter($footer,'E');
         $pdf->WriteHTML('<style>body{font-size:11pt;line-height:1.9;color:#17243b;direction:rtl;text-align:right}p{margin:0 0 8px}h1,h2,h3{page-break-after:avoid;margin:10px 0}table{border-collapse:collapse;width:100%}td,th{border:0.6px solid #999;padding:5px}ul,ol{margin:5px 0} .certificate{border-top:1px solid #777;margin-top:22px;padding:10px 0;font-size:9pt}</style>',\Mpdf\HTMLParserMode::HEADER_CSS);
+        if($reference)$pdf->WriteHTML((string)file_get_contents(dirname(__DIR__,2).'/resources/contracts/reference-layout.css'),\Mpdf\HTMLParserMode::HEADER_CSS);
         $pdf->WriteHTML('<div dir="rtl">'.$safe.'</div><div class="certificate" dir="rtl"><b>گواهی وضعیت قرارداد</b><p>شماره سند: '.$no.' | نسخه: '.$revision.'</p><p>زمان ثبت امضا: '.$signAt.'</p><p>روش تأیید: '.$method.'</p><p>SHA-256 متن امضاشده: <span dir="ltr">'.$shortHash.'</span></p></div>',\Mpdf\HTMLParserMode::HTML_BODY);
         $output=$pdf->Output('',\Mpdf\Output\Destination::STRING_RETURN);
         if(!is_string($output)||strlen($output)<500||!str_starts_with($output,'%PDF-'))throw new RuntimeException('تولید خروجی PDF معتبر انجام نشد.');
@@ -68,7 +71,7 @@ final class ContractPdfRenderer
     }
 
     /** Allowlist prevents active content, remote images/stylesheets, CSS URL fetches and events. */
-    public static function safeMarkup(string $html): string
+    public static function safeMarkup(string $html,bool $reference=false): string
     {
         if(!class_exists(\DOMDocument::class))throw new RuntimeException('PHP DOM unavailable');
         $doc=new \DOMDocument('1.0','UTF-8');
@@ -77,12 +80,21 @@ final class ContractPdfRenderer
         if(!$loaded)throw new RuntimeException('ساختار HTML قرارداد برای PDF معتبر نیست.');
         $roots=$doc->getElementsByTagName('div');if($roots->length<1)throw new RuntimeException('محتوای قرارداد خالی است.');
         $allow=array_flip(['div','span','p','br','h1','h2','h3','h4','h5','h6','table','thead','tbody','tr','td','th','b','strong','i','em','u','ul','ol','li','blockquote','section','header','footer','small','sup','sub','hr']);
-        $walk=function(\DOMNode $node)use(&$walk,$allow):string{
+        $walk=function(\DOMNode $node)use(&$walk,$allow,$reference):string{
             if($node instanceof \DOMText)return htmlspecialchars($node->nodeValue??'',ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');
             if(!($node instanceof \DOMElement))return '';
             $tag=strtolower($node->tagName);
+            if($reference&&$tag==='img'){
+                $src=$node->getAttribute('src');
+                if(!preg_match('~^data:image/png;base64,([A-Za-z0-9+/=]+)$~D',$src,$image))return '';
+                $bytes=base64_decode($image[1],true);if(!is_string($bytes)||strlen($bytes)>100000)return '';
+                $size=@getimagesizefromstring($bytes);if(!is_array($size)||($size['mime']??'')!=='image/png'||$size[0]>2000||$size[1]>2000)return '';
+                return '<img src="'.htmlspecialchars($src,ENT_QUOTES,'UTF-8').'" width="110">';
+            }
+
             if(!isset($allow[$tag]))return ''; // Never traverse script, svg, image, link or form nodes.
             $attrs='';
+            if($reference&&preg_match('/^[a-zA-Z0-9 _-]{1,200}$/D',$node->getAttribute('class')))$attrs.=' class="'.htmlspecialchars($node->getAttribute('class'),ENT_QUOTES,'UTF-8').'"';
             foreach(['dir','align','colspan','rowspan'] as $key){
                 $value=trim($node->getAttribute($key));
                 if($key==='dir' && in_array($value,['rtl','ltr'],true))$attrs.=' dir="'.$value.'"';

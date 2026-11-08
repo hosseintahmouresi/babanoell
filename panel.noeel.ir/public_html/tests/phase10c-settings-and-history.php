@@ -24,7 +24,7 @@ try{
  $today=gmdate('Y-m-d');
  [$from,$to]=HistoricalReportsModule::range([],$settings);
  $check($to===$today,'today as default end');
- $check($from===gmdate('Y-m-d',strtotime('today UTC -13 days')),'custom default period');
+ $check($from===(new DateTimeImmutable('today',new DateTimeZone('UTC')))->modify('-13 days')->format('Y-m-d'),'custom default period');
  foreach([['from'=>'2026-02-30','to'=>'2026-03-01'],['from'=>'2026-10-21','to'=>'2026-10-01'],['from'=>'2025-01-01','to'=>'2026-10-01']] as $q){try{HistoricalReportsModule::range($q,$settings);throw new RuntimeException('bad range accepted');}catch(InvalidArgumentException){$tests++;}}
  $data=['data'=>['from'=>'2026-10-20','to'=>'2026-10-21','series'=>['requests_created'=>[['day'=>'2026-10-20','count'=>3]]]]];
  $parsed=HistoricalReportsModule::parse('loans',200,$data,'2026-10-20','2026-10-21');

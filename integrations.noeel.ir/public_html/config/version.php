@@ -1,3 +1,3 @@
 <?php
 declare(strict_types=1);
-return ['service'=>'integrations','version'=>'1.6.0','ui'=>'2.17.0','phase'=>'platform-completion-20261107'];
+return ['service'=>'integrations','version'=>'1.7.0','ui'=>'2.18.0','phase'=>'reference-parity-20261108'];

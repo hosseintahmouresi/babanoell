@@ -93,7 +93,7 @@ final class Renderer
 
     private static function script(): string
     {
-        return '<script src="/ui-asset.php?file=platform.js&amp;v=' . self::assetVersion() . '" defer></script>';
+        return '<script src="/ui-asset.php?file=platform.js&amp;v=' . self::assetVersion() . '" defer></script><script src="/ui-asset.php?file=uploads.js&amp;v=' . self::assetVersion() . '" defer></script>';
     }
 
     /** @param array<string,mixed> $identity */
@@ -136,6 +136,9 @@ final class Renderer
         $html='<nav class="bn-panel-nav" aria-label="منوی فضای کار"><div class="bn-panel-nav-label">کارهای روزانه</div>'.$item('dashboard','/dashboard','house','خانه');
         if($canLoans){$html.=$item('tasks','/loans/tasks?scope=mine','list-check','کارتابل من').$item('loans','/loans','folder-open','تسهیلات');}
         $html.=$item('notifications','/notifications','comments','اعلان‌ها');
+        if($super||in_array('admin',$roles,true))$html.=$item('cooperation-notifications','/cooperation-notifications/settings','comments','پیامک همکاری');
+        if($super||in_array('admin',$roles,true))$html.=$item('request-numbering','/loans/request-numbering','list-check','شماره‌گذاری پرونده‌ها');
+        if($super||in_array('admin',$roles,true))$html.=$item('greenpay-requests','/finance/greenpay/requests','wallet','کسری GreenPay پرونده‌ها');
         if($canBank)$html.=$item('bank','/bank','building-columns','کارتابل بانک');
         if($canDocuments)$html.=$item('documents','/documents','file-circle-check','مدارک');
         if($canPartners)$html.=$item('partners','/partners','handshake','پذیرندگان و همکاری');

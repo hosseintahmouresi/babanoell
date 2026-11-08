@@ -15,7 +15,7 @@ use Throwable;
 final class DocumentService
 {
  public function __construct(private readonly PdoDocumentRepository$repo,private readonly PrivateStorage$storage,private readonly UploadValidator$validator,private readonly EntityAccessService$access){}
- public function upload(Principal$p,string$bearer,string$entityType,string$entityId,array$file,array$input,?string$ip,?string$ua):array
+ public function authorizeUpload(Principal $p,string $bearer,string $entityType,string $entityId,array $input):array
  {
   $type=strtolower(trim((string)($input['document_type']??'')));
   $entityType=strtolower(trim($entityType));
@@ -53,8 +53,13 @@ final class DocumentService
   if(!preg_match('/^[a-z0-9][a-z0-9_.-]{1,63}$/',$relation))throw new ApiException(422,'validation_failed','نوع ارتباط مدرک با رکورد معتبر نیست.');
   InternalNotePolicy::assertUpload($p,$entityType,$type,$relation);
 
-  $validated=$this->validator->validate($file,true);$key=$this->storage->store($validated);
-  try{return$this->repo->create($p->userId,$type,$catalog['category'],$catalog['label'],$visibility,$owner,$entityType,$entityId,$relation,$validated,$key,$ip,$ua);}catch(Throwable$e){$this->storage->remove($key);throw$e;}
+  return compact('type','catalog','visibility','owner','relation');
+ }
+ public function upload(Principal $p,string $bearer,string $entityType,string $entityId,array $file,array $input,?string $ip,?string $ua,bool $localSource=false,?callable $beforeCommit=null):array
+ {
+  $meta=$this->authorizeUpload($p,$bearer,$entityType,$entityId,$input);
+  $validated=$this->validator->validate($file,!$localSource);$key=$this->storage->store($validated);
+  try{return $this->repo->create($p->userId,$meta['type'],$meta['catalog']['category'],$meta['catalog']['label'],$meta['visibility'],$meta['owner'],$entityType,$entityId,$meta['relation'],$validated,$key,$ip,$ua,$beforeCommit);}catch(Throwable $e){$this->storage->remove($key);throw $e;}
  }
  public function replace(Principal$p,string$bearer,string$id,array$file,?string$ip,?string$ua):array
  {

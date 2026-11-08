@@ -8,7 +8,7 @@ use Babanoell\Integrations\Provider\{Sms,Shahkar,Credit,Greenpay};
 use Babanoell\Integrations\Support\{Config,Response,ProviderException,Validation};
 use Babanoell\Integrations\Platform\{RequestContext,ServiceAuth,PayloadAuth};
 final class Router {
- public function __construct(private readonly \PDO $pdo,private readonly ?\Babanoell\Integrations\Http\TransportInterface $creditTransport=null){}
+ public function __construct(private readonly \PDO $pdo,private readonly ?\Babanoell\Integrations\Http\TransportInterface $creditTransport=null,private readonly ?\Babanoell\Integrations\Http\TransportInterface $greenpayTransport=null){}
  public function handle(Request $r):never {
   $method=$r->method();$path=$r->path();RequestContext::initialize($r->header('X-Request-Id'),'integrations');
   if($method==='GET'&&$path==='/health')Response::ok(['service'=>'integrations','version'=>(require dirname(__DIR__,2).'/config/version.php')['version'],'status'=>'ok']);
@@ -28,6 +28,8 @@ final class Router {
    'POST /api/v1/credit/report'=>['loans'],
    'POST /api/v1/credit/finalize'=>['loans'],
    'GET /api/v1/greenpay/readiness'=>['finance'],
+   'GET /api/v1/greenpay/configuration'=>['finance'],
+   'POST /api/v1/greenpay/request-debit'=>['finance'],
    'GET /api/v1/greenpay/transfer-capabilities'=>['finance'],
    'POST /api/v1/greenpay/send-otp'=>['finance'],
    'POST /api/v1/greenpay/transfer'=>['finance'],
@@ -81,7 +83,8 @@ final class Router {
       $ops->finish($poll['id'],'succeeded',['ready'=>($result['ready']??false)===true,'provider_status'=>$result['provider_status']??'']);
      }catch(\Throwable $error){$ops->finish($poll['id'],'failed',[],'credit_poll_failed');throw $error;}
      Response::ok($result);
-    case 'GET /api/v1/greenpay/readiness':Response::ok((new Greenpay($http))->readiness());
+    case 'GET /api/v1/greenpay/configuration':Response::ok((new Greenpay($this->greenpayTransport??$http))->configuration());
+    case 'GET /api/v1/greenpay/readiness':Response::ok((new Greenpay($this->greenpayTransport??$http))->readiness());
     case 'GET /api/v1/greenpay/transfer-capabilities':
      $executionKey=trim(Config::get('INTEGRATIONS_GREENPAY_EXECUTION_KEY'));
      $provided=(string)($r->header('X-Noel-Greenpay-Authorization')??'');
@@ -90,7 +93,8 @@ final class Router {
     case 'POST /api/v1/greenpay/send-otp':
      $p=(string)($b['pocket_number']??'');$amount=filter_var($b['amount_rial']??null,FILTER_VALIDATE_INT);
      if(!preg_match('/^[0-9]{8,32}$/D',$p)||$amount===false||$amount<1)throw new \InvalidArgumentException('invalid_greenpay_request');
-     Response::ok($run('greenpay.otp',$p,fn()=>(new Greenpay($http))->sendOtp($p,$amount),5));
+     Response::ok($run('greenpay.otp',$p,fn()=>(new Greenpay($this->greenpayTransport??$http))->sendOtp($p,$amount),5));
+    case 'POST /api/v1/greenpay/request-debit':
     case 'POST /api/v1/greenpay/transfer':
      if(Config::get('INTEGRATIONS_GREENPAY_TRANSFERS_ENABLED','0')!=='1')throw new ProviderException('greenpay_transfer_disabled',503);
      $executionKey=trim(Config::get('INTEGRATIONS_GREENPAY_EXECUTION_KEY'));
@@ -101,7 +105,7 @@ final class Router {
      if(!preg_match('/^[a-f0-9]{64}$/D',$actual)||!hash_equals($expected,$actual))throw new ProviderException('greenpay_transfer_authorization_invalid',403);
      $ref=Validation::opaque($b['reference']??'');
      if($ref!=='N'.$intent)throw new ProviderException('greenpay_reference_mismatch',403);
-     Response::ok($run('greenpay.transfer',$ref,fn()=>(new Greenpay($http))->transfer($b),1));
+     Response::ok($run($route==='POST /api/v1/greenpay/request-debit'?'greenpay.request-debit':'greenpay.transfer',$ref,fn()=>$route==='POST /api/v1/greenpay/request-debit'?(new Greenpay($this->greenpayTransport??$http))->requestDebit($b):(new Greenpay($this->greenpayTransport??$http))->transfer($b),1));
    }
   }catch(\InvalidArgumentException){Response::fail(422,'validation_failed','داده‌های ورودی معتبر نیست.');}
    catch(ProviderException $e){Response::fail($e->httpStatus,$e->publicCode,'ارتباط با سرویس‌دهنده کامل نشد یا قابلیت فعال نیست.');}

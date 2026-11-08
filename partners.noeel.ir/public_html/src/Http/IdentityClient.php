@@ -13,6 +13,8 @@ final class IdentityClient
         private readonly HttpTransportInterface $transport
     ) {}
 
+    public function userAccess(string $id,string $bearer):HttpResponse{return $this->request('GET','/api/v1/admin/user-access?user_id='.rawurlencode($id),null,$bearer,null,null);}
+
     public function health(): HttpResponse
     {
         return $this->request('GET', '/health', null, null, null, null);

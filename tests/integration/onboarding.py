@@ -153,6 +153,9 @@ class CooperationWorkflow:
                         "_csrf": self.hidden(page, "_csrf"), "status": "approved", "reason": "Synthetic evidence reviewed",
                     }, role=None, signed=False, form=True)
                 self.transition(request_id, "approved", expected=409)
+                self.transition(request_id, "docs_completion")
+                self.transition(request_id, "docs_verified")
+                self.transition(request_id, "contracting")
                 contracts_path = f"/contracts/cooperation/{request_id}"
                 page = self.call("panel", contracts_path, role=None, signed=False)
                 self.call("panel", contracts_path, "POST", {
@@ -245,6 +248,11 @@ class CooperationWorkflow:
             "_csrf": self.hidden(page, "_csrf"),
         }, role=None, signed=False, form=True)
         path = re.search(rb'(/contract/[A-Za-z0-9_-]{30,120})/otp/request', public).group(1).decode()
+        current = self.call("partners", f'/api/v1/contracts/{contract_id}', role=role)["contract"]
+        if current["subject_type"] == "cooperation_request":
+            issued = self.call("partners", f'/api/v1/contracts/{contract_id}/signing-link', "POST", {}, role=role)
+            self.check(issued["public_path"] == path, "Cooperation signing and repeated issuance preserve the same public link")
+            self.check(current["public_token_expires_at"] is None, "Cooperation contract link has no one-day expiry")
         otp_page = self.call("partners", path + "/otp/request", "POST", {}, role=None, signed=False, form=True)
         otp = re.search(rb"<strong>([0-9]{6})</strong>", otp_page).group(1).decode()
         self.call("partners", path + "/otp/verify", "POST", {"otp": "000000"}, role=None, signed=False, form=True, expected=409)

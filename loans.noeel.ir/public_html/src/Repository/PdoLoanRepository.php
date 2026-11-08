@@ -147,8 +147,9 @@ final class PdoLoanRepository
     /** @param array<string,mixed> $d */
     public function insertRequest(string $actor,array $d,array $plan,array $calculation,array $schedule,bool $submitted,string $idempotencyKey=''): array
     {
-        $id=RandomId::make();$requestNo='LN-'.gmdate('ymd').'-'.strtoupper(substr(bin2hex(random_bytes(5)),0,8));$r=$calculation['result'];$status=$submitted?'under_review':'draft';$origin=(string)($d['request_origin']??'admin');$creditStatus=!empty($plan['rules']['requires_bank_validation'])?'pending':'not_required';$identityStatus=!empty($plan['rules']['requires_identity_verification'])?'pending':'not_required';$this->pdo->beginTransaction();
+        $id=RandomId::make();$requestNo='';$r=$calculation['result'];$status=$submitted?'under_review':'draft';$origin=(string)($d['request_origin']??'admin');$creditStatus=!empty($plan['rules']['requires_bank_validation'])?'pending':'not_required';$identityStatus=!empty($plan['rules']['requires_identity_verification'])?'pending':'not_required';$this->pdo->beginTransaction();
         try{
+            $requestNo=(new RequestNumberRepository($this->pdo))->allocate();
             $s=$this->pdo->prepare('INSERT INTO loan_requests (id,request_no,idempotency_key,applicant_user_id,acceptor_user_id,created_by_user_id,merchant_ref,assigned_bank_user_id,plan_id,plan_version_id,calculation_run_id,status,request_origin,credit_validation_status,identity_verification_status,full_name,father_name,certificate_number,national_code,mobile_number,phone_number,birth_date,occupation,residential_address,postal_code,work_address,product_name,order_items_json,order_total,requested_amount,facility_amount,prepayment,wallet_charge,acceptor_payment_amount,installment_interval,installment_count,installment_amount,total_payment,profit,guarantee_check_principal,guarantee_check_total,first_due_date,submitted_at) VALUES (:id,:request_no,:idem,:applicant,:acceptor_user,:actor,:merchant,:bank_user,:plan_id,:version_id,:calc_id,:status,:origin,:credit_status,:identity_status,:full_name,:father_name,:certificate,:national,:mobile,:phone,:birth_date,:occupation,:residential,:postal,:work,:product,:items,:order_total,:requested,:facility,:prepayment,:wallet,:acceptor,:interval,:count,:installment_amount,:total_payment,:profit,:gprincipal,:gtotal,:first_due,'.($submitted?'NOW(6)':'NULL').')');
             $s->execute([
                 ':id'=>$id,':request_no'=>$requestNo,':idem'=>$idempotencyKey!==''?$idempotencyKey:null,':applicant'=>trim((string)($d['applicant_user_id']??''))!==''?$d['applicant_user_id']:null,':acceptor_user'=>trim((string)($d['acceptor_user_id']??''))!==''?$d['acceptor_user_id']:null,':actor'=>$actor,':merchant'=>$d['merchant_ref']!==''?$d['merchant_ref']:null,':bank_user'=>$d['assigned_bank_user_id']!==''?$d['assigned_bank_user_id']:null,':plan_id'=>$plan['id'],':version_id'=>$plan['current_version_id'],':calc_id'=>$calculation['id'],':status'=>$status,':origin'=>$origin,':credit_status'=>$creditStatus,':identity_status'=>$identityStatus,
@@ -160,6 +161,7 @@ final class PdoLoanRepository
             $snapshotHash=hash('sha256',Json::encode($this->planSnapshot($plan)));
             $snap=$this->pdo->prepare('UPDATE loan_requests SET required_documents_snapshot_json=:docs,plan_rules_snapshot_json=:rules,plan_snapshot_hash=:hash,merchant_id=:merchant_id WHERE id=:id');
             $snap->execute([':docs'=>Json::encode($requiredSnapshot),':rules'=>Json::encode($planRules),':hash'=>$snapshotHash,':merchant_id'=>trim((string)($d['merchant_id']??''))!==''?(string)$d['merchant_id']:null,':id'=>$id]);
+            $this->pdo->prepare('UPDATE loan_requests SET certificate_city=:city,retirement_code=:code,retirement_organization=:org,delivery_date=:delivery WHERE id=:id')->execute([':city'=>$d['certificate_city']??null,':code'=>$d['retirement_code']??null,':org'=>$d['retirement_organization']??null,':delivery'=>$d['delivery_date']??null,':id'=>$id]);
             $this->insertHistory($id,null,'draft',$actor,'ایجاد پرونده','api');
             if($submitted){$this->insertHistory($id,'draft','submitted',$actor,'ثبت نهایی پرونده','api');$this->insertHistory($id,'submitted','under_review',$actor,'ورود به صف بررسی','api');}
             foreach($schedule as$row){$i=$this->pdo->prepare('INSERT INTO installment_schedule (id,request_id,sequence_no,due_date,amount,principal_amount,profit_amount,status) VALUES (:id,:request_id,:sequence,:due_date,:amount,:principal,:profit,:status)');$i->execute([':id'=>RandomId::make(),':request_id'=>$id,':sequence'=>$row['sequence'],':due_date'=>$row['due_date'],':amount'=>$row['amount'],':principal'=>$row['principal_amount'],':profit'=>$row['profit_amount'],':status'=>'scheduled']);}
@@ -203,7 +205,7 @@ final class PdoLoanRepository
     public function updateDraft(string $id,array $fields,string $actor): array
     {
         $request=$this->getRequest($id);if($request===null)throw new RuntimeException('پرونده پیدا نشد.');if($request['status']!=='draft'&&$request['status']!=='need_correction')throw new RuntimeException('ویرایش اطلاعات فقط در پیش‌نویس یا وضعیت نقص مدارک مجاز است.');
-        $allowed=['full_name','father_name','certificate_number','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address','product_name','merchant_ref','assigned_bank_user_id'];$set=[];$params=[':id'=>$id];foreach($allowed as$k){if(array_key_exists($k,$fields)){$ph=':f_'.$k;$set[]=$k.'='.$ph;$params[$ph]=$fields[$k]!==''?$fields[$k]:null;}}
+        $allowed=['full_name','father_name','certificate_number','certificate_city','retirement_code','retirement_organization','delivery_date','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address','product_name','merchant_ref','assigned_bank_user_id'];$set=[];$params=[':id'=>$id];foreach($allowed as$k){if(array_key_exists($k,$fields)){$ph=':f_'.$k;$set[]=$k.'='.$ph;$params[$ph]=$fields[$k]!==''?$fields[$k]:null;}}
         $identityChanged=false;
         foreach(['national_code','mobile_number'] as $field)if(array_key_exists($field,$fields)&&\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)$fields[$field])!==\Babanoell\Loans\Domain\InputValidator::normalizeDigits((string)($request[$field]??'')))$identityChanged=true;
         if($identityChanged){
@@ -945,7 +947,7 @@ final class PdoLoanRepository
         if ($expectedVersion < 1 || mb_strlen(trim($reason)) < 10 || mb_strlen($reason) > 1000) {
             throw new \InvalidArgumentException('نسخه رکورد و دلیل اصلاح حداقل ۱۰ کاراکتری الزامی است.');
         }
-        $allowed = ['full_name','father_name','certificate_number','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address'];
+        $allowed = ['full_name','father_name','certificate_number','certificate_city','retirement_code','retirement_organization','delivery_date','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address'];
         if ($fields === [] || array_diff(array_keys($fields), $allowed) !== []) {
             throw new \InvalidArgumentException('فیلدهای اصلاح پرونده مجاز نیستند.');
         }
@@ -962,7 +964,7 @@ final class PdoLoanRepository
             foreach ($allowed as $key) {
                 if (!array_key_exists($key,$fields)) continue;
                 $value=$fields[$key]===null?'':trim((string)$fields[$key]);
-                if (mb_strlen($value)>($key==='residential_address'||$key==='work_address'?5000:190)) throw new \InvalidArgumentException('طول اطلاعات واردشده مجاز نیست.');
+                if (mb_strlen($value)>(['certificate_city'=>180,'retirement_code'=>120,'retirement_organization'=>255,'delivery_date'=>10][$key]??($key==='residential_address'||$key==='work_address'?5000:190))) throw new \InvalidArgumentException('طول اطلاعات واردشده مجاز نیست.');
                 $next=$value===''?null:$value;
                 if (($old[$key]??null)===$next) continue;
                 $before[$key]=$old[$key]??null;$after[$key]=$next;

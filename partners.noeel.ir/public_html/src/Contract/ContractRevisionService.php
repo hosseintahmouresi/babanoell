@@ -12,7 +12,7 @@ final class ContractRevisionService
 {
  public function __construct(private readonly PDO $pdo,private readonly ContractRepository $contracts){}
 
- public function reissue(string $id,string $actor,array $input):array
+ public function reissue(string $id,string $actor,array $input,array $trustedContext=[]):array
  {
   $reason=trim((string)($input['reason']??''));
   $expected=(int)($input['row_version']??0);
@@ -24,7 +24,11 @@ final class ContractRevisionService
   if($hasNewHtml){
    if(trim($newHtml)===''||strlen($newHtml)>500000)throw new InvalidArgumentException('متن قرارداد جدید خالی یا بیش از حد مجاز است.');
    // The public renderer also sends a restrictive CSP. Do not permit active markup in newly authored revisions.
-   if(preg_match('~<\s*(?:script|iframe|object|embed|form|input|button|base|meta|link|svg|math)\b|\bon[a-z]+\s*=|(?:javascript|vbscript|data)\s*:~iu',$newHtml))throw new InvalidArgumentException('متن قرارداد حاوی کد یا عناصر فعال مجازنشده است.');
+   $inspect=preg_replace_callback('~\bsrc\s*=\s*(["\'])data:image/png;base64,([A-Za-z0-9+/=]+)\1~i',static function(array $m):string{
+    $bytes=base64_decode($m[2],true);$size=is_string($bytes)&&strlen($bytes)<=100000?@getimagesizefromstring($bytes):false;
+    return is_array($size)&&($size['mime']??'')==='image/png'&&$size[0]<=2000&&$size[1]<=2000?'src=""':$m[0];
+   },$newHtml)??$newHtml;
+   if(preg_match('~<\s*(?:script|iframe|object|embed|form|input|button|base|meta|link|svg|math)\b|\bon[a-z]+\s*=|(?:javascript|vbscript|data)\s*:~iu',$inspect))throw new InvalidArgumentException('متن قرارداد حاوی کد یا عناصر فعال مجازنشده است.');
   }
   $seed=$this->contracts->contract($id);
   $this->pdo->beginTransaction();
@@ -53,8 +57,8 @@ final class ContractRevisionService
    }
    $sql='INSERT INTO contracts(id,contract_no,contract_kind,revision,subject_type,subject_id,reissued_from_id,reissue_reason,signer_user_id,signer_mobile,mode,status,template_id,template_code,template_version,template_hash,rendered_content,rendered_hash,artifact_status,created_by_user_id,subject_snapshot_hash) VALUES(:id,:no,:kind,:revision,:stype,:subject,:from,:reason,:signer,:mobile,:mode,\'pending\',:template_id,:template_code,:template_version,:template_hash,:html,:hash,:artifact,:actor,:snapshot)';
    $s=$this->pdo->prepare($sql);
-   $s->execute([':id'=>$newId,':no'=>$number,':kind'=>$old['contract_kind'],':revision'=>$revision,':stype'=>$old['subject_type'],':subject'=>$old['subject_id'],':from'=>$old['id'],':reason'=>$reason,':signer'=>$old['signer_user_id'],':mobile'=>$old['signer_mobile'],':mode'=>$targetMode,':template_id'=>$old['template_id'],':template_code'=>$old['template_code'],':template_version'=>$old['template_version'],':template_hash'=>$old['template_hash'],':html'=>$content,':hash'=>hash('sha256',$content),':artifact'=>$targetMode==='physical'?'not_required':'pending',':actor'=>$actor,':snapshot'=>$subjectHash]);
-   $this->contracts->event($id,'contract.reissued',$actor,'allowed',['new_contract_id'=>$newId,'revision'=>$revision,'reason'=>$reason],null,null);
+   $s->execute([':id'=>$newId,':no'=>$number,':kind'=>$old['contract_kind'],':revision'=>$revision,':stype'=>$old['subject_type'],':subject'=>$old['subject_id'],':from'=>$old['id'],':reason'=>$reason,':signer'=>$trustedContext['applicant_user_id']??$old['signer_user_id'],':mobile'=>$trustedContext['mobile']??$old['signer_mobile'],':mode'=>$targetMode,':template_id'=>$old['template_id'],':template_code'=>$old['template_code'],':template_version'=>$old['template_version'],':template_hash'=>$old['template_hash'],':html'=>$content,':hash'=>hash('sha256',$content),':artifact'=>$targetMode==='physical'?'not_required':'pending',':actor'=>$actor,':snapshot'=>$subjectHash]);
+   $this->contracts->event($id,'contract.reissued',$actor,'allowed',['new_contract_id'=>$newId,'revision'=>$revision,'reason'=>$reason,'context_refreshed'=>$trustedContext!==[]],null,null);
    $this->contracts->event($newId,'contract.revision_created',$actor,'allowed',['previous_contract_id'=>$id,'revision'=>$revision,'reason'=>$reason],null,null);
    $this->pdo->commit();
    return $this->contracts->contract($newId)??throw new RuntimeException('قرارداد جدید قابل بازیابی نیست.');

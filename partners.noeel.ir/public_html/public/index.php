@@ -87,14 +87,19 @@ try{
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/reissue$#',$path,$cm)&&$method==='POST'){
   $old=$contractRepository->contract($cm[1]);if($old===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');
   if(!$canManageContract($old))JsonResponse::error(403,'contract_manage_denied','دسترسی بازصدور قرارداد مجاز نیست.');
-  $new=$contractRevisionService->reissue($cm[1],$principal->userId,$request->json());JsonResponse::ok(['contract'=>$new],201);
+  $body=$request->json();$fresh=[];
+  if(($body['refresh_context']??false)===true){
+   if(trim((string)($body['content_html']??''))!=='')throw new InvalidArgumentException('بازسازی از پرونده و متن دستی جدید را هم‌زمان انتخاب نکنید.');
+   $fresh=$contractService->referenceReissueContext($old,$bearer);$body['content_html']=$fresh['content_html'];
+  }
+  $new=$contractRevisionService->reissue($cm[1],$principal->userId,$body,$fresh);JsonResponse::ok(['contract'=>$new],201);
  }
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/issue-link$#',$path,$cm)&&$method==='POST'){$c=$contractRepository->contract($cm[1]);if($c===null)JsonResponse::error(404,'contract_not_found','قرارداد پیدا نشد.');if(!$canManageContract($c))JsonResponse::error(403,'contract_manage_denied','مدیریت این قرارداد مجاز نیست.');$r=$contractService->issueLink($cm[1],$principal->userId);JsonResponse::ok(['contract'=>$r['contract'],'public_path'=>'/contract/'.$r['token'],'expires_at'=>$r['expires_at']]);}
  if(preg_match('#^/api/v1/contracts/([a-f0-9]{26})/signing-link$#',$path,$cm)&&$method==='POST'){
   $c=$contractRepository->contract($cm[1]);
-  if(!is_array($c)||$c['subject_type']!=='cooperation_request'||$c['signer_user_id']!==$principal->userId||!$canReadContract($c))JsonResponse::error(403,'contract_signer_denied','امضای این قرارداد فقط برای صاحب آن مجاز است.');
-  $latest=$contractRepository->bySubject('cooperation_request',$c['subject_id']);
-  $revisions=array_filter($latest,static fn($row)=>$row['contract_kind']==='cooperation_agreement');
+  if(!is_array($c)||!in_array($c['subject_type'],['cooperation_request','loan_request'],true)||$c['signer_user_id']!==$principal->userId||!$canReadContract($c))JsonResponse::error(403,'contract_signer_denied','امضای این قرارداد فقط برای صاحب آن مجاز است.');
+  $latest=$contractRepository->bySubject($c['subject_type'],$c['subject_id']);
+  $revisions=array_filter($latest,static fn($row)=>$row['contract_kind']===$c['contract_kind']);
   if($revisions===[]||(int)$c['revision']!==max(array_column($revisions,'revision'))||$c['mode']!=='digital'||!in_array($c['status'],['pending','sent','viewed'],true))JsonResponse::error(409,'contract_not_signable','این نسخه قرارداد قابل امضا نیست.');
   $issued=$contractService->issueLink($cm[1],$principal->userId);JsonResponse::ok(['public_path'=>'/contract/'.$issued['token']]);
  }
@@ -121,7 +126,7 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
   if($merchant===null||$merchant['status']!=='active'||$merchant['cooperation_status']!=='approved')JsonResponse::error(404,'merchant_not_active','پذیرنده فعال و تأییدشده پیدا نشد.');
   $permission=null;$plan=(string)($request->query()['plan_id']??'');
   foreach($repository->planPermissions($assignment[1]) as $item)if(($item['plan_id']??'')===$plan){$permission=$item;break;}
-  JsonResponse::ok(['context'=>['merchant_id'=>$merchant['id'],'owner_user_id'=>$merchant['owner_user_id'],'plan_id'=>$plan,'permission'=>$permission]]);
+  JsonResponse::ok(['context'=>['merchant_id'=>$merchant['id'],'owner_user_id'=>$merchant['owner_user_id'],'plan_id'=>$plan,'permission'=>$permission,'actor_commission_percent'=>(new \Babanoell\Partners\Repository\UserCommissionRepository($pdo))->get($principal->userId)['commission_percent']]]);
  }
  if($path==='/api/v1/marketplace/catalog'&&$method==='GET'){
   if(!$principal->can('loans.requests.create')&&!$principal->can('partners.marketplace.read')&&!$principal->can('partners.merchants.read'))JsonResponse::error(403,'permission_denied','دسترسی به فهرست بازار مجاز نیست.');
@@ -144,7 +149,15 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
   $b=$request->json();$metadata=$merchant['metadata'];$metadata['marketplace']=\Babanoell\Partners\Marketplace\MarketplaceConfiguration::profile($b,$marketplaceConfig->current());
   JsonResponse::ok($partnerService->updateMerchant($market[1],$principal->userId,['metadata'=>$metadata,'row_version'=>$b['row_version']??0],$bearer));
  }
- if($path==='/api/v1/me/merchant'&&$method==='GET'){JsonResponse::ok(['merchant'=>$ownMerchant]);}
+ if(preg_match('#^/api/v1/admin/users/([a-f0-9]{26})/commission$#',$path,$commissionUser)){
+  if(!$principal->isSuperAdmin()&&!in_array('admin',$roles,true))JsonResponse::error(403,'commission_admin_denied','تنظیم کمیسیون فقط برای مدیر سامانه مجاز است.');
+  $target=$identityClient->userAccess($commissionUser[1],$bearer);$user=$target->json['data']['user']??null;
+  if(!$target->ok()||!is_array($user)||($user['id']??'')!==$commissionUser[1])JsonResponse::error($target->status===404?404:503,'commission_user_unavailable','اطلاعات کاربر از سرویس هویت قابل تأیید نیست.');
+  $commissions=new \Babanoell\Partners\Repository\UserCommissionRepository($pdo);
+  if($method==='GET')JsonResponse::ok(['user'=>array_intersect_key($user,array_flip(['id','display_name'])),'commission'=>$commissions->get($commissionUser[1])]);
+  if($method==='POST'){$body=$request->json();try{$saved=$commissions->save($commissionUser[1],$principal->userId,(int)($body['revision']??0),$body['commission_percent']??null);}catch(\DomainException $e){JsonResponse::error(409,'commission_revision_conflict',$e->getMessage());}JsonResponse::ok(['commission'=>$saved]);}
+ }
+ if($path==='/api/v1/me/merchant'&&$method==='GET'){JsonResponse::ok(['merchant'=>$ownMerchant,'commission_percent'=>(new \Babanoell\Partners\Repository\UserCommissionRepository($pdo))->get($principal->userId)['commission_percent']]);}
  if($path==='/api/v1/merchants'){
   if($method==='GET'){$require('partners.merchants.read');if(!$staff&&!$principal->isSuperAdmin()){JsonResponse::ok(['items'=>$ownMerchant!==null?[$ownMerchant]:[],'page'=>1,'per_page'=>1,'total'=>$ownMerchant!==null?1:0,'pages'=>1]);}$q=$request->query();$r=$repository->listMerchants((int)($q['page']??1),(int)($q['per_page']??25),trim((string)($q['q']??'')),strtolower(trim((string)($q['status']??''))));JsonResponse::ok($r,200,['pagination'=>Pagination::fromResult($r)]);}
   if($method==='POST'){$require('partners.merchants.manage');JsonResponse::ok($partnerService->createMerchant($principal->userId,$request->json(),$bearer),201);}
@@ -197,6 +210,32 @@ if(preg_match('#^/api/v1/directory/merchants/([a-f0-9]{26})$#',$path,$m)&&$metho
   JsonResponse::ok($partnerService->transitionCooperation($m[1],$principal->userId,$body,$bearer));
  }
  if(preg_match('#^/api/v1/cooperation/requests/([a-f0-9]{26})/documents$#',$path,$m)&&$method==='POST'){$c=$repository->getCooperation($m[1]);if($c===null)JsonResponse::error(404,'cooperation_not_found','درخواست همکاری پیدا نشد.');if(!$canCooperation($c))JsonResponse::error(403,'cooperation_access_denied','دسترسی به درخواست همکاری مجاز نیست.');$b=$request->json();$document=PartnerRules::id((string)($b['document_id']??''),'شناسه مدرک');$relation=trim((string)($b['relation_code']??'attachment'));if($relation===''||mb_strlen($relation)>64)JsonResponse::error(422,'validation_failed','نوع ارتباط مدرک معتبر نیست.');JsonResponse::ok(['link'=>$repository->attachCooperationDocument($m[1],$document,$relation,$principal->userId)],201);}
+    $notificationRepository=new \Babanoell\Partners\Notification\NotificationRepository($pdo);
+    if(str_starts_with($path,'/api/v1/admin/notifications')){
+        if(!($principal->isSuperAdmin()||in_array('admin',$roles,true)))JsonResponse::error(403,'notification_admin_denied','مدیریت ارسال‌ها فقط برای مدیر سامانه مجاز است.');
+        if($path==='/api/v1/admin/notifications/settings'){
+            if($method==='GET')JsonResponse::ok($notificationRepository->settings());
+            if($method==='POST'){
+                $body=$request->json();
+                try{$saved=$notificationRepository->saveSettings((int)($body['revision']??0),(array)($body['settings']??[]),$principal->userId);}
+                catch(\DomainException $error){JsonResponse::error(409,'notification_revision_conflict',$error->getMessage());}
+                $repository->event('notification_settings',null,'notification.settings.updated',$principal->userId,'allowed',['revision'=>$saved['revision']]);JsonResponse::ok($saved);
+            }
+        }
+        if($path==='/api/v1/admin/notifications/deliveries'&&$method==='GET')JsonResponse::ok($notificationRepository->deliveries((int)($request->query()['page']??1)));
+        if(preg_match('#^/api/v1/admin/notifications/deliveries/([a-f0-9]{26})/retry$#',$path,$delivery)&&$method==='POST'){
+            try{$notificationRepository->retry($delivery[1],$principal->userId);}
+            catch(\DomainException $error){JsonResponse::error(409,'notification_retry_denied',$error->getMessage());}
+            JsonResponse::ok(['queued'=>true]);
+        }
+        if(preg_match('#^/api/v1/admin/notifications/deliveries/([a-f0-9]{26})/reconcile$#',$path,$delivery)&&$method==='POST'){
+            try{$notificationRepository->reconcile($delivery[1],$principal->userId,$request->json());}
+            catch(\DomainException $error){JsonResponse::error(409,'notification_reconciliation_denied',$error->getMessage());}
+            JsonResponse::ok(['reconciled'=>true]);
+        }
+        JsonResponse::error(404,'notification_route_not_found','مسیر اعلان پیدا نشد.');
+    }
+
  if($path==='/api/v1/marketplace/requests'&&$method==='GET'){$require('partners.marketplace.read');JsonResponse::ok($partnerService->marketplace($bearer,$request->query()));}
  if(preg_match('#^/api/v1/marketplace/requests/([a-f0-9]{26})/claim$#',$path,$m)&&$method==='POST'){$require('partners.marketplace.claim');JsonResponse::ok($partnerService->claimMarketplace($m[1],$principal->userId,$bearer),201);}
  if(preg_match('#^/api/v1/merchants/([a-f0-9]{26})/events$#',$path,$m)&&$method==='GET'){$require('partners.audit');if(!$canMerchant($m[1]))JsonResponse::error(403,'merchant_access_denied','دسترسی به این پذیرنده مجاز نیست.');JsonResponse::ok(['items'=>$repository->events('merchant',$m[1])]);}

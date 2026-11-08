@@ -65,6 +65,10 @@ try{
             if(!preg_match('/^[a-f0-9]{26}$/',$actor))JsonResponse::error(422,'invalid_actor','شناسه مدیر نامعتبر است.');
             JsonResponse::ok(['projection'=>$repository->syncMerchantSettlementResetShadow($id,$actor,trim((string)($body['reason']??'')))]);
         }
+        if(preg_match('#^/api/v1/admin/finance-shadow/greenpay-context/([a-f0-9]{26})$#',$path,$debitLoan)&&$method==='GET'){
+            $loan=$repository->getRequest($debitLoan[1]);if($loan===null)JsonResponse::error(404,'loan_not_found','پرونده پیدا نشد.');
+            JsonResponse::ok(['request'=>array_intersect_key($loan,array_flip(['id','request_no','status','requested_amount','facility_amount','plan_id','plan_version_id','row_version']))]);
+        }
         if($path==='/api/v1/admin/finance-shadow/bank-cycle-project'&&$method==='POST'){
             $b=$request->json();$cycle=(string)($b['cycle_id']??'');$owner=(string)($b['bank_user_id']??'');$date=(string)($b['settlement_date']??'');$notes=trim((string)($b['notes']??''));$ids=$b['request_ids']??null;
             if(!preg_match('/^[a-f0-9]{26}$/D',$cycle)||!preg_match('/^[a-f0-9]{26}$/D',$owner))JsonResponse::error(422,'invalid_bank_cycle','شناسه سیکل یا کارشناس معتبر نیست.');
@@ -127,14 +131,14 @@ try{
     $hasGlobalRequestAccess=$isPlatformAdmin||$principal->can('loans.requests.global');
     $canAssignBank=$isPlatformAdmin||$principal->can('loans.requests.assign_bank');
     $canManagePlans=$isPlatformAdmin||$principal->can('loans.plans.manage');
-    $partnerMerchantIds=[];$partnerMerchant=null;$partnerMembershipVerified=false;
+    $partnerMerchantIds=[];$partnerMerchant=null;$partnerMembershipVerified=false;$partnerCommission=null;
     if($isAcceptor){
         $pm=$partnersClient->myMerchant((string)($request->bearer()??''));
         if($pm->ok()&&is_array($pm->json['data']??null)){
             $pd=$pm->json['data'];
             if(array_key_exists('merchant',$pd)&&$pd['merchant']===null)$partnerMembershipVerified=true;
             elseif(is_array($pd['merchant']??null)&&is_string($pd['merchant']['id']??null)&&preg_match('/^[a-f0-9]{26}$/D',$pd['merchant']['id'])&&($pd['merchant']['status']??null)==='active'){
-                $partnerMembershipVerified=true;$partnerMerchant=$pd['merchant'];$partnerMerchantIds[]=$partnerMerchant['id'];
+                $partnerMembershipVerified=true;$partnerMerchant=$pd['merchant'];$partnerMerchantIds[]=$partnerMerchant['id'];$partnerCommission=$pd['commission_percent']??null;if($partnerCommission!==null&&(!is_numeric($partnerCommission)||(float)$partnerCommission<0||(float)$partnerCommission>100))JsonResponse::error(503,'merchant_commission_invalid','کمیسیون پذیرنده از مرجع قابل تأیید نیست.');
             }
         }
     }
@@ -183,6 +187,14 @@ try{
             JsonResponse::ok(['reconciled'=>true]);
         }
         JsonResponse::error(404,'notification_route_not_found','مسیر اعلان پیدا نشد.');
+    }
+
+    if($path==='/api/v1/admin/request-numbering'){
+        if(!$isPlatformAdmin)JsonResponse::error(403,'numbering_admin_denied','تنظیم شماره پرونده فقط برای مدیر مجاز است.');
+        $numbers=new \Babanoell\Loans\Repository\RequestNumberRepository($pdo);
+        if($method==='GET')JsonResponse::ok(['sequence'=>$numbers->settings()]);
+        if($method==='POST'){$body=$request->json();$step=filter_var($body['step']??null,FILTER_VALIDATE_INT);if($step===false)JsonResponse::error(422,'invalid_number_step','گام معتبر وارد کنید.');
+            try{$saved=$numbers->save((int)($body['revision']??0),$step,$principal->userId);}catch(\DomainException $e){JsonResponse::error(409,'numbering_revision_conflict',$e->getMessage());}JsonResponse::ok(['sequence'=>$saved]);}
     }
 
     if($path==='/api/v1/meta/statuses'&&$method==='GET'){$require('loans.requests.read');JsonResponse::ok(['statuses'=>$statusMachine->labels()]);}
@@ -237,6 +249,7 @@ try{
     if($path==='/api/v1/calculations'&&$method==='POST'){
         $require('loans.calculate');$b=$request->json();
         $commission=$canManagePlans&&isset($b['commission_override'])&&trim((string)$b['commission_override'])!==''?InputValidator::decimal($b['commission_override']):null;
+        if($isAcceptor&&(!$isApplicant||($b['plan_context']??'merchant_request')==='merchant_request')){if(!$partnerMembershipVerified||$partnerMerchant===null)JsonResponse::error(503,'merchant_commission_unavailable','پذیرنده و کمیسیون از سرویس شرکا قابل تأیید نیست.');$commission=$partnerCommission===null?null:(float)$partnerCommission;}
         JsonResponse::ok($calcService->calculate($principal->userId,(string)($b['plan_id']??''),InputValidator::money($b['amount']??0),InputValidator::integer($b['installment_count']??0),max(1,InputValidator::integer($b['installment_interval']??1)),$commission,true),201);
     }
 
@@ -349,7 +362,7 @@ try{
         if($method==='GET')JsonResponse::ok(['request'=>$loan,'corrections'=>$repository->profileCorrections($m[1])]);
         if($method==='POST'){
             $body=$request->json();$raw=is_array($body['fields']??null)?$body['fields']:[];
-            $whitelist=['full_name','father_name','certificate_number','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address'];
+            $whitelist=['full_name','father_name','certificate_number','certificate_city','retirement_code','retirement_organization','delivery_date','national_code','mobile_number','phone_number','birth_date','occupation','residential_address','postal_code','work_address'];
             if($raw===[]||array_diff(array_keys($raw),$whitelist)!==[])JsonResponse::error(422,'invalid_fields','تنها فیلدهای اطلاعات هویتی و تماس مجاز هستند.');
             if(isset($raw['birth_date'])&&preg_match('/^\d{4}-\d{2}-\d{2}$/',(string)$raw['birth_date'])){
                 $date=(string)$raw['birth_date'];$dt=\DateTimeImmutable::createFromFormat('!Y-m-d',$date);

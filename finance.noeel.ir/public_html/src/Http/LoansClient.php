@@ -7,6 +7,7 @@ final class LoansClient
  public function __construct(private readonly Config$config,private readonly HttpTransportInterface$transport){}
  public function health():HttpResponse{return$this->call('GET','/health',null,null);}
  public function request(string$id,string$bearer):HttpResponse{return$this->call('GET','/api/v1/requests/'.$id,$bearer,null);}
+ public function greenpayContext(string $id):HttpResponse{return $this->call('GET','/api/v1/admin/finance-shadow/greenpay-context/'.$id,null,null);}
  public function financeShadow(int$page=1,int$perPage=100):HttpResponse{return$this->call('GET','/api/v1/admin/finance-shadow?page='.$page.'&per_page='.$perPage,null,null);}
  public function syncMerchantSettlementResetShadow(string$id,string$actor,string$reason):HttpResponse{return$this->call('POST','/api/v1/admin/finance-shadow/merchant-reset-sync',null,['request_id'=>$id,'actor_user_id'=>$actor,'reason'=>$reason]);}
  public function syncBankCycleProjection(string $cycle,string $actor,string $date,string $note,array $ids):HttpResponse{return $this->call('POST','/api/v1/admin/finance-shadow/bank-cycle-project',null,['cycle_id'=>$cycle,'bank_user_id'=>$actor,'settlement_date'=>$date,'notes'=>$note,'request_ids'=>$ids]);}

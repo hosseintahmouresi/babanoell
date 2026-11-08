@@ -1,0 +1,11 @@
+<?php
+declare(strict_types=1);
+use Babanoell\Finance\Database\Migration;
+return new class implements Migration {
+    public function version():string{return '202611080001';}
+    public function name():string{return 'greenpay_request_debits';}
+    public function up(PDO $pdo):void {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS finance_greenpay_request_debits(id CHAR(26) NOT NULL PRIMARY KEY,request_id CHAR(26) NOT NULL,request_no VARCHAR(64) NOT NULL,eligible TINYINT UNSIGNED NOT NULL DEFAULT 0,status VARCHAR(24) NOT NULL DEFAULT 'not_applicable',from_encrypted TEXT NOT NULL,to_encrypted TEXT NOT NULL,from_mask VARCHAR(40) NOT NULL,to_mask VARCHAR(40) NOT NULL,pockets_fingerprint CHAR(64) NOT NULL,active_attempt_id CHAR(26) NULL,attempt_count INT UNSIGNED NOT NULL DEFAULT 0,row_version INT UNSIGNED NOT NULL DEFAULT 1,created_by CHAR(26) NOT NULL,updated_by CHAR(26) NOT NULL,created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),UNIQUE KEY uq_request_debit(request_id),KEY idx_request_debit_queue(eligible,status)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS finance_greenpay_request_attempts(id CHAR(26) NOT NULL PRIMARY KEY,debit_id CHAR(26) NOT NULL,sequence_no INT UNSIGNED NOT NULL,external_reference VARCHAR(80) NOT NULL,amount_rial BIGINT UNSIGNED NOT NULL,from_encrypted TEXT NOT NULL,to_encrypted TEXT NOT NULL,configuration_fingerprint CHAR(64) NOT NULL,status VARCHAR(24) NOT NULL,otp_generation INT UNSIGNED NOT NULL DEFAULT 1,otp_requested_at DATETIME(6) NULL,dispatch_started_at DATETIME(6) NULL,provider_reference VARCHAR(128) NULL,last_error VARCHAR(100) NULL,created_by CHAR(26) NOT NULL,reviewed_by CHAR(26) NULL,review_note VARCHAR(2000) NULL,created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),UNIQUE KEY uq_debit_sequence(debit_id,sequence_no),UNIQUE KEY uq_debit_reference(external_reference),KEY idx_request_attempt_status(status),CONSTRAINT fk_request_debit_attempt FOREIGN KEY(debit_id) REFERENCES finance_greenpay_request_debits(id) ON DELETE RESTRICT) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    }
+};

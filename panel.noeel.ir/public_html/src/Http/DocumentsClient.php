@@ -11,6 +11,7 @@ final class DocumentsClient
     public function get(string$path,string$bearer,array$query=[]):HttpResponse{if($query!==[])$path.=(str_contains($path,'?')?'&':'?').http_build_query($query);return$this->requestJson('GET',$path,$bearer,null);}
     public function post(string$path,string$bearer,array$payload=[]):HttpResponse{return$this->requestJson('POST',$path,$bearer,$payload);}
     public function upload(string$entityType,string$entityId,string$bearer,array$file,array$fields):HttpResponse{return$this->multipart('POST','/api/v1/entities/'.rawurlencode($entityType).'/'.rawurlencode($entityId).'/documents',$bearer,$file,$fields);}
+    public function uploadPart(string $id,string $bearer,array $file,int $index):HttpResponse{return $this->multipart('POST','/api/v1/uploads/'.rawurlencode($id).'/parts',$bearer,$file,['index'=>$index]);}
     public function replace(string$documentId,string$bearer,array$file):HttpResponse{return$this->multipart('POST','/api/v1/files/'.rawurlencode($documentId).'/versions',$bearer,$file,[]);}
     public function absolute(string$path):string{return$this->config->documentsBaseUrl().'/'.ltrim($path,'/');}
     private function requestJson(string$method,string$path,?string$bearer,?array$payload):HttpResponse

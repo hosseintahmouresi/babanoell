@@ -18,6 +18,11 @@ from credit import CreditFixture, complete_credit, credit_acceptance
 from notifications import notification_acceptance
 from leasing import leasing_acceptance
 from referrals import referral_acceptance
+from commissions import commission_acceptance
+from greenpay_requests import greenpay_request_acceptance
+from numbering import numbering_acceptance
+from chunks import chunk_acceptance
+from reference_parity import reference_contract_acceptance, cooperation_notification_acceptance
 
 
 class Workflow:
@@ -351,6 +356,12 @@ class Workflow:
         leasing_acceptance(self)
         credit_acceptance(self)
         notification_acceptance(self)
+        reference_contract_acceptance(self)
+        cooperation_notification_acceptance(self)
+        chunk_acceptance(self)
+        numbering_acceptance(self)
+        commission_acceptance(self)
+        greenpay_request_acceptance(self)
         referral_acceptance(self)
         self.stack.stop("partners")
         self.call("loans", "/api/v1/marketplace/requests", role="acceptor", expected=503)
