@@ -58,9 +58,18 @@ if(($_SERVER['REQUEST_METHOD']??'')==='POST' && isset($_POST['recover']) && up_c
  try{\Babanoell\Documents\Platform\ReleaseTransaction::recover($root,$storage,($_POST['database_restored']??'')==='1');header('Location: /update.php',true,303);exit;}
  catch(Throwable $e){echo Renderer::page('خطای بازیابی','<div class="bn-alert bn-alert--error">'.Renderer::e($e->getMessage()).'</div>');exit;}
 }
-if(\Babanoell\Documents\Platform\ReleaseTransaction::pending($storage)){
- echo Renderer::page('بازیابی نسخه',\Babanoell\Documents\Platform\Ui::recoveryForm('_csrf',up_csrf(),'recover','1'));exit;
+if(isset($_POST['complete_resumable_upload_migration'])){
+ if(($_SERVER['REQUEST_METHOD']??'')!=='POST'||!up_csrf_ok()){http_response_code(403);echo Renderer::page('اعتبار فرم','<div class="bn-alert bn-alert--error">اعتبار فرم منقضی شده است.</div>');exit;}
+ try{\Babanoell\Documents\Platform\ResumableUploadRecovery::complete($pdo,$root);$_SESSION['documents_resumable_repaired']=true;header('Location:/update.php',true,303);exit;}
+ catch(Throwable $e){http_response_code(409);echo Renderer::page('تکمیل مهاجرت انجام نشد','<div class="bn-alert bn-alert--error">'.Renderer::e($e->getMessage()).'</div><a class="bn-btn bn-btn--secondary" href="/update.php">بازگشت به مرکز به‌روزرسانی</a>');exit;}
 }
+if(\Babanoell\Documents\Platform\ReleaseTransaction::pending($storage)){
+ $forward='';
+ if(\Babanoell\Documents\Platform\ResumableUploadRecovery::available($pdo,$root))$forward='<section class="bn-card"><h1 class="bn-title">تکمیل اصلاح آپلود</h1><p>خطای شناخته‌شدهٔ ساخت جدول قطعات آپلود شناسایی شد. این اقدام فقط مهاجرت باقی‌مانده را تکمیل می‌کند و به مدارک و اطلاعات موجود دست نمی‌زند. پس از آن، بستهٔ Documents 1.23.1 را از همین آپدیتر نصب کنید.</p><form method="post"><input type="hidden" name="_csrf" value="'.Renderer::e(up_csrf()).'"><button class="bn-btn bn-btn--primary" name="complete_resumable_upload_migration" value="1">تکمیل اصلاح آپلود</button></form></section>';
+ echo Renderer::page('بازیابی نسخه',($forward!==''?$forward:\Babanoell\Documents\Platform\Ui::recoveryForm('_csrf',up_csrf(),'recover','1')));exit;
+}
+if(($_SESSION['documents_resumable_repaired']??false)===true){$message='مهاجرت آپلود تکمیل شد. اکنون بستهٔ Documents 1.23.1 را بررسی و نصب کنید.';$messageType='success';unset($_SESSION['documents_resumable_repaired']);}
+
 \Babanoell\Documents\Platform\ReleaseTransaction::syncVersion($root);
 $zipPath=$storage.'/update.zip';$tool=new UpdateTool();$plan=null;
 if(($_SERVER['REQUEST_METHOD']??'GET')==='POST'&&!isset($_POST['identifier'])){
